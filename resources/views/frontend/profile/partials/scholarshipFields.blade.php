@@ -1,4 +1,4 @@
-<div class="row form-group">
+{{--<div class="row form-group">
     <label for="is-working" class="col-4 col-form-label">Əvvəlki illərdə təqaüd müsabiqəsində iştirak
         etmisinizmi?</label>
     <div class="col-8">
@@ -17,7 +17,7 @@
         </div>
         <div class="help-block with-errors radio-errors"></div>
     </div>
-</div>
+</div>--}}
 
 
 <div id="scholarshipFieldGroup"

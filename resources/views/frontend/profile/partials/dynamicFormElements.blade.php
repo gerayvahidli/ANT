@@ -55,6 +55,12 @@
             {{ Form::text('previous_education_admission_score[]', null, ['class' => 'form-control here', 'id' => 'previous_education_admission_score']) }}
         </div>
     </div>
+    <div class="form-group row">
+        <label for="admission_score" class="col-4 col-form-label">Orta bal (GPA)</label>
+        <div class="col-8">
+            {{ Form::text('previous_education_admission_score[]', null, ['class' => 'form-control here', 'id' => 'previous_education_admission_score']) }}
+        </div>
+    </div>
     <div class="input-group-addon">
         <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
     </div>
@@ -113,6 +119,91 @@
 {{-- end fieldGroup for previous internships --}}
 
 
+{{-- fieldGroup for previous internships --}}
+<div class="card card-body previousWorkFieldGroupCopy" id="previousWorkFieldGroupCopy" style="">
+    <hr>
+    <div class="form-group row required">
+        <label for="previous_education_level" class="col-4 col-form-label">Müəssisə</label>
+        <div class="col-8">
+
+            <select class="form-control" id="companies">
+                <option>Default select</option>
+                <option>other</option>
+            </select>
+            <input type="text" class="form-control" name="otherCompany" style="display: none" placeholder="Digər müəssisənin adını bura yazın" />
+
+            <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
+
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group row required">
+        <label for="previous_education_level" class="col-4 col-form-label">Təşkilat</label>
+        <div class="col-8">
+
+            <input class="form-control" type="text" name="" id="">
+
+
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group row ">
+        <label for="previous_education_level" class="col-4 col-form-label">Struktur Bölmə</label>
+        <div class="col-8">
+
+            <input class="form-control" type="text" name="" id="">
+
+
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group row required">
+        <label for="previous_education_level" class="col-4 col-form-label">Vəzifə</label>
+        <div class="col-8">
+
+            <input class="form-control" type="text" name="" id="">
+
+
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group row required">
+        <label for="previous_education_level" class="col-4 col-form-label">İşə qəbul tarixi</label>
+        <div class="col-8">
+
+            <input class="form-control" type="date" name="" id="">
+
+
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group row required">
+        <label for="previous_education_level" class="col-4 col-form-label">İşdən ayrılma tarixi</label>
+        <div class="col-8">
+
+            <input class="form-control" type="date" name="" id="">
+
+
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+
+    <div class="form-group row required">
+        <label for="previous_education_level" class="col-4 col-form-label">Tabel nömrəniz</label>
+        <div class="col-8">
+
+            <input class="form-control" type="text" name="" id="">
+
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+
+    <div class="input-group-addon">
+        <a href="javascript:void(0)" class="btn btn-danger removeWork"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
+    </div>
+
+</div>
+{{-- end fieldGroup for previous internships --}}
 
 {{--Form--}}
 

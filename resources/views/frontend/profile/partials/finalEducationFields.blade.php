@@ -74,19 +74,6 @@
         </div>
     </div>
     <div class="form-group row required">
-        <label for="current_edu_year" class="col-4 col-form-label">Kurs</label>
-        <div class="col-8">
-            {!! Form::select('current_edu_year', array('1' => '1', '2' => '2','3' => '3', '4' => '4'),  ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->CurrentEduYear : old('current_edu_year'), ['class' => ($errors->has('current_edu_year')) ? 'bac form-control is-invalid' :'bac form-control', 'required',"data-required-error"=>'Kurs sahəsini boş buraxmayın'] )!!}
-            @if ($errors->has('current_edu_year'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('current_edu_year') }}</strong>
-                </div>
-            @endif
-            <div class="help-block with-errors"></div>
-        </div>
-    </div>
-
-    <div class="form-group row required">
         <label for="faculty" class="col-4 col-form-label">Fakültə</label>
         <div class="col-8">
             {{ Form::text('faculty', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->Faculty : old('faculty'), ['class' => ($errors->has('faculty')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Fakultə sahəsini boş buraxmayın']) }}
@@ -165,7 +152,7 @@
         </div>
     </div>
     <div class="form-group row required">
-        <label for="admission_score" class="col-4 col-form-label">GPA</label>
+        <label for="admission_score" class="col-4 col-form-label">Orta bal (GPA)</label>
         <div class="col-8">
             {{ Form::number('admission_score',
                 ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->AdmissionScore : old('admission_score'),

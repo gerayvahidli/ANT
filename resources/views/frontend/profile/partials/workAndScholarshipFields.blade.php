@@ -43,9 +43,77 @@
 
         </div>
     </div>
+    <div class="workFieldGroup" id="workFieldGroup">
 
-    <div id="socarWorkField" style="{{ $user->exists && $user->IsCurrentlyWorkAtSocar == 1 ? '' : '' }}">
-        <div class="form-group row">
+    <div class="form-group row required ">
+        <label for="work_company" class="col-4 col-form-label">Müəssisə</label>
+        <div class="col-8">
+            <select class="form-control">
+                <option>Default select</option>
+            </select>
+            <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
+            @if ($errors->has('work_company'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('work_company') }}</strong>
+                </div>
+            @endif
+        </div>
+    </div>
+    <div class="form-group row required">
+        <label for="work_experience" class="col-4 col-form-label">Təşkilat</label>
+        <div class="col-8">
+            {{ Form::text('work_experience',
+            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
+             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
+            @if ($errors->has('work_experience'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('work_experience') }}</strong>
+                </div>
+            @endif
+        </div>
+    </div>
+    <div class="form-group row ">
+        <label for="work_experience" class="col-4 col-form-label">Struktur Bölmə</label>
+        <div class="col-8">
+            {{ Form::text('work_experience',
+            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
+             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
+            @if ($errors->has('work_experience'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('work_experience') }}</strong>
+                </div>
+            @endif
+        </div>
+    </div>
+    <div class="form-group row required">
+        <label for="work_experience" class="col-4 col-form-label">Vəzifə</label>
+        <div class="col-8">
+            {{ Form::text('work_experience',
+            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
+             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
+            @if ($errors->has('work_experience'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('work_experience') }}</strong>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <div class="form-group row required">
+        <label for="dateOfBirth" class="col-4 col-form-label">İşə qəbul tarixi</label>
+        <div class="col-8">
+            {{ Form::date('dateOfBirth', ($user->exists) ? $user->Dob->format('Y-m-d') : old('dateOfBirth'), ['class' => ($errors->has('dateOfBirth')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+            @if ($errors->has('dateOfBirth'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('dateOfBirth') }}</strong>
+                </div>
+            @endif
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+
+    <div id="socarWorkField" style="{{ $user->exists && $user->IsCurrentlyWorkAtSocar == 1 ? '' : '' }}" >
+        <div class="form-group row required">
             <label for="personal_number" class="col-4 col-form-label">Tabel nömrəniz</label>
             <div class="col-8">
                 {{ Form::text('personal_number',
@@ -61,57 +129,25 @@
         </div>
     </div> {{--div#socarWorkField--}}
 
-    <div class="form-group row">
-        <label for="work_company" class="col-4 col-form-label">Müəssisə</label>
-        <div class="col-8">
-            <select class="form-control">
-                <option>Default select</option>
-            </select>
-            @if ($errors->has('work_company'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('work_company') }}</strong>
-                </div>
-            @endif
-        </div>
-    </div>
 
-    <div class="form-group row">
-        <label for="work_experience" class="col-4 col-form-label">Təşkilat/Struktur bölmə</label>
-        <div class="col-8">
-            {{ Form::text('work_experience',
-            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
-            @if ($errors->has('work_experience'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('work_experience') }}</strong>
-                </div>
-            @endif
-        </div>
+</div>
+    <hr>
+</div>
+<div class="form-group row" id="addMoreWork">
+    <div class="col-8 offset-sm-2">
+        <button href="javascript:void(0)" class="btn btn-primary" type="button" aria-hidden="true"
+                id="addMoreWork">
+            + Əvvəlki iş təcrübəsi
+        </button>
     </div>
+</div>
 
-    <div class="form-group row">
-        <label for="work_experience" class="col-4 col-form-label">Vəzifə</label>
-        <div class="col-8">
-            {{ Form::text('work_experience',
-            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
-            @if ($errors->has('work_experience'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('work_experience') }}</strong>
-                </div>
-            @endif
-        </div>
-    </div>
-
-</div> {{--div#workFieldGroup--}}
+{{--div#workFieldGroup--}}
  {{--work history field group--}}
-<hr>
 
  {{--Scholarship section--}}
 @include('frontend.profile.partials.scholarshipFields')
  {{--Scholarship history section--}}
-<hr>
  {{--Internship history section--}}
 @include('frontend.profile.partials.internshipFields')
 {{--Internship history section--}}
-<hr>

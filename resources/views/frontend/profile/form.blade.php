@@ -190,6 +190,40 @@
                             </div>
                         @endforeach
                     @else
+
+                        {{--home phone--}}
+
+                        <div class="form-group row required" id="mobilePhones">
+                            <label for="phone" class="col-md-4 col-form-label">Şəhər telefon nömrəsi (olmadıqda, yaxın qohumun şəhər telefon nömrəsi)</label>
+
+                            <div class="col-3">
+                                <select class="form-control" name="home_phone_code" id="home_phone_code">
+                                    <option value="012">012</option>
+                                </select>
+                            </div>
+
+                            <div class="col-5">
+                                <input id="phoneNumber" type="text"
+                                       class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
+                                       name="mobilePhone[0][number]"
+                                       value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"
+                                       required
+                                       maxlength="7"
+                                       data-required-error='Telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
+                                       data-pattern-error="Yalnız rəqəm daxil edin">
+
+                                @if ($errors->has('phoneNumber'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('phoneNumber') }}</strong>
+                                    </div>
+                                @endif
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+
+                        {{--end home phone--}}
+
+
                         <div class="form-group row required" id="mobilePhones">
                             <label for="phone" class="col-md-4 col-form-label">Telefon</label>
 
@@ -230,8 +264,9 @@
                     </div>
                 </div>
 
-                <div class="form-group row required">
-                    <label for="email" class="col-md-4 col-form-label">{{ __('E-Mail Address') }}</label>
+
+                <div class="form-group row required" >
+                    <label for="email" class="col-md-4 col-form-label">İşçinin korparativ poçt ünvanı</label>
 
                     <div class="col-8">
                         <input id="email" type="email"
@@ -250,7 +285,38 @@
                         <div class="help-block with-errors" id="emailErrorText"></div>
                     </div>
                 </div>
+                    <div id="emailFieldGroup">
 
+                    <div class="form-group row required" >
+                        <label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>
+
+                        <div class="col-8">
+                            <input id="email" type="email"
+                                   class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
+                                   value="{{ ($user->exists) ? $user->email : old('email') }}" required
+                                   data-error='E-Mail ünvanı düzgün qeyd edin'
+                                   data-required-error='E-Mail Address sahəsini boş buraxmayın'
+                                    {{ ($user->exists) ? 'disabled': '' }}
+                            >
+
+                            @if ($errors->has('email'))
+                                <div class="invalid-feedback">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </div>
+                            @endif
+                            <div class="help-block with-errors" id="emailErrorText"></div>
+                        </div>
+
+                    </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" id="addEmailField">
+                                <span class="fa fa-plus"></span> Elektron poçt əlavə et
+                            </a>
+                        </div>
+                    </div>
 
                 @if(!$user->exists)
                     <div class="form-group row required">
@@ -425,24 +491,7 @@
                         <div class="help-block with-errors invalid-feedback" id="idCardPinErrorText"></div>
                     </div>
                 </div>
-                <div class="form-group row required">
-                    <label for="MaidenSurname" class="col-4 col-form-label">Anasının qızlıq soyadı</label>
-                    <div class="col-8">
-                        <input id="MaidenSurname" name="MaidenSurname"
-                               value="{{ ($user->exists) ? $user->MaidenSurname : old('MaidenSurname') }}"
-                               placeholder="Anasının qızlıq soyadı" type="text"
-                               class="{{ ($errors->has('MaidenSurname')) ? 'form-control is-invalid' :'form-control' }}"
-                               required="required"
-                               data-required-error='Anasının qızlıq soyadı sahəsini boş buraxmayın'>
 
-                        @if ($errors->has('MaidenSurname'))
-                            <div class="invalid-feedback">
-                                <strong>{{ $errors->first('MaidenSurname') }}</strong>
-                            </div>
-                        @endif
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
             </div>
 
             <div class="col-12 col-sm-7">
@@ -464,21 +513,21 @@
                 @include('frontend.profile.partials.workAndScholarshipFields')
 
 
-                <div class="form-group row required">
-                    <label for="exam_language_id" class="col-4 col-form-label">İmtahanı hansı dildə verə
-                        bilərsiniz</label>
-                    <div class="col-8">
-                        {{ Form::select('exam_language_id', $examLanguages, ($user->exists) ? $user->exam_language_id : old('exam_language_id'),
-                            ['class' => ($errors->has('exam_language_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Dili seç ----', 'id' => 'exam_language_id', 'required','data-required-error'=>'İmtahan dili sahəsini boş buraxmayın']
-                        ) }}
-                        <div class="help-block with-errors"></div>
-                        @if ($errors->has('exam_language_id'))
-                            <div class="invalid-feedback">
-                                <strong>{{ $errors->first('exam_language_id') }}</strong>
-                            </div>
-                        @endif
-                    </div>
-                </div>
+{{--                <div class="form-group row required">--}}
+{{--                    <label for="exam_language_id" class="col-4 col-form-label">İmtahanı hansı dildə verə--}}
+{{--                        bilərsiniz</label>--}}
+{{--                    <div class="col-8">--}}
+{{--                        {{ Form::select('exam_language_id', $examLanguages, ($user->exists) ? $user->exam_language_id : old('exam_language_id'),--}}
+{{--                            ['class' => ($errors->has('exam_language_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Dili seç ----', 'id' => 'exam_language_id', 'required','data-required-error'=>'İmtahan dili sahəsini boş buraxmayın']--}}
+{{--                        ) }}--}}
+{{--                        <div class="help-block with-errors"></div>--}}
+{{--                        @if ($errors->has('exam_language_id'))--}}
+{{--                            <div class="invalid-feedback">--}}
+{{--                                <strong>{{ $errors->first('exam_language_id') }}</strong>--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
 
                 <div class="form-group row">
@@ -810,11 +859,17 @@
 
             // add fields to form - profile
 
-            var maxField = 3; //Input fields increment limitation
+            var maxField = 100; //Input fields increment limitation
+            var maxFieldEmail = 100; //Input fields increment limitation
             var addButton = $('#addPhoneField'); //Add button selector
+            var addEmailButton = $('#addEmailField'); //Add button selector
             var wrapper = $('#phoneFieldGroup'); //Input field wrapper
+            var wrapperEmail = $('#emailFieldGroup'); //Input field wrapper
+
             // var fieldHTML = '<div class="form-group row required" id="mobilePhones">' + $("#phones").html() + '<div class="col-1"><a href="javascript:void(0);" class="remove_button"><span class="fa fa-minus"></span></a></div></div>'; //New input field html
             var x = 1; //Initial field counter is 1
+            var y = 1; //Initial email field counter is 1
+
 
             //Once add button is clicked
             $(addButton).click(function () {
@@ -823,7 +878,7 @@
                     var fieldHtml = ('<div class="form-group row required" id="mobilePhones">' +
                         '<label for="phone" class="col-md-4 col-form-label">Telefon</label>\n' +
                         '    <div class="col-3" id="">\n' +
-                        '       <selec t name="mobilePhone[' + x + '][operatorCode]" id="mobilePhoneOperatorCode" class="form-control here"> ' +
+                        '       <select name="mobilePhone[' + x + '][operatorCode]" id="mobilePhoneOperatorCode" class="form-control here"> ' +
                         '@foreach($mobilePhoneOperatorCodes as $mobilePhoneOperatorCode => $code)' +
                         '        <option value="{{ $mobilePhoneOperatorCode }}">{{ $code }}</option>' +
                         '@endforeach' +
@@ -859,6 +914,35 @@
                 }
             });
 
+            $(addEmailButton).click(function () {
+                //Check maximum number of input fields
+                if (y < maxFieldEmail) {
+                    var fieldHtml = ('<div class="form-group row " id="emails">' +
+                        '<label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>\n' +
+                        '    <div class="col-7">\n' +
+                        '        <input id="phoneNumber" type="text"\n' +
+                        '               class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
+                        '               name="mobilePhone[' + x + '][number]"\n' +
+                        '               value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"\n' +
+                        '               maxlength="7"\n' +
+                        '               pattern="\\d*" data-pattern-error="Yalnız rəqəm daxil edin">\n' +
+                        '\n' +
+                        '        @if ($errors->has('phoneNumber'))\n' +
+                        '            <div class="invalid-feedback">\n' +
+                        '                <strong>{{ $errors->first('phoneNumber') }}</strong>\n' +
+                        '            </div>\n' +
+                        '        @endif\n' +
+                        '        <div class="help-block with-errors"></div>\n' +
+                        '    </div>' +
+                        '<div class="col-1">' +
+                        '<a href="javascript:void(0);" class="remove_button btn btn-danger btn-sm"><span class="fa fa-times"></span></a>' +
+                        '</div>' +
+                        '</div>');
+                    y++; //Increment field counter
+                    $(wrapperEmail).append(fieldHtml); //Add field html
+                }
+            });
+
             //Once remove button is clicked
             $(wrapper).on('click', '.remove_button', function (e) {
                 e.preventDefault();
@@ -866,9 +950,18 @@
                 x--; //Decrement field counter
             });
 
+            //Once email remove button is clicked
+            $(wrapperEmail).on('click', '.remove_button', function (e) {
+                e.preventDefault();
+                $(this).parents('#emails').remove(); //Remove field html
+                y--; //Decrement field counter
+            });
+
 
             //group add limit
-            var maxGroup = 4;
+            var maxGroup = 100;
+            var maxGroupWork = 100;
+
             // previousEducationCount = 1;
             //add more fields group
             $("#addMore").click(function () {
@@ -886,10 +979,54 @@
                     alert('Maximum ' + maxGroup + ' education field group are allowed.');
                 }
             });
+
+
+            $("#addMoreWork").click(function () {
+                if ($('body').find('.workFieldGroup').length < maxGroupWork) {
+                    $('#addMoreWork').attr('disabled', false);
+                    previousWorkCount = $('body').find('.workFieldGroup').length;
+
+                    // console.log(previousEducationCount);
+                    var fieldHTML = '<div class="workFieldGroup" id="workFieldGroup' + previousWorkCount + '">' + $(".previousWorkFieldGroupCopy").html() + '</div>';
+                    console.log(fieldHTML);
+                    $('body').find('.workFieldGroup:last').after(fieldHTML);
+                    // var countryId = $('select[id="previous_education_country_id"]');
+                    // var universityId = $('select[id="previous_education_university_id"]');
+                    // countryId.change(changeUniversity(previousEducationCount));
+                } else {
+                    $('#addMoreWork').attr('disabled', true);
+                    alert('Maximum ' + maxGroupWork + ' education field group are allowed.');
+                }
+            });
+
+            var ocNumber = -1;
+            $('body').on('change','#companies', function() {
+                ocNumber++;
+                var changed = this,
+                    check = changed.value.toLowerCase() === "other";
+
+                $(changed).next().toggle(check).attr({
+                    id: 'otherCompany'+ocNumber,
+                    name: 'otherCompany'+ocNumber
+                });
+            });
+
+            $('#companies').trigger( "change" );
+
+
+
+
             //remove fields group
             $("body").on("click", ".remove", function () {
                 $(this).parents(".fieldGroup").remove();
                 $('#addMore').attr('disabled', false);
+            });
+
+            //remove work fields group
+            $("body").on("click", ".removeWork", function () {
+                $(this).parents(".workFieldGroup").remove();
+                $('#addMoreWork').attr('disabled', false);
+                ocNumber=0;
             });
 
 
@@ -1184,5 +1321,9 @@
 
             });
         });
+
+
+
+
     </script>
 @endsection

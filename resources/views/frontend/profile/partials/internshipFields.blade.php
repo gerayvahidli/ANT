@@ -1,4 +1,4 @@
-<div class="row form-group">
+{{--<div class="row form-group">
     <label for="haveBeenIntern" class="col-4 col-form-label">Ödənişli təcrübə proqramı
         çərçivəsində SOCAR-da təcrübə keçmisinizmi?</label>
     <div class="col-8">
@@ -15,7 +15,7 @@
         </div>
         <div class="help-block with-errors"></div>
     </div>
-</div>
+</div>--}}
 
 <div class="internshipSection" id="internshipSection" style="{{ $user->exists && count($user->previousInternships) ? '' : 'display: none' }}">
 
