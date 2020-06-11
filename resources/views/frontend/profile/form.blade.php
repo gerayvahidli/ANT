@@ -39,11 +39,11 @@
             'role'=>"form",
             'id' => 'profile-form'
         ]) }}
-{{--        <div class="alert alert-danger" id="form-errors" style="display: none">--}}
-{{--            <ul id="form-error-list">--}}
+        {{--        <div class="alert alert-danger" id="form-errors" style="display: none">--}}
+        {{--            <ul id="form-error-list">--}}
 
-{{--            </ul>--}}
-{{--        </div>--}}
+        {{--            </ul>--}}
+        {{--        </div>--}}
         @if ($errors->any())
             <div class="alert alert-danger" id="form-errors">
                 <ul>
@@ -126,29 +126,28 @@
                     </div>
                 </div>
 
-                    <div class="form-group row required">
-                        <label for="FatherName" class="col-4 col-form-label">Cins</label>
-                        <div class="col-8">
-{{--                            <select  class="form-control here" name="gender" id="">--}}
-{{--                                @foreach($genders as $id => $gender)--}}
-{{--                                    <option value="{{$id }}">{{$gender}}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
+                <div class="form-group row required">
+                    <label for="FatherName" class="col-4 col-form-label">Cins</label>
+                    <div class="col-8">
+                        {{--                            <select  class="form-control here" name="gender" id="">--}}
+                        {{--                                @foreach($genders as $id => $gender)--}}
+                        {{--                                    <option value="{{$id }}">{{$gender}}</option>--}}
+                        {{--                                @endforeach--}}
+                        {{--                            </select>--}}
 
 
-                            {!!  Form::select('gender', $genders, ($user->exists) ? $user->gender_id : old('gender'),
-                            ['class' => ($errors->has('gender')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Cins seç ----', 'required','data-required-error'=>'Cins sahəsini boş buraxmayın']
-                            ) !!}
+                        {!!  Form::select('gender', $genders, ($user->exists) ? $user->gender_id : old('gender'),
+                        ['class' => ($errors->has('gender')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Cins seç ----', 'required','data-required-error'=>'Cins sahəsini boş buraxmayın']
+                        ) !!}
 
-                            @if ($errors->has('gender'))
-                                <div class="invalid-feedback">
-                                    <strong>{{ $errors->first('gender') }}</strong>
-                                </div>
-                            @endif
-                            <div class="help-block with-errors"></div>
-                        </div>
+                        @if ($errors->has('gender'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('gender') }}</strong>
+                            </div>
+                        @endif
+                        <div class="help-block with-errors"></div>
                     </div>
-
+                </div>
 
 
                 <div id="phoneFieldGroup">
@@ -194,7 +193,7 @@
                         {{--home phone--}}
 
                         <div class="form-group row required" id="mobilePhones">
-                            <label for="phone" class="col-md-4 col-form-label">Şəhər telefon nömrəsi (olmadıqda, yaxın qohumun şəhər telefon nömrəsi)</label>
+                            <label for="phone" class="col-md-4 col-form-label">Şəhər telefon nömrəsi</label>
 
                             <div class="col-3">
                                 <select class="form-control" name="home_phone_code" id="home_phone_code">
@@ -218,6 +217,9 @@
                                     </div>
                                 @endif
                                 <div class="help-block with-errors"></div>
+                                <small id="addressHelpBlock" class="form-text text-muted">
+                                    olmadıqda, yaxın qohumun şəhər telefon nömrəsi
+                                </small>
                             </div>
                         </div>
 
@@ -265,7 +267,7 @@
                 </div>
 
 
-                <div class="form-group row required" >
+                <div class="form-group row required">
                     <label for="email" class="col-md-4 col-form-label">İşçinin korparativ poçt ünvanı</label>
 
                     <div class="col-8">
@@ -285,9 +287,9 @@
                         <div class="help-block with-errors" id="emailErrorText"></div>
                     </div>
                 </div>
-                    <div id="emailFieldGroup">
+                <div id="emailFieldGroup">
 
-                    <div class="form-group row required" >
+                    <div class="form-group row required">
                         <label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>
 
                         <div class="col-8">
@@ -309,14 +311,14 @@
 
                     </div>
 
+                </div>
+                <div class="form-group row">
+                    <div class="col-6">
+                        <a href="javascript:void(0);" id="addEmailField">
+                            <span class="fa fa-plus"></span> Elektron poçt əlavə et
+                        </a>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-6">
-                            <a href="javascript:void(0);" id="addEmailField">
-                                <span class="fa fa-plus"></span> Elektron poçt əlavə et
-                            </a>
-                        </div>
-                    </div>
+                </div>
 
                 @if(!$user->exists)
                     <div class="form-group row required">
@@ -406,6 +408,9 @@
                         {{ Form::select('City_id', $cities, ($user->exists) ? $user->city_id : old('City_id'),
                             ['class' => ($errors->has('City_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Anadan olduğu yeri seç ----', 'required','data-required-error'=>'Anadan olduğu yer sahəsini boş buraxmayın', 'id' => 'City_id']
                         ) }}
+                        <input type="text" class="form-control" name="otherCity" id="otherCity" style="display: none"
+                               placeholder="Digər rayonun adını bura yazın"/>
+
                         @if ($errors->has('City_id'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('City_id') }}</strong>
@@ -424,7 +429,7 @@
                 </div>
 
                 <div class="form-group row required">
-                    <label for="Address" class="col-4 col-form-label">Ünvan</label>
+                    <label for="Address" class="col-4 col-form-label">Qeydiyyat ünvanı</label>
                     <div class="col-8">
                         <input id="Address" name="Address"
                                value="{{ ($user->exists) ? $user->Address : old('Address') }}" placeholder="Ünvan"
@@ -434,6 +439,27 @@
                         <div class="help-block with-errors"></div>
                         <small id="addressHelpBlock" class="form-text text-muted">
                             şəxsiyyəti təsdiq edən sənədə əsasən qeydiyyatda olduğu ünvan
+                        </small>
+                        @if ($errors->has('Address'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('Address') }}</strong>
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label for="Address" class="col-4 col-form-label">Faktiki yaşayış ünvanı</label>
+                    <div class="col-8">
+                        <input id="Address" name="Address"
+                               value="{{ ($user->exists) ? $user->Address : old('Address') }}"
+                               placeholder="Faktiki yaşayış ünvanı"
+                               type="text"
+                               class="{{ ($errors->has('Address')) ? 'form-control is-invalid' :'form-control' }}"
+                        >
+                        <div class="help-block with-errors"></div>
+                        <small id="addressHelpBlock" class="form-text text-muted">
+                            yaşadığınız ünvan şəxsiyyəti təsdiq edən sənəddəkindən fərqlidirsə doldurun
                         </small>
                         @if ($errors->has('Address'))
                             <div class="invalid-feedback">
@@ -500,11 +526,20 @@
 
                 @include('frontend.profile.partials.previousEducationFields')
 
+
                 <div class="form-group row" id="addMoreGroup">
-                    <div class="col-8 offset-sm-2">
-                        <button href="javascript:void(0)" class="btn btn-primary" type="button" aria-hidden="true"
+                    <div class="form-group col-3">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Əvvəlki təhsil
+                        </label>
+                    </div>
+                    <div class="form-group col-2">
+                        <input class="form-check-input" type="checkbox" value="" id="checkEducation" >
+                    </div>
+                    <div class="form-group col-4">
+                        <button href="javascript:void(0)" class="btn btn-primary " type="button" aria-hidden="true"
                                 id="addMore">
-                            + Əvvəlki Təhsil
+                            Əlavə et
                         </button>
                     </div>
                 </div>
@@ -513,21 +548,21 @@
                 @include('frontend.profile.partials.workAndScholarshipFields')
 
 
-{{--                <div class="form-group row required">--}}
-{{--                    <label for="exam_language_id" class="col-4 col-form-label">İmtahanı hansı dildə verə--}}
-{{--                        bilərsiniz</label>--}}
-{{--                    <div class="col-8">--}}
-{{--                        {{ Form::select('exam_language_id', $examLanguages, ($user->exists) ? $user->exam_language_id : old('exam_language_id'),--}}
-{{--                            ['class' => ($errors->has('exam_language_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Dili seç ----', 'id' => 'exam_language_id', 'required','data-required-error'=>'İmtahan dili sahəsini boş buraxmayın']--}}
-{{--                        ) }}--}}
-{{--                        <div class="help-block with-errors"></div>--}}
-{{--                        @if ($errors->has('exam_language_id'))--}}
-{{--                            <div class="invalid-feedback">--}}
-{{--                                <strong>{{ $errors->first('exam_language_id') }}</strong>--}}
-{{--                            </div>--}}
-{{--                        @endif--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                {{--                <div class="form-group row required">--}}
+                {{--                    <label for="exam_language_id" class="col-4 col-form-label">İmtahanı hansı dildə verə--}}
+                {{--                        bilərsiniz</label>--}}
+                {{--                    <div class="col-8">--}}
+                {{--                        {{ Form::select('exam_language_id', $examLanguages, ($user->exists) ? $user->exam_language_id : old('exam_language_id'),--}}
+                {{--                            ['class' => ($errors->has('exam_language_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Dili seç ----', 'id' => 'exam_language_id', 'required','data-required-error'=>'İmtahan dili sahəsini boş buraxmayın']--}}
+                {{--                        ) }}--}}
+                {{--                        <div class="help-block with-errors"></div>--}}
+                {{--                        @if ($errors->has('exam_language_id'))--}}
+                {{--                            <div class="invalid-feedback">--}}
+                {{--                                <strong>{{ $errors->first('exam_language_id') }}</strong>--}}
+                {{--                            </div>--}}
+                {{--                        @endif--}}
+                {{--                    </div>--}}
+                {{--                </div>--}}
 
 
                 <div class="form-group row">
@@ -617,53 +652,53 @@
                         console.log(response);
                         window.location.href = '{{ route('profile.index') }}';
                     }).catch((error) => {
-                        if(error.response) {
-                            // The request was made and the server responded with a status code
-                            // that falls out of the range of 2xx
-                            console.log(error.response.data);
-                            console.log(error.response.status);
-                            console.log(error.response.headers);
-                            $('#loaderModal').modal('hide');
-                            $('.alert-danger').show();
-                            $.each(error.response.data.errors, function (key, value) {
-                                console.log('key:' + key);
-                                console.log('value:' + value);
-                                // add invalid classes to input fields with error
-                                $("input[name='" + key + "']").addClass('is-invalid');
-                                current_input = $("input[name='" + key + "']");
-                                console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);
-                                if(current_input.closest('.form-group').find('.radio-errors ').length) {
-                                    current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');
-                                } else {
-                                    $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();
-                                    $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +
-                                        '<strong>' + value + '</strong>\n' +
-                                        '</div>');
-                                }
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        $('#loaderModal').modal('hide');
+                        $('.alert-danger').show();
+                        $.each(error.response.data.errors, function (key, value) {
+                            console.log('key:' + key);
+                            console.log('value:' + value);
+                            // add invalid classes to input fields with error
+                            $("input[name='" + key + "']").addClass('is-invalid');
+                            current_input = $("input[name='" + key + "']");
+                            console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);
+                            if (current_input.closest('.form-group').find('.radio-errors ').length) {
+                                current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');
+                            } else {
+                                $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();
+                                $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +
+                                    '<strong>' + value + '</strong>\n' +
+                                    '</div>');
+                            }
 
-                                // add errors to error box
-                                $('#form-error-list').append('<li>' + value + '</li>');
-                            });
-                            // scroll to error list
-                            $([document.documentElement, document.body]).animate({
-                                scrollTop: $('.alert-danger').offset().top
-                            }, 2000);
-                        } else if (error.request) {
-                            // The request was made but no response was received
-                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                            // http.ClientRequest in node.js
-                            console.log(error.request);
-                        } else {
-                            // Something happened in setting up the request that triggered an Error
-                            console.log('Error', error.message);
-                        }
-                    });
+                            // add errors to error box
+                            $('#form-error-list').append('<li>' + value + '</li>');
+                        });
+                        // scroll to error list
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $('.alert-danger').offset().top
+                        }, 2000);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
                 stay.preventDefault();
             });
             // end of profile submit - axios
 
             //delete previous education
-            $('#delete-previous-education').click(function() {
+            $('#delete-previous-education').click(function () {
                 var previous_education_id = $(this).closest('.fieldGroup').find('input[name="previous_education_id[]"]').val();
                 console.log(previous_education_id);
                 axios.post('{{ route('deletePreviousEducation') }}', {
@@ -681,7 +716,7 @@
             // end of delete previous education
 
             //delete Internship
-            $('.delete-internship').click(function(e) {
+            $('.delete-internship').click(function (e) {
                 e.preventDefault();
                 var parentField = $(this).closest('.previousInternshipFieldGroup');
                 // console.log(parentField);
@@ -702,7 +737,7 @@
             // end of delete Internship
 
             //delete Scholarship
-            $('.delete-scholarship').click(function(e) {
+            $('.delete-scholarship').click(function (e) {
                 e.preventDefault();
                 var parentField = $(this).closest('.previousScholarshipFieldGroup');
                 var scholarship_id = $(this).closest('.previousScholarshipFieldGroup').find('input[name="previous_scholarship_id[]"]').val();
@@ -721,13 +756,6 @@
                     });
             });
             // end of delete Scholarship
-
-
-
-
-
-
-
 
 
         });
@@ -1000,20 +1028,27 @@
             });
 
             var ocNumber = -1;
-            $('body').on('change','#companies', function() {
+            $('body').on('change', '#companies', function () {
                 ocNumber++;
                 var changed = this,
                     check = changed.value.toLowerCase() === "other";
 
                 $(changed).next().toggle(check).attr({
-                    id: 'otherCompany'+ocNumber,
-                    name: 'otherCompany'+ocNumber
+                    id: 'otherCompany' + ocNumber,
+                    name: 'otherCompany' + ocNumber
                 });
             });
 
-            $('#companies').trigger( "change" );
+            $('#companies').trigger("change");
+            $('body').on('change', '#City_id', function () {
+                if (this.value == 65) {
+                    $('#otherCity').show();
+                } else {
+                    $('#otherCity').hide();
+                }
+            });
 
-
+            $('#City_id').trigger("change");
 
 
             //remove fields group
@@ -1026,7 +1061,7 @@
             $("body").on("click", ".removeWork", function () {
                 $(this).parents(".workFieldGroup").remove();
                 $('#addMoreWork').attr('disabled', false);
-                ocNumber=0;
+                ocNumber = 0;
             });
 
 
@@ -1234,7 +1269,7 @@
                     $('#addMoreScholarship').attr('disabled', false);
                     previousScholarshipCount = $('body').find('.previousScholarshipFieldGroup').length;
                     var fieldHTML = '<div class="previousScholarshipFieldGroup" id="previousScholarshipFieldGroup' + previousScholarshipCount + '">' + $(".previousScholarshipFieldGroupCopy").html() + '</div>';
-                    if (previousScholarshipCount < 1 ) {
+                    if (previousScholarshipCount < 1) {
                         $('body').find('.scholarshipSection').append(fieldHTML);
                     } else {
                         $('body').find('.previousScholarshipFieldGroup:last').after(fieldHTML);
@@ -1259,43 +1294,43 @@
     </script>
 
 
-{{--    <script !src="">--}}
+    {{--    <script !src="">--}}
 
-{{--        $( document ).ready(function() {--}}
-{{--            var val = $(".education_level").val();--}}
-{{--            if (val == "1") {--}}
-{{--                $('[id="c1"]').css("display", "block");--}}
-{{--                $('[id="c2"]').css("display", "none");--}}
+    {{--        $( document ).ready(function() {--}}
+    {{--            var val = $(".education_level").val();--}}
+    {{--            if (val == "1") {--}}
+    {{--                $('[id="c1"]').css("display", "block");--}}
+    {{--                $('[id="c2"]').css("display", "none");--}}
 
-{{--            } else if (val == "2") {--}}
-{{--                $('[id="c1"]').css("display", "none");--}}
-{{--                $('[id="c2"]').css("display", "block");--}}
+    {{--            } else if (val == "2") {--}}
+    {{--                $('[id="c1"]').css("display", "none");--}}
+    {{--                $('[id="c2"]').css("display", "block");--}}
 
-{{--            }--}}
-{{--            else{--}}
-{{--                $('[id="c1"]').css("display", "none");--}}
-{{--                $('[id="c2"]').css("display", "none");--}}
-{{--            }--}}
+    {{--            }--}}
+    {{--            else{--}}
+    {{--                $('[id="c1"]').css("display", "none");--}}
+    {{--                $('[id="c2"]').css("display", "none");--}}
+    {{--            }--}}
 
-{{--            $(".education_level").change(function () {--}}
-{{--                var val = $(this).val();--}}
+    {{--            $(".education_level").change(function () {--}}
+    {{--                var val = $(this).val();--}}
 
-{{--                if (val == "1") {--}}
-{{--                    $('[id="c1"]').css("display", "block");--}}
-{{--                    $('[id="c2"]').css("display", "none");;--}}
+    {{--                if (val == "1") {--}}
+    {{--                    $('[id="c1"]').css("display", "block");--}}
+    {{--                    $('[id="c2"]').css("display", "none");;--}}
 
-{{--                } else if (val == "2") {--}}
-{{--                    $('[id="c1"]').css("display", "none");--}}
-{{--                    $('[id="c2"]').css("display", "block");--}}
+    {{--                } else if (val == "2") {--}}
+    {{--                    $('[id="c1"]').css("display", "none");--}}
+    {{--                    $('[id="c2"]').css("display", "block");--}}
 
-{{--                }--}}
-{{--                else  {--}}
-{{--                    $('[id="c1"]').css("display", "none");--}}
-{{--                    $('[id="c2"]').css("display", "none");--}}
+    {{--                }--}}
+    {{--                else  {--}}
+    {{--                    $('[id="c1"]').css("display", "none");--}}
+    {{--                    $('[id="c2"]').css("display", "none");--}}
 
-{{--                }--}}
-{{--            });        });--}}
-{{--    </script>--}}
+    {{--                }--}}
+    {{--            });        });--}}
+    {{--    </script>--}}
 
 
     <script>
@@ -1311,8 +1346,8 @@
                 if (val == "2") {
                     $(".bac option[value='3']").remove();
                     $(".bac option[value='4']").remove();
-                }  else if (val == "1") {
-                    if ($(".bac option[value='3']").length === 0 || $(".bac option[value='4']").length === 0 ) {
+                } else if (val == "1") {
+                    if ($(".bac option[value='3']").length === 0 || $(".bac option[value='4']").length === 0) {
                         // code to run if it isn't there
                         $(".bac").append(new Option("3", "3"));
                         $(".bac").append(new Option("4", "4"));
@@ -1321,6 +1356,16 @@
 
             });
         });
+
+       var $addMore = $("#addMore").hide(),
+                $cbs = $('#checkEducation').click(function () {
+                    $addMore.toggle($cbs.is(":checked"));
+                });
+
+        var $addMoreWork = $("#addMoreWork").hide(),
+            $cbs2 = $('#checkWork').click(function () {
+                $addMoreWork.toggle($cbs2.is(":checked"));
+            });
 
 
 

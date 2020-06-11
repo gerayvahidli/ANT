@@ -1,5 +1,5 @@
 <p class="lead">
-    Cari Təhsiliniz Haqqında Məlumat
+    Təhsil Haqqında Məlumat
 </p>
 @if($user->exists && isset($user->finalEducation))
     {{ Form::hidden('final_education_id', $user->finalEducation->id) }}

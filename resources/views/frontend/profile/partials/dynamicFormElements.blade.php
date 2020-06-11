@@ -41,6 +41,13 @@
             {{ Form::text('previous_education_EndDate[]', '', ['class' => 'form-control here', "data-required-error"=>'Bu sahəni boş buraxmayın','id' => 'previous_education_EndDate']) }}
         </div>
     </div>
+    <div class="form-group row">
+        <label for="speciality" class="col-4 col-form-label">Fakültə</label>
+        <div class="col-8">
+            {{ Form::text('previous_education_faculty[]', null, ['class' => 'form-control here', 'id'=> 'previous_education_faculty', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+        </div>
+    </div>
+
 
     <div class="form-group row">
         <label for="speciality" class="col-4 col-form-label">İxtisas</label>
@@ -55,6 +62,33 @@
             {{ Form::text('previous_education_admission_score[]', null, ['class' => 'form-control here', 'id' => 'previous_education_admission_score']) }}
         </div>
     </div>
+
+    <div class="form-group row">
+        <label for="country" class="col-4 col-form-label">Bölmə</label>
+        <div class="col-8">
+            {{ Form::select('previous_education_section_id[]', $educationSections, null,
+                ['class' => 'form-control here', 'id' => 'previous_education_section_id', "data-required-error"=>'Bu sahəni boş buraxmayın']
+            ) }}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="country" class="col-4 col-form-label">Təhsil forması</label>
+        <div class="col-8">
+            {{ Form::select('previous_education_form[]', $educationForms, null,
+                ['class' => 'form-control here', 'id' => 'previous_education_form', "data-required-error"=>'Bu sahəni boş buraxmayın']
+            ) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="country" class="col-4 col-form-label">Təhsil qrupu</label>
+        <div class="col-8">
+            {{ Form::select('previous_education_payment_form_id[]', $educationPaymentForms, null,
+                ['class' => 'form-control here', 'id' => 'previous_education_payment_form_id', "data-required-error"=>'Bu sahəni boş buraxmayın']
+            ) }}
+        </div>
+    </div>
+
     <div class="form-group row">
         <label for="admission_score" class="col-4 col-form-label">Orta bal (GPA)</label>
         <div class="col-8">

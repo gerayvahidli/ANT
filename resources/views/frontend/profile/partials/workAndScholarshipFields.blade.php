@@ -133,11 +133,20 @@
 </div>
     <hr>
 </div>
-<div class="form-group row" id="addMoreWork">
-    <div class="col-8 offset-sm-2">
+<div class="form-group row" >
+    <div class="form-group col-3">
+        <label class="form-check-label" for="defaultCheck1">
+            Əvvəlki iş təcrübəsi
+        </label>
+    </div>
+    <div class="form-group col-2">
+        <input class="form-check-input" type="checkbox" value="" id="checkWork" name="prog">
+    </div>
+
+    <div class="form-group col-4">
         <button href="javascript:void(0)" class="btn btn-primary" type="button" aria-hidden="true"
                 id="addMoreWork">
-            + Əvvəlki iş təcrübəsi
+             Əlavə et
         </button>
     </div>
 </div>
