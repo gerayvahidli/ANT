@@ -5,7 +5,7 @@
 
         <div class="row">
             <h5 class="mx-auto">
-                PROFIL
+                PROFİL
             </h5>
         </div>
         <hr>
@@ -23,19 +23,19 @@
                         {{--Profil - --}} {{ ($user->exists) ? $user->FirstName . ' ' . $user->LastName. ' ' . $user->FatherName : '' }}
                     </h3>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
-                                    class="fa fa-edit"></i> Dəyiş</a>
-                    </div>
-                    <div class="col-6">
-                        @if($user->exists)
-                            <a href="{{ route('profile.feedback.show') }}" class="btn btn-outline-primary btn-block"><i
-                                        class="fa fa-envelope-o"></i> Email göndər</a>
-                        @endif
-                    </div>
-                </div>
+{{--                <hr>--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-6">--}}
+{{--                        <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i--}}
+{{--                                    class="fa fa-edit"></i> Dəyiş</a>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-6">--}}
+{{--                        @if($user->exists)--}}
+{{--                            <a href="{{ route('profile.feedback.show') }}" class="btn btn-outline-primary btn-block"><i--}}
+{{--                                        class="fa fa-envelope-o"></i> Email göndər</a>--}}
+{{--                        @endif--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <hr>
 
@@ -74,16 +74,29 @@
                             <td>{{ $user->Address }}</td>
                         </tr>
                         <tr>
-                            <th>E-mail</th>
-                            <td>{{ $user->email }}</td>
+                            <th>Şəhər telefon nömrəsi</th>
+                            <td>012333333</td>
                         </tr>
                         <tr>
-                            <th>Telefon</th>
+                            <th>Mobil telefon nömrəsi(daim işlək olan nömrə)</th>
                             <td>
                                 @foreach($user->phones as $phoneNumber)
                                     {{ $phoneNumber->operatorCode->Code . $phoneNumber->PhoneNumber }}
                                     <br>
                                 @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>İşçinin korparativ emaili</th>
+                            <td>{{ $user->email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Elektron poçt ünvanı(şəxsi)</th>
+                            <td>
+                                gerayvahidli@gmail.com
+                                <br>
+                                vahidgerayli@gmail.com
+
                             </td>
                         </tr>
                         <tr>
@@ -94,14 +107,34 @@
                             <th>Şəxsiyyət vəsiqəsinin FİN kodu</th>
                             <td>{{ $user->IdentityCardCode }}</td>
                         </tr>
-                        <tr>
-                            <th>Anasının qızlıq soyadı</th>
-                            <td>{{ $user->MaidenSurname }}</td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
                 @include('frontend.profile.partials.programApplicationAndTrackingPanel')
+                <div class="row">
+                    <div class="col-4">
+                        <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
+                                    class="fa fa-edit"></i>Profili dəyiş</a>
+                        @if($user->exists)
+                                    <a href="{{ url('/profile/' . $user->id . '/password') }}" class="btn btn-outline-primary btn-block">Şifrəni dəyiş</a>
+                        @endif
+                    </div>
+
+                    <div class="col-4">
+                        @if($user->exists)
+                            <a href="{{ route('profile.feedback.show') }}" class="btn btn-outline-primary btn-block"><i
+                                        class="fa fa-envelope-o"></i> Email göndər</a>
+                        @endif
+                    </div>
+
+                    <div class="col-4">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-primary btn-block">Çıxış</button>
+                        </form>
+                    </div>
+
+                </div>
             </div>
             <div class="col-12 col-sm-7">
                 @if (isset($finalEducation))
@@ -334,7 +367,7 @@
                     <br>
                     <div class="card">
                         <h5 class="card-header">
-                            Əvvəlki Təhsil 1
+                            Əvvəlki iş yeri 1
                         </h5>
                         <div class="card-body p-0">
                             <div class="table-responsive">
@@ -375,7 +408,6 @@
                     </div>
 
                 </div>
-
 
             </div>
         </div>

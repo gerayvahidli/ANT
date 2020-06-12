@@ -16,24 +16,14 @@
 
 <hr>
 
-@if(isset($currentInternalProgram ))
-    <a href="{{ url('/apply/internal/scholarship/'.$currentInternalProgram->id) }}"
-       class="btn btn-outline-primary btn-block">
-        <i class="fa fa-hand-pointer-o"></i> Daxili Təqaüd Proqramı
-    </a>
-@endif
-@if(isset($currentExternalProgram))
-    <a href="{{ url('/apply/external/scholarship/'.$currentExternalProgram->id) }}"
+
+@if(isset($currentInternalProgram))
+    <a href="{{ url('/apply/external/scholarship/'.$currentInternalProgram->id) }}"
        class="btn btn-outline-primary btn-block">
         <i class="fa fa-hand-pointer-o"></i> Xarici Təqaüd Proqramı
     </a>
 @endif
-@if(isset($currentInternshipProgram))
-    <a href="{{ url('/apply/paid/scholarship/' . $currentInternshipProgram->id) }}"
-       class="btn btn-outline-primary btn-block">
-        <i class="fa fa-hand-pointer-o"></i> Ödənişli Təcrübə Proqramı
-    </a>
-@endif
+
 
 
 {{--<nav class="nav flex-column nav-pills" aria-orientation="vertical">--}}

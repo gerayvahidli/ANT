@@ -195,14 +195,6 @@
                 </div>
 
 
-                @if($user->exists)
-                    <div class="form-group row">
-                        <div class="col-8">
-                            <a href="{{ url('/profile/' . $user->id . '/password') }}" class="btn">Şifrəni dəyiş</a>
-                        </div>
-                    </div>
-                @else
-
                     <div class="form-group row required">
                         <label for="password" class="col-md-4 col-form-label">Şifrə</label>
 
@@ -234,7 +226,6 @@
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
-                @endif
                 <div class="form-group row" style="display: none" id="customCity">
                     <label for="customCity" class="col-4 col-form-label">Şəhəri daxil edin</label>
                     <div class="col-8">
