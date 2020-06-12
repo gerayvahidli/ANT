@@ -2,14 +2,10 @@
 
 @section('mainSection')
     <section class="profile">
-        <div class="row">
-            <h3 class='mx-auto'>
-                {{--Profil - --}} {{ ($user->exists) ? $user->FirstName . ' ' . $user->LastName : '' }}
-            </h3>
-        </div>
+
         <div class="row">
             <h5 class="mx-auto">
-                {{ (isset($finalEducation)) ? $finalEducation->educationLevel->Name : ''}}
+                PROFIL
             </h5>
         </div>
         <hr>
@@ -21,6 +17,11 @@
                     {{--<div class="card-body">--}}
                     {{--<p class="card-text">{{ $user->FirstName . ' ' . $user->LastName }}</p>--}}
                     {{--</div>--}}
+                </div>
+                <div class="row">
+                    <h3 class='mx-auto'>
+                        {{--Profil - --}} {{ ($user->exists) ? $user->FirstName . ' ' . $user->LastName. ' ' . $user->FatherName : '' }}
+                    </h3>
                 </div>
                 <hr>
                 <div class="row">
@@ -50,7 +51,7 @@
                                     {{  $user->gender->Name }}
                                 @endif
 
-                                </td>
+                            </td>
                         </tr>
                         <tr>
                             <th>Vətəndaşlığı</th>
@@ -61,11 +62,15 @@
                             <td>{{ $user->Dob->formatLocalized('%d %B %Y') }}</td>
                         </tr>
                         <tr>
-                            <th>Anadan olduğu yer</th>
+                            <th>Doğum yeri</th>
                             <td>{{ $user->city->Name }}</td>
                         </tr>
                         <tr>
-                            <th>Ünvan</th>
+                            <th>Qeydiyyat ünvanı</th>
+                            <td>{{ $user->Address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Faktiki yaşayış ünvanı</th>
                             <td>{{ $user->Address }}</td>
                         </tr>
                         <tr>
@@ -110,6 +115,11 @@
                                     {{--<center><p class="lead">Son Təhsil Haqqında Məlumat </p></center>--}}
 
                                     <tr>
+                                        <th>Təhsil pilləsi</th>
+                                        <td>Magistr</td>
+                                    </tr>
+
+                                    <tr>
                                         <th>Ölkə</th>
                                         <td>{{ $finalEducation->university->country->Name }}</td>
                                     </tr>
@@ -119,11 +129,11 @@
                                     </tr>
                                     <tr>
                                         <th>Təhsil Müddəti</th>
-                                        <td>{{ $finalEducation->BeginDate->formatLocalized('%d %B %Y') . ' - ' . $finalEducation->EndDate->formatLocalized('%d %B %Y') }}</td>
+                                        <td>2015-2019</td>
                                     </tr>
                                     <tr>
-                                        <th>Kurs</th>
-                                        <td>{{ $finalEducation->CurrentEduYear }}</td>
+                                        <th>Orta bal</th>
+                                        <td>65.2</td>
                                     </tr>
                                     <tr>
                                         <th>Fakültə</th>
@@ -229,6 +239,10 @@
                                     <table class="table table-borderless">
                                         <tbody>
                                         <tr>
+                                            <th>Təhsil pilləsi</th>
+                                            <td>Bakalavr</td>
+                                        </tr>
+                                        <tr>
                                             <th>Ölkə</th>
                                             <td>{{ $previousEducation->university->country->Name }}</td>
                                         </tr>
@@ -240,7 +254,7 @@
                                         @if(isset($previousEducation->BeginDate) && $previousEducation->BeginDate != $date)
                                             <tr>
                                                 <th>Təhsil Müddəti</th>
-                                                <td>{{ $previousEducation->BeginDate->formatLocalized('%d %B %Y') . ' - ' . $previousEducation->EndDate->formatLocalized('%d %B %Y') }}</td>
+                                                <td>1998-2020</td>
                                             </tr>
                                         @endif
                                         <tr>
@@ -280,106 +294,88 @@
                                     <th colspan="2">İş yeri haqqında məlumat</th>
                                 </tr>
                                 <tr>
-                                    <th>SOCAR əməkdaşısınızmı?</th>
+                                    <th>Müəssisə</th>
                                     {{--{{ dd($user->IsCurrentlyWorkAtSocar) }}--}}
-                                    <td>{{ ($user->IsCurrentlyWorkAtSocar) ? 'Bəli' : 'Xeyr' }}</td>
-                                </tr>
-                                @if($user->IsCurrentlyWorkAtSocar)
-                                    <tr>
-                                        <th>Tabel nömrəniz</th>
-                                        <td>{{ $user->PersonalNumber }}</td>
-                                    </tr>
-                                @endif
-                                <tr>
-                                    <th>İş yeriniz haqqında məlumat</th>
-                                    <td>{{ $user->WorkCompany }}</td>
+                                    <td>"Azneft" İstehsalat Birliyi</td>
                                 </tr>
                                 <tr>
-                                    <th>İş stajınız</th>
-                                    <td>{{ $user->WorkExperienceYears }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-
-                <div class="card">
-                    <h5 class="card-header">
-                        Əvvəlki təqaüd haqqında məlumat
-                    </h5>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <tbody>
-                                <tr>
-                                    <th>Əvvəlki illərdə təqaüd müsabiqəsində iştirak etmisinizmi?</th>
-                                    <td>{{  ($user->hasAppliedToScholarship) ? 'Bəli' : 'Xeyr' }}</td>
+                                    <th>Təşkilat</th>
+                                    <td>Neft Kəmərləri İdarəsi</td>
                                 </tr>
                                 <tr>
-                                    <th>Təqaüdçü olmusunuzmu?</th>
-                                    <td>
-                                        {{ (isset($user->previousScholarships) && count($user->previousScholarships)) ? 'Bəli' : 'Xeyr' }}
-                                    </td>
+                                    <th>Struktur Bölmə</th>
+                                    <td>Texniki istehsalat şöbəsi</td>
                                 </tr>
-                                @if(isset($user->previousScholarships) && count($user->previousScholarships))
-                                    @foreach($user->previousScholarships as $previousScholarship)
-                                        <tr>
-                                            <th>Hansı ildə</th>
-                                            <td>{{ (isset($previousScholarship->scholarship_date)) ? $previousScholarship->scholarship_date->formatLocalized('%d %B %Y') : '' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Təqaüd növü</th>
-                                            <td>{{ $previousScholarship->programType->Name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <hr>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
+                                <tr>
+                                    <th>Vəzifə</th>
+                                    <td>Şöbə rəisinin müavini</td>
+                                </tr>
+                                <tr>
+                                    <th>İşə qəbul tarixi</th>
+                                    <td>23 sentyabr 1998</td>
+                                </tr>
+                                <tr>
+                                    <th>Tabel nömrəniz</th>
+                                    <td>4039896</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <br>
-                <div class="card">
-                    <h5 class="card-header">
-                        Əvvəlki təcrübə haqqında məlumat
-                    </h5>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <tbody>
-                                <tr>
-                                    <th>Ödənişli Təcrübə proqramı çərçivəsində SOCAR-da təcrübə keçmisinizmi?</th>
-                                    <td>{{ (isset($user->previousInternships) && count($user->previousInternships)) ? 'Bəli' : 'Xeyr' }}</td>
-                                </tr>
-                                @if(isset($user->previousInternships) && count($user->previousInternships))
-                                    @foreach($user->previousInternships as $previousInternship)
-                                        <tr>
-                                            <th>Təcrübədə olduğunuz müəssisə</th>
-                                            <td>{{ $previousInternship->department }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Təcrübədə olduğunuz tarix</th>
-                                            <td>{{ $previousInternship->internship_date->formatLocalized('%d %B %Y') }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <hr>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                </tbody>
-                            </table>
+                <button class="btn btn-primary col-6" type="button" data-toggle="collapse"
+                        data-target="#collapsePreviousWork" aria-expanded="false"
+                        aria-controls="collapsePreviousWork">
+                    Əvvəlki iş yeri
+                </button>
+                <hr>
+                <div class="collapse" id="collapsePreviousWork">
+                    <br>
+                    <div class="card">
+                        <h5 class="card-header">
+                            Əvvəlki Təhsil 1
+                        </h5>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                    <tr>
+                                        <th colspan="2">İş yeri haqqında məlumat</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Müəssisə</th>
+                                        {{--{{ dd($user->IsCurrentlyWorkAtSocar) }}--}}
+                                        <td>"Azneft" İstehsalat Birliyi</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Təşkilat</th>
+                                        <td>Neft Kəmərləri İdarəsi</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Struktur Bölmə</th>
+                                        <td>Texniki istehsalat şöbəsi</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Vəzifə</th>
+                                        <td>Şöbə rəisinin müavini</td>
+                                    </tr>
+                                    <tr>
+                                        <th>İşə qəbul tarixi</th>
+                                        <td>23 sentyabr 1998</td>
+                                    </tr>
+                                    <tr>
+                                        <th>İşdən ayrılma tarixi</th>
+                                        <td>21 sentyabr 2010</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+
 
             </div>
         </div>

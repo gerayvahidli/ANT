@@ -1,5 +1,9 @@
 {{--work history fields--}}
+<p class="lead">
+    İş yeri
+</p>
 <div class="row form-group required">
+
 {{--    <label for="is-working" class="col-4 col-form-label">Hazırda işləyirsinizmi?</label>--}}
     <div class="col-8">
 {{--        <div class="form-check form-check-inline">--}}
