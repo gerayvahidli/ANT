@@ -52,9 +52,12 @@
     <div class="form-group row required ">
         <label for="work_company" class="col-4 col-form-label">Müəssisə</label>
         <div class="col-8">
-            <select class="form-control">
-                <option>Default select</option>
+            <select name="company_id" id="company_id" class="form-control">
+                @foreach($companies as $company)
+                    <option value="{{$company -> Id}}">{{$company -> Name}}</option>
+                @endforeach
             </select>
+
             <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
             @if ($errors->has('work_company'))
                 <div class="invalid-feedback">
@@ -106,7 +109,7 @@
     <div class="form-group row required">
         <label for="dateOfBirth" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            {{ Form::date('dateOfBirth', ($user->exists) ? $user->Dob->format('Y-m-d') : old('dateOfBirth'), ['class' => ($errors->has('dateOfBirth')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+            {{ Form::date('dateOfBirth', ($user->exists) ? $user->Dob->format('Y-m-d') : old('dateOfBirth'), ['class' => ($errors->has('dateOfBirth')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
             @if ($errors->has('dateOfBirth'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('dateOfBirth') }}</strong>

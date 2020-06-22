@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EducationLevel extends Model
 {
-    protected $table = 'education_level';
+    protected $table = 'EducationLevels';
     protected $guarded = ['id'];
 
     public function previous_educations()

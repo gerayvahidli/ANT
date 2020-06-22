@@ -45,7 +45,7 @@ class LeftNavigationComposer
         $programTypes             = ProgramType::where('id', '<', 3)->get();
         $termTypes                = TermType::all();
         $view->with([
-            'navProgramTypes'          => $programTypes,
+//            'navProgramTypes'          => $programTypes,
             'navTermTypes'             => $termTypes,
             'currentExternalProgram'   => $currentExternalProgram,
             'currentInternalProgram'   => $currentInternalProgram,

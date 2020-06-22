@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MobileOperatorCode extends Model
 {
-    protected $table = 'mobile_operator_code';
+    protected $table = 'OperatorCodes';
 
     public function mobilePhone()
     {

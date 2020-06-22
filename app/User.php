@@ -9,8 +9,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'user';
+    protected $table = 'Users';
     //protected $dateFormat = 'Y-m-d H:i:s+';
+    public $timestamps = false;
 
     protected $dates = [
         'Dob',
@@ -37,11 +38,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'IsCurrentlyWorking'      => 'boolean',
-        'IsCurrentlyWorkAtSocar'  => 'boolean',
-        'hasAppliedToScholarship' => 'boolean',
-    ];
+//    protected $casts = [
+//        'IsCurrentlyWorking'      => 'boolean',
+//        'IsCurrentlyWorkAtSocar'  => 'boolean',
+//        'hasAppliedToScholarship' => 'boolean',
+//    ];
 
 //    public function getAuthIdentifier()
 //    {

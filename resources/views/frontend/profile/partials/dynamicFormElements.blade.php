@@ -96,7 +96,8 @@
         </div>
     </div>
     <div class="input-group-addon">
-        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
+        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove"
+                                                                         aria-hidden="true"></span> Ləğv et</a>
     </div>
     <hr>
 </div> {{--fieldGroup for previous education--}}
@@ -120,12 +121,12 @@
         </div>
     </div>
     <div class="input-group-addon">
-        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
+        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove"
+                                                                         aria-hidden="true"></span> Ləğv et</a>
     </div>
 
 </div>
 {{-- end fieldGroup for previous internships --}}
-
 
 
 {{-- fieldGroup for previous internships --}}
@@ -133,11 +134,11 @@
     <hr>
     <div class="row form-group">
         <label for="previous_scholarship_type" class="col-4 col-form-label">Təqaüd növü</label>
-        <div class="col-8">
-            {{ Form::select('previous_scholarship_type[]', $programTypes,
-             null,
-              ['class' => 'form-control']) }}
-        </div>
+        {{--        <div class="col-8">--}}
+        {{--            {{ Form::select('previous_scholarship_type[]', $programTypes,--}}
+        {{--             null,--}}
+        {{--              ['class' => 'form-control']) }}--}}
+        {{--        </div>--}}
     </div>
     <div class="row form-group">
         <label for="previous_scholarship_date" class="col-4 col-form-label">Təqaüd tarixi</label>
@@ -147,7 +148,8 @@
     </div>
     <hr>
     <div class="input-group-addon">
-        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
+        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove"
+                                                                         aria-hidden="true"></span> Ləğv et</a>
     </div>
 </div>
 {{-- end fieldGroup for previous internships --}}
@@ -161,10 +163,13 @@
         <div class="col-8">
 
             <select class="form-control" id="companies">
-                <option>Default select</option>
-                <option>other</option>
+                @foreach($companies as $company)
+                    <option value="{{$company -> Id}}">{{$company -> Name}}</option>
+                @endforeach
+                <option>Digər</option>
             </select>
-            <input type="text" class="form-control" name="otherCompany" style="display: none" placeholder="Digər müəssisənin adını bura yazın" />
+            <input type="text" class="form-control" name="otherCompany" style="display: none"
+                   placeholder="Digər müəssisənin adını bura yazın"/>
 
             <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
 
@@ -233,7 +238,8 @@
     </div>
 
     <div class="input-group-addon">
-        <a href="javascript:void(0)" class="btn btn-danger removeWork"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
+        <a href="javascript:void(0)" class="btn btn-danger removeWork"><span
+                    class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
     </div>
 
 </div>

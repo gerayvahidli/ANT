@@ -1,9 +1,9 @@
 <?php
 
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+Route::get('/', function () {
+    return view('layouts.app');
+});
 
 use App\ProgramType;
 
@@ -71,7 +71,6 @@ Route::post( '/rel_city', 'UserController@relCity' );//Ajax
 Route::group( [ 'middleware' => 'auth' ], function () {
 	Route::get( '/profile', 'UserController@index' )->name( 'profile.index' );
 	Route::get( '/profile/{user}/edit', 'UserController@edit' )->name( 'profile.edit' );
-	Route::get( '/register', 'UserController@registration' )->name( 'register' );
 	Route::match( [ 'post', 'put' ], '/profile/store', 'UserController@store' )->name( 'profile.store' );
 	Route::match( [ 'patch', 'put' ], '/profile/{user}/update', 'UserController@update' )->name( 'profile.update' );
 	Route::get( '/profile/{user}/password', 'UserController@editPassword' )->name( 'profile.password.edit' );
@@ -83,7 +82,7 @@ Route::group( [ 'middleware' => 'auth' ], function () {
 	//Route::get('/apply/{slug}/scholarship', 'UserController@applyScholarship');
 	Route::get( '/apply/internal/scholarship/{program_id}', 'UserController@applyInternalScholarship' )->middleware( \App\Http\Middleware\CheckInternalProgramApplicant::class );
 
-	Route::get( '/apply/external/scholarship/{program_id}', 'UserController@applyExternalScholarship' )->middleware( \App\Http\Middleware\CheckExternalProgramApplicant::class );
+	Route::get( '/apply/external/scholarship/{program_id}', 'UserController@program_type' )->middleware( \App\Http\Middleware\CheckExternalProgramApplicant::class );
 	Route::get( '/apply/paid/scholarship/{program_id}', 'UserController@applyPaidScholarship' )->middleware( \App\Http\Middleware\CheckInternshipProgramApplicant::class );
 
 
@@ -190,9 +189,9 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 //Route::post( 'registernew', 'UserController@create' )->name( 'register' );
 
 
-Route::get( '/', function () {
-	return redirect( url( '/DTP' ) );
-} )->name('DTP');
+//Route::get( '/', function () {
+//	return redirect( url( '/DTP' ) );
+//} )->name('DTP');
 
 
 /*Route::get('/password/reset', function () {

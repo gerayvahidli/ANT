@@ -68,7 +68,7 @@
                 <div class="form-group row required">
                     <label for="image" class="col-4 col-form-label">Şəkil</label>
                     <div class="col-8">
-                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : 'required','data-error'=>'Şəkil sahəsini boş buraxmayın']) }}
+                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : '','data-error'=>'Şəkil sahəsini boş buraxmayın']) }}
                         @if ($errors->has('image'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('image') }}</strong>
@@ -82,7 +82,7 @@
                     <label for="FirstName" class="col-4 col-form-label">Ad</label>
                     <div class="col-8">
                         {{ Form::text('FirstName', ($user->exists) ? $user->FirstName : old('FirstName'),
-                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control', 'placeholder' => 'Ad', 'id' => 'FirstName', 'required','data-error'=>'Adınız sahəsini boş buraxmayın']) }}
+                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control', 'placeholder' => 'Ad', 'id' => 'FirstName', '','data-error'=>'Adınız sahəsini boş buraxmayın']) }}
                         @if ($errors->has('FirstName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('FirstName') }}</strong>
@@ -99,7 +99,7 @@
                                value="{{ ($user->exists) ? $user->LastName : old('LastName') }}" placeholder="Soyad"
                                type="text"
                                class="{{ ($errors->has('LastName')) ? 'form-control is-invalid' :'form-control here' }}"
-                               required="required" data-error='Soyadınız sahəsini boş buraxmayın'>
+                               data-error='Soyadınız sahəsini boş buraxmayın'>
                         @if ($errors->has('LastName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('LastName') }}</strong>
@@ -116,7 +116,7 @@
                                value="{{ ($user->exists) ? $user->FatherName : old('FatherName') }}"
                                placeholder="Ata adı" type="text"
                                class="{{ ($errors->has('FatherName')) ? 'form-control is-invalid' :'form-control' }}"
-                               required="required" data-error='Ata adı sahəsini boş buraxmayın'>
+                               data-error='Ata adı sahəsini boş buraxmayın'>
                         @if ($errors->has('FatherName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('FatherName') }}</strong>
@@ -129,6 +129,7 @@
                 <div class="form-group row required">
                     <label for="FatherName" class="col-4 col-form-label">Cins</label>
                     <div class="col-8">
+
                         {{--                            <select  class="form-control here" name="gender" id="">--}}
                         {{--                                @foreach($genders as $id => $gender)--}}
                         {{--                                    <option value="{{$id }}">{{$gender}}</option>--}}
@@ -137,7 +138,7 @@
 
 
                         {!!  Form::select('gender', $genders, ($user->exists) ? $user->gender_id : old('gender'),
-                        ['class' => ($errors->has('gender')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Cins seç ----', 'required','data-required-error'=>'Cins sahəsini boş buraxmayın']
+                        ['class' => ($errors->has('gender')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Cins seç ----', '','data-required-error'=>'Cins sahəsini boş buraxmayın']
                         ) !!}
 
                         @if ($errors->has('gender'))
@@ -153,7 +154,7 @@
                     <label for="nationality" class="col-4 col-form-label">Vətəndaşlığı</label>
                     <div class="col-8">
                         {{ Form::select('nationality', $countries, ($user->exists) ? $user->country_id : old('nationality'),
-                            ['class' => ($errors->has('nationality')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Vətəndaşlığı seç ----', 'required','data-required-error'=>'Vətəndaşlığı sahəsini boş buraxmayın']
+                            ['class' => ($errors->has('nationality')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Vətəndaşlığı seç ----', '','data-required-error'=>'Vətəndaşlığı sahəsini boş buraxmayın']
                         ) }}
                         @if ($errors->has('nationality'))
                             <div class="invalid-feedback">
@@ -167,7 +168,7 @@
                 <div class="form-group row required">
                     <label for="dateOfBirth" class="col-4 col-form-label">Təvəllüd</label>
                     <div class="col-8">
-                        {{ Form::date('dateOfBirth', ($user->exists) ? $user->Dob->format('Y-m-d') : old('dateOfBirth'), ['class' => ($errors->has('dateOfBirth')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+                        {{ Form::date('dateOfBirth', ($user->exists) ? $user->Dob->format('Y-m-d') : old('dateOfBirth'), ['class' => ($errors->has('dateOfBirth')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
                         @if ($errors->has('dateOfBirth'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('dateOfBirth') }}</strong>
@@ -180,7 +181,7 @@
                     <label for="City" class="col-4 col-form-label">Doğum yeri</label>
                     <div class="col-8">
                         {{ Form::select('City_id', $cities, ($user->exists) ? $user->city_id : old('City_id'),
-                            ['class' => ($errors->has('City_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Anadan olduğu yeri seç ----', 'required','data-required-error'=>'Anadan olduğu yer sahəsini boş buraxmayın', 'id' => 'City_id']
+                            ['class' => ($errors->has('City_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Anadan olduğu yeri seç ----', '','data-required-error'=>'Anadan olduğu yer sahəsini boş buraxmayın', 'id' => 'City_id']
                         ) }}
                         <input type="text" class="form-control" name="otherCity" id="otherCity" style="display: none"
                                placeholder="Digər rayonun adını bura yazın"/>
@@ -202,7 +203,7 @@
                             <input type="password"
                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                    name="password"
-                                   required data-required-error='Şifrə sahəsini boş buraxmayın' minlength="6"
+                                    data-required-error='Şifrə sahəsini boş buraxmayın' minlength="6"
                                    data-error='Şifrə minimum 6 simvoldan ibarət olmalıdır' id="inputPassword">
 
                             @if ($errors->has('password'))
@@ -222,7 +223,7 @@
                                    class="form-control" name="password_confirmation"
                                    data-required-error='Şifrə təkrarla boş buraxmayın'
                                    data-error="Şifrə və şifrə təkrarı sahələri eyni olmalıdır"
-                                   required>
+                                   >
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
@@ -241,7 +242,7 @@
                                value="{{ ($user->exists) ? $user->Address : old('Address') }}" placeholder="Ünvan"
                                type="text"
                                class="{{ ($errors->has('Address')) ? 'form-control is-invalid' :'form-control' }}"
-                               required="required" data-required-error='Ünvan sahəsini boş buraxmayın'>
+                                data-required-error='Ünvan sahəsini boş buraxmayın'>
                         <div class="help-block with-errors"></div>
                         <small id="addressHelpBlock" class="form-text text-muted">
                             şəxsiyyəti təsdiq edən sənədə əsasən qeydiyyatda olduğu ünvan
@@ -296,7 +297,7 @@
                                            class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
                                            name='mobilePhone[{{ $loop->index }}][number]'
                                            value="{{ ($user->exists && isset($phone->PhoneNumber)) ? $phone->PhoneNumber : old('phoneNumber') }}"
-                                           required
+
                                            maxlength="7"
                                            data-required-error='Telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
                                            data-pattern-error="Yalnız rəqəm daxil edin">
@@ -332,7 +333,6 @@
                                        class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
                                        name="mobilePhone[0][number]"
                                        value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"
-                                       required
                                        maxlength="7"
                                        data-required-error='Telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
                                        data-pattern-error="Yalnız rəqəm daxil edin">
@@ -369,7 +369,6 @@
                                        class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
                                        name="mobilePhone[0][number]"
                                        value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"
-                                       required
                                        maxlength="7"
                                        data-required-error='Telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
                                        data-pattern-error="Yalnız rəqəm daxil edin">
@@ -398,7 +397,7 @@
                         <div class="col-8">
                             <input id="email" type="email"
                                    class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
-                                   value="{{ ($user->exists) ? $user->email : old('email') }}" required
+                                   value="{{ ($user->exists) ? $user->email : old('email') }}"
                                    data-error='E-Mail ünvanı düzgün qeyd edin'
                                    data-required-error='E-Mail Address sahəsini boş buraxmayın'
                                     {{ ($user->exists) ? 'disabled': '' }}
@@ -419,16 +418,16 @@
 
                             <div class="col-8">
                                 <input id="email" type="email"
-                                       class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
-                                       value="{{ ($user->exists) ? $user->email : old('email') }}" required
+                                       class="form-control{{ $errors->has('email2') ? ' is-invalid' : '' }}" name="email2"
+                                       value="{{ ($user->exists) ? $user->email2 : old('email2') }}"
                                        data-error='E-Mail ünvanı düzgün qeyd edin'
                                        data-required-error='E-Mail Address sahəsini boş buraxmayın'
                                         {{ ($user->exists) ? 'disabled': '' }}
                                 >
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('email2'))
                                     <div class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('email2') }}</strong>
                                     </div>
                                 @endif
                                 <div class="help-block with-errors" id="emailErrorText"></div>
@@ -467,7 +466,6 @@
                                    value="{{ ($user->exists) ? $user->IdentityCardCode : old('idCardPin') }}"
                                    placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
                                    class="{{ ($errors->has('idCardPin')) ? 'form-control is-invalid' :'form-control' }}"
-                                   required="required"
                                    data-required-error='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
                                    maxlength="7" minlength="7"
                                    data-error='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
@@ -492,7 +490,7 @@
                                value="{{ ($user->exists) ? $user->IdentityCardNumber : old('idCardNumber') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin nömrəsi" type="text"
                                class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid' :'form-control' }}"
-                               required="required" maxlength="15"
+                                maxlength="15"
                                data-required-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
                                pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
                                data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
@@ -573,7 +571,7 @@
     </section>
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="{{asset('js/validator.js')}}"></script>
+{{--    <script src="{{asset('js/validator.js')}}"></script>--}}
 @endsection
 
 @section('footerScripts')
@@ -583,110 +581,110 @@
             var token = $("input[name='_token']").val();
             // console.log(token);
             // profile submit - axios
-            $('#profile-form').submit(function (stay) {
-                stay.preventDefault();
-                $('.alert-danger').hide();
-                $('#form-error-list').html('');
-                // form data
-                var form = $(this),
-                    formData = new FormData(),
-                    formParams = form.serializeArray();
+{{--            $('#profile-form').submit(function (stay) {--}}
+{{--                stay.preventDefault();--}}
+{{--                $('.alert-danger').hide();--}}
+{{--                $('#form-error-list').html('');--}}
+{{--                // form data--}}
+{{--                var form = $(this),--}}
+{{--                    formData = new FormData(),--}}
+{{--                    formParams = form.serializeArray();--}}
 
-                // find file type inputs and add to form data
-                $.each(form.find('input[type="file"]'), function (i, tag) {
-                    $.each($(tag)[0].files, function (i, file) {
-                        formData.append(tag.name, file);
-                    });
-                });
+{{--                // find file type inputs and add to form data--}}
+{{--                $.each(form.find('input[type="file"]'), function (i, tag) {--}}
+{{--                    $.each($(tag)[0].files, function (i, file) {--}}
+{{--                        formData.append(tag.name, file);--}}
+{{--                    });--}}
+{{--                });--}}
 
-                // add other fields to form data
-                $.each(formParams, function (i, val) {
-                    // console.log('i:' + i);
-                    // console.log('val:');
-                    // console.log(val);
-                    formData.append(val.name, val.value);
-                    $("input[name='" + val.name + "']").removeClass('is-invalid');
-                    $("input[name='" + val.name + "']").closest('.form-group ').find('.invalid-feedback').remove();
-                });
+{{--                // add other fields to form data--}}
+{{--                $.each(formParams, function (i, val) {--}}
+{{--                    // console.log('i:' + i);--}}
+{{--                    // console.log('val:');--}}
+{{--                    // console.log(val);--}}
+{{--                    formData.append(val.name, val.value);--}}
+{{--                    $("input[name='" + val.name + "']").removeClass('is-invalid');--}}
+{{--                    $("input[name='" + val.name + "']").closest('.form-group ').find('.invalid-feedback').remove();--}}
+{{--                });--}}
 
-                // Add a request interceptor
-                // axios.interceptors.request.use(function (config) {
-                //     // Do something before request is sent
-                //     console.log('before sent');
-                //     $('#loaderModal').modal('show');
-                //     return config;
-                // }, function (error) {
-                //     // Do something with request error
-                //     return Promise.reject(error);
-                // });
+{{--                // Add a request interceptor--}}
+{{--                // axios.interceptors.request.use(function (config) {--}}
+{{--                //     // Do something before request is sent--}}
+{{--                //     console.log('before sent');--}}
+{{--                //     $('#loaderModal').modal('show');--}}
+{{--                //     return config;--}}
+{{--                // }, function (error) {--}}
+{{--                //     // Do something with request error--}}
+{{--                //     return Promise.reject(error);--}}
+{{--                // });--}}
 
-// Add a response interceptor
-                axios.interceptors.response.use(function (response) {
-                    // Do something with response data
-                    console.log('after sent');
-                    $('#loaderModal').modal('hide');
-                    return response;
-                }, function (error) {
-                    // Do something with response error
-                    $('#loaderModal').modal('hide');
-                    console.log('after sent - error');
-                    return Promise.reject(error);
-                });
+{{--// Add a response interceptor--}}
+{{--                axios.interceptors.response.use(function (response) {--}}
+{{--                    // Do something with response data--}}
+{{--                    console.log('after sent');--}}
+{{--                    $('#loaderModal').modal('hide');--}}
+{{--                    return response;--}}
+{{--                }, function (error) {--}}
+{{--                    // Do something with response error--}}
+{{--                    $('#loaderModal').modal('hide');--}}
+{{--                    console.log('after sent - error');--}}
+{{--                    return Promise.reject(error);--}}
+{{--                });--}}
 
-                axios.post($(this).attr('action'), formData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    })
-                    .then((response) => {
-                        // console.log('correct');
-                        console.log(response);
-                        window.location.href = '{{ route('profile.index') }}';
-                    }).catch((error) => {
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                        $('#loaderModal').modal('hide');
-                        $('.alert-danger').show();
-                        $.each(error.response.data.errors, function (key, value) {
-                            console.log('key:' + key);
-                            console.log('value:' + value);
-                            // add invalid classes to input fields with error
-                            $("input[name='" + key + "']").addClass('is-invalid');
-                            current_input = $("input[name='" + key + "']");
-                            console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);
-                            if (current_input.closest('.form-group').find('.radio-errors ').length) {
-                                current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');
-                            } else {
-                                $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();
-                                $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +
-                                    '<strong>' + value + '</strong>\n' +
-                                    '</div>');
-                            }
+{{--                axios.post($(this).attr('action'), formData,--}}
+{{--                    {--}}
+{{--                        headers: {--}}
+{{--                            'Content-Type': 'multipart/form-data'--}}
+{{--                        }--}}
+{{--                    })--}}
+{{--                    .then((response) => {--}}
+{{--                        // console.log('correct');--}}
+{{--                        console.log(response);--}}
+{{--                        window.location.href = '{{ route('profile.index') }}';--}}
+{{--                    }).catch((error) => {--}}
+{{--                    if (error.response) {--}}
+{{--                        // The request was made and the server responded with a status code--}}
+{{--                        // that falls out of the range of 2xx--}}
+{{--                        console.log(error.response.data);--}}
+{{--                        console.log(error.response.status);--}}
+{{--                        console.log(error.response.headers);--}}
+{{--                        $('#loaderModal').modal('hide');--}}
+{{--                        $('.alert-danger').show();--}}
+{{--                        $.each(error.response.data.errors, function (key, value) {--}}
+{{--                            console.log('key:' + key);--}}
+{{--                            console.log('value:' + value);--}}
+{{--                            // add invalid classes to input fields with error--}}
+{{--                            $("input[name='" + key + "']").addClass('is-invalid');--}}
+{{--                            current_input = $("input[name='" + key + "']");--}}
+{{--                            console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);--}}
+{{--                            if (current_input.closest('.form-group').find('.radio-errors ').length) {--}}
+{{--                                current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');--}}
+{{--                            } else {--}}
+{{--                                $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();--}}
+{{--                                $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +--}}
+{{--                                    '<strong>' + value + '</strong>\n' +--}}
+{{--                                    '</div>');--}}
+{{--                            }--}}
 
-                            // add errors to error box
-                            $('#form-error-list').append('<li>' + value + '</li>');
-                        });
-                        // scroll to error list
-                        $([document.documentElement, document.body]).animate({
-                            scrollTop: $('.alert-danger').offset().top
-                        }, 2000);
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log(error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
-                    }
-                });
-                stay.preventDefault();
-            });
+{{--                            // add errors to error box--}}
+{{--                            $('#form-error-list').append('<li>' + value + '</li>');--}}
+{{--                        });--}}
+{{--                        // scroll to error list--}}
+{{--                        $([document.documentElement, document.body]).animate({--}}
+{{--                            scrollTop: $('.alert-danger').offset().top--}}
+{{--                        }, 2000);--}}
+{{--                    } else if (error.request) {--}}
+{{--                        // The request was made but no response was received--}}
+{{--                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of--}}
+{{--                        // http.ClientRequest in node.js--}}
+{{--                        console.log(error.request);--}}
+{{--                    } else {--}}
+{{--                        // Something happened in setting up the request that triggered an Error--}}
+{{--                        console.log('Error', error.message);--}}
+{{--                    }--}}
+{{--                });--}}
+{{--                stay.preventDefault();--}}
+{{--            });--}}
             // end of profile submit - axios
 
             //delete previous education
@@ -1023,7 +1021,7 @@
             $('body').on('change', '#companies', function () {
                 ocNumber++;
                 var changed = this,
-                    check = changed.value.toLowerCase() === "other";
+                    check = changed.value === "Digər";
 
                 $(changed).next().toggle(check).attr({
                     id: 'otherCompany' + ocNumber,
@@ -1073,7 +1071,7 @@
                         success: function (data) {
                             $('#admission_score').attr('required', true);
                             $('#admission_score').attr("disabled", false);
-                            if (countryId != 5) {
+                            if (countryId != 1) {
                                 console.log($('input[id="admission_score"]'));
                                 // $('#admission_score').removeProp('required');
                                 $('#admission_score').attr('required', false);

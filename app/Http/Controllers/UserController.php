@@ -568,7 +568,7 @@ class UserController extends Controller
 	public function getUniversitiesByCountry ( Request $request )
 	{
 		if ( $request->ajax() ) {
-			$universities = University::where( 'country_id', $request->country_id )->get()->pluck( 'Name', 'id' );
+			$universities = University::where( 'CountryId', $request->country_id )->pluck( 'Name', 'id' );
 
 			return json_encode( $universities );
 		}

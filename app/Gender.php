@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Gender extends Model
 {
 
-    protected $table = 'gender';
+    protected $table = 'Genders';
 
     public function users()
     {
