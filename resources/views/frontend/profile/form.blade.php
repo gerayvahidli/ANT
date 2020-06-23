@@ -166,12 +166,12 @@
                 </div>
 
                 <div class="form-group row required">
-                    <label for="dateOfBirth" class="col-4 col-form-label">Təvəllüd</label>
+                    <label for="Dob" class="col-4 col-form-label">Təvəllüd</label>
                     <div class="col-8">
-                        {{ Form::date('dateOfBirth', ($user->exists) ? $user->Dob->format('Y-m-d') : old('dateOfBirth'), ['class' => ($errors->has('dateOfBirth')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
-                        @if ($errors->has('dateOfBirth'))
+                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+                        @if ($errors->has('Dob'))
                             <div class="invalid-feedback">
-                                <strong>{{ $errors->first('dateOfBirth') }}</strong>
+                                <strong>{{ $errors->first('Dob') }}</strong>
                             </div>
                         @endif
                         <div class="help-block with-errors"></div>
@@ -180,15 +180,18 @@
                 <div class="form-group row required">
                     <label for="City" class="col-4 col-form-label">Doğum yeri</label>
                     <div class="col-8">
-                        {{ Form::select('City_id', $cities, ($user->exists) ? $user->city_id : old('City_id'),
-                            ['class' => ($errors->has('City_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Anadan olduğu yeri seç ----', '','data-required-error'=>'Anadan olduğu yer sahəsini boş buraxmayın', 'id' => 'City_id']
-                        ) }}
+                        <select name="BirthCityId" id="BirthCityId" class="form-control">
+                            @foreach($cities as $city)
+                                <option value="{{$city -> Id}}">{{$city -> Name}}</option>
+                            @endforeach
+                                <option value="other">Digər</option>
+                        </select>
                         <input type="text" class="form-control" name="otherCity" id="otherCity" style="display: none"
                                placeholder="Digər rayonun adını bura yazın"/>
 
-                        @if ($errors->has('City_id'))
+                        @if ($errors->has('BirthCityId'))
                             <div class="invalid-feedback">
-                                <strong>{{ $errors->first('City_id') }}</strong>
+                                <strong>{{ $errors->first('BirthCityId') }}</strong>
                             </div>
                         @endif
                         <div class="help-block with-errors"></div>
@@ -329,17 +332,17 @@
                             </div>
 
                             <div class="col-5">
-                                <input id="phoneNumber" type="text"
-                                       class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
-                                       name="mobilePhone[0][number]"
-                                       value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"
+                                <input id="homePhone" type="text"
+                                       class="form-control{{ $errors->has('homePhone') ? ' is-invalid' : '' }}"
+                                       name="homePhone"
+                                       value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('homePhone') }}"
                                        maxlength="7"
                                        data-required-error='Telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
                                        data-pattern-error="Yalnız rəqəm daxil edin">
 
-                                @if ($errors->has('phoneNumber'))
+                                @if ($errors->has('homePhone'))
                                     <div class="invalid-feedback">
-                                        <strong>{{ $errors->first('phoneNumber') }}</strong>
+                                        <strong>{{ $errors->first('homePhone') }}</strong>
                                     </div>
                                 @endif
                                 <div class="help-block with-errors"></div>
@@ -417,8 +420,8 @@
                             <label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>
 
                             <div class="col-8">
-                                <input id="email" type="email"
-                                       class="form-control{{ $errors->has('email2') ? ' is-invalid' : '' }}" name="email2"
+                                <input id="email2" type="email"
+                                       class="form-control{{ $errors->has('email2') ? ' is-invalid' : '' }}" name="email2[0]"
                                        value="{{ ($user->exists) ? $user->email2 : old('email2') }}"
                                        data-error='E-Mail ünvanı düzgün qeyd edin'
                                        data-required-error='E-Mail Address sahəsini boş buraxmayın'
@@ -581,110 +584,110 @@
             var token = $("input[name='_token']").val();
             // console.log(token);
             // profile submit - axios
-{{--            $('#profile-form').submit(function (stay) {--}}
-{{--                stay.preventDefault();--}}
-{{--                $('.alert-danger').hide();--}}
-{{--                $('#form-error-list').html('');--}}
-{{--                // form data--}}
-{{--                var form = $(this),--}}
-{{--                    formData = new FormData(),--}}
-{{--                    formParams = form.serializeArray();--}}
+            $('#profile-form').submit(function (stay) {
+                stay.preventDefault();
+                $('.alert-danger').hide();
+                $('#form-error-list').html('');
+                // form data
+                var form = $(this),
+                    formData = new FormData(),
+                    formParams = form.serializeArray();
 
-{{--                // find file type inputs and add to form data--}}
-{{--                $.each(form.find('input[type="file"]'), function (i, tag) {--}}
-{{--                    $.each($(tag)[0].files, function (i, file) {--}}
-{{--                        formData.append(tag.name, file);--}}
-{{--                    });--}}
-{{--                });--}}
+                // find file type inputs and add to form data
+                $.each(form.find('input[type="file"]'), function (i, tag) {
+                    $.each($(tag)[0].files, function (i, file) {
+                        formData.append(tag.name, file);
+                    });
+                });
 
-{{--                // add other fields to form data--}}
-{{--                $.each(formParams, function (i, val) {--}}
-{{--                    // console.log('i:' + i);--}}
-{{--                    // console.log('val:');--}}
-{{--                    // console.log(val);--}}
-{{--                    formData.append(val.name, val.value);--}}
-{{--                    $("input[name='" + val.name + "']").removeClass('is-invalid');--}}
-{{--                    $("input[name='" + val.name + "']").closest('.form-group ').find('.invalid-feedback').remove();--}}
-{{--                });--}}
+                // add other fields to form data
+                $.each(formParams, function (i, val) {
+                    // console.log('i:' + i);
+                    // console.log('val:');
+                    // console.log(val);
+                    formData.append(val.name, val.value);
+                    $("input[name='" + val.name + "']").removeClass('is-invalid');
+                    $("input[name='" + val.name + "']").closest('.form-group ').find('.invalid-feedback').remove();
+                });
 
-{{--                // Add a request interceptor--}}
-{{--                // axios.interceptors.request.use(function (config) {--}}
-{{--                //     // Do something before request is sent--}}
-{{--                //     console.log('before sent');--}}
-{{--                //     $('#loaderModal').modal('show');--}}
-{{--                //     return config;--}}
-{{--                // }, function (error) {--}}
-{{--                //     // Do something with request error--}}
-{{--                //     return Promise.reject(error);--}}
-{{--                // });--}}
+                // Add a request interceptor
+                // axios.interceptors.request.use(function (config) {
+                //     // Do something before request is sent
+                //     console.log('before sent');
+                //     $('#loaderModal').modal('show');
+                //     return config;
+                // }, function (error) {
+                //     // Do something with request error
+                //     return Promise.reject(error);
+                // });
 
-{{--// Add a response interceptor--}}
-{{--                axios.interceptors.response.use(function (response) {--}}
-{{--                    // Do something with response data--}}
-{{--                    console.log('after sent');--}}
-{{--                    $('#loaderModal').modal('hide');--}}
-{{--                    return response;--}}
-{{--                }, function (error) {--}}
-{{--                    // Do something with response error--}}
-{{--                    $('#loaderModal').modal('hide');--}}
-{{--                    console.log('after sent - error');--}}
-{{--                    return Promise.reject(error);--}}
-{{--                });--}}
+// Add a response interceptor
+                axios.interceptors.response.use(function (response) {
+                    // Do something with response data
+                    console.log('after sent');
+                    $('#loaderModal').modal('hide');
+                    return response;
+                }, function (error) {
+                    // Do something with response error
+                    $('#loaderModal').modal('hide');
+                    console.log('after sent - error');
+                    return Promise.reject(error);
+                });
 
-{{--                axios.post($(this).attr('action'), formData,--}}
-{{--                    {--}}
-{{--                        headers: {--}}
-{{--                            'Content-Type': 'multipart/form-data'--}}
-{{--                        }--}}
-{{--                    })--}}
-{{--                    .then((response) => {--}}
-{{--                        // console.log('correct');--}}
-{{--                        console.log(response);--}}
-{{--                        window.location.href = '{{ route('profile.index') }}';--}}
-{{--                    }).catch((error) => {--}}
-{{--                    if (error.response) {--}}
-{{--                        // The request was made and the server responded with a status code--}}
-{{--                        // that falls out of the range of 2xx--}}
-{{--                        console.log(error.response.data);--}}
-{{--                        console.log(error.response.status);--}}
-{{--                        console.log(error.response.headers);--}}
-{{--                        $('#loaderModal').modal('hide');--}}
-{{--                        $('.alert-danger').show();--}}
-{{--                        $.each(error.response.data.errors, function (key, value) {--}}
-{{--                            console.log('key:' + key);--}}
-{{--                            console.log('value:' + value);--}}
-{{--                            // add invalid classes to input fields with error--}}
-{{--                            $("input[name='" + key + "']").addClass('is-invalid');--}}
-{{--                            current_input = $("input[name='" + key + "']");--}}
-{{--                            console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);--}}
-{{--                            if (current_input.closest('.form-group').find('.radio-errors ').length) {--}}
-{{--                                current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');--}}
-{{--                            } else {--}}
-{{--                                $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();--}}
-{{--                                $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +--}}
-{{--                                    '<strong>' + value + '</strong>\n' +--}}
-{{--                                    '</div>');--}}
-{{--                            }--}}
+                axios.post($(this).attr('action'), formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then((response) => {
+                        // console.log('correct');
+                        console.log(response);
+                        window.location.href = '{{ route('profile.index') }}';
+                    }).catch((error) => {
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        $('#loaderModal').modal('hide');
+                        $('.alert-danger').show();
+                        $.each(error.response.data.errors, function (key, value) {
+                            console.log('key:' + key);
+                            console.log('value:' + value);
+                            // add invalid classes to input fields with error
+                            $("input[name='" + key + "']").addClass('is-invalid');
+                            current_input = $("input[name='" + key + "']");
+                            console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);
+                            if (current_input.closest('.form-group').find('.radio-errors ').length) {
+                                current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');
+                            } else {
+                                $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();
+                                $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +
+                                    '<strong>' + value + '</strong>\n' +
+                                    '</div>');
+                            }
 
-{{--                            // add errors to error box--}}
-{{--                            $('#form-error-list').append('<li>' + value + '</li>');--}}
-{{--                        });--}}
-{{--                        // scroll to error list--}}
-{{--                        $([document.documentElement, document.body]).animate({--}}
-{{--                            scrollTop: $('.alert-danger').offset().top--}}
-{{--                        }, 2000);--}}
-{{--                    } else if (error.request) {--}}
-{{--                        // The request was made but no response was received--}}
-{{--                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of--}}
-{{--                        // http.ClientRequest in node.js--}}
-{{--                        console.log(error.request);--}}
-{{--                    } else {--}}
-{{--                        // Something happened in setting up the request that triggered an Error--}}
-{{--                        console.log('Error', error.message);--}}
-{{--                    }--}}
-{{--                });--}}
-{{--                stay.preventDefault();--}}
-{{--            });--}}
+                            // add errors to error box
+                            $('#form-error-list').append('<li>' + value + '</li>');
+                        });
+                        // scroll to error list
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $('.alert-danger').offset().top
+                        }, 2000);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
+                stay.preventDefault();
+            });
             // end of profile submit - axios
 
             //delete previous education
@@ -938,16 +941,15 @@
                     var fieldHtml = ('<div class="form-group row " id="emails">' +
                         '<label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>\n' +
                         '    <div class="col-7">\n' +
-                        '        <input id="phoneNumber" type="text"\n' +
+                        '        <input id="email2" type="text"\n' +
                         '               class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
-                        '               name="mobilePhone[' + x + '][number]"\n' +
+                        '               name="email2[' + y + ']"\n' +
                         '               value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"\n' +
-                        '               maxlength="7"\n' +
-                        '               pattern="\\d*" data-pattern-error="Yalnız rəqəm daxil edin">\n' +
+                        '              >\n' +
                         '\n' +
-                        '        @if ($errors->has('phoneNumber'))\n' +
+                        '        @if ($errors->has('email2'))\n' +
                         '            <div class="invalid-feedback">\n' +
-                        '                <strong>{{ $errors->first('phoneNumber') }}</strong>\n' +
+                        '                <strong>{{ $errors->first('email2') }}</strong>\n' +
                         '            </div>\n' +
                         '        @endif\n' +
                         '        <div class="help-block with-errors"></div>\n' +
@@ -1030,15 +1032,15 @@
             });
 
             $('#companies').trigger("change");
-            $('body').on('change', '#City_id', function () {
-                if (this.value == 65) {
+            $('body').on('change', '#BirthCityId', function () {
+                if (this.value == 'other') {
                     $('#otherCity').show();
                 } else {
                     $('#otherCity').hide();
                 }
             });
 
-            $('#City_id').trigger("change");
+            $('#BirthCityId').trigger("change");
 
 
             //remove fields group

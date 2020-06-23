@@ -19,7 +19,8 @@ use App\ProgramType;
 use App\University;
 use App\User;
 use App\City;
-use App\MobilePhone;
+use App\Phone;
+use App\Email;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -74,16 +75,16 @@ class RegisterController extends Controller
 //			'gender'                               => 'required',
 //			'mobilePhone.*.number'                 => 'digits:7',
             'email' => 'required|string|email|max:255|unique:users',
-//			'password'                             => 'required|string|min:6|confirmed',
-            'password' => [
-                'required',
-                'string',
-                'min:6',             // must be at least 10 characters in length
-                'regex:/[a-z]/',      // must contain at least one lowercase letter
-                'regex:/[A-Z]/',      // must contain at least one uppercase letter
-                'regex:/[0-9]/',      // must contain at least one digit
-                'regex:/[@$!%*#?&]/', // must contain a special character
-            ],
+			'password'                             => 'required|string|min:6|confirmed',
+//            'password' => [
+//                'required',
+//                'string',
+//                'min:6',             // must be at least 10 characters in length
+//                'regex:/[a-z]/',      // must contain at least one lowercase letter
+//                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+//                'regex:/[0-9]/',      // must contain at least one digit
+//                'regex:/[@$!%*#?&]/', // must contain a special character
+//            ],
 //
         ]);
     }
@@ -97,7 +98,7 @@ class RegisterController extends Controller
     {
         $countries = Country::pluck('Name', 'id');
         $companies = Company::all();
-        $cities = City::pluck('Name', 'id');
+        $cities = City::all();
         $educationLevels = EducationLevel::pluck('Name', 'id');
         $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
         $educationForms = EducationForm::pluck('Name', 'id');
@@ -121,29 +122,85 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $data['FirstName'] = 'test';
-        $data['LastName'] = 'test';
-        $data['FatherName'] = 'test';
-        $data['dateOfBirth'] = '1996-10-22 00:00:00.000';
-        $data[ 'nationality' ] = 1;
-        $data['BirthCityId'] = 1;
-        $data[ 'gender' ] = 1;
-        $data[ 'Address' ] = 'Baki';
-        $data[ 'PassportNo' ] =  rand(5, 15);
-        $data[ 'Pin' ] =  rand(5, 15);
+
+//        $data['FirstName'] = 'test';
+//        $data['LastName'] = 'test';
+//        $data['FatherName'] = 'test';
+//        $data['dateOfBirth'] = '1996-10-22 00:00:00.000';
+//        $data[ 'nationality' ] = 1;
+//        $data['BirthCityId'] = 1;
+//        $data[ 'gender' ] = 1;
+//        $data[ 'Address' ] = 'Baki';
+//        $data[ 'PassportNo' ] =  rand(5, 1500);
+//        $data[ 'Pin' ] =  rand(5, 1500);
+
+
 
 
         $user = new User;
-//		$user->image      = $this->createImage( $data[ 'image' ] );
+
+		$user -> ImagePath  = $this->createImage( $data[ 'image' ] );
         $user->email = $data['email'];
         $user->FirstName = $data['FirstName'];
         $user->LastName = $data['LastName'];
         $user->FatherName = $data['FatherName'];
         $user->GenderId = $data[ 'gender' ];
-        $user->password = \Hash::make($data['password']);
-        $user->Dob = $data['dateOfBirth'];
-
+        $user->CitizenCountryId = $data[ 'nationality' ];
+        $user->Dob =  $data['Dob'];
         $user->BirthCityId = $data['BirthCityId'];
+        $user->password = \Hash::make($data['password']);
+        $user->AddressMain                 = $data[ 'Address' ];
+        $user->PassportNo      = $data[ 'idCardNumber' ];
+        $user->Fin        = $data[ 'idCardPin' ];
+
+        if ($data['BirthCityId'] == 'other'){
+            $city = new City;
+            $city -> Name = $data ['otherCity'];
+            $city -> IsShow = 0 ;
+            $city -> save();
+
+            $user -> BirthCityId = $city -> id;
+        }
+        else{
+            $user -> BirthCityId = $data['BirthCityId'];
+        }
+
+        $user->save();
+
+        $homePhone = new Phone;
+        $homePhone -> PhoneNumber = $data['homePhone'];
+        $homePhone -> OperatorCodeId = 1;
+        $homePhone -> UserId = $user->id;
+        $homePhone -> PhoneTypeId = 1;
+        $homePhone -> save();
+
+
+        foreach ($data['mobilePhone'] as $mobilePhone) {
+
+            $Phone = new Phone;
+            $Phone -> PhoneNumber = $mobilePhone['number'];
+            $Phone -> OperatorCodeId = $mobilePhone['operatorCode'];
+            $Phone -> UserId = $user->id;
+            $Phone -> PhoneTypeId = 2;
+
+            $Phone -> save();
+        }
+
+        foreach ($data['email2'] as $email2) {
+
+            $Email = new Email;
+            $Email -> email = $email2;
+            $Email -> UserId = $user -> id;
+            $Email -> IsMain = 0;
+
+            $Email -> save();
+        }
+
+
+
+
+
+        return $user;
 
         //		if ( $data[ 'City_id' ] == 52 && isset( $data[ 'customCity' ] ) ) {
         //			$city         = new City;
@@ -154,12 +211,8 @@ class RegisterController extends Controller
         //		} else {
         //			$user->city_id = $data[ 'City_id' ];
         //		}
-        		$user->CitizenCountryId = $data[ 'nationality' ];
-        		$user->AddressMain                 = $data[ 'Address' ];
-        		$user->PassportNo      = $data[ 'PassportNo' ];
-        		$user->Fin        = $data[ 'Pin' ];
-        $user->save();
-        return $user;
+
+
         //		$user->MaidenSurname           = $data[ 'MaidenSurname' ];
         //		$user->IsCurrentlyWorking      = $data[ 'is_currently_working' ];
         //		$user->IsCurrentlyWorkAtSocar  =

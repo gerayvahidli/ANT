@@ -4,14 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MobilePhone extends Model
+class Phone extends Model
 {
-    protected $table = 'mobile_phone';
+    protected $table = 'Phones';
     public    $timestamps = false;
     protected $fillable   = [
-        'user_id',
-        'mobile_operator_code_id',
+        'userId',
+        'OperatorCodeId',
         'PhoneNumber',
+        'PhoneTypeId'
     ];
 
 
