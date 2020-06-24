@@ -153,9 +153,14 @@
                 <div class="form-group row required">
                     <label for="nationality" class="col-4 col-form-label">Vətəndaşlığı</label>
                     <div class="col-8">
-                        {{ Form::select('nationality', $countries, ($user->exists) ? $user->country_id : old('nationality'),
-                            ['class' => ($errors->has('nationality')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Vətəndaşlığı seç ----', '','data-required-error'=>'Vətəndaşlığı sahəsini boş buraxmayın']
-                        ) }}
+{{--                        {{ Form::select('nationality', $countries, ($user->exists) ? $user->country_id : old('nationality'),--}}
+{{--                            ['class' => ($errors->has('nationality')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Vətəndaşlığı seç ----', '','data-required-error'=>'Vətəndaşlığı sahəsini boş buraxmayın']--}}
+{{--                        ) }}--}}
+                        <select name="nationality" id="nationality" class="form-control">
+                            @foreach($countries as $country)
+                                <option value="{{$country -> Id}}">{{$country -> Name}}</option>
+                            @endforeach
+                        </select>
                         @if ($errors->has('nationality'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('nationality') }}</strong>
@@ -775,7 +780,7 @@
             minViewMode: "years"
         });
 
-        $('#previous_education_BeginDate').datepicker({
+        $('#previous_education_StartDate').datepicker({
             format: "yyyy",
             viewMode: "years",
             minViewMode: "years"
@@ -985,6 +990,7 @@
             // previousEducationCount = 1;
             //add more fields group
             $("#addMore").click(function () {
+
                 if ($('body').find('.fieldGroup').length < maxGroup) {
                     $('#addMore').attr('disabled', false);
                     previousEducationCount = $('body').find('.fieldGroup').length;
@@ -994,6 +1000,8 @@
                     var countryId = $('select[id="previous_education_country_id"]');
                     // var universityId = $('select[id="previous_education_university_id"]');
                     countryId.change(changeUniversity(previousEducationCount));
+                    countryId.trigger("change");
+
                 } else {
                     $('#addMore').attr('disabled', true);
                     alert('Maximum ' + maxGroup + ' education field group are allowed.');
@@ -1031,7 +1039,6 @@
                 });
             });
 
-            $('#companies').trigger("change");
             $('body').on('change', '#BirthCityId', function () {
                 if (this.value == 'other') {
                     $('#otherCity').show();
@@ -1040,7 +1047,6 @@
                 }
             });
 
-            $('#BirthCityId').trigger("change");
 
 
             //remove fields group
@@ -1081,7 +1087,7 @@
                                 $('#admission_score').val(0);
                             }
                             $('select[id="university_id"]').empty();
-                            $('select[id="university_id"]').append('<option>---- Universitet seç ----</option>');
+                            // $('select[id="university_id"]').append('<option>---- Universitet seç ----</option>');
 
                             $.each(data, function (key, value) {
 
@@ -1120,14 +1126,14 @@
                             success: function (data) {
                                 $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr('required', true);
                                 $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr("disabled", false);
-                                if (countryId != 5) {
+                                if (countryId != 1) {
                                     // console.log('country id: ' + countryId);
                                     $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr('required', false);
                                     $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr("disabled", "disabled");
                                 }
                                 $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').empty();
                                 // console.log('count:' + count);
-                                $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').append('<option>---- Universitet seç ----</option>');
+                                // $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').append('<option>---- Universitet seç ----</option>');
                                 $.each(data, function (key, value) {
                                     // console.log('count each : ' + count);
 
@@ -1281,7 +1287,13 @@
 
             $('#special-div').hide();
 
+            $('#companies').trigger("change");
+            $('#BirthCityId').trigger("change");
+            $('#country_id').trigger("change");
+
+
         });
+
 
     </script>
 

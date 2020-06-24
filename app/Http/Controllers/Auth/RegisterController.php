@@ -9,7 +9,8 @@ use App\EducationLevel;
 use App\EducationPaymentForm;
 use App\EducationSection;
 use App\ExamLanguage;
-use App\FinalEducation;
+use App\Education;
+use App\JobInfo;
 use App\Gender;
 use App\MobileOperatorCode;
 use App\PreviousEducation;
@@ -74,8 +75,8 @@ class RegisterController extends Controller
 //			'FatherName'                           => 'required|alpha|max:255',
 //			'gender'                               => 'required',
 //			'mobilePhone.*.number'                 => 'digits:7',
-            'email' => 'required|string|email|max:255|unique:users',
-			'password'                             => 'required|string|min:6|confirmed',
+//            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
 //            'password' => [
 //                'required',
 //                'string',
@@ -96,13 +97,13 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(User $user)
     {
-        $countries = Country::pluck('Name', 'id');
+        $countries = Country::all();
         $companies = Company::all();
         $cities = City::all();
-        $educationLevels = EducationLevel::pluck('Name', 'id');
+        $educationLevels = EducationLevel::all();
         $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
         $educationForms = EducationForm::pluck('Name', 'id');
-        $educationSections = EducationSection::pluck('Name', 'id');
+        $educationSections = EducationSection::all();
         $educationPaymentForms = EducationPaymentForm::pluck('Name', 'id');
         $mobilePhoneOperatorCodes = MobileOperatorCode::pluck('Name', 'id');
         $genders = Gender::pluck('Name', 'id');
@@ -123,81 +124,135 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-//        $data['FirstName'] = 'test';
-//        $data['LastName'] = 'test';
-//        $data['FatherName'] = 'test';
-//        $data['dateOfBirth'] = '1996-10-22 00:00:00.000';
-//        $data[ 'nationality' ] = 1;
-//        $data['BirthCityId'] = 1;
-//        $data[ 'gender' ] = 1;
-//        $data[ 'Address' ] = 'Baki';
-//        $data[ 'PassportNo' ] =  rand(5, 1500);
-//        $data[ 'Pin' ] =  rand(5, 1500);
-
-
-
+        $data['FirstName'] = 'test';
+        $data['LastName'] = 'test';
+        $data['FatherName'] = 'test';
+        $data['Dob'] = '1996-10-22';
+        $data[ 'nationality' ] = 1;
+        $data['BirthCityId'] = 1;
+        $data[ 'gender' ] = 1;
+        $data[ 'Address' ] = 'Baki';
+        $data[ 'idCardNumber' ] =  rand(5, 1500);
+        $data[ 'idCardPin' ] =  rand(5, 1500);
+        $data['mobilePhone'] = array([
+            'number'=>  '5555555',
+            'operatorCode' => 1
+        ]) ;
+        $data['homePhone'] = '4444444';
 
         $user = new User;
 
-		$user -> ImagePath  = $this->createImage( $data[ 'image' ] );
+        $user->ImagePath = $this->createImage($data['image']);
         $user->email = $data['email'];
         $user->FirstName = $data['FirstName'];
         $user->LastName = $data['LastName'];
         $user->FatherName = $data['FatherName'];
-        $user->GenderId = $data[ 'gender' ];
-        $user->CitizenCountryId = $data[ 'nationality' ];
-        $user->Dob =  $data['Dob'];
+        $user->GenderId = $data['gender'];
+        $user->CitizenCountryId = $data['nationality'];
+        $user->Dob = $data['Dob'];
         $user->BirthCityId = $data['BirthCityId'];
         $user->password = \Hash::make($data['password']);
-        $user->AddressMain                 = $data[ 'Address' ];
-        $user->PassportNo      = $data[ 'idCardNumber' ];
-        $user->Fin        = $data[ 'idCardPin' ];
+        $user->AddressMain = $data['Address'];
+        $user->PassportNo = $data['idCardNumber'];
+        $user->Fin = $data['idCardPin'];
 
-        if ($data['BirthCityId'] == 'other'){
+        if ($data['BirthCityId'] == 'other') {
             $city = new City;
-            $city -> Name = $data ['otherCity'];
-            $city -> IsShow = 0 ;
-            $city -> save();
+            $city->Name = $data ['otherCity'];
+            $city->IsShow = 0;
+            $city->save();
 
-            $user -> BirthCityId = $city -> id;
-        }
-        else{
-            $user -> BirthCityId = $data['BirthCityId'];
+            $user->BirthCityId = $city->id;
+        } else {
+            $user->BirthCityId = $data['BirthCityId'];
         }
 
         $user->save();
 
         $homePhone = new Phone;
-        $homePhone -> PhoneNumber = $data['homePhone'];
-        $homePhone -> OperatorCodeId = 1;
-        $homePhone -> UserId = $user->id;
-        $homePhone -> PhoneTypeId = 1;
-        $homePhone -> save();
+        $homePhone->PhoneNumber = $data['homePhone'];
+        $homePhone->OperatorCodeId = 1;
+        $homePhone->UserId = $user->id;
+        $homePhone->PhoneTypeId = 1;
+        $homePhone->save();
 
 
         foreach ($data['mobilePhone'] as $mobilePhone) {
 
             $Phone = new Phone;
-            $Phone -> PhoneNumber = $mobilePhone['number'];
-            $Phone -> OperatorCodeId = $mobilePhone['operatorCode'];
-            $Phone -> UserId = $user->id;
-            $Phone -> PhoneTypeId = 2;
+            $Phone->PhoneNumber = $mobilePhone['number'];
+            $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
+            $Phone->UserId = $user->id;
+            $Phone->PhoneTypeId = 2;
 
-            $Phone -> save();
+            $Phone->save();
         }
 
         foreach ($data['email2'] as $email2) {
 
             $Email = new Email;
-            $Email -> email = $email2;
-            $Email -> UserId = $user -> id;
-            $Email -> IsMain = 0;
+            $Email->email = $email2;
+            $Email->UserId = $user->id;
+            $Email->IsMain = 0;
 
-            $Email -> save();
+            $Email->save();
+        }
+
+        $finalEducation = new Education;
+        $finalEducation->UserId = $user->id;
+        $finalEducation->EducationLevelId = $data['education_level'];
+        $finalEducation->UniversityId = $data['university_id'];
+        $finalEducation->StartDate = $data['BeginDate'];
+        $finalEducation->EndDate = $data['EndDate'];
+        $finalEducation->Faculty = $data['faculty'];
+        $finalEducation->Speciality = $data['speciality'];
+        $finalEducation->AdmissionScore = (isset($data['admission_score'])) ? $data['admission_score'] : 0;
+        $finalEducation->EducationFormId = $data['education_form_id'];
+        $finalEducation->EducationSectionId = $data['education_section_id'];
+        $finalEducation->EducationPaymentFormId = $data['education_payment_form_id'];
+        $finalEducation->GPA = $data['GPA'];
+        $finalEducation->IsCurrent = 1;
+
+
+        $finalEducation->save();
+
+        if (isset($data['previous_education_country_id'])) {
+            foreach ($data['previous_education_country_id'] as $i => $previousEducationCountryId) {
+                if (isset($data['previous_education_university_id'][$i]) &&
+                    $data['previous_education_university_id'][$i] != '') {
+                    $date = '2010';
+                    $previousEducation = new Education;
+                    $previousEducation -> UserId = $user->id;
+                    $previousEducation -> EducationLevelId = $data['previous_education_level'][$i];
+                    $previousEducation -> UniversityId = $data['previous_education_university_id'][$i];
+                    $previousEducation -> StartDate = ($data['previous_education_BeginDate'][$i]) ? $data['previous_education_BeginDate'][$i] : $date;
+                    $previousEducation -> EndDate = ($data['previous_education_EndDate'][$i]) ? $data['previous_education_EndDate'][$i] : $date;
+                    $previousEducation -> Faculty = $data['previous_education_faculty'][$i];
+                    $previousEducation -> Speciality = $data['previous_education_speciality'][$i];
+                    $previousEducation -> AdmissionScore = (isset($data['previous_education_admission_score'][$i])) ? $data['previous_education_admission_score'][$i] : 0;
+                    $previousEducation -> EducationFormId = $data['previous_education_form_id'][$i];
+                    $previousEducation -> EducationSectionId = $data['previous_education_section_id'][$i];
+                    $previousEducation -> EducationPaymentFormId = $data['previous_education_payment_form_id'][$i];
+                    $previousEducation -> GPA = $data['previous_education_GPA'][$i];
+                    $previousEducation -> IsCurrent = 0;
+
+                    $previousEducation -> save();
+
+                }
+            }
         }
 
 
+        $jobInfo = new JobInfo;
+        $jobInfo->UserId = $user->id;
+        $jobInfo->CompanyId = $data['company_id'];
+        $jobInfo->Department = $data['department'];
+        $jobInfo->Position = $data['position'];
+        $jobInfo->StartDate = $data['StartDate'];
+        $jobInfo->TabelNo = $data['tabel_number'];
+        $jobInfo->IsCurrent = 1;
 
+        $jobInfo -> save();
 
 
         return $user;
@@ -242,16 +297,7 @@ class RegisterController extends Controller
         //			$MobilePhone->save();
         //		}
         //
-        //		$finalEducation                     = new FinalEducation;
-        //		$finalEducation->user_id            = $user->id;
-        //		$finalEducation->education_level_id = $data[ 'education_level' ];
-        //		$finalEducation->university_id      = $data[ 'university_id' ];
-        //		$finalEducation->BeginDate          = $data[ 'BeginDate' ];
-        //		$finalEducation->EndDate            = $data[ 'EndDate' ];
-        //		$finalEducation->CurrentEduYear     = $data[ 'current_edu_year' ];
-        //		$finalEducation->Faculty            = $data[ 'faculty' ];
-        //		$finalEducation->Speciality         = $data[ 'speciality' ];
-        //		$finalEducation->AdmissionScore     = ( isset( $data[ 'admission_score' ] ) ) ? $data[ 'admission_score' ] : 0;
+
         //		if ( $data[ 'education_section_id' ] == 4 && isset( $data[ 'education_section' ] ) ) {
         //			$educationSection         = new EducationSection;
         //			$educationSection->Name   = $data[ 'education_section' ];
@@ -261,10 +307,7 @@ class RegisterController extends Controller
         //		} else {
         //			$finalEducation->education_section_id = $data[ 'education_section_id' ];
         //		}
-        //		$finalEducation->education_form_id         = $data[ 'education_form_id' ];
-        //		$finalEducation->education_payment_form_id = $data[ 'education_payment_form_id' ];
-        //
-        //		$finalEducation->save();
+
         //
         //		if ( isset( $data[ 'previous_education_country_id' ] ) ) {
         //			foreach ( $data[ 'previous_education_country_id' ] as $i => $previousEducationCountryId ) {

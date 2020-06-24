@@ -4,31 +4,32 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FinalEducation extends Model
+class Education extends Model
 {
-    protected $table = 'final_education';
+    protected $table = 'Educations';
 
     public $timestamps = false;
     //protected $dateFormat = 'Y-m-d H:i:s+';
 
-    protected $dates = [
-        'BeginDate',
-        'EndDate',
-    ];
+//    protected $dates = [
+//        'StartDate',
+//        'EndDate',
+//    ];
 
     protected $fillable = [
-        'user_id',
-        'education_level_id',
-        'university_id',
-        'BeginDate',
+        'UserId',
+        'EducationLevelId',
+        'UniversityId',
+        'StartDate',
         'EndDate',
-        'CurrentEduYear',
+        'IsCurrent',
         'Faculty',
         'Speciality',
         'AdmissionScore',
-        'education_section_id',
-        'education_form_id',
-        'education_payment_form_id',
+        'EducationSectionId',
+        'EducationFormId',
+        'EducationPaymentFormId',
+        'GPA',
     ];
 
     public function user()

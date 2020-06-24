@@ -50,7 +50,7 @@
     <div class="workFieldGroup" id="workFieldGroup">
 
     <div class="form-group row required ">
-        <label for="work_company" class="col-4 col-form-label">Müəssisə</label>
+        <label for="company_id" class="col-4 col-form-label">Müəssisə</label>
         <div class="col-8">
             <select name="company_id" id="company_id" class="form-control">
                 @foreach($companies as $company)
@@ -59,60 +59,60 @@
             </select>
 
             <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
-            @if ($errors->has('work_company'))
+            @if ($errors->has('company_id'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('work_company') }}</strong>
+                    <strong>{{ $errors->first('company_id') }}</strong>
                 </div>
             @endif
         </div>
     </div>
-    <div class="form-group row required">
-        <label for="work_experience" class="col-4 col-form-label">Təşkilat</label>
-        <div class="col-8">
-            {{ Form::text('work_experience',
-            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
-            @if ($errors->has('work_experience'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('work_experience') }}</strong>
-                </div>
-            @endif
-        </div>
-    </div>
+{{--    <div class="form-group row required">--}}
+{{--        <label for="work_experience" class="col-4 col-form-label">Təşkilat</label>--}}
+{{--        <div class="col-8">--}}
+{{--            {{ Form::text('work_experience',--}}
+{{--            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,--}}
+{{--             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}--}}
+{{--            @if ($errors->has('work_experience'))--}}
+{{--                <div class="invalid-feedback">--}}
+{{--                    <strong>{{ $errors->first('work_experience') }}</strong>--}}
+{{--                </div>--}}
+{{--            @endif--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <div class="form-group row ">
-        <label for="work_experience" class="col-4 col-form-label">Struktur Bölmə</label>
+        <label for="department" class="col-4 col-form-label">Struktur Bölmə</label>
         <div class="col-8">
-            {{ Form::text('work_experience',
+            {{ Form::text('department',
             ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
-            @if ($errors->has('work_experience'))
+             ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control']) }}
+            @if ($errors->has('department'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('work_experience') }}</strong>
+                    <strong>{{ $errors->first('department') }}</strong>
                 </div>
             @endif
         </div>
     </div>
     <div class="form-group row required">
-        <label for="work_experience" class="col-4 col-form-label">Vəzifə</label>
+        <label for="position" class="col-4 col-form-label">Vəzifə</label>
         <div class="col-8">
-            {{ Form::text('work_experience',
+            {{ Form::text('position',
             ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}
-            @if ($errors->has('work_experience'))
+             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control']) }}
+            @if ($errors->has('position'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('work_experience') }}</strong>
+                    <strong>{{ $errors->first('position') }}</strong>
                 </div>
             @endif
         </div>
     </div>
 
     <div class="form-group row required">
-        <label for="dateOfBirth" class="col-4 col-form-label">İşə qəbul tarixi</label>
+        <label for="StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            {{ Form::date('dateOfBirth', ($user->exists) ? $user->Dob->format('Y-m-d') : old('dateOfBirth'), ['class' => ($errors->has('dateOfBirth')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
-            @if ($errors->has('dateOfBirth'))
+            {{ Form::date('StartDate', ($user->exists) ? $user->Dob->format('Y-m-d') : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+            @if ($errors->has('StartDate'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('dateOfBirth') }}</strong>
+                    <strong>{{ $errors->first('StartDate') }}</strong>
                 </div>
             @endif
             <div class="help-block with-errors"></div>
@@ -121,15 +121,15 @@
 
     <div id="socarWorkField" style="{{ $user->exists && $user->IsCurrentlyWorkAtSocar == 1 ? '' : '' }}" >
         <div class="form-group row required">
-            <label for="personal_number" class="col-4 col-form-label">Tabel nömrəniz</label>
+            <label for="tabel_number" class="col-4 col-form-label">Tabel nömrəniz</label>
             <div class="col-8">
-                {{ Form::text('personal_number',
-                    ( $user->exists && $user->IsCurrentlyWorkAtSocar == 1 && isset($user->PersonalNumber) ) ? $user->PersonalNumber : ( old('personal_number')  ? old('personal_number') : null ),
-                     ['class' => ($errors->has('personal_number')) ? 'form-control is-invalid' :'form-control']
+                {{ Form::text('tabel_number',
+                    ( $user->exists && $user->IsCurrentlyWorkAtSocar == 1 && isset($user->PersonalNumber) ) ? $user->PersonalNumber : ( old('tabel_number')  ? old('tabel_number') : null ),
+                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control']
                 ) }}
-                @if ($errors->has('personal_number'))
+                @if ($errors->has('tabel_number'))
                     <div class="invalid-feedback">
-                        <strong>{{ $errors->first('personal_number') }}</strong>
+                        <strong>{{ $errors->first('tabel_number') }}</strong>
                     </div>
                 @endif
             </div>
