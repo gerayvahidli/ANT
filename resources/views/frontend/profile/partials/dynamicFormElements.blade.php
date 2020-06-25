@@ -175,16 +175,16 @@
 <div class="card card-body previousWorkFieldGroupCopy" id="previousWorkFieldGroupCopy" style="">
     <hr>
     <div class="form-group row required">
-        <label for="previous_education_level" class="col-4 col-form-label">Müəssisə</label>
+        <label for="previous_company_id" class="col-4 col-form-label">Müəssisə</label>
         <div class="col-8">
 
-            <select class="form-control" id="companies">
+            <select class="form-control" id="previous_company_id" name="previous_company_id[]">
                 @foreach($companies as $company)
                     <option value="{{$company -> Id}}">{{$company -> Name}}</option>
                 @endforeach
-                <option>Digər</option>
+                <option value="other">Digər</option>
             </select>
-            <input type="text" class="form-control" name="otherCompany" style="display: none"
+            <input type="text" class="form-control" name="otherCompany[]" style="display: none"
                    placeholder="Digər müəssisənin adını bura yazın"/>
 
             <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
@@ -192,63 +192,52 @@
             <div class="help-block with-errors"></div>
         </div>
     </div>
-    <div class="form-group row required">
-        <label for="previous_education_level" class="col-4 col-form-label">Təşkilat</label>
-        <div class="col-8">
+{{--    <div class="form-group row required">--}}
+{{--        <label for="previous_education_level" class="col-4 col-form-label">Təşkilat</label>--}}
+{{--        <div class="col-8">--}}
 
-            <input class="form-control" type="text" name="" id="">
+{{--            <input class="form-control" type="text" name="" id="">--}}
 
 
-            <div class="help-block with-errors"></div>
-        </div>
-    </div>
+{{--            <div class="help-block with-errors"></div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <div class="form-group row ">
-        <label for="previous_education_level" class="col-4 col-form-label">Struktur Bölmə</label>
+        <label for="previous_department" class="col-4 col-form-label">Struktur Bölmə</label>
         <div class="col-8">
-
-            <input class="form-control" type="text" name="" id="">
-
-
-            <div class="help-block with-errors"></div>
-        </div>
-    </div>
-    <div class="form-group row required">
-        <label for="previous_education_level" class="col-4 col-form-label">Vəzifə</label>
-        <div class="col-8">
-
-            <input class="form-control" type="text" name="" id="">
-
-
-            <div class="help-block with-errors"></div>
-        </div>
-    </div>
-    <div class="form-group row required">
-        <label for="previous_education_level" class="col-4 col-form-label">İşə qəbul tarixi</label>
-        <div class="col-8">
-
-            <input class="form-control" type="date" name="" id="">
-
-
-            <div class="help-block with-errors"></div>
-        </div>
-    </div>
-    <div class="form-group row required">
-        <label for="previous_education_level" class="col-4 col-form-label">İşdən ayrılma tarixi</label>
-        <div class="col-8">
-
-            <input class="form-control" type="date" name="" id="">
-
-
+            <input class="form-control" type="text" name="previous_department[]" id="">
             <div class="help-block with-errors"></div>
         </div>
     </div>
 
     <div class="form-group row required">
-        <label for="previous_education_level" class="col-4 col-form-label">Tabel nömrəniz</label>
+        <label for="previous_position" class="col-4 col-form-label">Vəzifə</label>
         <div class="col-8">
+            <input class="form-control" type="text" name="previous_position[]" id="previous_position">
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
 
-            <input class="form-control" type="text" name="" id="">
+    <div class="form-group row required">
+        <label for="previous_StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
+        <div class="col-8">
+            <input class="form-control" type="date" name="previous_StartDate[]" id="previous_StartDate">
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
 
+    <div class="form-group row required">
+        <label for="previous_EndDate" class="col-4 col-form-label">İşdən ayrılma tarixi</label>
+        <div class="col-8">
+            <input class="form-control" type="date" name="previous_EndDate[]" id="previous_EndDate">
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+
+    <div class="form-group row required">
+        <label for="previous_tabel_number" class="col-4 col-form-label">Tabel nömrəniz</label>
+        <div class="col-8">
+            <input class="form-control" type="text" name="previous_tabel_number[]" id="previous_tabel_number">
             <div class="help-block with-errors"></div>
         </div>
     </div>

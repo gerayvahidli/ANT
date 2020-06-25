@@ -255,6 +255,30 @@ class RegisterController extends Controller
         $jobInfo -> save();
 
 
+        if (isset($data['previous_company_id'])) {
+            foreach ($data['previous_company_id'] as $i => $previous_company_id) {
+
+                $previousJobInfo = new JobInfo;
+                $previousJobInfo->UserId = $user->id;
+                $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
+                $previousJobInfo->Department = $data['previous_department'][$i];
+                $previousJobInfo->Position = $data['previous_position'][$i];
+                $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
+                $previousJobInfo->StartDate = $data['previous_EndDate'][$i];
+                $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
+                $previousJobInfo->IsCurrent = 0;
+
+                $previousJobInfo -> save();
+
+
+                }
+            }
+
+
+
+
+
+
         return $user;
 
         //		if ( $data[ 'City_id' ] == 52 && isset( $data[ 'customCity' ] ) ) {
