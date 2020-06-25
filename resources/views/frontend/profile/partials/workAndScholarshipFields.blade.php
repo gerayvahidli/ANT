@@ -66,20 +66,20 @@
             @endif
         </div>
     </div>
-{{--    <div class="form-group row required">--}}
-{{--        <label for="work_experience" class="col-4 col-form-label">Təşkilat</label>--}}
-{{--        <div class="col-8">--}}
-{{--            {{ Form::text('work_experience',--}}
-{{--            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,--}}
-{{--             ['class' => ($errors->has('work_experience')) ? 'form-control is-invalid' :'form-control']) }}--}}
-{{--            @if ($errors->has('work_experience'))--}}
-{{--                <div class="invalid-feedback">--}}
-{{--                    <strong>{{ $errors->first('work_experience') }}</strong>--}}
-{{--                </div>--}}
-{{--            @endif--}}
-{{--        </div>--}}
-{{--    </div>--}}
     <div class="form-group row ">
+        <label for="organization" class="col-4 col-form-label">Təşkilat</label>
+        <div class="col-8">
+            {{ Form::text('organization',
+            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
+             ['class' => ($errors->has('organization')) ? 'form-control is-invalid' :'form-control']) }}
+            @if ($errors->has('organization'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('organization') }}</strong>
+                </div>
+            @endif
+        </div>
+    </div>
+    <div class="form-group row required ">
         <label for="department" class="col-4 col-form-label">Struktur Bölmə</label>
         <div class="col-8">
             {{ Form::text('department',

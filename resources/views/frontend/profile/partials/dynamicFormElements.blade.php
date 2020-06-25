@@ -192,17 +192,14 @@
             <div class="help-block with-errors"></div>
         </div>
     </div>
-{{--    <div class="form-group row required">--}}
-{{--        <label for="previous_education_level" class="col-4 col-form-label">Təşkilat</label>--}}
-{{--        <div class="col-8">--}}
-
-{{--            <input class="form-control" type="text" name="" id="">--}}
-
-
-{{--            <div class="help-block with-errors"></div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
     <div class="form-group row ">
+        <label for="previous_organization" class="col-4 col-form-label">Təşkilat</label>
+        <div class="col-8">
+            <input class="form-control" type="text" name="previous_organization[]" id="previous_organization">
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group row required ">
         <label for="previous_department" class="col-4 col-form-label">Struktur Bölmə</label>
         <div class="col-8">
             <input class="form-control" type="text" name="previous_department[]" id="">

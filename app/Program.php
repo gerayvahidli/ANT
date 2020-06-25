@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Program extends Model
 {
-    protected $table = 'program';
+    protected $table = 'programs';
     //protected $dateFormat = 'Y-m-d H:i:s+';
 
     /**

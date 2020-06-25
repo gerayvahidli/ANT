@@ -8,7 +8,7 @@ use App\EducationForm;
 use App\EducationLevel;
 use App\EducationPaymentForm;
 use App\EducationSection;
-use App\ExamLanguage;
+use App\UserProgram;
 use App\Education;
 use App\JobInfo;
 use App\Gender;
@@ -18,6 +18,7 @@ use App\PreviousScholarship;
 use App\PreviousInternship;
 use App\ProgramType;
 use App\University;
+use App\Program;
 use App\User;
 use App\City;
 use App\Phone;
@@ -72,11 +73,32 @@ class RegisterController extends Controller
 			'image'                                => 'required|image|mimes:jpeg,bmp,png',
             'FirstName' => 'required|alpha|max:255',
 			'LastName'                             => 'required|alpha|max:255',
-//			'FatherName'                           => 'required|alpha|max:255',
-//			'gender'                               => 'required',
-//			'mobilePhone.*.number'                 => 'digits:7',
-//            'email' => 'required|string|email|max:255|unique:users',
+			'FatherName'                           => 'required|alpha|max:255',
+			'gender'                               => 'required',
+            'Dob'                                  => 'required|date',
+            'Address'                              => 'required',
+//          'mobilePhone[0][number]'               => 'digits:7',
+            'email' => 'required|string|email|max:255|unique:users',
+//            'email.*' => 'required|string|email|max:255',
+            'idCardPin'                            => 'required|max:7',
+            'idCardNumber'                         => 'required|max:7',
             'password' => 'required|string|min:6|confirmed',
+            'BeginDate'                            => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
+            'EndDate'                              => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
+            'faculty'                              => 'required',
+            'speciality'                           => 'required',
+            'admission_score'                      => 'required',
+            'GPA'                                  => 'required|between:0,99.99',
+            'department'                           => 'required',
+            'position'                             => 'required',
+            'StartDate'                            => 'required',
+            'tabel_number'                         => 'required',
+
+
+
+
+
+
 //            'password' => [
 //                'required',
 //                'string',
@@ -98,7 +120,7 @@ class RegisterController extends Controller
     public function showRegistrationForm(User $user)
     {
         $countries = Country::all();
-        $companies = Company::all();
+        $companies = Company::where('IsSocar',1)->get();
         $cities = City::all();
         $educationLevels = EducationLevel::all();
         $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
@@ -106,7 +128,7 @@ class RegisterController extends Controller
         $educationSections = EducationSection::all();
         $educationPaymentForms = EducationPaymentForm::pluck('Name', 'id');
         $mobilePhoneOperatorCodes = MobileOperatorCode::pluck('Name', 'id');
-        $genders = Gender::pluck('Name', 'id');
+        $genders = Gender::all();
 
 
         return view('frontend.profile.form',
@@ -153,6 +175,7 @@ class RegisterController extends Controller
         $user->BirthCityId = $data['BirthCityId'];
         $user->password = \Hash::make($data['password']);
         $user->AddressMain = $data['Address'];
+        $user->Address2 = $data['Address2'];
         $user->PassportNo = $data['idCardNumber'];
         $user->Fin = $data['idCardPin'];
 
@@ -247,6 +270,7 @@ class RegisterController extends Controller
         $jobInfo->UserId = $user->id;
         $jobInfo->CompanyId = $data['company_id'];
         $jobInfo->Department = $data['department'];
+        $jobInfo->Organization = $data['organization'];
         $jobInfo->Position = $data['position'];
         $jobInfo->StartDate = $data['StartDate'];
         $jobInfo->TabelNo = $data['tabel_number'];
@@ -271,6 +295,7 @@ class RegisterController extends Controller
                     $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
                 }
                 $previousJobInfo->Department = $data['previous_department'][$i];
+                $previousJobInfo->Organization = $data['previous_organization'][$i];
                 $previousJobInfo->Position = $data['previous_position'][$i];
                 $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
                 $previousJobInfo->StartDate = $data['previous_EndDate'][$i];
@@ -282,6 +307,20 @@ class RegisterController extends Controller
 
                 }
             }
+
+
+        $activeProgram = Program::where('IsActive',1) ->first();
+
+        $userProgram = new UserProgram;
+
+        $userProgram -> UserId = $user ->id;
+        $userProgram -> ProgramId = ($activeProgram) ? $activeProgram -> Id :'';
+        $userProgram -> UserProgramStatusId = 1;
+        $userProgram -> save();
+
+
+
+
 
 
 

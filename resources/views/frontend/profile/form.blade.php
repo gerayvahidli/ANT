@@ -68,7 +68,9 @@
                 <div class="form-group row required">
                     <label for="image" class="col-4 col-form-label">Şəkil</label>
                     <div class="col-8">
-                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : '','data-error'=>'Şəkil sahəsini boş buraxmayın']) }}
+                        <input required name="image" type="file"
+                               class="{{($errors->has('image')) ? 'form-control is-invalid' :'form-control'}}">
+                        {{--                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : '','data-error'=>'Şəkil sahəsini boş buraxmayın']) }}--}}
                         @if ($errors->has('image'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('image') }}</strong>
@@ -130,16 +132,16 @@
                     <label for="FatherName" class="col-4 col-form-label">Cins</label>
                     <div class="col-8">
 
-                        {{--                            <select  class="form-control here" name="gender" id="">--}}
-                        {{--                                @foreach($genders as $id => $gender)--}}
-                        {{--                                    <option value="{{$id }}">{{$gender}}</option>--}}
-                        {{--                                @endforeach--}}
-                        {{--                            </select>--}}
+                        <select class="form-control here" name="gender" id="">
+                            @foreach($genders as $gender)
+                                <option value="{{$gender -> Id }}">{{$gender -> Name}}</option>
+                            @endforeach
+                        </select>
 
 
-                        {!!  Form::select('gender', $genders, ($user->exists) ? $user->gender_id : old('gender'),
-                        ['class' => ($errors->has('gender')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Cins seç ----', '','data-required-error'=>'Cins sahəsini boş buraxmayın']
-                        ) !!}
+                        {{--                        {!!  Form::select('gender', $genders, ($user->exists) ? $user->gender_id : old('gender'),--}}
+                        {{--                        ['class' => ($errors->has('gender')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Cins seç ----', '','data-required-error'=>'Cins sahəsini boş buraxmayın']--}}
+                        {{--                        ) !!}--}}
 
                         @if ($errors->has('gender'))
                             <div class="invalid-feedback">
@@ -153,12 +155,12 @@
                 <div class="form-group row required">
                     <label for="nationality" class="col-4 col-form-label">Vətəndaşlığı</label>
                     <div class="col-8">
-{{--                        {{ Form::select('nationality', $countries, ($user->exists) ? $user->country_id : old('nationality'),--}}
-{{--                            ['class' => ($errors->has('nationality')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Vətəndaşlığı seç ----', '','data-required-error'=>'Vətəndaşlığı sahəsini boş buraxmayın']--}}
-{{--                        ) }}--}}
+                        {{--                        {{ Form::select('nationality', $countries, ($user->exists) ? $user->country_id : old('nationality'),--}}
+                        {{--                            ['class' => ($errors->has('nationality')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Vətəndaşlığı seç ----', '','data-required-error'=>'Vətəndaşlığı sahəsini boş buraxmayın']--}}
+                        {{--                        ) }}--}}
                         <select name="nationality" id="nationality" class="form-control">
                             @foreach($countries as $country)
-                                <option value="{{$country -> Id}}">{{$country -> Name}}</option>
+                                <option value="{{$country -> Id }}">{{$country -> Name}}</option>
                             @endforeach
                         </select>
                         @if ($errors->has('nationality'))
@@ -189,7 +191,7 @@
                             @foreach($cities as $city)
                                 <option value="{{$city -> Id}}">{{$city -> Name}}</option>
                             @endforeach
-                                <option value="other">Digər</option>
+                            <option value="other">Digər</option>
                         </select>
                         <input type="text" class="form-control" name="otherCity" id="otherCity" style="display: none"
                                placeholder="Digər rayonun adını bura yazın"/>
@@ -204,37 +206,37 @@
                 </div>
 
 
-                    <div class="form-group row required">
-                        <label for="password" class="col-md-4 col-form-label">Şifrə</label>
+                <div class="form-group row required">
+                    <label for="password" class="col-md-4 col-form-label">Şifrə</label>
 
-                        <div class="col-8">
-                            <input type="password"
-                                   class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                   name="password"
-                                    data-required-error='Şifrə sahəsini boş buraxmayın' minlength="6"
-                                   data-error='Şifrə minimum 6 simvoldan ibarət olmalıdır' id="inputPassword">
+                    <div class="col-8">
+                        <input type="password"
+                               class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                               name="password"
+                               data-required-error='Şifrə sahəsini boş buraxmayın' minlength="6"
+                               data-error='Şifrə minimum 6 simvoldan ibarət olmalıdır' id="inputPassword">
 
-                            @if ($errors->has('password'))
-                                <div class="invalid-feedback">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </div>
-                            @endif
-                            <div class="help-block with-errors"></div>
-                        </div>
+                        @if ($errors->has('password'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </div>
+                        @endif
+                        <div class="help-block with-errors"></div>
                     </div>
+                </div>
 
-                    <div class="form-group row required">
-                        <label for="password-confirm" class="col-md-4 col-form-label">Şifrəni təkrarla</label>
+                <div class="form-group row required">
+                    <label for="password-confirm" class="col-md-4 col-form-label">Şifrəni təkrarla</label>
 
-                        <div class="col-8">
-                            <input id="inputPasswordConfirm" type="password" data-match="#inputPassword"
-                                   class="form-control" name="password_confirmation"
-                                   data-required-error='Şifrə təkrarla boş buraxmayın'
-                                   data-error="Şifrə və şifrə təkrarı sahələri eyni olmalıdır"
-                                   >
-                            <div class="help-block with-errors"></div>
-                        </div>
+                    <div class="col-8">
+                        <input id="inputPasswordConfirm" type="password" data-match="#inputPassword"
+                               class="form-control" name="password_confirmation"
+                               data-required-error='Şifrə təkrarla boş buraxmayın'
+                               data-error="Şifrə və şifrə təkrarı sahələri eyni olmalıdır"
+                        >
+                        <div class="help-block with-errors"></div>
                     </div>
+                </div>
                 <div class="form-group row" style="display: none" id="customCity">
                     <label for="customCity" class="col-4 col-form-label">Şəhəri daxil edin</label>
                     <div class="col-8">
@@ -250,7 +252,7 @@
                                value="{{ ($user->exists) ? $user->Address : old('Address') }}" placeholder="Ünvan"
                                type="text"
                                class="{{ ($errors->has('Address')) ? 'form-control is-invalid' :'form-control' }}"
-                                data-required-error='Ünvan sahəsini boş buraxmayın'>
+                               data-required-error='Ünvan sahəsini boş buraxmayın'>
                         <div class="help-block with-errors"></div>
                         <small id="addressHelpBlock" class="form-text text-muted">
                             şəxsiyyəti təsdiq edən sənədə əsasən qeydiyyatda olduğu ünvan
@@ -266,19 +268,19 @@
                 <div class="form-group row ">
                     <label for="Address" class="col-4 col-form-label">Faktiki yaşayış ünvanı</label>
                     <div class="col-8">
-                        <input id="Address" name="Address"
-                               value="{{ ($user->exists) ? $user->Address : old('Address') }}"
+                        <input id="Address2" name="Address2"
+                               value="{{ ($user->exists) ? $user->Address : old('Address2') }}"
                                placeholder="Faktiki yaşayış ünvanı"
                                type="text"
-                               class="{{ ($errors->has('Address')) ? 'form-control is-invalid' :'form-control' }}"
+                               class="{{ ($errors->has('Address2')) ? 'form-control is-invalid' :'form-control' }}"
                         >
                         <div class="help-block with-errors"></div>
                         <small id="addressHelpBlock" class="form-text text-muted">
                             yaşadığınız ünvan şəxsiyyəti təsdiq edən sənəddəkindən fərqlidirsə doldurun
                         </small>
-                        @if ($errors->has('Address'))
+                        @if ($errors->has('Address2'))
                             <div class="invalid-feedback">
-                                <strong>{{ $errors->first('Address') }}</strong>
+                                <strong>{{ $errors->first('Address2') }}</strong>
                             </div>
                         @endif
 
@@ -399,106 +401,107 @@
                     </div>
                 </div>
 
+                <div class="form-group row required">
+                    <label for="email" class="col-md-4 col-form-label">İşçinin korparativ poçt ünvanı</label>
+
+                    <div class="col-8">
+                        <input id="email" type="email"
+                               class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
+                               value="{{ ($user->exists) ? $user->email : old('email') }}"
+                               data-error='E-Mail ünvanı düzgün qeyd edin'
+                               data-required-error='E-Mail Address sahəsini boş buraxmayın'
+                                {{ ($user->exists) ? 'disabled': '' }}
+                        >
+
+                        @if ($errors->has('email'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </div>
+                        @endif
+                        <div class="help-block with-errors" id="emailErrorText"></div>
+                    </div>
+                </div>
+                <div id="emailFieldGroup">
+
                     <div class="form-group row required">
-                        <label for="email" class="col-md-4 col-form-label">İşçinin korparativ poçt ünvanı</label>
+                        <label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>
 
                         <div class="col-8">
-                            <input id="email" type="email"
-                                   class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
-                                   value="{{ ($user->exists) ? $user->email : old('email') }}"
+                            <input id="email2" type="email"
+                                   class="form-control{{ $errors->has('email2') ? ' is-invalid' : '' }}"
+                                   name="email2[0]"
+                                   value="{{ ($user->exists) ? $user->email2 : old('email2') }}"
                                    data-error='E-Mail ünvanı düzgün qeyd edin'
                                    data-required-error='E-Mail Address sahəsini boş buraxmayın'
                                     {{ ($user->exists) ? 'disabled': '' }}
                             >
 
-                            @if ($errors->has('email'))
+                            @if ($errors->has('email2'))
                                 <div class="invalid-feedback">
-                                    <strong>{{ $errors->first('email') }}</strong>
+                                    <strong>{{ $errors->first('email2') }}</strong>
                                 </div>
                             @endif
                             <div class="help-block with-errors" id="emailErrorText"></div>
                         </div>
+
                     </div>
-                    <div id="emailFieldGroup">
 
-                        <div class="form-group row required">
-                            <label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-6">
+                        <a href="javascript:void(0);" id="addEmailField">
+                            <span class="fa fa-plus"></span> Elektron poçt əlavə et
+                        </a>
+                    </div>
+                </div>
 
-                            <div class="col-8">
-                                <input id="email2" type="email"
-                                       class="form-control{{ $errors->has('email2') ? ' is-invalid' : '' }}" name="email2[0]"
-                                       value="{{ ($user->exists) ? $user->email2 : old('email2') }}"
-                                       data-error='E-Mail ünvanı düzgün qeyd edin'
-                                       data-required-error='E-Mail Address sahəsini boş buraxmayın'
-                                        {{ ($user->exists) ? 'disabled': '' }}
-                                >
+                {{--                    @if(!$user->exists)--}}
+                {{--                        <div class="form-group row required">--}}
+                {{--                            <label for="email-confirm" class="col-md-4 col-form-label">E-mail təkrar</label>--}}
 
-                                @if ($errors->has('email2'))
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $errors->first('email2') }}</strong>
-                                    </div>
-                                @endif
-                                <div class="help-block with-errors" id="emailErrorText"></div>
+                {{--                            <div class="col-8">--}}
+                {{--                                <input id="email-confirm" type="email"--}}
+                {{--                                       class="form-control " name="email_confirmation"--}}
+                {{--                                       value="{{ ($user->exists) ? $user->email : old('email') }}" required--}}
+                {{--                                       data-required-error='E-Mail təkrar sahəsini boş buraxmayın'--}}
+                {{--                                       data-match="#email" data-error="Email və email təkrarı sahələri eyni olmalıdır">--}}
+                {{--                                <div class="help-block with-errors"></div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
+                {{--                    @endif--}}
+
+                <div class="form-group row required">
+                    <label for="idCardPin" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin FİN kodu</label>
+                    <div class="col-8">
+                        <input id="idCardPin" name="idCardPin"
+                               value="{{ ($user->exists) ? $user->IdentityCardCode : old('idCardPin') }}"
+                               placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
+                               class="{{ ($errors->has('idCardPin')) ? 'form-control is-invalid' :'form-control' }}"
+                               data-required-error='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
+                               maxlength="7" minlength="7"
+                               data-error='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
+                                {{ ($user->exists) ? 'disabled' : '' }}
+                        >
+                        <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">FİN kod nədir?
+                            <div><img src="{{ asset('img/finkod.png') }}"/></div>
+                        </a>
+                        @if ($errors->has('idCardPin'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('idCardPin') }}</strong>
                             </div>
-
-                        </div>
-
+                        @endif
+                        <div class="help-block with-errors invalid-feedback" id="idCardPinErrorText"></div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-6">
-                            <a href="javascript:void(0);" id="addEmailField">
-                                <span class="fa fa-plus"></span> Elektron poçt əlavə et
-                            </a>
-                        </div>
-                    </div>
+                </div>
 
-{{--                    @if(!$user->exists)--}}
-{{--                        <div class="form-group row required">--}}
-{{--                            <label for="email-confirm" class="col-md-4 col-form-label">E-mail təkrar</label>--}}
-
-{{--                            <div class="col-8">--}}
-{{--                                <input id="email-confirm" type="email"--}}
-{{--                                       class="form-control " name="email_confirmation"--}}
-{{--                                       value="{{ ($user->exists) ? $user->email : old('email') }}" required--}}
-{{--                                       data-required-error='E-Mail təkrar sahəsini boş buraxmayın'--}}
-{{--                                       data-match="#email" data-error="Email və email təkrarı sahələri eyni olmalıdır">--}}
-{{--                                <div class="help-block with-errors"></div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-
-                    <div class="form-group row required">
-                        <label for="idCardPin" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin FİN kodu</label>
-                        <div class="col-8">
-                            <input id="idCardPin" name="idCardPin"
-                                   value="{{ ($user->exists) ? $user->IdentityCardCode : old('idCardPin') }}"
-                                   placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
-                                   class="{{ ($errors->has('idCardPin')) ? 'form-control is-invalid' :'form-control' }}"
-                                   data-required-error='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
-                                   maxlength="7" minlength="7"
-                                   data-error='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
-                                    {{ ($user->exists) ? 'disabled' : '' }}
-                            >
-                            <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">FİN kod nədir?
-                                <div><img src="{{ asset('img/finkod.png') }}"/></div>
-                            </a>
-                            @if ($errors->has('idCardPin'))
-                                <div class="invalid-feedback">
-                                    <strong>{{ $errors->first('idCardPin') }}</strong>
-                                </div>
-                            @endif
-                            <div class="help-block with-errors invalid-feedback" id="idCardPinErrorText"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row required">
+                <div class="form-group row required">
                     <label for="idCardNumber" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin nömrəsi</label>
                     <div class="col-8">
                         <input id="idCardNumber" name="idCardNumber"
                                value="{{ ($user->exists) ? $user->IdentityCardNumber : old('idCardNumber') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin nömrəsi" type="text"
                                class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid' :'form-control' }}"
-                                maxlength="15"
+                               maxlength="15"
                                data-required-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
                                pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
                                data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
@@ -579,7 +582,7 @@
     </section>
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
-{{--    <script src="{{asset('js/validator.js')}}"></script>--}}
+        <script src="{{asset('js/validator.js')}}"></script>
 @endsection
 
 @section('footerScripts')
@@ -807,82 +810,82 @@
 
         $(document).ready(function () {
 
-            $('#idCardPin').change(function () {
-                var idCardPin = $(this).val();
-                var token = $("input[name='_token']").val();
-                if (idCardPin) {
-                    $.ajax({
-                        url: '{{ url('/checkUniquePinCode') }}',
-                        type: "post",
-                        dataType: "json",
-                        data: {idCardPin: idCardPin, _token: token},
-                        beforeSend: function () {
-                            // $('#loader').css("visibility", "visible");
-                            $('#idCardPin').removeClass('is-invalid');
-                            $('div#idCardPinErrorText').empty();
-                            $('#loaderModal').modal('show');
-                            $('.alert-danger').hide();
-                        },
-                        success: function (data) {
-                            $('#loaderModal').modal('hide');
-                            $('#idCardPin').removeClass('is-invalid');
-                            $('div#idCardPinErrorText').empty();
-                            $('#idCardPin').addClass('is-valid');
-                            // console.log(data.responseJSON);
-                        },
-                        error: function (data) {
-                            $('#loaderModal').modal('hide');
-                            $('div#idCardPinErrorText').append(data.responseJSON.msg);
-                            // console.log(data.responseJSON.msg);
-                            $('#idCardPin').addClass('is-invalid');
-                            $('.alert-danger').show();
-                            $('#form-error-list').append('<li>' + data.responseJSON.msg + '</li>');
-                            // scroll to error list
-                            $([document.documentElement, document.body]).animate({
-                                scrollTop: $('.alert-danger').offset().top
-                            }, 2000);
-                        },
-                        complete: function () {
-                            $('#loaderModal').modal('hide');
-                            // $('#loader').css("visibility", "hidden");
-                        }
-                    });
-                }
-            });
+            {{--$('#idCardPin').change(function () {--}}
+            {{--    var idCardPin = $(this).val();--}}
+            {{--    var token = $("input[name='_token']").val();--}}
+            {{--    if (idCardPin) {--}}
+            {{--        $.ajax({--}}
+            {{--            url: '{{ url('/checkUniquePinCode') }}',--}}
+            {{--            type: "post",--}}
+            {{--            dataType: "json",--}}
+            {{--            data: {idCardPin: idCardPin, _token: token},--}}
+            {{--            beforeSend: function () {--}}
+            {{--                // $('#loader').css("visibility", "visible");--}}
+            {{--                $('#idCardPin').removeClass('is-invalid');--}}
+            {{--                $('div#idCardPinErrorText').empty();--}}
+            {{--                $('#loaderModal').modal('show');--}}
+            {{--                $('.alert-danger').hide();--}}
+            {{--            },--}}
+            {{--            success: function (data) {--}}
+            {{--                $('#loaderModal').modal('hide');--}}
+            {{--                $('#idCardPin').removeClass('is-invalid');--}}
+            {{--                $('div#idCardPinErrorText').empty();--}}
+            {{--                $('#idCardPin').addClass('is-valid');--}}
+            {{--                // console.log(data.responseJSON);--}}
+            {{--            },--}}
+            {{--            error: function (data) {--}}
+            {{--                $('#loaderModal').modal('hide');--}}
+            {{--                $('div#idCardPinErrorText').append(data.responseJSON.msg);--}}
+            {{--                // console.log(data.responseJSON.msg);--}}
+            {{--                $('#idCardPin').addClass('is-invalid');--}}
+            {{--                $('.alert-danger').show();--}}
+            {{--                $('#form-error-list').append('<li>' + data.responseJSON.msg + '</li>');--}}
+            {{--                // scroll to error list--}}
+            {{--                $([document.documentElement, document.body]).animate({--}}
+            {{--                    scrollTop: $('.alert-danger').offset().top--}}
+            {{--                }, 2000);--}}
+            {{--            },--}}
+            {{--            complete: function () {--}}
+            {{--                $('#loaderModal').modal('hide');--}}
+            {{--                // $('#loader').css("visibility", "hidden");--}}
+            {{--            }--}}
+            {{--        });--}}
+            {{--    }--}}
+            {{--});--}}
 
-            $('#email').change(function () {
+            {{--$('#email').change(function () {--}}
 
-                var email = $(this).val();
-                var token = $("input[name='_token']").val();
-                if (email) {
-                    $.ajax({
-                        url: '{{ url('/checkUniqueEmail') }}',
-                        type: "post",
-                        dataType: "json",
-                        data: {email: email, _token: token},
-                        beforeSend: function () {
-                            // $('#loader').css("visibility", "visible");
-                            $('#email').removeClass('is-invalid');
-                            $('div#emailErrorText').empty();
-                        },
-                        success: function (data) {
-                            $('#email').removeClass('is-invalid');
-                            $('div#emailErrorText').empty();
-                            $('#email').addClass('is-valid');
-                            // console.log(data.responseJSON);
-                        },
-                        error: function (data) {
-                            $('div#emailErrorText').append(data.responseJSON.msg);
-                            // console.log(data.responseJSON.msg);
-                            $('#email').addClass('is-invalid');
-                        },
-                        complete: function () {
-                            // $('#loader').css("visibility", "hidden");
-                        }
-                    });
-                }
+            {{--    var email = $(this).val();--}}
+            {{--    var token = $("input[name='_token']").val();--}}
+            {{--    if (email) {--}}
+            {{--        $.ajax({--}}
+            {{--            url: '{{ url('/checkUniqueEmail') }}',--}}
+            {{--            type: "post",--}}
+            {{--            dataType: "json",--}}
+            {{--            data: {email: email, _token: token},--}}
+            {{--            beforeSend: function () {--}}
+            {{--                // $('#loader').css("visibility", "visible");--}}
+            {{--                $('#email').removeClass('is-invalid');--}}
+            {{--                $('div#emailErrorText').empty();--}}
+            {{--            },--}}
+            {{--            success: function (data) {--}}
+            {{--                $('#email').removeClass('is-invalid');--}}
+            {{--                $('div#emailErrorText').empty();--}}
+            {{--                $('#email').addClass('is-valid');--}}
+            {{--                // console.log(data.responseJSON);--}}
+            {{--            },--}}
+            {{--            error: function (data) {--}}
+            {{--                $('div#emailErrorText').append(data.responseJSON.msg);--}}
+            {{--                // console.log(data.responseJSON.msg);--}}
+            {{--                $('#email').addClass('is-invalid');--}}
+            {{--            },--}}
+            {{--            complete: function () {--}}
+            {{--                // $('#loader').css("visibility", "hidden");--}}
+            {{--            }--}}
+            {{--        });--}}
+            {{--    }--}}
 
-            });
+            {{--});--}}
 
             // add fields to form - profile
 
