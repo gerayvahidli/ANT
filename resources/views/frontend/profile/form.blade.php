@@ -678,6 +678,7 @@
                             $('#form-error-list').append('<li>' + value + '</li>');
                         });
                         // scroll to error list
+                        
                         $([document.documentElement, document.body]).animate({
                             scrollTop: $('.alert-danger').offset().top
                         }, 2000);
@@ -1028,14 +1029,13 @@
             });
 
             var ocNumber = -1;
-            $('body').on('change', '#companies', function () {
+            $('body').on('change', '#previous_company_id', function () {
                 ocNumber++;
                 var changed = this,
-                    check = changed.value === "Digər";
+                    check = changed.value === "other";
 
                 $(changed).next().toggle(check).attr({
-                    id: 'otherCompany' + ocNumber,
-                    name: 'otherCompany' + ocNumber
+                    id: 'otherCompany' + ocNumber
                 });
             });
 
@@ -1077,7 +1077,7 @@
                             $('#loader').css("visibility", "visible");
                         },
                         success: function (data) {
-                            $('#admission_score').attr('required', true);
+                            // $('#admission_score').attr('required', true);
                             $('#admission_score').attr("disabled", false);
                             if (countryId != 1) {
                                 console.log($('input[id="admission_score"]'));

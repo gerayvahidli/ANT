@@ -234,13 +234,13 @@
         </div>
     </div>
 
-    <div class="form-group row required">
-        <label for="previous_tabel_number" class="col-4 col-form-label">Tabel nömrəniz</label>
-        <div class="col-8">
-            <input class="form-control" type="text" name="previous_tabel_number[]" id="previous_tabel_number">
-            <div class="help-block with-errors"></div>
-        </div>
-    </div>
+{{--    <div class="form-group row required">--}}
+{{--        <label for="previous_tabel_number" class="col-4 col-form-label">Tabel nömrəniz</label>--}}
+{{--        <div class="col-8">--}}
+{{--            <input class="form-control" type="text" name="previous_tabel_number[]" id="previous_tabel_number">--}}
+{{--            <div class="help-block with-errors"></div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <div class="input-group-addon">
         <a href="javascript:void(0)" class="btn btn-danger removeWork"><span

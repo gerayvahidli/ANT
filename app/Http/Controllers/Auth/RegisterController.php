@@ -69,9 +69,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-//			'image'                                => 'required|image|mimes:jpeg,bmp,png',
-//            'FirstName' => 'required|alpha|max:255',
-//			'LastName'                             => 'required|alpha|max:255',
+			'image'                                => 'required|image|mimes:jpeg,bmp,png',
+            'FirstName' => 'required|alpha|max:255',
+			'LastName'                             => 'required|alpha|max:255',
 //			'FatherName'                           => 'required|alpha|max:255',
 //			'gender'                               => 'required',
 //			'mobilePhone.*.number'                 => 'digits:7',
@@ -124,21 +124,21 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        $data['FirstName'] = 'test';
-        $data['LastName'] = 'test';
-        $data['FatherName'] = 'test';
-        $data['Dob'] = '1996-10-22';
-        $data[ 'nationality' ] = 1;
-        $data['BirthCityId'] = 1;
-        $data[ 'gender' ] = 1;
-        $data[ 'Address' ] = 'Baki';
-        $data[ 'idCardNumber' ] =  rand(5, 1500);
-        $data[ 'idCardPin' ] =  rand(5, 1500);
-        $data['mobilePhone'] = array([
-            'number'=>  '5555555',
-            'operatorCode' => 1
-        ]) ;
-        $data['homePhone'] = '4444444';
+//        $data['FirstName'] = 'test';
+//        $data['LastName'] = 'test';
+//        $data['FatherName'] = 'test';
+//        $data['Dob'] = '1996-10-22';
+//        $data[ 'nationality' ] = 1;
+//        $data['BirthCityId'] = 1;
+//        $data[ 'gender' ] = 1;
+//        $data[ 'Address' ] = 'Baki';
+//        $data[ 'idCardNumber' ] =  rand(5, 1500);
+//        $data[ 'idCardPin' ] =  rand(5, 1500);
+//        $data['mobilePhone'] = array([
+//            'number'=>  '5555555',
+//            'operatorCode' => 1
+//        ]) ;
+//        $data['homePhone'] = '4444444';
 
         $user = new User;
 
@@ -260,12 +260,21 @@ class RegisterController extends Controller
 
                 $previousJobInfo = new JobInfo;
                 $previousJobInfo->UserId = $user->id;
-                $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
+                if ($data['previous_company_id'][$i] == 'other'){
+                    $company = new Company;
+                    $company -> Name = $data['otherCompany'][$i];
+                    $company -> IsSocar = 0;
+                    $company -> save();
+                $previousJobInfo -> CompanyId = $company -> id ;
+                }
+                else{
+                    $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
+                }
                 $previousJobInfo->Department = $data['previous_department'][$i];
                 $previousJobInfo->Position = $data['previous_position'][$i];
                 $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
                 $previousJobInfo->StartDate = $data['previous_EndDate'][$i];
-                $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
+//                $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
                 $previousJobInfo->IsCurrent = 0;
 
                 $previousJobInfo -> save();
