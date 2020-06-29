@@ -84,12 +84,14 @@
         <div class="col-8">
             {{ Form::text('department',
             ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control']) }}
+             ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Struktur Bölmə sahəsini boş buraxmayın'  ]) }}
             @if ($errors->has('department'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('department') }}</strong>
                 </div>
             @endif
+
+            <div class="help-block with-errors"></div>
         </div>
     </div>
     <div class="form-group row required">
@@ -97,19 +99,21 @@
         <div class="col-8">
             {{ Form::text('position',
             ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control']) }}
+             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Vəzifə sahəsini boş buraxmayın']) }}
             @if ($errors->has('position'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('position') }}</strong>
                 </div>
             @endif
+
+            <div class="help-block with-errors"></div>
         </div>
     </div>
 
     <div class="form-group row required">
         <label for="StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            {{ Form::date('StartDate', ($user->exists) ? $user->Dob->format('Y-m-d') : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+            {{ Form::date('StartDate', ($user->exists) ? $user->Dob->format('Y-m-d') : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'İşə qəbul tarixi sahəsini boş buraxmayın']) }}
             @if ($errors->has('StartDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('StartDate') }}</strong>
@@ -125,13 +129,15 @@
             <div class="col-8">
                 {{ Form::text('tabel_number',
                     ( $user->exists && $user->IsCurrentlyWorkAtSocar == 1 && isset($user->PersonalNumber) ) ? $user->PersonalNumber : ( old('tabel_number')  ? old('tabel_number') : null ),
-                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control']
+                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-required-error"=>'Tabel nömrəniz sahəsini boş buraxmayın','maxlength'=>'7',]
                 ) }}
                 @if ($errors->has('tabel_number'))
                     <div class="invalid-feedback">
                         <strong>{{ $errors->first('tabel_number') }}</strong>
                     </div>
                 @endif
+
+                <div class="help-block with-errors"></div>
             </div>
         </div>
     </div> {{--div#socarWorkField--}}

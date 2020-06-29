@@ -86,7 +86,7 @@ return [
 	'string'               => ':attribute xanası sətir formatında olmalıdır.',
 	'timezone'             => 'The :attribute must be a valid zone.',
 	'unique'               => /*':attribute xanasına daxil edilmiş məlumat unikal olmalıdır.',*/
-		'Bu email ilə artıq qeydiyyatdan keçilib.',
+		'Bu məlumat ilə artıq qeydiyyatdan keçilib.',
 	'uploaded'             => 'The :attribute failed to upload.',
 	'url'                  => 'The :attribute format is invalid.',
 
@@ -141,7 +141,7 @@ return [
 			'digits' => 'Telefon nömrəsi xanası :digits rəqəmdən ibarət olmalıdır.',
 		],
 		'email'                => [
-			'required' => 'Email xanası boş ola bilməz!',
+			'required' => 'Email sahəsini boş buraxmayın',
 			'string'   => 'Email xanası sətir formatında olmalıdır!',
 			'email'    => 'Email düzgün e-mail adress formasında olmalıdır.',
 
@@ -198,7 +198,7 @@ return [
 		],
 
 		'idCardNumber' => [
-			'required' => 'Şəxsiyyət vəsiqəsinin nömrəsi xanası boş ola bilməz!',
+			'required' => 'Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın',
 			'string'   => 'Şəxsiyyət vəsiqəsinin nömrəsi xanası sətir formatında olmalıdır!',
 			'size'     => [
 				'numeric' => 'əxsiyyət vəsiqəsinin nömrəsi :size rəqəmdən ibarət olmalıdır.',
@@ -215,7 +215,7 @@ return [
 		],
 
 		'idCardPin' => [
-			'required' => 'Şəxsiyyət vəsiqəsinin FİN kodu xanası boş ola bilməz!',
+			'required' => 'Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın',
 			'string'   => 'Şəxsiyyət vəsiqəsinin FİN kodu xanası sətir formatında olmalıdır!',
 			'size'     => [
 				'numeric' => 'The :attribute must be :size.',

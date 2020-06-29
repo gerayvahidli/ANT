@@ -63,7 +63,7 @@
     <div class="form-group row required">
         <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti</label>
         <div class="col-4 form-group">
-            {{ Form::text('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->BeginDate->format('Y-m-d') : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control', '',"data-required-error"=>'Bu sahəni boş buraxmayın','id'=> 'BeginDate','autocomplete' => 'none']) }}
+            {{ Form::text('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->BeginDate->format('Y-m-d') : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Başlanğıc tarixi sahəsini sahəsini boş buraxmayın','id'=> 'BeginDate','autocomplete' => 'none']) }}
             @if ($errors->has('BeginDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('BeginDate') }}</strong>
@@ -74,7 +74,7 @@
 
         </div>
         <div class="col-4 form-group">
-            {{ Form::text('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->EndDate->format('Y-m-d') : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control', '',"data-required-error"=>'Bu sahəni boş buraxmayın','id'=> 'EndDate','autocomplete' => 'none']) }}
+            {{ Form::text('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->EndDate->format('Y-m-d') : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Bitmə tarixi sahəsini sahəsini boş buraxmayın','id'=> 'EndDate','autocomplete' => 'none']) }}
             @if ($errors->has('EndDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('EndDate') }}</strong>
@@ -87,7 +87,7 @@
     <div class="form-group row required">
         <label for="faculty" class="col-4 col-form-label">Fakültə</label>
         <div class="col-8">
-            {{ Form::text('faculty', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->Faculty : old('faculty'), ['class' => ($errors->has('faculty')) ? 'form-control is-invalid' :'form-control', '',"data-required-error"=>'Fakultə sahəsini boş buraxmayın']) }}
+            {{ Form::text('faculty', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->Faculty : old('faculty'), ['class' => ($errors->has('faculty')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Fakultə sahəsini boş buraxmayın']) }}
             @if ($errors->has('faculty'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('faculty') }}</strong>
@@ -101,7 +101,7 @@
     <div class="form-group row required">
         <label for="speciality" class="col-4 col-form-label">İxtisas</label>
         <div class="col-8">
-            {{ Form::text('speciality', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->Speciality : old('speciality'), ['class' => ($errors->has('speciality')) ? 'form-control is-invalid' :'form-control', '',"data-required-error"=>'İxtisas sahəsini boş buraxmayın']) }}
+            {{ Form::text('speciality', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->Speciality : old('speciality'), ['class' => ($errors->has('speciality')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'İxtisas sahəsini boş buraxmayın']) }}
             @if ($errors->has('speciality'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('speciality') }}</strong>
@@ -117,7 +117,7 @@
         <div class="col-8">
             {{ Form::number('admission_score',
                 ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->AdmissionScore : old('admission_score'),
-             ['class' => 'form-control', '',"data-required-error"=>'Qəbul balı sahəsini düzgün qeyd edin',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>3,'max'=>"700", 'id' => 'admission_score',
+             ['class' => 'form-control', 'required',"data-required-error"=>'Qəbul balı sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"700", 'id' => 'admission_score',
              ]) }}
             @if ($errors->has('admission_score'))
                 <div class="invalid-feedback">
@@ -172,7 +172,7 @@
         <div class="col-8">
             {{ Form::number('GPA',
                 ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->AdmissionScore : old('GPA'),
-             ['class' => 'form-control', 'step' => '0.1', '',"data-required-error"=>'Qəbul balı sahəsini düzgün qeyd edin',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>3,'max'=>"700", 'id' => 'GPA',
+             ['class' => 'form-control', 'step' => '0.1', 'required',"data-required-error"=>'Orta bal sahəsini sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"100", 'id' => 'GPA',
              ]) }}
             @if ($errors->has('GPA'))
                 <div class="invalid-feedback">

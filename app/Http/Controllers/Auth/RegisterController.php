@@ -27,6 +27,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Request;
 
 class RegisterController extends Controller
 {
@@ -77,11 +78,11 @@ class RegisterController extends Controller
 			'gender'                               => 'required',
             'Dob'                                  => 'required|date',
             'Address'                              => 'required',
+            'homePhone'                            => 'required|digits:7',
 //          'mobilePhone[0][number]'               => 'digits:7',
             'email' => 'required|string|email|max:255|unique:users',
 //            'email.*' => 'required|string|email|max:255',
-            'idCardPin'                            => 'required|max:7',
-            'idCardNumber'                         => 'required|max:7',
+
             'password' => 'required|string|min:6|confirmed',
             'BeginDate'                            => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
             'EndDate'                              => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
@@ -94,7 +95,8 @@ class RegisterController extends Controller
             'StartDate'                            => 'required',
             'tabel_number'                         => 'required',
 
-
+            'idCardPin'                            => 'required|max:7|unique:users,Fin',
+            'idCardNumber'                         => 'required|max:8|unique:users,PassportNo',
 
 
 
@@ -189,6 +191,8 @@ class RegisterController extends Controller
         } else {
             $user->BirthCityId = $data['BirthCityId'];
         }
+
+
 
         $user->save();
 
@@ -480,5 +484,35 @@ class RegisterController extends Controller
         $image->move('uploads/images/profile/', $imageName);
 
         return 'uploads/images/profile/' . $imageName;
+    }
+
+    public function getPrametersByFin(Request $request)
+    {
+
+       $data =  $request::all() ;
+
+       $fin = $data['fin'];
+
+        define('API_WSDL', 'http://sochadcil.socar.local:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship1/430/yws_scholarship1/yws_scholarship1?sap-client=430?WSDL');
+        ini_set("soap.wsdl_cache_enabled", "0");
+
+
+
+        try {
+            $client = new \SoapClient(API_WSDL,    array(
+                'trace'    => true,
+                'login'    => 'hrregister',
+                'password' => 'HR@reg20',
+            ));
+            $res = $client->YfmScholarship(array(
+                'ImFincode' => $fin
+            ));
+            return \GuzzleHttp\json_encode($res -> OutParams)  ;
+        } catch (SoapFault $exception) {
+            echo "<pre>faultcode: '".$exception->faultcode."'</pre>";
+            echo "<pre>faultstring: '".$exception->getMessage()."'</pre>";
+            $err=1;
+        }
+
     }
 }

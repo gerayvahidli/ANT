@@ -68,9 +68,8 @@
                 <div class="form-group row required">
                     <label for="image" class="col-4 col-form-label">Şəkil</label>
                     <div class="col-8">
-                        <input required name="image" type="file"
-                               class="{{($errors->has('image')) ? 'form-control is-invalid' :'form-control'}}">
-                        {{--                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : '','data-error'=>'Şəkil sahəsini boş buraxmayın']) }}--}}
+
+                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : 'required','data-error'=>'Şəkil sahəsini boş buraxmayın']) }}
                         @if ($errors->has('image'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('image') }}</strong>
@@ -84,7 +83,7 @@
                     <label for="FirstName" class="col-4 col-form-label">Ad</label>
                     <div class="col-8">
                         {{ Form::text('FirstName', ($user->exists) ? $user->FirstName : old('FirstName'),
-                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control', 'placeholder' => 'Ad', 'id' => 'FirstName', '','data-error'=>'Adınız sahəsini boş buraxmayın']) }}
+                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control', 'placeholder' => 'Ad', 'id' => 'FirstName', 'required','data-error'=>'Adınız sahəsini boş buraxmayın']) }}
                         @if ($errors->has('FirstName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('FirstName') }}</strong>
@@ -101,6 +100,7 @@
                                value="{{ ($user->exists) ? $user->LastName : old('LastName') }}" placeholder="Soyad"
                                type="text"
                                class="{{ ($errors->has('LastName')) ? 'form-control is-invalid' :'form-control here' }}"
+                               required
                                data-error='Soyadınız sahəsini boş buraxmayın'>
                         @if ($errors->has('LastName'))
                             <div class="invalid-feedback">
@@ -118,6 +118,7 @@
                                value="{{ ($user->exists) ? $user->FatherName : old('FatherName') }}"
                                placeholder="Ata adı" type="text"
                                class="{{ ($errors->has('FatherName')) ? 'form-control is-invalid' :'form-control' }}"
+                               required
                                data-error='Ata adı sahəsini boş buraxmayın'>
                         @if ($errors->has('FatherName'))
                             <div class="invalid-feedback">
@@ -175,7 +176,7 @@
                 <div class="form-group row required">
                     <label for="Dob" class="col-4 col-form-label">Təvəllüd</label>
                     <div class="col-8">
-                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', '','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
                         @if ($errors->has('Dob'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('Dob') }}</strong>
@@ -214,6 +215,7 @@
                                class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                name="password"
                                data-required-error='Şifrə sahəsini boş buraxmayın' minlength="6"
+                               required
                                data-error='Şifrə minimum 6 simvoldan ibarət olmalıdır' id="inputPassword">
 
                         @if ($errors->has('password'))
@@ -252,6 +254,7 @@
                                value="{{ ($user->exists) ? $user->Address : old('Address') }}" placeholder="Ünvan"
                                type="text"
                                class="{{ ($errors->has('Address')) ? 'form-control is-invalid' :'form-control' }}"
+                               required
                                data-required-error='Ünvan sahəsini boş buraxmayın'>
                         <div class="help-block with-errors"></div>
                         <small id="addressHelpBlock" class="form-text text-muted">
@@ -272,6 +275,8 @@
                                value="{{ ($user->exists) ? $user->Address : old('Address2') }}"
                                placeholder="Faktiki yaşayış ünvanı"
                                type="text"
+                               required
+                               data-required-error='Faktiki yaşayış ünvanı sahəsini boş buraxmayın'
                                class="{{ ($errors->has('Address2')) ? 'form-control is-invalid' :'form-control' }}"
                         >
                         <div class="help-block with-errors"></div>
@@ -342,9 +347,10 @@
                                 <input id="homePhone" type="text"
                                        class="form-control{{ $errors->has('homePhone') ? ' is-invalid' : '' }}"
                                        name="homePhone"
+                                       required
                                        value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('homePhone') }}"
                                        maxlength="7"
-                                       data-required-error='Telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
+                                       data-required-error='Şəhər telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
                                        data-pattern-error="Yalnız rəqəm daxil edin">
 
                                 @if ($errors->has('homePhone'))
@@ -363,7 +369,7 @@
 
 
                         <div class="form-group row required" id="mobilePhones">
-                            <label for="phone" class="col-md-4 col-form-label">Telefon</label>
+                            <label for="phone" class="col-md-4 col-form-label">Mobil telefon</label>
 
                             <div class="col-3">
                                 {{ Form::select('mobilePhone[0][operatorCode]', $mobilePhoneOperatorCodes, ($user->exists) ? null : old('mobilePhoneOperatorCode'), ['class' => 'form-control here', 'id' => 'mobilePhoneOperatorCode']) }}
@@ -378,9 +384,10 @@
                                 <input id="phoneNumber" type="text"
                                        class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
                                        name="mobilePhone[0][number]"
+                                       required
                                        value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"
                                        maxlength="7"
-                                       data-required-error='Telefon nömrəsi sahəsini boş buraxmayın' pattern="\d*"
+                                       data-required-error='Mobil telefon sahəsini boş buraxmayın' pattern="\d*"
                                        data-pattern-error="Yalnız rəqəm daxil edin">
 
                                 @if ($errors->has('phoneNumber'))
@@ -430,9 +437,10 @@
                             <input id="email2" type="email"
                                    class="form-control{{ $errors->has('email2') ? ' is-invalid' : '' }}"
                                    name="email2[0]"
+                                   required
                                    value="{{ ($user->exists) ? $user->email2 : old('email2') }}"
                                    data-error='E-Mail ünvanı düzgün qeyd edin'
-                                   data-required-error='E-Mail Address sahəsini boş buraxmayın'
+                                   data-required-error='Elektron poçt ünvanı(şəxsi) sahəsini boş buraxmayın'
                                     {{ ($user->exists) ? 'disabled': '' }}
                             >
 
@@ -491,7 +499,10 @@
                             </div>
                         @endif
                         <div class="help-block with-errors invalid-feedback" id="idCardPinErrorText"></div>
+                        <button type="button" class="btn btn-primary btn-sm btn-block " id="getPrametersByFin">Məlumatları gətir</button>
+
                     </div>
+
                 </div>
 
                 <div class="form-group row required">
@@ -501,7 +512,7 @@
                                value="{{ ($user->exists) ? $user->IdentityCardNumber : old('idCardNumber') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin nömrəsi" type="text"
                                class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid' :'form-control' }}"
-                               maxlength="15"
+                               maxlength="8"
                                data-required-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
                                pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
                                data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
@@ -582,13 +593,40 @@
     </section>
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
-        <script src="{{asset('js/validator.js')}}"></script>
+    <script src="{{asset('js/validator.js')}}"></script>
 @endsection
 
 @section('footerScripts')
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         $(document).ready(function () {
+
+            $('#getPrametersByFin').click(function () {
+                var fin = $('#idCardPin').val();
+                var token = $("input[name='_token']").val();
+
+
+                $.ajax({
+                    url: '{{ url('/getPrametersByFin') }}',
+                    data: { 'fin' : fin, '_token': token },
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        alert("success");
+                        console.log(data);
+                        $("#hdnOrigComments").val($('#txtComments').val());
+                        $('#lblCommentsNotification').text(savingStatus);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $('#lblCommentsNotification').text("Error encountered while saving the comments.");
+                    }
+                });
+            });
+
+
+
+
+
             var token = $("input[name='_token']").val();
             // console.log(token);
             // profile submit - axios
@@ -619,15 +657,15 @@
                 });
 
                 // Add a request interceptor
-                // axios.interceptors.request.use(function (config) {
-                //     // Do something before request is sent
-                //     console.log('before sent');
-                //     $('#loaderModal').modal('show');
-                //     return config;
-                // }, function (error) {
-                //     // Do something with request error
-                //     return Promise.reject(error);
-                // });
+                axios.interceptors.request.use(function (config) {
+                    // Do something before request is sent
+                    console.log('before sent');
+                    $('#loaderModal').modal('show');
+                    return config;
+                }, function (error) {
+                    // Do something with request error
+                    return Promise.reject(error);
+                });
 
 // Add a response interceptor
                 axios.interceptors.response.use(function (response) {
@@ -659,29 +697,69 @@
                         console.log(error.response.data);
                         console.log(error.response.status);
                         console.log(error.response.headers);
+
+                        //special errors
+
+                        if (error.response.data.errors.email) {
+
+                            current_input = $("input[name='email']");
+                            current_input.addClass('is-invalid');
+                            current_input.closest('.form-group ').find('.invalid-feedback').remove();
+                            current_input.after('<div class="invalid-feedback">\n' +
+                                '<strong>' + error.response.data.errors.email + '</strong>\n' +
+                                '</div>');
+
+                        }
+
+                        if (error.response.data.errors.idCardPin) {
+
+                            current_input = $("input[name='idCardPin']");
+                            current_input.addClass('is-invalid');
+                            current_input.closest('.form-group ').find('.invalid-feedback').remove();
+                            current_input.after('<div class="invalid-feedback">\n' +
+                                '<strong>' + error.response.data.errors.idCardPin + '</strong>\n' +
+                                '</div>');
+
+                        }
+
+                        if (error.response.data.errors.idCardNumber) {
+
+                            current_input = $("input[name='idCardNumber']");
+                            current_input.addClass('is-invalid');
+                            current_input.closest('.form-group ').find('.invalid-feedback').remove();
+                            current_input.after('<div class="invalid-feedback">\n' +
+                                '<strong>' + error.response.data.errors.idCardNumber + '</strong>\n' +
+                                '</div>');
+
+                        }
+
+
+
                         $('#loaderModal').modal('hide');
                         $('.alert-danger').show();
                         $.each(error.response.data.errors, function (key, value) {
                             console.log('key:' + key);
                             console.log('value:' + value);
                             // add invalid classes to input fields with error
-                            $("input[name='" + key + "']").addClass('is-invalid');
-                            current_input = $("input[name='" + key + "']");
-                            console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);
-                            if (current_input.closest('.form-group').find('.radio-errors ').length) {
-                                current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');
-                            } else {
-                                $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();
-                                $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +
-                                    '<strong>' + value + '</strong>\n' +
-                                    '</div>');
-                            }
+
+
+                            // $("input[name='" + key + "']").addClass('is-invalid');
+                            // current_input = $("input[name='" + key + "']");
+                            // console.log('closest tag:' + current_input.closest('.form-group').find('.radio-errors ').length);
+                            // if (current_input.closest('.form-group').find('.radio-errors ').length) {
+                            //     current_input.closest('.form-group').find('.radio-errors ').append('<strong>' + value + '</strong>\n');
+                            // } else {
+                            //     $("input[name='" + key + "']").closest('.form-group ').find('.invalid-feedback').remove();
+                            //     $("input[name='" + key + "']").after('<div class="invalid-feedback">\n' +
+                            //         '<strong>' + value + '</strong>\n' +
+                            //         '</div>');
+                            // }
 
                             // add errors to error box
                             $('#form-error-list').append('<li>' + value + '</li>');
                         });
                         // scroll to error list
-                        
+
                         $([document.documentElement, document.body]).animate({
                             scrollTop: $('.alert-danger').offset().top
                         }, 2000);
@@ -1005,6 +1083,10 @@
                     // var universityId = $('select[id="previous_education_university_id"]');
                     countryId.change(changeUniversity(previousEducationCount));
                     countryId.trigger("change");
+                    // $("#previous_education_BeginDate").prop('required', true);
+
+
+
 
                 } else {
                     $('#addMore').attr('disabled', true);
@@ -1025,6 +1107,9 @@
                     // var countryId = $('select[id="previous_education_country_id"]');
                     // var universityId = $('select[id="previous_education_university_id"]');
                     // countryId.change(changeUniversity(previousEducationCount));
+
+                    localStorage.setItem('activeTab', fieldHTML);
+
                 } else {
                     $('#addMoreWork').attr('disabled', true);
                     alert('Maximum ' + maxGroupWork + ' education field group are allowed.');
@@ -1049,7 +1134,6 @@
                     $('#otherCity').hide();
                 }
             });
-
 
 
             //remove fields group
@@ -1299,46 +1383,6 @@
 
 
     </script>
-
-
-    {{--    <script !src="">--}}
-
-    {{--        $( document ).ready(function() {--}}
-    {{--            var val = $(".education_level").val();--}}
-    {{--            if (val == "1") {--}}
-    {{--                $('[id="c1"]').css("display", "block");--}}
-    {{--                $('[id="c2"]').css("display", "none");--}}
-
-    {{--            } else if (val == "2") {--}}
-    {{--                $('[id="c1"]').css("display", "none");--}}
-    {{--                $('[id="c2"]').css("display", "block");--}}
-
-    {{--            }--}}
-    {{--            else{--}}
-    {{--                $('[id="c1"]').css("display", "none");--}}
-    {{--                $('[id="c2"]').css("display", "none");--}}
-    {{--            }--}}
-
-    {{--            $(".education_level").change(function () {--}}
-    {{--                var val = $(this).val();--}}
-
-    {{--                if (val == "1") {--}}
-    {{--                    $('[id="c1"]').css("display", "block");--}}
-    {{--                    $('[id="c2"]').css("display", "none");;--}}
-
-    {{--                } else if (val == "2") {--}}
-    {{--                    $('[id="c1"]').css("display", "none");--}}
-    {{--                    $('[id="c2"]').css("display", "block");--}}
-
-    {{--                }--}}
-    {{--                else  {--}}
-    {{--                    $('[id="c1"]').css("display", "none");--}}
-    {{--                    $('[id="c2"]').css("display", "none");--}}
-
-    {{--                }--}}
-    {{--            });        });--}}
-    {{--    </script>--}}
-
 
     <script>
         $(document).ready(function () {
