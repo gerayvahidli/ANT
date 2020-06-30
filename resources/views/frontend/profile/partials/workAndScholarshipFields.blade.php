@@ -99,7 +99,7 @@
         <div class="col-8">
             {{ Form::text('position',
             ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
-             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Vəzifə sahəsini boş buraxmayın']) }}
+             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Vəzifə sahəsini boş buraxmayın','id' => 'position']) }}
             @if ($errors->has('position'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('position') }}</strong>
@@ -113,7 +113,7 @@
     <div class="form-group row required">
         <label for="StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            {{ Form::date('StartDate', ($user->exists) ? $user->Dob->format('Y-m-d') : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'İşə qəbul tarixi sahəsini boş buraxmayın']) }}
+            {{ Form::date('StartDate', ($user->exists) ? $user->Dob->format('Y-m-d') : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate']) }}
             @if ($errors->has('StartDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('StartDate') }}</strong>
@@ -129,7 +129,7 @@
             <div class="col-8">
                 {{ Form::text('tabel_number',
                     ( $user->exists && $user->IsCurrentlyWorkAtSocar == 1 && isset($user->PersonalNumber) ) ? $user->PersonalNumber : ( old('tabel_number')  ? old('tabel_number') : null ),
-                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-required-error"=>'Tabel nömrəniz sahəsini boş buraxmayın','maxlength'=>'7',]
+                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-required-error"=>'Tabel nömrəniz sahəsini boş buraxmayın','id' =>'tabel_number']
                 ) }}
                 @if ($errors->has('tabel_number'))
                     <div class="invalid-feedback">

@@ -80,6 +80,60 @@
                 </div>
 
                 <div class="form-group row required">
+                    <label for="idCardPin" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin FİN kodu</label>
+                    <div class="col-8">
+                        <input id="idCardPin" name="idCardPin"
+                               value="{{ ($user->exists) ? $user->IdentityCardCode : old('idCardPin') }}"
+                               placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
+                               class="{{ ($errors->has('idCardPin')) ? 'form-control is-invalid' :'form-control' }}"
+                               data-required-error='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
+                               maxlength="7" minlength="7"
+                               data-error='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
+                                {{ ($user->exists) ? 'disabled' : '' }}
+                        >
+                        <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">FİN kod nədir?
+                            <div><img src="{{ asset('img/finkod.png') }}"/></div>
+                        </a>
+                        @if ($errors->has('idCardPin'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('idCardPin') }}</strong>
+                            </div>
+                        @endif
+                        <div class="help-block with-errors invalid-feedback" id="idCardPinErrorText"></div>
+                        <button type="button" class="btn btn-primary btn-sm btn-block " id="getPrametersByFin">
+                            Məlumatları gətir
+                        </button>
+
+                    </div>
+
+                </div>
+                <div class="form-group row required">
+                    <label for="idCardNumber" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin nömrəsi</label>
+                    <div class="col-8">
+                        <input id="idCardNumber" name="idCardNumber"
+                               value="{{ ($user->exists) ? $user->IdentityCardNumber : old('idCardNumber') }}"
+                               placeholder="Şəxsiyyət vəsiqəsinin nömrəsi" type="text"
+                               class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid' :'form-control' }}"
+                               maxlength="8"
+                               data-required-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
+                               pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
+                               data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
+                        >
+
+                        <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">Nümunə
+                            <div><img src="{{ asset('img/nomresi.png') }}"/></div>
+                        </a>
+                        @if ($errors->has('idCardNumber'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('idCardNumber') }}</strong>
+                            </div>
+                        @endif
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row required">
                     <label for="FirstName" class="col-4 col-form-label">Ad</label>
                     <div class="col-8">
                         {{ Form::text('FirstName', ($user->exists) ? $user->FirstName : old('FirstName'),
@@ -133,7 +187,7 @@
                     <label for="FatherName" class="col-4 col-form-label">Cins</label>
                     <div class="col-8">
 
-                        <select class="form-control here" name="gender" id="">
+                        <select class="form-control here" name="gender" id="gender">
                             @foreach($genders as $gender)
                                 <option value="{{$gender -> Id }}">{{$gender -> Name}}</option>
                             @endforeach
@@ -176,7 +230,7 @@
                 <div class="form-group row required">
                     <label for="Dob" class="col-4 col-form-label">Təvəllüd</label>
                     <div class="col-8">
-                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın']) }}
+                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın','id' => 'Dob']) }}
                         @if ($errors->has('Dob'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('Dob') }}</strong>
@@ -478,58 +532,6 @@
                 {{--                        </div>--}}
                 {{--                    @endif--}}
 
-                <div class="form-group row required">
-                    <label for="idCardPin" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin FİN kodu</label>
-                    <div class="col-8">
-                        <input id="idCardPin" name="idCardPin"
-                               value="{{ ($user->exists) ? $user->IdentityCardCode : old('idCardPin') }}"
-                               placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
-                               class="{{ ($errors->has('idCardPin')) ? 'form-control is-invalid' :'form-control' }}"
-                               data-required-error='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
-                               maxlength="7" minlength="7"
-                               data-error='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
-                                {{ ($user->exists) ? 'disabled' : '' }}
-                        >
-                        <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">FİN kod nədir?
-                            <div><img src="{{ asset('img/finkod.png') }}"/></div>
-                        </a>
-                        @if ($errors->has('idCardPin'))
-                            <div class="invalid-feedback">
-                                <strong>{{ $errors->first('idCardPin') }}</strong>
-                            </div>
-                        @endif
-                        <div class="help-block with-errors invalid-feedback" id="idCardPinErrorText"></div>
-                        <button type="button" class="btn btn-primary btn-sm btn-block " id="getPrametersByFin">Məlumatları gətir</button>
-
-                    </div>
-
-                </div>
-
-                <div class="form-group row required">
-                    <label for="idCardNumber" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin nömrəsi</label>
-                    <div class="col-8">
-                        <input id="idCardNumber" name="idCardNumber"
-                               value="{{ ($user->exists) ? $user->IdentityCardNumber : old('idCardNumber') }}"
-                               placeholder="Şəxsiyyət vəsiqəsinin nömrəsi" type="text"
-                               class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid' :'form-control' }}"
-                               maxlength="8"
-                               data-required-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
-                               pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
-                               data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
-                        >
-
-                        <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">Nümunə
-                            <div><img src="{{ asset('img/nomresi.png') }}"/></div>
-                        </a>
-                        @if ($errors->has('idCardNumber'))
-                            <div class="invalid-feedback">
-                                <strong>{{ $errors->first('idCardNumber') }}</strong>
-                            </div>
-                        @endif
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-
             </div>
 
             <div class="col-12 col-sm-7">
@@ -608,23 +610,37 @@
 
                 $.ajax({
                     url: '{{ url('/getPrametersByFin') }}',
-                    data: { 'fin' : fin, '_token': token },
+                    data: {'fin': fin, '_token': token},
                     type: "post",
                     dataType: "json",
                     success: function (data) {
-                        alert("success");
                         console.log(data);
-                        $("#hdnOrigComments").val($('#txtComments').val());
-                        $('#lblCommentsNotification').text(savingStatus);
+                        if(data.OutParams.Status != 3 && data.OutParams.Status != '')
+                        {
+                            alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ")
+                        }
+                        if(data.OutParams.Status == '')
+                        {
+                            alert(data.ErrMsg.ErrorMessage)
+                        }
+                        $('#FirstName').val(data.OutParams.FirstName);
+                        $('#LastName').val(data.OutParams.SecondName);
+                        $('#FatherName').val(data.OutParams.MiddleName);
+                        if (data.OutParams.Gender != '') {
+                            $('#gender').val(data.OutParams.Gender);
+                        }
+                        $('#email').val(data.OutParams.Email.toLowerCase());
+                        $('#Dob').val(data.OutParams.BirthDate);
+                        $('#StartDate').val(data.OutParams.Begda);
+                        $('#position').val(data.OutParams.Post);
+                        $('#tabel_number').val(data.OutParams.Pernr);
+
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         $('#lblCommentsNotification').text("Error encountered while saving the comments.");
                     }
                 });
             });
-
-
-
 
 
             var token = $("input[name='_token']").val();
@@ -732,7 +748,6 @@
                                 '</div>');
 
                         }
-
 
 
                         $('#loaderModal').modal('hide');
@@ -1084,8 +1099,6 @@
                     countryId.change(changeUniversity(previousEducationCount));
                     countryId.trigger("change");
                     // $("#previous_education_BeginDate").prop('required', true);
-
-
 
 
                 } else {

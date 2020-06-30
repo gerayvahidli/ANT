@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Request;
+use GuzzleHttp;
 
 class RegisterController extends Controller
 {
@@ -507,7 +508,7 @@ class RegisterController extends Controller
             $res = $client->YfmScholarship(array(
                 'ImFincode' => $fin
             ));
-            return \GuzzleHttp\json_encode($res -> OutParams)  ;
+            return response(json_encode($res))   ;
         } catch (SoapFault $exception) {
             echo "<pre>faultcode: '".$exception->faultcode."'</pre>";
             echo "<pre>faultstring: '".$exception->getMessage()."'</pre>";
