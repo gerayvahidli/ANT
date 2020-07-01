@@ -81,7 +81,7 @@ class RegisterController extends Controller
             'Address'                              => 'required',
             'homePhone'                            => 'required|digits:7',
 //          'mobilePhone[0][number]'               => 'digits:7',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:user',
 //            'email.*' => 'required|string|email|max:255',
 
             'password' => 'required|string|min:6|confirmed',
@@ -96,8 +96,8 @@ class RegisterController extends Controller
             'StartDate'                            => 'required',
             'tabel_number'                         => 'required',
 
-            'idCardPin'                            => 'required|max:7|unique:users,Fin',
-            'idCardNumber'                         => 'required|max:8|unique:users,PassportNo',
+            'idCardPin'                            => 'required|max:7|unique:user,Fin',
+            'idCardNumber'                         => 'required|max:8|unique:user,PassportNo',
 
 
 

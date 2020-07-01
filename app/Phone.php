@@ -18,11 +18,11 @@ class Phone extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'UserId','Id');
     }
 
     public function operatorCode()
     {
-        return $this->belongsTo( MobileOperatorCode::class, 'mobile_operator_code_id', 'id');
+        return $this->belongsTo( MobileOperatorCode::class, 'OperatorCodeId', 'Id');
     }
 }

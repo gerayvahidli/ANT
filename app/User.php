@@ -9,7 +9,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'Users';
+    protected $table = 'user';
     //protected $dateFormat = 'Y-m-d H:i:s+';
     public $timestamps = false;
 
@@ -46,12 +46,12 @@ class User extends Authenticatable
 
 //    public function getAuthIdentifier()
 //    {
-//        return $this->Email;
+//        return $this->email;
 //    }
 //
 //    public function getAuthPassword()
 //    {
-//        return $this->Password;
+//        return $this->password;
 //    }
 
     /**
@@ -59,7 +59,12 @@ class User extends Authenticatable
      */
     public function phones()
     {
-        return $this->hasMany( MobilePhone::class );
+        return $this->hasMany( Phone::class,'UserId' );
+    }
+
+    public function emails()
+    {
+        return $this->hasMany( Email::class,'UserId' );
     }
 
     /**
@@ -91,9 +96,9 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function city()
+    public function BirthCity()
     {
-        return $this->belongsTo( City::class );
+        return $this->belongsTo( City::class,'BirthCityId','Id' );
     }
 
     /**
@@ -101,7 +106,7 @@ class User extends Authenticatable
      */
     public function country()
     {
-        return $this->belongsTo( Country::class );
+        return $this->belongsTo( Country::class,'CitizenCountryId','Id'  );
     }
 
     /**

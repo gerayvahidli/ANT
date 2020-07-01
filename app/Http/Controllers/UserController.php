@@ -14,8 +14,8 @@ use App\ExamLanguage;
 use App\ExternalProgramApplication;
 use App\Gender;
 use App\MobileOperatorCode;
-use App\MobilePhone;
-use App\FinalEducation;
+use App\Phone;
+use App\Education;
 use App\InternalProgramApplication;
 use App\Mail\FromUserToTis;
 use App\PreviousEducation;
@@ -39,35 +39,33 @@ class UserController extends Controller
 	public function index ()
 	{
 		$user           =
-			User::with( 'country','gender', 'city', 'finalEducation', 'phones.operatorCode', 'previousInternships', 'previousScholarships' )
+			User::with( 'country','gender', 'BirthCity','phones','emails' )
 				->find( \Auth::user()->id );
-		$finalEducation = FinalEducation::
-		with( 'university.country', 'educationLevel', 'educationSection', 'educationForm', 'educationPaymentForm' )
-			->where( 'user_id', $user->id )->first();
+		$homePhone = $user->phones -> where('PhoneTypeId',2) -> first();
+		$finalEducation = Education::
+			where( 'userId', $user->id )->first();
 //        dd($finalEducation);
-		$previousEducations = PreviousEducation::
-		with( 'university.country', 'educationLevel', 'educationSection', 'educationForm', 'educationPaymentForm' )
-			->where( 'user_id', $user->id )->get();
 
-		$externalProgramApplication =
-			ExternalProgramApplication::with( [
-				'placementStatus',
-				'firstStageResult',
-				'testStageResult',
-				'interviewStageResult',
-				'first_stage_note',
-			] )->where( 'user_id', $user->id )->get();
+//
+//		$externalProgramApplication =
+//			ExternalProgramApplication::with( [
+//				'placementStatus',
+//				'firstStageResult',
+//				'testStageResult',
+//				'interviewStageResult',
+//				'first_stage_note',
+//			] )->where( 'user_id', $user->id )->get();
+//
+//		$internalProgramApplication =
+//			InternalProgramApplication::with( [
+//				'placementStatus',
+//				'firstStageResult',
+//				'testStageResult',
+//				'interviewStageResult',
+//				'first_stage_note',
+//			] )->where( 'user_id', $user->id )->get();
 
-		$internalProgramApplication =
-			InternalProgramApplication::with( [
-				'placementStatus',
-				'firstStageResult',
-				'testStageResult',
-				'interviewStageResult',
-				'first_stage_note',
-			] )->where( 'user_id', $user->id )->get();
-
-		return view( 'frontend.profile.index', compact( 'user', 'finalEducation', 'previousEducations', 'externalProgramApplication', 'internalProgramApplication' ) );
+		return view( 'frontend.profile.index', compact( 'user', 'finalEducation','homePhone' ) );
 	}
 
 	/**

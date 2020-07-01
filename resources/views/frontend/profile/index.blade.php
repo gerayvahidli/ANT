@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-12 col-sm-5 right-dotted-line">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ asset((isset($user->image)) ? $user->image :'img/l60Hf.png') }}"
+                    <img class="card-img-top" src="{{ asset((isset($user->ImagePath)) ? $user->ImagePath :'img/l60Hf.png') }}"
                          alt="Card image cap">
                     {{--<div class="card-body">--}}
                     {{--<p class="card-text">{{ $user->FirstName . ' ' . $user->LastName }}</p>--}}
@@ -47,8 +47,12 @@
                             <th>Cins</th>
                             <td>
 
-                                @if(isset( $user->gender->Name ))
-                                    {{  $user->gender->Name }}
+                                @if(isset( $user->GenderId ))
+                                    @if($user->GenderId == 1)
+                                        Kişi
+                                    @elseif($user->GenderId == 1)
+                                        Qadın
+                                    @endif
                                 @endif
 
                             </td>
@@ -59,58 +63,58 @@
                         </tr>
                         <tr>
                             <th>Təvəllüd</th>
-                            <td>{{ $user->Dob->formatLocalized('%d %B %Y') }}</td>
+                            <td>{{ date('d-m-Y', strtotime($user->Dob)) }}</td>
                         </tr>
                         <tr>
                             <th>Doğum yeri</th>
-                            <td>{{ $user->city->Name }}</td>
+                            <td>{{ $user-> BirthCity -> Name }}</td>
                         </tr>
                         <tr>
                             <th>Qeydiyyat ünvanı</th>
-                            <td>{{ $user->Address }}</td>
+                            <td>{{ $user -> AddressMain }}</td>
                         </tr>
                         <tr>
                             <th>Faktiki yaşayış ünvanı</th>
-                            <td>{{ $user->Address }}</td>
+                            <td>{{ $user->Address2 }}</td>
                         </tr>
                         <tr>
                             <th>Şəhər telefon nömrəsi</th>
-                            <td>012333333</td>
+                            <td>{{$homePhone->operatorCode->Name . $homePhone -> PhoneNumber}}</td>
                         </tr>
                         <tr>
                             <th>Mobil telefon nömrəsi(daim işlək olan nömrə)</th>
                             <td>
-                                @foreach($user->phones as $phoneNumber)
-                                    {{ $phoneNumber->operatorCode->Code . $phoneNumber->PhoneNumber }}
+                                @foreach($user->phones -> where('PhoneTypeId',1) as $phoneNumber)
+                                    {{$phoneNumber->operatorCode->Name .  $phoneNumber->PhoneNumber }}
                                     <br>
                                 @endforeach
                             </td>
                         </tr>
                         <tr>
                             <th>İşçinin korparativ emaili</th>
-                            <td>{{ $user->email }}</td>
+                            <td>{{ $user -> email }}</td>
                         </tr>
                         <tr>
                             <th>Elektron poçt ünvanı(şəxsi)</th>
                             <td>
-                                gerayvahidli@gmail.com
-                                <br>
-                                vahidgerayli@gmail.com
-
+                                @foreach($user->emails as $email)
+                                    {{  $email->email }}
+                                    <br>
+                                @endforeach
                             </td>
                         </tr>
                         <tr>
                             <th>Şəxsiyyət vəsiqəsinin nömrəsi</th>
-                            <td>{{ $user->IdentityCardNumber }}</td>
+                            <td>{{ $user->PassportNo }}</td>
                         </tr>
                         <tr>
                             <th>Şəxsiyyət vəsiqəsinin FİN kodu</th>
-                            <td>{{ $user->IdentityCardCode }}</td>
+                            <td>{{ $user->Fin }}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                @include('frontend.profile.partials.programApplicationAndTrackingPanel')
+{{--                @include('frontend.profile.partials.programApplicationAndTrackingPanel')--}}
                 <div class="row">
                     <div class="col-4">
                         <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
@@ -154,11 +158,11 @@
 
                                     <tr>
                                         <th>Ölkə</th>
-                                        <td>{{ $finalEducation->university->country->Name }}</td>
+{{--                                        <td>{{ $finalEducation->university->country->Name }}</td>--}}
                                     </tr>
                                     <tr>
                                         <th>Universitet</th>
-                                        <td>{{ $finalEducation->university->Name }}</td>
+{{--                                        <td>{{ $finalEducation->university->Name }}</td>--}}
                                     </tr>
                                     <tr>
                                         <th>Təhsil Müddəti</th>
@@ -184,15 +188,15 @@
                                     </tr>
                                     <tr>
                                         <th>Bölmə</th>
-                                        <td>{{ $finalEducation->educationSection->Name }}</td>
+                                        <td>{{ $finalEducation->educationSection }}</td>
                                     </tr>
                                     <tr>
                                         <th>Təhsil forması</th>
-                                        <td>{{ $finalEducation->educationForm->Name }}</td>
+                                        <td>{{ $finalEducation->educationForm }}</td>
                                     </tr>
                                     <tr>
                                         <th>Təhsil Qrupu</th>
-                                        <td>{{ $finalEducation->educationPaymentForm->Name }}</td>
+                                        <td>{{ $finalEducation->educationPaymentForm }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -260,59 +264,59 @@
                     Əvvəlki təhsil
                 </button>
 
-                <div class="collapse" id="collapsePreviousEducation">
-                    @forelse($previousEducations as $previousEducation)
-                        <br>
-                        <div class="card">
-                            <h5 class="card-header">
-                                Əvvəlki Təhsil {{ $loop->iteration }}
-                            </h5>
-                            <div class="card-body p-0">
-                                <div class="table-responsive">
-                                    <table class="table table-borderless">
-                                        <tbody>
-                                        <tr>
-                                            <th>Təhsil pilləsi</th>
-                                            <td>Bakalavr</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Ölkə</th>
-                                            <td>{{ $previousEducation->university->country->Name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Universitet</th>
-                                            <td>{{ $previousEducation->university->Name }}</td>
-                                        </tr>
-                                        @php($date = date_create_from_format('Y-m-d H:i:s', '1800-01-01 00:00:00'))
-                                        @if(isset($previousEducation->BeginDate) && $previousEducation->BeginDate != $date)
-                                            <tr>
-                                                <th>Təhsil Müddəti</th>
-                                                <td>1998-2020</td>
-                                            </tr>
-                                        @endif
-                                        <tr>
-                                            <th>İxtisas</th>
-                                            <td>
-                                                {{ $previousEducation->Speciality }}
-                                            </td>
-                                        </tr>
-                                        @if(isset($previousEducation->AdmissionScore) && $previousEducation->AdmissionScore > 0)
-                                            <tr>
-                                                <th>Qəbul Balı</th>
-                                                <td>{{ $previousEducation->AdmissionScore }}</td>
-                                            </tr>
-                                        @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+{{--                <div class="collapse" id="collapsePreviousEducation">--}}
+{{--                    @forelse($previousEducations as $previousEducation)--}}
+{{--                        <br>--}}
+{{--                        <div class="card">--}}
+{{--                            <h5 class="card-header">--}}
+{{--                                Əvvəlki Təhsil {{ $loop->iteration }}--}}
+{{--                            </h5>--}}
+{{--                            <div class="card-body p-0">--}}
+{{--                                <div class="table-responsive">--}}
+{{--                                    <table class="table table-borderless">--}}
+{{--                                        <tbody>--}}
+{{--                                        <tr>--}}
+{{--                                            <th>Təhsil pilləsi</th>--}}
+{{--                                            <td>Bakalavr</td>--}}
+{{--                                        </tr>--}}
+{{--                                        <tr>--}}
+{{--                                            <th>Ölkə</th>--}}
+{{--                                            <td>{{ $previousEducation->university->country->Name }}</td>--}}
+{{--                                        </tr>--}}
+{{--                                        <tr>--}}
+{{--                                            <th>Universitet</th>--}}
+{{--                                            <td>{{ $previousEducation->university->Name }}</td>--}}
+{{--                                        </tr>--}}
+{{--                                        @php($date = date_create_from_format('Y-m-d H:i:s', '1800-01-01 00:00:00'))--}}
+{{--                                        @if(isset($previousEducation->BeginDate) && $previousEducation->BeginDate != $date)--}}
+{{--                                            <tr>--}}
+{{--                                                <th>Təhsil Müddəti</th>--}}
+{{--                                                <td>1998-2020</td>--}}
+{{--                                            </tr>--}}
+{{--                                        @endif--}}
+{{--                                        <tr>--}}
+{{--                                            <th>İxtisas</th>--}}
+{{--                                            <td>--}}
+{{--                                                {{ $previousEducation->Speciality }}--}}
+{{--                                            </td>--}}
+{{--                                        </tr>--}}
+{{--                                        @if(isset($previousEducation->AdmissionScore) && $previousEducation->AdmissionScore > 0)--}}
+{{--                                            <tr>--}}
+{{--                                                <th>Qəbul Balı</th>--}}
+{{--                                                <td>{{ $previousEducation->AdmissionScore }}</td>--}}
+{{--                                            </tr>--}}
+{{--                                        @endif--}}
+{{--                                        </tbody>--}}
+{{--                                    </table>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                    @empty
-                        Əvvəlki təhsil daxil edilməyib
-                    @endforelse
+{{--                    @empty--}}
+{{--                        Əvvəlki təhsil daxil edilməyib--}}
+{{--                    @endforelse--}}
 
-                </div>
+{{--                </div>--}}
                 <hr>
 
                 <div class="card">
