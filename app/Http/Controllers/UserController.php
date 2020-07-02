@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Adldap\Laravel\Facades\Adldap;
 use App\ApplicationStageResult;
 use App\City;
+use App\Company;
 use App\Country;
 use App\EducationForm;
 use App\EducationLevel;
@@ -39,11 +40,11 @@ class UserController extends Controller
 	public function index ()
 	{
 		$user           =
-			User::with( 'country','gender', 'BirthCity','phones','emails' )
+			User::with( 'country','gender', 'BirthCity','phones','emails','finalEducation','previousEducations'
+                ,'currentJob','previousJobs')
 				->find( \Auth::user()->id );
-		$homePhone = $user->phones -> where('PhoneTypeId',2) -> first();
-		$finalEducation = Education::
-			where( 'userId', $user->id )->first();
+		$homePhone = $user->phones -> where('PhoneTypeId',1) -> first();
+
 //        dd($finalEducation);
 
 //
@@ -65,7 +66,7 @@ class UserController extends Controller
 //				'first_stage_note',
 //			] )->where( 'user_id', $user->id )->get();
 
-		return view( 'frontend.profile.index', compact( 'user', 'finalEducation','homePhone' ) );
+		return view( 'frontend.profile.index', compact( 'user', 'homePhone' ) );
 	}
 
 	/**
@@ -137,25 +138,22 @@ class UserController extends Controller
 		if ( $user->id != Auth::user()->id ) {
 			return redirect( route( 'profile.edit', Auth::user() ) );
 		}
-		$user->load( 'finalEducation.university', 'previousEducations.university.country', 'phones.operatorCode' );
-		$countries       = Country::all()->pluck( 'Name', 'id' );
-		$cities          = City::where( 'IsMain', true )->orWhere( 'id', $user->city_id )->get()->pluck( 'Name', 'id' );
-		$educationLevels = EducationLevel::all()->where( 'id', '<', 3 )->pluck( 'Name', 'id' );
-		$universities             = University::orderBy('Name', 'desc')->get()->pluck( 'Name', 'id' );
-		$educationForms  = EducationForm::all()->pluck( 'Name', 'id' );
-		if ( isset( $user->finalEducation->education_section_id ) ) {
-			$educationSections = EducationSection::where( 'IsMain', true )->orWhere( 'id', $user->finalEducation->education_section_id )->get()->pluck( 'Name', 'id' );
-		} else {
-			$educationSections = EducationSection::where( 'IsMain', true )->get()->pluck( 'Name', 'id' );
-		}
-		$educationPaymentForms    = EducationPaymentForm::all()->pluck( 'Name', 'id' );
-		$examLanguages            = ExamLanguage::all()->pluck( 'Name', 'id' );
-		$mobilePhoneOperatorCodes = MobileOperatorCode::all()->pluck( 'Code', 'id' );
-		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
-		$genders                  = Gender::all()->pluck( 'Name', 'id' );;
+		$user->load( 'finalEducation', 'previousEducations.university.country', 'phones.operatorCode','BirthCity' );
+		$countries       = Country::all();
+		$cities          = City::where('IsShow',1) -> get();
+		$educationLevels = EducationLevel::all();
+		$universities             = University::all();
+		$educationForms  = EducationForm::pluck( 'Name', 'id' );
+        $educationSections = EducationSection::all();
+        $educationPaymentForms    = EducationPaymentForm::pluck( 'Name', 'id' );
+//		$examLanguages            = ExamLanguage::all()->pluck( 'Name', 'id' );
+		$mobilePhoneOperatorCodes = MobileOperatorCode::pluck( 'Name', 'id' );
+//		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
+		$genders                  = Gender::all();
+		$companies = Company::all();
 
 		return view( 'frontend.profile.form',
-			compact( 'user', 'countries', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'examLanguages', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'programTypes','genders' )
+			compact( 'user', 'countries', 'cities','genders','mobilePhoneOperatorCodes','educationLevels','universities','educationForms','educationSections','educationPaymentForms','companies' )
 		);
 	}
 

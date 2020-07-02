@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Queue\Jobs\Job;
 
 class User extends Authenticatable
 {
@@ -72,16 +73,27 @@ class User extends Authenticatable
      */
     public function finalEducation()
     {
-        return $this->hasOne( FinalEducation::class );
+        return $this->hasMany( Education::class,'UserId' ) -> where('IsCurrent',1);
     }
+    public function previousEducations()
+    {
+        return $this->hasMany( Education::class,'UserId' ) -> where('IsCurrent',0);
+    }
+
+    public function currentJob()
+    {
+        return $this->hasMany( JobInfo::class,'UserId' ) -> where('IsCurrent',1);
+    }
+    public function previousJobs()
+    {
+        return $this->hasMany( JobInfo::class,'UserId' ) -> where('IsCurrent',0);
+    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function previousEducations()
-    {
-        return $this->hasMany( PreviousEducation::class );
-    }
+
 
     public function previousInternships()
     {

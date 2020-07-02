@@ -16,37 +16,37 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="country" class="col-4 col-form-label">Ölkə seç</label>
-                <div class="col-8">
-                    {{--{{ dd($countries) }}--}}
-                    <select name="previous_education_country_id[]" id="ex_previous_education_country_id" class="form-control here"  data-required-error="Bu sahəni boş buraxmayın">
-                        @foreach($countries as $country => $name)
-                            <option value="{{ $country }}" {{ ($country == $previousEducation->university->country_id) ? 'selected' : '' }}>{{ $name }}</option>
-                        @endforeach
-                    </select>
-                    {{--{{ Form::select('previous_education_country_id[]', $countries, $previousEducation->university->country_id,--}}
-                        {{--['class' => 'form-control here', 'placeholder'=>'---- Ölkə seç ----', 'id' => 'ex_previous_education_country_id' ]--}}
-                    {{--) }}--}}
-                </div>
-            </div>
+{{--            <div class="form-group row">--}}
+{{--                <label for="country" class="col-4 col-form-label">Ölkə seç</label>--}}
+{{--                <div class="col-8">--}}
+{{--                    --}}{{--{{ dd($countries) }}--}}
+{{--                    <select name="previous_education_country_id[]" id="ex_previous_education_country_id" class="form-control here"  data-required-error="Bu sahəni boş buraxmayın">--}}
+{{--                        @foreach($countries as $country => $name)--}}
+{{--                            <option value="{{ $country }}" {{ ($country == $previousEducation->university) ? 'selected' : '' }}>{{ $name }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                    --}}{{--{{ Form::select('previous_education_country_id[]', $countries, $previousEducation->university->country_id,--}}
+{{--                        --}}{{--['class' => 'form-control here', 'placeholder'=>'---- Ölkə seç ----', 'id' => 'ex_previous_education_country_id' ]--}}
+{{--                    --}}{{--) }}--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
-            <div class="form-group row">
-                <label for="university_id" class="col-4 col-form-label">Universitet</label>
-                <div class="col-8">
-                    {{ Form::select('previous_education_university_id[]',\App\University::where('country_id', $previousEducation->university->country_id)->pluck('Name','id')->toArray() , $previousEducation->university->id,
-                                ['class' => 'form-control here', 'id' => 'ex_previous_education_university_id', "data-required-error"=>'Universitet sahəsini boş buraxmayın'])
-                    }}
-                </div>
-            </div>
+{{--            <div class="form-group row">--}}
+{{--                <label for="university_id" class="col-4 col-form-label">Universitet</label>--}}
+{{--                <div class="col-8">--}}
+{{--                    {{ Form::select('previous_education_university_id[]',\App\University::where('country_id', $previousEducation->university)->pluck('Name','id')->toArray() , $previousEducation->university->id,--}}
+{{--                                ['class' => 'form-control here', 'id' => 'ex_previous_education_university_id', "data-required-error"=>'Universitet sahəsini boş buraxmayın'])--}}
+{{--                    }}--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <div class="form-group row">
                 <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti</label>
                 <div class="col-4">
-                    {{ Form::date('previous_education_BeginDate[]', $previousEducation->BeginDate->format('Y-m-d'), ['class' => 'form-control here', 'id' => 'datePicker', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+                    {{ Form::date('previous_education_BeginDate[]', $previousEducation->StartDate, ['class' => 'form-control here', 'id' => 'datePicker', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
                 </div>
                 <div class="col-4">
-                    {{ Form::date('previous_education_EndDate[]', $previousEducation->EndDate->format('Y-m-d'), ['class' => 'form-control here', 'id' => 'datePicker', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+                    {{ Form::date('previous_education_EndDate[]', $previousEducation->EndDate, ['class' => 'form-control here', 'id' => 'datePicker', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
                 </div>
             </div>
 

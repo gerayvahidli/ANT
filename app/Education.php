@@ -39,26 +39,26 @@ class Education extends Model
 
     public function educationLevel()
     {
-        return $this->belongsTo(EducationLevel::class);
+        return $this->belongsTo(EducationLevel::class,'EducationLevelId','Id');
     }
 
     public function university()
     {
-        return $this->belongsTo(University::class);
+        return $this->belongsTo(University::class,'UniversityId');
     }
 
     public function educationSection()
     {
-        return $this->belongsTo(EducationSection::class);
+        return $this->belongsTo(EducationSection::class,'EducationSectionId');
     }
 
     public function educationForm()
     {
-        return $this->belongsTo(EducationForm::class);
+        return $this->belongsTo(EducationForm::class,'EducationFormId');
     }
 
     public function educationPaymentForm()
     {
-        return $this->belongsTo(EducationPaymentForm::class);
+        return $this->belongsTo(EducationPaymentForm::class,'EducationPaymentFormId');
     }
 }

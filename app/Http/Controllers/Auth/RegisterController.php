@@ -303,7 +303,7 @@ class RegisterController extends Controller
                 $previousJobInfo->Organization = $data['previous_organization'][$i];
                 $previousJobInfo->Position = $data['previous_position'][$i];
                 $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
-                $previousJobInfo->StartDate = $data['previous_EndDate'][$i];
+                $previousJobInfo->EndtDate = $data['previous_EndDate'][$i];
 //                $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
                 $previousJobInfo->IsCurrent = 0;
 
