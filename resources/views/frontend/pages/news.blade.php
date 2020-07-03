@@ -42,7 +42,7 @@
                     @foreach($page->articles as $article)
                         <article class="card">
                             <div class="card-body">
-                                <h5 class="card-title"><a href="{{ url($page->ShortName .'/news/' .  $article->id) }}">{{ $article->title }}</a> </h5>
+                                <h5 class="card-title"><a href="{{ 'news/' .  $article->id }}">{{ $article->title }}</a> </h5>
                                 <h5><small>{{ $article->published_at->formatLocalized('%d %B %Y') }}</small></h5>
                                 <p class="card-text">
                                     {!!  str_limit(strip_tags($article->body), 250)  !!}

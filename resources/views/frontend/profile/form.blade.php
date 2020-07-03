@@ -120,7 +120,7 @@
                                data-required-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
                                pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
                                data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
-                               disabled
+                                {{ ($user->exists) ? 'disabled' : '' }}
                         >
 
                         <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">Nümunə
@@ -254,11 +254,10 @@
                                 <option value="other" selected>Digər</option>
 
                             @else
-
                                 @foreach($cities as $city)
-                                    <option {{   $user -> BithCityId == $city-> Id ? 'selected' :''   }} value="{{$city -> Id}}">{{$city -> Name}}</option>
+                                    <option {{ $user -> exists &&  $user -> BithCityId == $city-> Id ? 'selected' :''   }} value="{{$city -> Id}}">{{$city -> Name}}</option>
                                 @endforeach
-
+                                <option value="other" >Digər</option>
                             @endif
                         </select>
                         <input type="text" class="form-control" name="otherCity" id="otherCity" style="display: none"
@@ -882,16 +881,16 @@
             todayHighlight: true
         });
 
-        $('#BeginDate').datepicker({
-            format: "yyyy",
-            viewMode: "years",
-            minViewMode: "years"
-        });
-        $('#EndDate').datepicker({
-            format: "yyyy",
-            viewMode: "years",
-            minViewMode: "years"
-        });
+        // $('#BeginDate').datepicker({
+        //     format: "yyyy",
+        //     viewMode: "years",
+        //     minViewMode: "years"
+        // });
+        // $('#EndDate').datepicker({
+        //     format: "yyyy",
+        //     viewMode: "years",
+        //     minViewMode: "years"
+        // });
 
         $('#previous_education_StartDate').datepicker({
             format: "yyyy",
@@ -1157,6 +1156,7 @@
             });
 
             $('body').on('change', '#BirthCityId', function () {
+                $('#otherCity').val('');
                 if (this.value == 'other') {
                     $('#otherCity').show();
                 } else {

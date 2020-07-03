@@ -8,7 +8,9 @@ use App\EducationForm;
 use App\EducationLevel;
 use App\EducationPaymentForm;
 use App\EducationSection;
+use App\ExternalProgramProgram;
 use App\UserProgram;
+use App\ExternalProgram;
 use App\Education;
 use App\JobInfo;
 use App\Gender;
@@ -124,7 +126,7 @@ class RegisterController extends Controller
     {
         $countries = Country::all();
         $companies = Company::where('IsSocar',1)->get();
-        $cities = City::all();
+        $cities = City::where('IsShow',1) -> get();
         $educationLevels = EducationLevel::all();
         $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
         $educationForms = EducationForm::pluck('Name', 'id');
@@ -303,7 +305,7 @@ class RegisterController extends Controller
                 $previousJobInfo->Organization = $data['previous_organization'][$i];
                 $previousJobInfo->Position = $data['previous_position'][$i];
                 $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
-                $previousJobInfo->EndtDate = $data['previous_EndDate'][$i];
+                $previousJobInfo->EndDate = $data['previous_EndDate'][$i];
 //                $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
                 $previousJobInfo->IsCurrent = 0;
 
@@ -314,7 +316,7 @@ class RegisterController extends Controller
             }
 
 
-        $activeProgram = Program::where('IsActive',1) ->first();
+        $activeProgram = ExternalProgram::where('IsActive',1) ->first();
 
         $userProgram = new UserProgram;
 

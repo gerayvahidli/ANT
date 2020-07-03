@@ -11,32 +11,32 @@
     <section>
         <div class="row">
             <div class="col-12 col-md-8">
-                <section>
-                @if(Request::segment(1)=="DTP")
-                    @php
-                        $home=route('DTP');
-                        $name='Daxili təqaüd proqramı';
-                    @endphp
-                @else
-                    @php
-                        $home= url('XTP') ;
-                        $name='Xarici təqaüd proqramı';
-                    @endphp
+{{--                <section>--}}
+{{--                @if(Request::segment(1)=="DTP")--}}
+{{--                    @php--}}
+{{--                        $home=route('DTP');--}}
+{{--                        $name='Daxili təqaüd proqramı';--}}
+{{--                    @endphp--}}
+{{--                @else--}}
+{{--                    @php--}}
+{{--                        $home= url('XTP') ;--}}
+{{--                        $name='Xarici təqaüd proqramı';--}}
+{{--                    @endphp--}}
 
-                @endif
+{{--                @endif--}}
 
-                <ol class="breadcrumb">
-                    <a href="{{route('DTP')}}">Daxili təqaüd proqramı</a>
-                    <li>
-                        >><a href="javascript:void(0)" style="color: #6f42c1">FAQ</a>
-                    </li>
-                    <li>
-                        <button style="margin-left: 180px;" class="btn-sm btn-primary" onclick="window.history.back() ">
-                            Əvvəlki səhifəyə qayıt
-                        </button>
-                </ol>
+{{--                <ol class="breadcrumb">--}}
+{{--                    <a href="{{route('DTP')}}">Daxili təqaüd proqramı</a>--}}
+{{--                    <li>--}}
+{{--                        >><a href="javascript:void(0)" style="color: #6f42c1">FAQ</a>--}}
+{{--                    </li>--}}
+{{--                    <li>--}}
+{{--                        <button style="margin-left: 180px;" class="btn-sm btn-primary" onclick="window.history.back() ">--}}
+{{--                            Əvvəlki səhifəyə qayıt--}}
+{{--                        </button>--}}
+{{--                </ol>--}}
 
-                </section>
+{{--                </section>--}}
 
 
                 @if(isset($page->faq) && count($page->faq) )

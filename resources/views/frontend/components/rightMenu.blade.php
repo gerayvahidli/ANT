@@ -22,10 +22,10 @@
                             @if($navTermType->title == "İxtisaslar" && Request::segment(1) == "XTP"  )
                                 @continue;
                             @endif
-                            <a class="nav-link menu {{ Request::is( Request::segment(1).'/terms/'.$navTermType->slug) ? 'activeElement' : '' }} "
-                               href="{{ url('/' . $page->ShortName . '/terms/' . $navTermType->slug) }}"
+                            <a class="nav-link menu {{ Request::is('terms/'.$navTermType->slug) ? 'activeElement' : '' }} "
+                               href="{{ url('/terms/' . $navTermType->slug) }}"
                             >
-                                {!!  Request::is( Request::segment(1).'/terms/'.$navTermType->slug) ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
+                                {!!  Request::is('terms/'.$navTermType->slug) ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
                                 {{ $navTermType->title }}
                             </a>
                         @empty
@@ -39,8 +39,6 @@
         {{--
              is temporary for externl program
         --}}
-        @if(Request::segment(1) == "XTP")
-
 
             <div id="bottom" class="card" style="margin-bottom: 0.5rem;">
                 <div class="card-header" id="headingTwo" style="padding: 0 0.5rem;">
@@ -48,7 +46,7 @@
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                                 aria-expanded="false" aria-controls="collapseTwo">
                             <a class="{{ Request::is( Request::segment(1).'/specialities') ? 'activeElement' : '' }}"
-                               href="{{ url('/' . $page->ShortName . '/specialities') }}">
+                               href="{{ url('/specialities') }}">
                                 {!!  Request::is( Request::segment(1).'/specialities') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
                                 İxtisaslar
                             </a>
@@ -64,9 +62,9 @@
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                                 aria-expanded="false" aria-controls="collapseTwo">
-                            <a class="{{ Request::is( Request::segment(1).'/universitylist') ? 'activeElement' : '' }}"
-                               href="{{ url('/' . $page->ShortName . '/universitylist') }}">
-                                {!!  Request::is( Request::segment(1).'/universitylist') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
+                            <a class="{{ Request::is('universitylist') ? 'activeElement' : '' }}"
+                               href="{{ url('/universitylist') }}">
+                                {!!  Request::is('universitylist') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
                                 Universitetlərin siyahısı
                             </a>
                         </button>
@@ -78,23 +76,22 @@
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                                 aria-expanded="false" aria-controls="collapseTwo">
-                            <a class="{{ Request::is( Request::segment(1).'/requestforExternal') ? 'activeElement' : '' }}"
-                               href="{{ url('/' . $page->ShortName . '/requestforExternal') }}">
-                                {!!  Request::is( Request::segment(1).'/requestforExternal') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
+                            <a class="{{ Request::is('requestforExternal') ? 'activeElement' : '' }}"
+                               href="{{ url('/requestforExternal') }}">
+                                {!!  Request::is('requestforExternal') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
                                 Müraciət et
                             </a>
                         </button>
                     </h5>
                 </div>
             </div>
-        @endif
         <div class="card" style="margin-bottom: 0.5rem;">
             <div class="card-header" id="headingFive" style="padding: 0 0.5rem;">
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                             aria-expanded="false" aria-controls="collapseTwo">
-                        <a class="{{ Request::is( Request::segment(1).'/news') ? 'activeElement' : '' }}"
-                           href="{{ url('/' . $page->ShortName . '/news') }}">
+                        <a class="{{ Request::is('news') ? 'activeElement' : '' }}"
+                           href="{{ url('/news') }}">
                             {!!  Request::is( Request::segment(1).'/news') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
                             Xəbər Arxivi</a>
                     </button>
@@ -106,9 +103,9 @@
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                             aria-expanded="false" aria-controls="collapseTwo">
-                        <a class="{{ Request::is( Request::segment(1).'/faq') ? 'activeElement' : '' }}"
-                           href="{{ url('/' . $page->ShortName . '/faq') }}">
-                            {!!  Request::is( Request::segment(1).'/faq') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
+                        <a class="{{ Request::is('faq') ? 'activeElement' : '' }}"
+                           href="{{ url('faq') }}">
+                            {!!  Request::is('faq') ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
                             FAQ
                         </a>
                     </button>
@@ -145,10 +142,10 @@
 {{--
      is temporary for externl program
 --}}
-@if(Request::segment(1) == "XTP")
-    <a class="nav-link" href="{{ url('/' . $page->ShortName . '/universitylist') }}">Universitetlərin siyahısı</a>
+
+
+    <a class="nav-link" href="{{ url('/universitylist') }}">Universitetlərin siyahısı</a>
         <a class="nav-link" href="{{ url('/' . $page->ShortName . '/requestforExternal') }}">Müraciət et</a>
-    @endif
 
         <a class="nav-link active" href="{{ url('/' . $page->ShortName . '/news') }}">Xəbər Arxivi</a>
     <a class="nav-link" href="{{ url('/' . $page->ShortName . '/faq') }}">FAQ</a>

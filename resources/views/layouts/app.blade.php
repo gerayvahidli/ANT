@@ -90,7 +90,7 @@
     <div class="row">
         @if(!Request::is('profile*'))
             @if(!Request::is('register*') )
-{{--            @include('frontend.components.leftNavigation')--}}
+            @include('frontend.components.leftNavigation')
                 @endif
         @endif
 

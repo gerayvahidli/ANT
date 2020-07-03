@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Speciality extends Model
 {
-	protected $table      = 'specialities';
+    protected $connection = 'sqlsrv2';
+    protected $table      = 'specialities';
 	public    $timestamps = true;
 	//protected $dateFormat = 'Y-m-d H:i:s+';
 	protected $dates      = [

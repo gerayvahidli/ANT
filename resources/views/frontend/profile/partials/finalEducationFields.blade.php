@@ -61,9 +61,9 @@
     </div>
 
     <div class="form-group row required">
-        <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti</label>
+        <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti(il)</label>
         <div class="col-4 form-group">
-            {{ Form::text('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->StartDate : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Başlanğıc tarixi sahəsini sahəsini boş buraxmayın','id'=> 'BeginDate','autocomplete' => 'none']) }}
+            {{ Form::number('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->StartDate : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Başlanğıc tarixi sahəsini sahəsini boş buraxmayın','id'=> 'BeginDate','autocomplete' => 'none']) }}
             @if ($errors->has('BeginDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('BeginDate') }}</strong>
@@ -74,7 +74,7 @@
 
         </div>
         <div class="col-4 form-group">
-            {{ Form::text('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->EndDate : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Bitmə tarixi sahəsini sahəsini boş buraxmayın','id'=> 'EndDate','autocomplete' => 'none']) }}
+            {{ Form::number('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->EndDate : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Bitmə tarixi sahəsini sahəsini boş buraxmayın','id'=> 'EndDate','autocomplete' => 'none']) }}
             @if ($errors->has('EndDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('EndDate') }}</strong>
@@ -172,7 +172,7 @@
         <div class="col-8">
             {{ Form::number('GPA',
                 ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->GPA : old('GPA'),
-             ['class' => 'form-control', 'step' => '0.1', 'required',"data-required-error"=>'Orta bal sahəsini sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"100", 'id' => 'GPA',
+             ['class' => 'form-control', 'step' => '0.1', 'required',"data-required-error"=>'Orta bal sahəsini sahəsini boş buraxmayın',"data-error"=>'Orta bal maksimum 100-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"100", 'id' => 'GPA',
              ]) }}
             @if ($errors->has('GPA'))
                 <div class="invalid-feedback">

@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Program extends Model
+class ExternalProgram extends Model
 {
-    protected $connection = 'sqlsrv2';
     protected $table = 'programs';
     //protected $dateFormat = 'Y-m-d H:i:s+';
 

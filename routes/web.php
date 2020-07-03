@@ -12,6 +12,13 @@ Route::get('/abc', function () {
     Artisan::call('config:cache');
 });
 
+Route::get('/DTP', function () {
+//    echo 'test';exit;
+    return redirect('http://localhost/youthprogsnew/public/DTP');
+});
+
+
+
 
 Route::group([], function () {
     //Login Routes...
@@ -202,12 +209,12 @@ Route::get('/download/paid/file/{app_id}', 'UserController@DownloadPaidFile');
 /*Api resources*/
 
 
-Route::get('/{slug}', 'PageController@show')->name('page.show');
-Route::get('/{slug}/news', 'PageController@newsArchive')->name('page.news.archive');
-Route::get('/{slug}/faq', 'PageController@faq')->name('page.faq');
-Route::get('/{slug}/news/{post}', 'PageController@showPost')->name('page.news.show');
-Route::get('/{programType}/terms/{termType}', 'PageController@terms')->name('page.terms');
-Route::get('/{programType}/specialities', 'PageController@specialities')->name('page.specialities');
+Route::get('/', 'PageController@show')->name('page.show');
+Route::get('/news', 'PageController@newsArchive')->name('page.news.archive');
+Route::get('/faq', 'PageController@faq')->name('page.faq');
+Route::get('/news/{post}', 'PageController@showPost')->name('page.news.show');
+Route::get('/terms/{termType}', 'PageController@terms')->name('page.terms');
+Route::get('/specialities', 'PageController@specialities')->name('page.specialities');
 Route::get('terms/{term}', 'PageController@showTerm')->name('page.terms.show');
 
 
@@ -215,14 +222,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 //for xtp (it is temporary)
-Route::get('/{slug}/universitylist', function () {
+Route::get('/universitylist', function () {
     $page = ProgramType::with('specialities')->where('ShortName', 'XTP')->firstOrFail();
     return view('frontend.pages.externalProgram.unilist')->with(compact('page'));
 }
 
 )->name('XTPunilist');
 
-Route::get('/{slug}/requestforExternal', function () {
+Route::get('/requestforExternal', function () {
     $page = ProgramType::with('specialities')->where('ShortName', 'XTP')->firstOrFail();
     return view('frontend.pages.externalProgram.requestExternal')->with(compact('page'));
 })->name('XTPrequest');

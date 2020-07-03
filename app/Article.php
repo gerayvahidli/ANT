@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+    protected $connection = 'sqlsrv2';
     protected $table      = 'articles';
     public    $timestamps = true;
     //protected $dateFormat = 'Y-m-d H:i:s+';

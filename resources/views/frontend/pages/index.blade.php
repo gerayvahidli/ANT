@@ -31,7 +31,7 @@
 
                 @endif
 
-                    @if(Request::segment(1)=="XTP")
+                    @if(Request::segment(1)=="")
                         <article class="card">
                             <div class="card-body">
 

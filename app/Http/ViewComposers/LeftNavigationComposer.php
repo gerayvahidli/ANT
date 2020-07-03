@@ -30,26 +30,26 @@ class LeftNavigationComposer
      */
     public function compose(View $view)
     {
-        $currentExternalProgram   =
-            Program::where('program_type_id', 2)->where('BeginDate', '<=', now())->where('EndDate', '>=', now())
-                   ->orderBy('id', 'desc')->first()
-        ;
-        $currentInternalProgram   =
-            Program::where('program_type_id', 1)->where('BeginDate', '<=', now())->where('EndDate', '>=', now())
-                   ->orderBy('id', 'desc')->first()
-        ;
-        $currentInternshipProgram =
-            Program::where('program_type_id', 3)->where('BeginDate', '<=', now())->where('EndDate', '>=', now())
-                   ->orderBy('id', 'desc')->first()
-        ;
+//        $currentExternalProgram   =
+//            Program::where('program_type_id', 2)->where('BeginDate', '<=', now())->where('EndDate', '>=', now())
+//                   ->orderBy('id', 'desc')->first()
+//        ;
+//        $currentInternalProgram   =
+//            Program::where('program_type_id', 1)->where('BeginDate', '<=', now())->where('EndDate', '>=', now())
+//                   ->orderBy('id', 'desc')->first()
+//        ;
+//        $currentInternshipProgram =
+//            Program::where('program_type_id', 3)->where('BeginDate', '<=', now())->where('EndDate', '>=', now())
+//                   ->orderBy('id', 'desc')->first()
+//        ;
         $programTypes             = ProgramType::where('id', '<', 3)->get();
         $termTypes                = TermType::all();
         $view->with([
-//            'navProgramTypes'          => $programTypes,
+            'navProgramTypes'          => $programTypes,
             'navTermTypes'             => $termTypes,
-            'currentExternalProgram'   => $currentExternalProgram,
-            'currentInternalProgram'   => $currentInternalProgram,
-            'currentInternshipProgram' => $currentInternshipProgram,
+//            'currentExternalProgram'   => $currentExternalProgram,
+//            'currentInternalProgram'   => $currentInternalProgram,
+//            'currentInternshipProgram' => $currentInternshipProgram,
         ]);
     }
 }

@@ -7,7 +7,7 @@
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                                 aria-expanded="false" aria-controls="collapseTwo">
                             <a class="{{ Request::segment(1) == $ProgramType->ShortName  ? 'activeElement' : '' }}"
-                               href="{{ url('/'.$ProgramType->ShortName) }}">
+                               href="{{ $ProgramType->ShortName == 'XTP' ? url('/') :url('/'.$ProgramType->ShortName) }}">
                                 {!!  Request::segment(1) == $ProgramType->ShortName ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
                                 {{ $ProgramType->Name }}
                             </a>

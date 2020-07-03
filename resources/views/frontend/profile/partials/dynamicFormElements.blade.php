@@ -45,11 +45,11 @@
     <div class="form-group row">
         <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti</label>
         <div class="col-4">
-            {{ Form::text('previous_education_BeginDate[]', '', ['class' => 'form-control here','', "data-required-error"=>'Bu sahəni boş buraxmayın','id' => 'previous_education_BeginDate']) }}
+            {{ Form::number('previous_education_BeginDate[]', '', ['class' => 'form-control here','', "data-required-error"=>'Bu sahəni boş buraxmayın','id' => 'previous_education_BeginDate']) }}
 
         </div>
         <div class="col-4">
-            {{ Form::text('previous_education_EndDate[]', '', ['class' => 'form-control here','required', "data-required-error"=>'Bu sahəni boş buraxmayın','id' => 'previous_education_EndDate']) }}
+            {{ Form::number('previous_education_EndDate[]', '', ['class' => 'form-control here','required', "data-required-error"=>'Bu sahəni boş buraxmayın','id' => 'previous_education_EndDate']) }}
         </div>
     </div>
     <div class="form-group row">

@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-	public function show ( $slug = null )
+	public function show (  )
 	{
 		$page = ProgramType::with( [ 'articles' => function ( $query ) {
 			$query->where( 'published_at', '<=', date( 'Y-m-d' ) )->orderBy( 'published_at', 'desc' )->take( 6 );
-		}, 'terms.termType' ] )->where( 'ShortName', $slug )->firstOrFail();
+		}, 'terms.termType' ] )->where( 'ShortName', 'XTP' )->firstOrFail();
 		if ( !isset( $page ) && !count( $page->id ) ) {
 			abort( 404 );
 		}
@@ -22,27 +22,27 @@ class PageController extends Controller
 		return view( 'frontend.pages.index', compact( 'page' ) );
 	}
 
-	public function newsArchive ( $slug = null )
+	public function newsArchive (  )
 	{
 		$page = ProgramType::with( [ 'articles' => function ( $query ) {
 			$query->where( 'published_at', '<=', date( 'Y-m-d' ) )->orderBy( 'published_at', 'desc' )->simplePaginate( 10 );
-		} ] )->where( 'ShortName', $slug )->firstOrFail();
+		} ] )->where( 'ShortName', 'XTP' )->firstOrFail();
 		if ( !isset( $page ) && !count( $page->id ) ) {
 			abort( 404 );
 		}
 		return view( 'frontend.pages.news', compact( 'page' ) );
 	}
 
-	public function faq ( $slug = null )
+	public function faq ()
 	{
-		$page = ProgramType::with( 'faq' )->where( 'ShortName', $slug )->firstOrFail();
+		$page = ProgramType::with( 'faq' )->where( 'ShortName', 'XTP' )->firstOrFail();
 		if ( !isset( $page ) && !count( $page->id ) ) {
 			abort( 404 );
 		}
 		return view( 'frontend.pages.faq', compact( 'page' ) );
 	}
 
-	public function showPost ( $termType, $post )
+	public function showPost ($post )
 	{
 		$post = Article::with( 'programType' )->findOrFail( $post );
 		$page = ProgramType::with( 'articles', 'terms.termType' )->findOrFail( $post->program_type_id );
@@ -52,18 +52,17 @@ class PageController extends Controller
 		return view( 'frontend.pages.blogPost', compact( 'post', 'page' ) );
 	}
 
-	public function terms ( $programType = null, $termType = null )
+	public function terms ( $termType = null )
 	{
 //        dd($termType);
-		$page  = ProgramType::with( 'terms.termType' )->where( 'ShortName', $programType )->firstOrFail();
+		$page  = ProgramType::with( 'terms.termType' )->where( 'ShortName', 'XTP' )->firstOrFail();
 		$terms = Term::whereHas(
-			'programType', function ( $query ) use ( $programType ) {
-			$query->where( 'ShortName', $programType );
+			'programType', function ( $query ){
+			$query->where( 'ShortName', 'XTP' );
 		} )
 			->whereHas( 'termType', function ( $query ) use ( $termType ) {
 				$query->where( 'slug', $termType );
 			} )->get();
-
 		if ( !isset( $terms ) && !count( $terms ) ) {
 			abort( 404 );
 		}
@@ -85,9 +84,9 @@ class PageController extends Controller
 		return view( 'frontend.pages.term', compact( 'term', 'page' ) );
 	}
 
-	public function specialities ( $slug )
+	public function specialities (  )
 	{
-		$page = ProgramType::with( 'specialities' )->where( 'ShortName', $slug )->firstOrFail();
+		$page = ProgramType::with( 'specialities' )->where( 'ShortName', 'XTP' )->firstOrFail();
 		$speciality = Speciality::with( [
 			'programType',
 		] )->where('program_type_id', $page->id)->firstOrFail();
