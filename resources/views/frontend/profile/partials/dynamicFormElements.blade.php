@@ -70,7 +70,7 @@
     <div class="form-group row">
         <label for="previous_education_admission_score" class="col-4 col-form-label">Qəbul balı</label>
         <div class="col-8">
-            {{ Form::text('previous_education_admission_score[]', null, ['class' => 'form-control here', 'id' => 'previous_education_admission_score']) }}
+            {{ Form::number('previous_education_admission_score[]', null, ['class' => 'form-control here', 'id' => 'previous_education_admission_score']) }}
         </div>
     </div>
 

@@ -138,7 +138,7 @@ class UserController extends Controller
 		if ( $user->id != Auth::user()->id ) {
 			return redirect( route( 'profile.edit', Auth::user() ) );
 		}
-		$user->load( 'finalEducation', 'previousEducations.university.country', 'phones.operatorCode','BirthCity' );
+		$user->load( 'finalEducation', 'previousEducations', 'phones.operatorCode','BirthCity','emails' );
 		$countries       = Country::all();
 		$cities          = City::where('IsShow',1) -> get();
 		$educationLevels = EducationLevel::all();
@@ -281,17 +281,17 @@ class UserController extends Controller
 			'personal_number'                      => 'sometimes|nullable|string',
 			'work_company'                         => 'nullable|string',
 			'work_experience'                      => 'nullable|integer',
-			// scholarship
-			'hasAppliedToScholarship'              => 'required|boolean',
-			'haveBeenScholar'                      => 'sometimes|boolean|nullable',
-			'previous_scholarship_type.*'          => 'sometimes|integer|nullable',
-			'previous_scholarship_date.*'          => 'sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-			// internship
-			'haveBeenIntern'                       => 'required|boolean',
-			'internship_department.*'              => 'string|max:300',
-			'internship_date.*'                    => 'date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-			// exam language
-			'exam_language_id'                     => 'required',
+//			// scholarship
+//			'hasAppliedToScholarship'              => 'required|boolean',
+//			'haveBeenScholar'                      => 'sometimes|boolean|nullable',
+//			'previous_scholarship_type.*'          => 'sometimes|integer|nullable',
+//			'previous_scholarship_date.*'          => 'sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
+//			// internship
+//			'haveBeenIntern'                       => 'required|boolean',
+//			'internship_department.*'              => 'string|max:300',
+//			'internship_date.*'                    => 'date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
+//			// exam language
+//			'exam_language_id'                     => 'required',
 		] );
 
 		$user->image = $this->createImage( $request, $user->image );
@@ -314,32 +314,16 @@ class UserController extends Controller
 		}
 		$user->country_id         = $request->nationality;
 		$user->Address            = $request->Address;
-		$user->IdentityCardNumber = $request->idCardNumber;
+//		$user->IdentityCardNumber = $request->idCardNumber;
 //		$user->IdentityCardCode   = $request->idCardPin;
-		$user->MaidenSurname      = $request->MaidenSurname;
-		$user->IsCurrentlyWorking = $request->is_currently_working;
-		if ( $request->is_currently_working != 1 ) {
-			$user->IsCurrentlyWorkAtSocar = null;
-			$user->PersonalNumber         = null;
-			$user->WorkCompany            = null;
-		} else {
-			if ( $request->is_currently_working_at_socar != 1 ) {
-				$user->PersonalNumber = null;
-			} else {
-				$user->PersonalNumber = $request->personal_number;
-			}
-			$user->IsCurrentlyWorkAtSocar = $request->is_currently_working_at_socar;
-			$user->WorkCompany            = $request->work_company;
-		}
-		$user->WorkExperienceYears     = $request->work_experience;
-		$user->hasAppliedToScholarship = $request->hasAppliedToScholarship;
-		$user->exam_language_id        = $request->exam_language_id;
+
+
 		$user->save();
 
 		$finalEducation      = $this->updateFinalEducation( $request, $user );
 		$previousEducation   = $this->updatePreviousEducation( $request, $user );
-		$previousInternship  = $this->savePreviousInternship( $request, $user );
-		$previousScholarship = $this->savePreviousScholarship( $request, $user );
+//		$previousInternship  = $this->savePreviousInternship( $request, $user );
+//		$previousScholarship = $this->savePreviousScholarship( $request, $user );
 		$mobilePhone         = $this->saveMobilePhone( $request, $user );
 
 		flash()->overlay( 'Profildə dəyişiklikər uğurla tamamlandı' );
@@ -456,65 +440,65 @@ class UserController extends Controller
 		}
 	}
 
-	public function savePreviousInternship ( Request $request, $user )
-	{
-		if ( isset( $request->haveBeenIntern ) && $request->haveBeenIntern == 0 ) {
-			$previousInternships = PreviousInternship::where( 'user_id', $user->id )->get();
-			foreach ( $previousInternships as $i => $previousInternship ) {
-				$previousInternship->delete();
-			}
-		}
-
-		if ( isset( $request->haveBeenIntern ) && $request->haveBeenIntern == 1 && isset( $request->internship_department[ 0 ] ) ) {
-			foreach ( $request->internship_department as $i => $previousInternshipDepartment ) {
-				if ( isset( $request->internship_id[ $i ] ) ) {
-					$previousInternship                  = PreviousInternship::where( 'user_id', $user->id )->find( $request->internship_id[ $i ] );
-					$previousInternship->department      = $request->internship_department[ $i ];
-					$previousInternship->internship_date = $request->internship_date[ $i ];
-					$previousInternship->save();
-				} else {
-					$previousInternship                  = new PreviousInternship;
-					$previousInternship->user_id         = $user->id;
-					$previousInternship->department      = $request->internship_department[ $i ];
-					$previousInternship->internship_date = $request->internship_date[ $i ];
-					$previousInternship->save();
-				}
-			}
-		}
-
-	}
-
-	public function savePreviousScholarship ( Request $request, $user )
-	{
-
-		if ( $request->hasAppliedToScholarship != 1 || ( isset( $request->haveBeenScholar ) && $request->haveBeenScholar != 1 ) ) {
-			$previousScholarships = PreviousScholarship::where( 'user_id', $user->id )->get();
-			foreach ( $previousScholarships as $previousScholarship ) {
-				$previousScholarship->delete();
-			}
-		}
-
-		if ( isset( $request->hasAppliedToScholarship ) && isset( $request->haveBeenScholar ) && $request->hasAppliedToScholarship == 1 && $request->haveBeenScholar == 1 && $request->has( 'previous_scholarship_type' ) ) {
-			foreach ( $request->get( 'previous_scholarship_type' ) as $key => $previous_scholarship_type ) {
-				if ( isset( $request->previous_scholarship_id[ $key ] ) ) {
-					if ( isset( $request->previous_scholarship_date[ $key ] ) ) {
-						$previousScholarship                   = PreviousScholarship::where( 'user_id', $user->id )->find( $request->previous_scholarship_id[ $key ] );
-						$previousScholarship->program_type_id  = $request->previous_scholarship_type[ $key ];
-						$previousScholarship->scholarship_date = $request->previous_scholarship_date[ $key ];
-						$previousScholarship->save();
-					}
-				} else {
-					if ( isset( $request->previous_scholarship_date[ $key ] ) ) {
-						$previousScholarship                   = new PreviousScholarship;
-						$previousScholarship->user_id          = $user->id;
-						$previousScholarship->program_type_id  = $request->previous_scholarship_type[ $key ];
-						$previousScholarship->scholarship_date = $request->previous_scholarship_date[ $key ];
-						$previousScholarship->save();
-					}
-				}
-			}
-		}
-	}
+//	public function savePreviousInternship ( Request $request, $user )
+//	{
+//		if ( isset( $request->haveBeenIntern ) && $request->haveBeenIntern == 0 ) {
+//			$previousInternships = PreviousInternship::where( 'user_id', $user->id )->get();
+//			foreach ( $previousInternships as $i => $previousInternship ) {
+//				$previousInternship->delete();
+//			}
+//		}
+//
+//		if ( isset( $request->haveBeenIntern ) && $request->haveBeenIntern == 1 && isset( $request->internship_department[ 0 ] ) ) {
+//			foreach ( $request->internship_department as $i => $previousInternshipDepartment ) {
+//				if ( isset( $request->internship_id[ $i ] ) ) {
+//					$previousInternship                  = PreviousInternship::where( 'user_id', $user->id )->find( $request->internship_id[ $i ] );
+//					$previousInternship->department      = $request->internship_department[ $i ];
+//					$previousInternship->internship_date = $request->internship_date[ $i ];
+//					$previousInternship->save();
+//				} else {
+//					$previousInternship                  = new PreviousInternship;
+//					$previousInternship->user_id         = $user->id;
+//					$previousInternship->department      = $request->internship_department[ $i ];
+//					$previousInternship->internship_date = $request->internship_date[ $i ];
+//					$previousInternship->save();
+//				}
+//			}
+//		}
+//
+//	}
+//
+//	public function savePreviousScholarship ( Request $request, $user )
+//	{
+//
+//		if ( $request->hasAppliedToScholarship != 1 || ( isset( $request->haveBeenScholar ) && $request->haveBeenScholar != 1 ) ) {
+//			$previousScholarships = PreviousScholarship::where( 'user_id', $user->id )->get();
+//			foreach ( $previousScholarships as $previousScholarship ) {
+//				$previousScholarship->delete();
+//			}
+//		}
+//
+//		if ( isset( $request->hasAppliedToScholarship ) && isset( $request->haveBeenScholar ) && $request->hasAppliedToScholarship == 1 && $request->haveBeenScholar == 1 && $request->has( 'previous_scholarship_type' ) ) {
+//			foreach ( $request->get( 'previous_scholarship_type' ) as $key => $previous_scholarship_type ) {
+//				if ( isset( $request->previous_scholarship_id[ $key ] ) ) {
+//					if ( isset( $request->previous_scholarship_date[ $key ] ) ) {
+//						$previousScholarship                   = PreviousScholarship::where( 'user_id', $user->id )->find( $request->previous_scholarship_id[ $key ] );
+//						$previousScholarship->program_type_id  = $request->previous_scholarship_type[ $key ];
+//						$previousScholarship->scholarship_date = $request->previous_scholarship_date[ $key ];
+//						$previousScholarship->save();
+//					}
+//				} else {
+//					if ( isset( $request->previous_scholarship_date[ $key ] ) ) {
+//						$previousScholarship                   = new PreviousScholarship;
+//						$previousScholarship->user_id          = $user->id;
+//						$previousScholarship->program_type_id  = $request->previous_scholarship_type[ $key ];
+//						$previousScholarship->scholarship_date = $request->previous_scholarship_date[ $key ];
+//						$previousScholarship->save();
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * @param \App\User $user
