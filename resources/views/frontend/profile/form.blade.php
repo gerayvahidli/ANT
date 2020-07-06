@@ -629,7 +629,7 @@
 
                 <div class="form-group row">
                     <div class="offset-4 col-8">
-                        {{ Form::submit('Yadda saxla', ['class' => 'btn btn-primary']) }}
+                        {{ Form::submit('Yadda saxla', ['class' => 'btn btn-primary','id' =>'submitForm']) }}
                     </div>
                 </div>
 
@@ -652,6 +652,9 @@
         $(document).ready(function () {
 
             $('#getPrametersByFin').click(function () {
+
+
+
                 var fin = $('#idCardPin').val();
                 var token = $("input[name='_token']").val();
 
@@ -692,7 +695,57 @@
             var token = $("input[name='_token']").val();
             // console.log(token);
             // profile submit - axios
+
+            var return_first = function () {
+                var tmp = null;
+                var fin = $('#idCardPin').val();
+
+                $.ajax({
+                    async: false,
+                    url: '{{ url('/getPrametersByFin') }}',
+                    data: {'fin': fin, '_token': token},
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        tmp = data;
+                    }
+
+                    });
+                return tmp;
+            }();
+
+
+
             $('#profile-form').submit(function (stay) {
+                var fin = $('#idCardPin').val();
+
+                var tmp =1;
+
+                $.ajax({
+                    async: false,
+                    url: '{{ url('/getPrametersByFin') }}',
+                    data: {'fin': fin, '_token': token},
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '' ) {
+                            alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
+                            tmp =1;
+                        }    else{
+                            tmp =2
+                        }
+
+                    }
+
+                });
+
+                if(tmp == 1){
+                    return false;
+                }
+
+
+
+
                 stay.preventDefault();
                 $('.alert-danger').hide();
                 $('#form-error-list').html('');

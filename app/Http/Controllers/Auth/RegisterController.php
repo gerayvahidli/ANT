@@ -75,9 +75,9 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
 			'image'                                => 'required|image|mimes:jpeg,bmp,png',
-            'FirstName' => 'required|alpha|max:255',
-			'LastName'                             => 'required|alpha|max:255',
-			'FatherName'                           => 'required|alpha|max:255',
+            'FirstName' => 'required|max:255',
+			'LastName'                             => 'required|max:255',
+			'FatherName'                           => 'required|max:255',
 			'gender'                               => 'required',
             'Dob'                                  => 'required|date',
             'Address'                              => 'required',
@@ -167,6 +167,7 @@ class RegisterController extends Controller
 //        ]) ;
 //        $data['homePhone'] = '4444444';
 
+
         $user = new User;
 
         $user->ImagePath = $this->createImage($data['image']);
@@ -249,7 +250,7 @@ class RegisterController extends Controller
         if (isset($data['previous_education_country_id'])) {
             foreach ($data['previous_education_country_id'] as $i => $previousEducationCountryId) {
                 if (isset($data['previous_education_university_id'][$i]) &&
-                    $data['previous_education_university_id'][$i] != '') {
+                    $data['previous_education_speciality'][$i] != '') {
                     $date = '2010';
                     $previousEducation = new Education;
                     $previousEducation -> UserId = $user->id;
@@ -288,32 +289,32 @@ class RegisterController extends Controller
 
         if (isset($data['previous_company_id'])) {
             foreach ($data['previous_company_id'] as $i => $previous_company_id) {
-
-                $previousJobInfo = new JobInfo;
-                $previousJobInfo->UserId = $user->id;
-                if ($data['previous_company_id'][$i] == 'other'){
-                    $company = new Company;
-                    $company -> Name = $data['otherCompany'][$i];
-                    $company -> IsSocar = 0;
-                    $company -> save();
-                $previousJobInfo -> CompanyId = $company -> id ;
-                }
-                else{
-                    $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
-                }
-                $previousJobInfo->Department = $data['previous_department'][$i];
-                $previousJobInfo->Organization = $data['previous_organization'][$i];
-                $previousJobInfo->Position = $data['previous_position'][$i];
-                $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
-                $previousJobInfo->EndDate = $data['previous_EndDate'][$i];
+                if (isset($data['previous_company_id'][$i]) && $data['previous_position'][$i] != '') {
+                    $previousJobInfo = new JobInfo;
+                    $previousJobInfo->UserId = $user->id;
+                    if ($data['previous_company_id'][$i] == 'other') {
+                        $company = new Company;
+                        $company->Name = $data['otherCompany'][$i];
+                        $company->IsSocar = 0;
+                        $company->save();
+                        $previousJobInfo->CompanyId = $company->id;
+                    } else {
+                        $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
+                    }
+                    $previousJobInfo->Department = $data['previous_department'][$i];
+                    $previousJobInfo->Organization = $data['previous_organization'][$i];
+                    $previousJobInfo->Position = $data['previous_position'][$i];
+                    $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
+                    $previousJobInfo->EndDate = $data['previous_EndDate'][$i];
 //                $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
-                $previousJobInfo->IsCurrent = 0;
+                    $previousJobInfo->IsCurrent = 0;
 
-                $previousJobInfo -> save();
+                    $previousJobInfo->save();
 
 
                 }
             }
+        }
 
 
         $activeProgram = ExternalProgram::where('IsActive',1) ->first();
