@@ -666,7 +666,7 @@
                     dataType: "json",
                     success: function (data) {
                         console.log(data);
-                        if (data.OutParams.Status != 3 && data.OutParams.Status != '') {
+                        if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '') {
                             alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ")
                         }
                         if (data.OutParams.Status == '') {
@@ -718,29 +718,32 @@
 
             $('#profile-form').submit(function (stay) {
                 var fin = $('#idCardPin').val();
+                var tabel_number = $('#tabel_number').val();
+                var error =1;
 
-                var tmp =1;
+                if(tabel_number.length != 9) {
 
-                $.ajax({
-                    async: false,
-                    url: '{{ url('/getPrametersByFin') }}',
-                    data: {'fin': fin, '_token': token},
-                    type: "post",
-                    dataType: "json",
-                    success: function (data) {
-                        if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '' ) {
-                            alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
-                            tmp =1;
-                        }    else{
-                            tmp =2
+                    $.ajax({
+                        async: false,
+                        url: '{{ url('/getPrametersByFin') }}',
+                        data: {'fin': fin, '_token': token},
+                        type: "post",
+                        dataType: "json",
+                        success: function (data) {
+                            if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '') {
+                                alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
+                                error = 1;
+                            } else {
+                                error = 2
+                            }
+
                         }
 
+                    });
+
+                    if (error == 1) {
+                        return false;
                     }
-
-                });
-
-                if(tmp == 1){
-                    return false;
                 }
 
 
