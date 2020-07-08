@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Education extends Model
 {
     protected $table = 'Educations';
+    protected $primaryKey = "Id";
 
     public $timestamps = false;
     //protected $dateFormat = 'Y-m-d H:i:s+';

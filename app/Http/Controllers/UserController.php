@@ -11,6 +11,7 @@ use App\EducationForm;
 use App\EducationLevel;
 use App\EducationPaymentForm;
 use App\EducationSection;
+use App\Email;
 use App\ExamLanguage;
 use App\ExternalProgramApplication;
 use App\Gender;
@@ -230,101 +231,117 @@ class UserController extends Controller
 	public function update ( Request $request, User $user )
 	{
 
+
+
+
+
+
         if ( $user->id != Auth::user()->id ) {
             return redirect( route( 'profile.edit', Auth::user() ) );
         }
         
-		//return $request;
-		$request->validate( [
-			'image'                                => 'image|mimes:jpeg,bmp,png',
-			'FirstName'                            => 'required|alpha|max:255',
-			'LastName'                             => 'required|alpha|max:255',
-			'FatherName'                           => 'required|alpha|max:255',
-			'gender'                               => 'required',
-			//            'mobilePhone.*.operatorCode'      => 'required|digits:7',
-			'mobilePhone.*.number'                 => 'digits:7',
-			//			'email'                                => 'required|string|email|max:255|unique:user',
-			//			'password'                             => 'required|string|min:6|confirmed',
-			'nationality'                          => 'required',
-			'dateOfBirth'                          => 'required|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-			'City_id'                              => 'required',
-			'customCity'                           => 'required_if:City_id,52|string|nullable',
-			'Address'                              => 'required|string',
-			'idCardNumber'                         => 'required|string|min:6',
-			'idCardPin'                            => 'nullable|string|size:7',
-			'MaidenSurname'                        => 'required|string',
-			//final education
-			'education_level'                      => 'required',
-			'country_id'                           => 'required|integer',
-			'university_id'                        => 'required|integer',
-			'BeginDate'                            => 'required|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-			'EndDate'                              => 'required|date|after:BeginDate',
-			'current_edu_year'                     => 'required|integer',
-			'faculty'                              => 'required|string',
-			'speciality'                           => 'required|string',
-			'admission_score'                      => 'integer|between:0,700|nullable',
-			'education_section_id'                 => 'sometimes|integer',
-			'education_section'                    => 'required_if:education_section_id,4|string|nullable',
-			'education_form_id'                    => 'required|integer',
-			'education_payment_form_id'            => 'required|integer',
-			//previous education
-			'previous_education_level.*'           => 'sometimes|integer',
-			'previous_education_country_id.*'      => 'sometimes|integer',
-			'previous_education_university_id.*'   => 'sometimes|integer',
-			'previous_education_BeginDate.*'       => 'nullable|sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-			'previous_education_EndDate.*'         => 'nullable|sometimes|date|after:previous_education_BeginDate.*',
-			'previous_education_speciality.*'      => 'sometimes|string',
-			'previous_education_admission_score.*' => 'integer|between:0,700|nullable',
-			// work
-			'is_currently_working'                 => 'required|boolean',
-			'is_currently_working_at_socar'        => 'sometimes|nullable',
-			'personal_number'                      => 'sometimes|nullable|string',
-			'work_company'                         => 'nullable|string',
-			'work_experience'                      => 'nullable|integer',
-//			// scholarship
-//			'hasAppliedToScholarship'              => 'required|boolean',
-//			'haveBeenScholar'                      => 'sometimes|boolean|nullable',
-//			'previous_scholarship_type.*'          => 'sometimes|integer|nullable',
-//			'previous_scholarship_date.*'          => 'sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-//			// internship
-//			'haveBeenIntern'                       => 'required|boolean',
-//			'internship_department.*'              => 'string|max:300',
-//			'internship_date.*'                    => 'date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-//			// exam language
-//			'exam_language_id'                     => 'required',
-		] );
+//		return $request;
+//		$request->validate( [
+//			'image'                                => 'image|mimes:jpeg,bmp,png',
+//			'FirstName'                            => 'required|alpha|max:255',
+//			'LastName'                             => 'required|alpha|max:255',
+//			'FatherName'                           => 'required|alpha|max:255',
+//			'gender'                               => 'required',
+//			//            'mobilePhone.*.operatorCode'      => 'required|digits:7',
+//			'mobilePhone.*.number'                 => 'digits:7',
+//			//			'email'                                => 'required|string|email|max:255|unique:user',
+//			//			'password'                             => 'required|string|min:6|confirmed',
+//			'nationality'                          => 'required',
+//			'dateOfBirth'                          => 'required|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
+//			'City_id'                              => 'required',
+//			'customCity'                           => 'required_if:City_id,52|string|nullable',
+//			'Address'                              => 'required|string',
+//			'idCardNumber'                         => 'required|string|min:6',
+//			'idCardPin'                            => 'nullable|string|size:7',
+//			'MaidenSurname'                        => 'required|string',
+//			//final education
+//			'education_level'                      => 'required',
+//			'country_id'                           => 'required|integer',
+//			'university_id'                        => 'required|integer',
+//			'BeginDate'                            => 'required|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
+//			'EndDate'                              => 'required|date|after:BeginDate',
+//			'current_edu_year'                     => 'required|integer',
+//			'faculty'                              => 'required|string',
+//			'speciality'                           => 'required|string',
+//			'admission_score'                      => 'integer|between:0,700|nullable',
+//			'education_section_id'                 => 'sometimes|integer',
+//			'education_section'                    => 'required_if:education_section_id,4|string|nullable',
+//			'education_form_id'                    => 'required|integer',
+//			'education_payment_form_id'            => 'required|integer',
+//			//previous education
+//			'previous_education_level.*'           => 'sometimes|integer',
+//			'previous_education_country_id.*'      => 'sometimes|integer',
+//			'previous_education_university_id.*'   => 'sometimes|integer',
+//			'previous_education_BeginDate.*'       => 'nullable|sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
+//			'previous_education_EndDate.*'         => 'nullable|sometimes|date|after:previous_education_BeginDate.*',
+//			'previous_education_speciality.*'      => 'sometimes|string',
+//			'previous_education_admission_score.*' => 'integer|between:0,700|nullable',
+//			// work
+//			'is_currently_working'                 => 'required|boolean',
+//			'is_currently_working_at_socar'        => 'sometimes|nullable',
+//			'personal_number'                      => 'sometimes|nullable|string',
+//			'work_company'                         => 'nullable|string',
+//			'work_experience'                      => 'nullable|integer',
+////			// scholarship
+////			'hasAppliedToScholarship'              => 'required|boolean',
+////			'haveBeenScholar'                      => 'sometimes|boolean|nullable',
+////			'previous_scholarship_type.*'          => 'sometimes|integer|nullable',
+////			'previous_scholarship_date.*'          => 'sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
+////			// internship
+////			'haveBeenIntern'                       => 'required|boolean',
+////			'internship_department.*'              => 'string|max:300',
+////			'internship_date.*'                    => 'date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
+////			// exam language
+////			'exam_language_id'                     => 'required',
+//		] );
 
-		$user->image = $this->createImage( $request, $user->image );
+		$user->ImagePath     = $this->createImage( $request, $user->image );
 //		$user->email      = $request->email;
 		$user->FirstName  = $request->FirstName;
 		$user->LastName   = $request->LastName;
 		$user->FatherName = $request->FatherName;
-        $user->gender_id= $request->gender;
-//		$user->Email      = $request->email;
-//		$user->password = \Hash::make( $request->password );
-		$user->Dob = $request->dateOfBirth;
-		if ( $request->City_id == 52 && $request->has( 'customCity' ) ) {
-			$city         = new City;
-			$city->Name   = $request->customCity;
-			$city->IsMain = 0;
-			$city->save();
-			$user->city_id = $city->id;
-		} else {
-			$user->city_id = $request->City_id;
-		}
-		$user->country_id         = $request->nationality;
-		$user->Address            = $request->Address;
-//		$user->IdentityCardNumber = $request->idCardNumber;
-//		$user->IdentityCardCode   = $request->idCardPin;
+        $user->GenderId   = $request->gender;
+		$user->Dob        = $request->Dob;
+        if ($request -> BirthCityId == 'other') {
+            $city = new City;
+            $city->Name = $request -> otherCity;
+            $city->IsShow = 0;
+            $city->save();
+
+            $user->BirthCityId = $city->id;
+        } else {
+            $user->BirthCityId = $request -> BirthCityId;
+        }
+        $user->CitizenCountryId   = $request -> nationality;
+        $user->AddressMain        = $request -> Address;
+        $user->Address2           = $request -> Address2;
 
 
-		$user->save();
 
-		$finalEducation      = $this->updateFinalEducation( $request, $user );
-		$previousEducation   = $this->updatePreviousEducation( $request, $user );
+//        $user->PassportNo =  $request -> idCardNumber;
+//        $user->Fin = $request -> idCardPin;
+
+
+
+
+
+
+        $user->save();        $mobilePhone         = $this->saveMobilePhone( $request, $user );
+        return $previousEducation   = $this->updatePreviousEducation( $request, $user );
+
+        $emails              = $this->saveEmails( $request, $user );
+        $finalEducation      = $this->updateFinalEducation( $request, $user );
+
+
+        return "yes";
+
 //		$previousInternship  = $this->savePreviousInternship( $request, $user );
 //		$previousScholarship = $this->savePreviousScholarship( $request, $user );
-		$mobilePhone         = $this->saveMobilePhone( $request, $user );
 
 		flash()->overlay( 'Profildə dəyişiklikər uğurla tamamlandı' );
 
@@ -339,37 +356,41 @@ class UserController extends Controller
 	public function updateFinalEducation ( Request $request, $user )
 	{
 		if ( isset( $request->final_education_id ) ) {
-			$finalEducation = FinalEducation::where( 'user_id', $user->id )->find( $request->final_education_id );
+			$finalEducation = Education::where( 'UserId', $user->id )->find( $request->final_education_id );
 		} else {
 			$finalEducation          = new FinalEducation;
-			$finalEducation->user_id = $user->id;
+			$finalEducation->UserId = $user->id;
 		}
 
-		$finalEducation->education_level_id = $request->education_level;
-		$finalEducation->university_id      = $request->university_id;
-		$finalEducation->BeginDate          = $request->BeginDate;
-		$finalEducation->EndDate            = $request->EndDate;
-		$finalEducation->CurrentEduYear     = $request->current_edu_year;
-		$finalEducation->Faculty            = $request->faculty;
-		$finalEducation->Speciality         = $request->speciality;
-		$finalEducation->AdmissionScore     = $request->admission_score;
-		if ( $request->education_section_id == 4 && $request->has( 'education_section' ) ) {
-			$educationSection         = new EducationSection;
-			$educationSection->Name   = $request->education_section;
-			$educationSection->IsMain = 0;
-			$educationSection->save();
-			$finalEducation->education_section_id = $educationSection->id;
-		} else {
-			if ( isset( $request->education_section_id ) ) {
-				$finalEducation->education_section_id = $request->education_section_id;
-			}
-		}
-		if ( isset( $request->education_form_id ) ) {
-			$finalEducation->education_form_id = $request->education_form_id;
-		}
-		if ( isset( $request->education_payment_form_id ) ) {
-			$finalEducation->education_payment_form_id = $request->education_payment_form_id;
-		}
+        $finalEducation->EducationLevelId = $request->education_level;
+        $finalEducation->UniversityId = $request->university_id;
+        $finalEducation->StartDate = $request->BeginDate;
+        $finalEducation->EndDate = $request->EndDate;
+        $finalEducation->Faculty = $request->faculty;
+        $finalEducation->Speciality = $request->speciality;
+        $finalEducation->AdmissionScore = (isset($request-> admission_score )) ? $request-> admission_score  : 0;
+        $finalEducation->EducationFormId = $request->education_form_id;
+        $finalEducation->EducationSectionId = $request->education_section_id;
+        $finalEducation->EducationPaymentFormId = $request->education_payment_form_id;
+        $finalEducation->GPA = $request->GPA;
+        $finalEducation->IsCurrent = 1;
+//		if ( $request->education_section_id == 4 && $request->has( 'education_section' ) ) {
+//			$educationSection         = new EducationSection;
+//			$educationSection->Name   = $request->education_section;
+//			$educationSection->IsMain = 0;
+//			$educationSection->save();
+//			$finalEducation->education_section_id = $educationSection->id;
+//		} else {
+//			if ( isset( $request->education_section_id ) ) {
+//				$finalEducation->education_section_id = $request->education_section_id;
+//			}
+//		}
+//		if ( isset( $request->education_form_id ) ) {
+//			$finalEducation->education_form_id = $request->education_form_id;
+//		}
+//		if ( isset( $request->education_payment_form_id ) ) {
+//			$finalEducation->education_payment_form_id = $request->education_payment_form_id;
+//		}
 		$finalEducation->save();
 
 		return $finalEducation;
@@ -385,42 +406,64 @@ class UserController extends Controller
 				// make array from form
 				if ( isset( $request->previous_education_university_id[ $i ] ) &&
 				     $request->previous_education_university_id[ $i ] != '' ) {
-					$date                        = \DateTime::createFromFormat( 'Y-m-d H:i:s', '1800-01-01 00:00:00' );
+					$date                        = 1800;
 					$previousEducationData[ $i ] = [
 						'user_id'            => $user->id,
 						'id'                 => ( isset( $request->previous_education_id[ $i ] ) ) ? $request->previous_education_id[ $i ] : null,
 						'education_level_id' => $request->previous_education_level[ $i ],
-						'university_id'      => $request->previous_education_university_id[ $i ],
+                        'country_id'         => $request -> previous_education_country_id,
+                        'university_id'      => $request->previous_education_university_id[ $i ],
 						'BeginDate'          => ( $request->previous_education_BeginDate[ $i ] ) ? $request->previous_education_BeginDate[ $i ] : $date,
 						'EndDate'            => ( $request->previous_education_EndDate[ $i ] ) ? $request->previous_education_EndDate[ $i ] : $date,
-						'Speciality'         => $request->previous_education_speciality[ $i ],
-						'AdmissionScore'     => ( $previousEducationCountryId == 5 ) ? $request->previous_education_admission_score[ $i ] : 0,
-					];
+						'Faculty'            => $request->previous_education_faculty[ $i ],
+                        'Speciality'         => $request->previous_education_speciality[ $i ],
+                        'AdmissionScore'     => ( $previousEducationCountryId == 1 ) ? $request->previous_education_admission_score[ $i ] : 0,
+                        'education_section_id'         => $request->previous_education_section_id[ $i ],
+                        'education_form_id'         => $request->previous_education_form_id[ $i ],
+                        'education_payment_form_id'         => $request->previous_education_payment_form_id[ $i ],
+                        'GPA'     =>  $request->previous_education_GPA[ $i ]
+
+
+                    ];
 				}
 			}
 			// go through previous educations array - if element of this array(previous education) is exists then update else create new previous education
 			foreach ( $previousEducationData as $previousEdu ) {
 				if ( isset( $previousEdu[ 'id' ] ) ) {
 					$previousEducation =
-						PreviousEducation::where( 'user_id', $user->id )->find( $previousEdu[ 'id' ] );
+						Education::where( 'UserId', $user->id )->find( $previousEdu[ 'id' ] );
 					$previousEducation->update( [
-						'university_id'      => $previousEdu[ 'university_id' ],
-						'education_level_id' => $previousEdu[ 'education_level_id' ],
-						'BeginDate'          => $previousEdu[ 'BeginDate' ],
+						'UniversityId'      => $previousEdu[ 'university_id' ],
+                        'CountryId'      => $previousEdu[ 'country_id' ],
+						'EducationLevelId' => $previousEdu[ 'education_level_id' ],
+						'StartDate'          => $previousEdu[ 'BeginDate' ],
 						'EndDate'            => $previousEdu[ 'EndDate' ],
-						'Speciality'         => $previousEdu[ 'Speciality' ],
+                        'Faculty'         => $previousEdu[ 'Faculty' ],
+                        'Speciality'         => $previousEdu[ 'Speciality' ],
 						'AdmissionScore'     => $previousEdu[ 'AdmissionScore' ],
-					] );
+                        'EducationSectionId'     => $previousEdu[ 'education_section_id' ],
+                        'EducationFormId'     => $previousEdu[ 'education_form_id' ],
+                        'EducationPaymentFormId'     => $previousEdu[ 'education_payment_form_id' ],
+                        'GPA'     =>  $previousEdu[ 'GPA' ]
+
+                    ] );
 				} else {
-					$previousEducation = PreviousEducation::create(
+					$previousEducation = Education::create(
 						[
-							'user_id'            => $user->id,
-							'university_id'      => $previousEdu[ 'university_id' ],
-							'education_level_id' => $previousEdu[ 'education_level_id' ],
-							'BeginDate'          => $previousEdu[ 'BeginDate' ],
-							'EndDate'            => $previousEdu[ 'EndDate' ],
-							'Speciality'         => $previousEdu[ 'Speciality' ],
-							'AdmissionScore'     => $previousEdu[ 'AdmissionScore' ],
+							'UserId'            => $user->id,
+                            'UniversityId'      => $previousEdu[ 'university_id' ],
+                            'CountryId'      => $previousEdu[ 'country_id' ],
+                            'EducationLevelId' => $previousEdu[ 'education_level_id' ],
+                            'StartDate'          => $previousEdu[ 'BeginDate' ],
+                            'EndDate'            => $previousEdu[ 'EndDate' ],
+                            'Faculty'         => $previousEdu[ 'Faculty' ],
+                            'Speciality'         => $previousEdu[ 'Speciality' ],
+                            'AdmissionScore'     => $previousEdu[ 'AdmissionScore' ],
+                            'EducationSectionId'     => $previousEdu[ 'education_section_id' ],
+                            'EducationFormId'     => $previousEdu[ 'education_form_id' ],
+                            'EducationPaymentFormId'     => $previousEdu[ 'education_payment_form_id' ],
+                            'GPA'     =>  $previousEdu[ 'GPA' ],
+                            'IsCurrent' => 0
 						]
 					);
 				}
@@ -429,16 +472,31 @@ class UserController extends Controller
 	}
 
 	public function saveMobilePhone ( Request $request, $user )
-	{
-		foreach ( $request->mobilePhone as $mobilePhone ) {
-			$phone = MobilePhone::updateOrCreate(
-				[
-					'user_id'     => $user->id,
-					'PhoneNumber' => $mobilePhone[ 'number' ],
-				], [ 'mobile_operator_code_id' => $mobilePhone[ 'operatorCode' ] ]
-			);
+	{   Phone::where('UserId',$user -> id) -> where('PhoneTypeId',2) -> delete();
+
+        foreach ( $request->mobilePhone as $mobilePhone ) {
+            $Phone = new Phone;
+            $Phone->PhoneNumber = $mobilePhone['number'];
+            $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
+            $Phone->UserId = $user->id;
+            $Phone->PhoneTypeId = 2;
+
+            $Phone->save();
 		}
 	}
+    public function saveEmails ( Request $request, $user )
+    {   Email::where('UserId',$user -> id) -> delete();
+
+        foreach ( $request->email2 as $email ) {
+            $Phone = new Email();
+            $Phone->UserId = $user->id;
+            $Phone->email = $email;
+            $Phone->IsMain = 0;
+
+            $Phone->save();
+        }
+    }
+
 
 //	public function savePreviousInternship ( Request $request, $user )
 //	{
@@ -588,7 +646,7 @@ class UserController extends Controller
 
 	public function deletePreviousEducation ( Request $request )
 	{
-		$previous_education = PreviousEducation::find( $request->previous_education_id );
+		$previous_education = Education::find( $request->previous_education_id );
 		$result             = $previous_education->delete();
 		if ( $result ) {
 			return [ 'status' => 'ok', 'message' => 'Əvvəlki təhsil silindi' ];
@@ -596,25 +654,25 @@ class UserController extends Controller
 		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
 	}
 
-	public function deleteInternship ( Request $request )
-	{
-		$internship = PreviousInternship::find( $request->internship_id );
-		$result     = $internship->delete();
-		if ( $result ) {
-			return [ 'status' => 'ok', 'message' => 'Əvvəlki təcrübə silindi' ];
-		}
-		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
-	}
-
-	public function deleteScholarship ( Request $request )
-	{
-		$scholarship = PreviousScholarship::find( $request->scholarship_id );
-		$result      = $scholarship->delete();
-		if ( $result ) {
-			return [ 'status' => 'ok', 'message' => 'Əvvəlki təqaüd silindi' ];
-		}
-		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
-	}
+//	public function deleteInternship ( Request $request )
+//	{
+//		$internship = PreviousInternship::find( $request->internship_id );
+//		$result     = $internship->delete();
+//		if ( $result ) {
+//			return [ 'status' => 'ok', 'message' => 'Əvvəlki təcrübə silindi' ];
+//		}
+//		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
+//	}
+//
+//	public function deleteScholarship ( Request $request )
+//	{
+//		$scholarship = PreviousScholarship::find( $request->scholarship_id );
+//		$result      = $scholarship->delete();
+//		if ( $result ) {
+//			return [ 'status' => 'ok', 'message' => 'Əvvəlki təqaüd silindi' ];
+//		}
+//		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
+//	}
 
 	public function loginLdap ()
 	{
@@ -660,76 +718,76 @@ class UserController extends Controller
  */
 
 
-	public function applyInternalScholarship ( $slug = 'internal', User $user )
-	{
-
-
-		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
-
-		$array = [];
-		foreach ( $reasons as $key => $value ) {
-
-			$from_sql  = [ "{0}", "{n}+1" ];
-			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
-
-			$text          = str_replace( $from_sql, $after_sql, $value );
-			$array[ $key ] = $text;
-		}
-
-		$data[ 'reasons_array' ] = $array;
-
-		//      Storage::download('file.jpg');
-
-		return view( 'frontend.profile.apply.internalScholarship', $data );
-	}
-
-
-	public function applyExternalScholarship ( $slug = 'external', User $user )
-	{
-
-
-		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
-
-		$array = [];
-		foreach ( $reasons as $key => $value ) {
-
-			$from_sql  = [ "{0}", "{n}+1" ];
-			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
-
-			$text          = str_replace( $from_sql, $after_sql, $value );
-			$array[ $key ] = $text;
-		}
-
-		$data[ 'reasons_array' ] = $array;
-
-		//      Storage::download('file.jpg');
-
-		return view( 'frontend.profile.apply.externalScholarship', $data );
-	}
-
-
-	public function applyPaidScholarship ( $slug = 'paid', User $user )
-	{
-
-
-		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
-
-		$array = [];
-		foreach ( $reasons as $key => $value ) {
-
-			$from_sql  = [ "{0}", "{n}+1" ];
-			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
-
-			$text          = str_replace( $from_sql, $after_sql, $value );
-			$array[ $key ] = $text;
-		}
-
-		$data[ 'reasons_array' ] = $array;
-
-		//      Storage::download('file.jpg');
-
-		return view( 'frontend.profile.apply.paidScholarship', $data );
-	}
+//	public function applyInternalScholarship ( $slug = 'internal', User $user )
+//	{
+//
+//
+//		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
+//
+//		$array = [];
+//		foreach ( $reasons as $key => $value ) {
+//
+//			$from_sql  = [ "{0}", "{n}+1" ];
+//			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
+//
+//			$text          = str_replace( $from_sql, $after_sql, $value );
+//			$array[ $key ] = $text;
+//		}
+//
+//		$data[ 'reasons_array' ] = $array;
+//
+//		//      Storage::download('file.jpg');
+//
+//		return view( 'frontend.profile.apply.internalScholarship', $data );
+//	}
+//
+//
+//	public function applyExternalScholarship ( $slug = 'external', User $user )
+//	{
+//
+//
+//		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
+//
+//		$array = [];
+//		foreach ( $reasons as $key => $value ) {
+//
+//			$from_sql  = [ "{0}", "{n}+1" ];
+//			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
+//
+//			$text          = str_replace( $from_sql, $after_sql, $value );
+//			$array[ $key ] = $text;
+//		}
+//
+//		$data[ 'reasons_array' ] = $array;
+//
+//		//      Storage::download('file.jpg');
+//
+//		return view( 'frontend.profile.apply.externalScholarship', $data );
+//	}
+//
+//
+//	public function applyPaidScholarship ( $slug = 'paid', User $user )
+//	{
+//
+//
+//		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
+//
+//		$array = [];
+//		foreach ( $reasons as $key => $value ) {
+//
+//			$from_sql  = [ "{0}", "{n}+1" ];
+//			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
+//
+//			$text          = str_replace( $from_sql, $after_sql, $value );
+//			$array[ $key ] = $text;
+//		}
+//
+//		$data[ 'reasons_array' ] = $array;
+//
+//		//      Storage::download('file.jpg');
+//
+//		return view( 'frontend.profile.apply.paidScholarship', $data );
+//	}
 
 
 	public function relCity ( Request $req )

@@ -178,7 +178,7 @@ class RegisterController extends Controller
         $user->GenderId = $data['gender'];
         $user->CitizenCountryId = $data['nationality'];
         $user->Dob = $data['Dob'];
-        $user->BirthCityId = $data['BirthCityId'];
+//        $user->BirthCityId = $data['BirthCityId'];
         $user->password = \Hash::make($data['password']);
         $user->AddressMain = $data['Address'];
         $user->Address2 = $data['Address2'];

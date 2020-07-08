@@ -399,9 +399,9 @@
 
                 <div id="phoneFieldGroup">
                     @if($user->exists && count($user->phones))
-                        @foreach($user->phones as $phone)
+                        @foreach($user->phones->where('PhoneTypeId',2) as $phone)
                             <div class="form-group row required" id="mobilePhones">
-                                <label for="phone" class="col-md-4 col-form-label">Telefon</label>
+                                <label for="phone" class="col-md-4 col-form-label">Mobil telefon-{{$loop -> iteration}}</label>
 
                                 <div class="col-3">
                                     {{ Form::select('mobilePhone[' . $loop->index . '][operatorCode]', $mobilePhoneOperatorCodes, ( isset($phone->PhoneNumber) ) ? $phone->mobile_operator_code_id : old('mobilePhoneOperatorCode'), ['class' => 'form-control here', 'id' => 'mobilePhoneOperatorCode']) }}
@@ -474,7 +474,7 @@
                 <div class="form-group row">
                     <div class="col-6">
                         <a href="javascript:void(0);" id="addPhoneField">
-                            <span class="fa fa-plus"></span> Telefon əlavə et
+                            <span class="fa fa-plus"></span> Mobil telefon əlavə et
                         </a>
                     </div>
                 </div>
@@ -735,6 +735,8 @@
 
 
             $('#profile-form').submit(function (stay) {
+
+                @if(!$user -> exists)
                 var fin = $('#idCardPin').val();
                 var tabel_number = $('#tabel_number').val();
                 var error =1;
@@ -763,6 +765,7 @@
                         return false;
                     }
                 }
+                @endif
 
 
 
@@ -825,7 +828,7 @@
                     .then((response) => {
                         // console.log('correct');
                         console.log(response);
-                        window.location.href = '{{ route('profile.index') }}';
+                        {{--window.location.href = '{{ route('profile.index') }}';--}}
                     }).catch((error) => {
                     if (error.response) {
                         // The request was made and the server responded with a status code
@@ -914,6 +917,8 @@
 
             //delete previous education
             $('#delete-previous-education').click(function () {
+                alert("salam");
+                return false;
                 var previous_education_id = $(this).closest('.fieldGroup').find('input[name="previous_education_id[]"]').val();
                 console.log(previous_education_id);
                 axios.post('{{ route('deletePreviousEducation') }}', {
@@ -1110,8 +1115,8 @@
             var wrapperEmail = $('#emailFieldGroup'); //Input field wrapper
 
             // var fieldHTML = '<div class="form-group row required" id="mobilePhones">' + $("#phones").html() + '<div class="col-1"><a href="javascript:void(0);" class="remove_button"><span class="fa fa-minus"></span></a></div></div>'; //New input field html
-            var x = 1; //Initial field counter is 1
-            var y = 1; //Initial email field counter is 1
+            var x = {{count($user->phones)}}; //Initial field counter is 1
+            var y = {{count($user -> emails)}}; //Initial email field counter is 1
 
 
             //Once add button is clicked

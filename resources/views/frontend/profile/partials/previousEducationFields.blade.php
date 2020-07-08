@@ -2,7 +2,7 @@
 @if($user->exists && count($user->previousEducations))
     @foreach($user->previousEducations as $previousEducation)
         <div class="fieldGroup" id="fieldGroup{{ $loop->iteration }}">
-            {{ Form::hidden('previous_education_id[]', $previousEducation->id) }}
+            {{ Form::hidden('previous_education_id[]', $previousEducation->Id) }}
 
             <div class="form-group row">
                 <label for="previous_education_level" class="col-4 col-form-label">Təhsil Pilləsi</label>
