@@ -54,7 +54,7 @@
         <div class="col-8">
             <select name="company_id" id="company_id" class="form-control">
                 @foreach($companies as $company)
-                    <option value="{{$company -> Id}}">{{$company -> Name}}</option>
+                    <option {{ $user->exists && $user -> currentJob ->first() -> CompanyId == $company -> Id ? 'selected' :''   }} value="{{$company -> Id}}">{{$company -> Name}}</option>
                 @endforeach
             </select>
 
@@ -70,7 +70,7 @@
         <label for="organization" class="col-4 col-form-label">Təşkilat</label>
         <div class="col-8">
             {{ Form::text('organization',
-            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
+            ($user->exists && isset($user -> currentJob -> first() -> Organization)) ? $user -> currentJob -> first() -> Organization : null,
              ['class' => ($errors->has('organization')) ? 'form-control is-invalid' :'form-control']) }}
             @if ($errors->has('organization'))
                 <div class="invalid-feedback">
@@ -83,7 +83,7 @@
         <label for="department" class="col-4 col-form-label">Struktur Bölmə</label>
         <div class="col-8">
             {{ Form::text('department',
-            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
+            ($user->exists && isset($user->currentJob)) ? $user -> currentJob -> first() -> Department : null,
              ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Struktur Bölmə sahəsini boş buraxmayın'  ]) }}
             @if ($errors->has('department'))
                 <div class="invalid-feedback">
@@ -98,7 +98,7 @@
         <label for="position" class="col-4 col-form-label">Vəzifə</label>
         <div class="col-8">
             {{ Form::text('position',
-            ($user->exists && isset($user->WorkExperienceYears)) ? $user->WorkExperienceYears : null,
+            ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> Position : null,
              ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Vəzifə sahəsini boş buraxmayın','id' => 'position']) }}
             @if ($errors->has('position'))
                 <div class="invalid-feedback">
@@ -113,7 +113,7 @@
     <div class="form-group row required">
         <label for="StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            {{ Form::date('StartDate', ($user->exists) ? $user->Dob->format('Y-m-d') : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate']) }}
+            {{ Form::date('StartDate', ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> StartDate : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate']) }}
             @if ($errors->has('StartDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('StartDate') }}</strong>
@@ -128,7 +128,7 @@
             <label for="tabel_number" class="col-4 col-form-label">Tabel nömrəniz</label>
             <div class="col-8">
                 {{ Form::text('tabel_number',
-                    ( $user->exists && $user->IsCurrentlyWorkAtSocar == 1 && isset($user->PersonalNumber) ) ? $user->PersonalNumber : ( old('tabel_number')  ? old('tabel_number') : null ),
+                    ( $user->exists && isset($user -> currentJob) ) ? $user -> currentJob -> first() -> TabelNo : ( old('tabel_number')  ? old('tabel_number') : null ),
                      ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-required-error"=>'Tabel nömrəniz sahəsini boş buraxmayın','id' =>'tabel_number']
                 ) }}
                 @if ($errors->has('tabel_number'))
@@ -146,23 +146,7 @@
 </div>
     <hr>
 </div>
-<div class="form-group row" >
-    <div class="form-group col-3">
-        <label class="form-check-label" for="defaultCheck1">
-            Əvvəlki iş təcrübəsi
-        </label>
-    </div>
-    <div class="form-group col-2">
-        <input class="form-check-input" type="checkbox" value="" id="checkWork" name="prog">
-    </div>
 
-    <div class="form-group col-4">
-        <button href="javascript:void(0)" class="btn btn-primary" type="button" aria-hidden="true"
-                id="addMoreWork">
-             Əlavə et
-        </button>
-    </div>
-</div>
 
 {{--div#workFieldGroup--}}
  {{--work history field group--}}

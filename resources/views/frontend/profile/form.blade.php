@@ -608,6 +608,24 @@
                 <hr>
 
                 @include('frontend.profile.partials.workAndScholarshipFields')
+                @include('frontend.profile.partials.previousWorkAndScholarshipFields')
+                <div class="form-group row" >
+                    <div class="form-group col-3">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Əvvəlki iş təcrübəsi
+                        </label>
+                    </div>
+                    <div class="form-group col-2">
+                        <input class="form-check-input" type="checkbox" value="" id="checkWork" name="prog">
+                    </div>
+
+                    <div class="form-group col-4">
+                        <button href="javascript:void(0)" class="btn btn-primary" type="button" aria-hidden="true"
+                                id="addMoreWork">
+                            Əlavə et
+                        </button>
+                    </div>
+                </div>
 
 
                 {{--                <div class="form-group row required">--}}
@@ -721,7 +739,7 @@
                 var tabel_number = $('#tabel_number').val();
                 var error =1;
 
-                if(tabel_number.length != 9) {
+                if(tabel_number.length != 9 && fin != '') {
 
                     $.ajax({
                         async: false,
@@ -730,7 +748,7 @@
                         type: "post",
                         dataType: "json",
                         success: function (data) {
-                            if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '') {
+                            if ((data.OutParams.Status != 3 && data.OutParams.Status != '' ) || data.OutParams.Status == '') {
                                 alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
                                 error = 1;
                             } else {
@@ -1496,7 +1514,7 @@
             $('#BirthCityId').trigger("change");
             $('#country_id').trigger("change");
             $('select#ex_previous_education_country_id').trigger("change");
-
+            $('#previous_company_id').trigger('change');
 
         });
 

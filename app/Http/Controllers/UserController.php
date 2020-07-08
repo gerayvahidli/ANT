@@ -138,7 +138,7 @@ class UserController extends Controller
 		if ( $user->id != Auth::user()->id ) {
 			return redirect( route( 'profile.edit', Auth::user() ) );
 		}
-		$user->load( 'finalEducation', 'previousEducations', 'phones.operatorCode','BirthCity','emails' );
+		$user->load( 'finalEducation', 'previousEducations', 'phones.operatorCode','BirthCity','emails','currentJob', 'previousJobs' );
 		$countries       = Country::all();
 		$cities          = City::where('IsShow',1) -> get();
 		$educationLevels = EducationLevel::all();
@@ -150,7 +150,7 @@ class UserController extends Controller
 		$mobilePhoneOperatorCodes = MobileOperatorCode::pluck( 'Name', 'id' );
 //		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
 		$genders                  = Gender::all();
-		$companies = Company::all();
+		$companies = Company::where('IsSocar',1) -> get();
 
 		return view( 'frontend.profile.form',
 			compact( 'user', 'countries', 'cities','genders','mobilePhoneOperatorCodes','educationLevels','universities','educationForms','educationSections','educationPaymentForms','companies' )
