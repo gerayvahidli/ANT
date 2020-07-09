@@ -8,6 +8,8 @@ class JobInfo extends Model
 {
     protected $table = 'JobInfoes';
 
+    protected $primaryKey = 'Id';
+
     public $timestamps = false;
     //protected $dateFormat = 'Y-m-d H:i:s+';
 
@@ -21,8 +23,9 @@ class JobInfo extends Model
         'CompanyId',
         'Department',
         'Position',
-        'Position',
+        'Organization',
         'StartDate',
+        'EndDate',
         'TabelNo',
         'IsCurrent',
     ];

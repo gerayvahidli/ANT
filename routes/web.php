@@ -113,6 +113,7 @@ Route::post('getUniversitiesByCountry', 'UserController@getUniversitiesByCountry
 Route::post('checkUniqueEmail', 'UserController@checkUniqueEmail')->name('checkUniqueEmail');
 Route::post('checkUniquePinCode', 'UserController@checkUniquePinCode')->name('checkUniquePinCode');
 Route::post('deletePreviousEducation', 'UserController@deletePreviousEducation')->name('deletePreviousEducation');
+Route::post('deletePreviousJob', 'UserController@deletePreviousJob')->name('deletePreviousJob');
 Route::post('deleteInternship', 'UserController@deleteInternship')->name('deleteInternship');
 Route::post('deleteScholarship', 'UserController@deleteScholarship')->name('deleteScholarship');
 Route::post('getPrametersByFin', 'Auth\RegisterController@getPrametersByFin')->name('getPrametersByFin');

@@ -1,6 +1,7 @@
-
 @if($user->exists && count($user->previousEducations))
+    <p class="lead"> ƏVVƏLKİ TƏHSİLLƏRİ</p>
     @foreach($user->previousEducations as $previousEducation)
+        <p class="lead"> Əvvəlki təhsil {{$loop -> iteration}}</p>
         <div class="fieldGroup" id="fieldGroup{{ $loop->iteration }}">
             {{ Form::hidden('previous_education_id[]', $previousEducation->Id) }}
 
@@ -150,6 +151,7 @@
             <div class="input-group-addon">
                 <a href="javascript:void(0)" class="btn btn-danger remove" id="delete-previous-education"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
             </div>
+            <br>
         </div> {{--fieldGroup--}}
     @endforeach
 @else

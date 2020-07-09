@@ -1,13 +1,16 @@
 @if($user->exists && count($user->previousJobs))
+    <p class="lead"> ƏVVƏLKI İŞ YERLƏRİ</p>
     @foreach($user->previousJobs as $previousJob)
-        <div class="workFieldGroup" id="workFieldGroup">
-            <p class="lead"> Əvvəlki iş yerləri</p>
+        <div class="workFieldGroup" id="workFieldGroup{{ $loop->iteration }}">
+            <p class="lead"> Əvvəlki iş yeri {{$loop -> iteration}}</p>
             <hr>
             <div class="form-group row required">
                 <label for="previous_company_id" class="col-4 col-form-label">Müəssisə</label>
                 <div class="col-8">
+                        {{ Form::hidden('previous_job_id[]', $previousJob->Id) }}
+                        {{ Form::hidden('hidden_company_id[]', $previousJob->CompanyId) }}
 
-                    <select class="form-control" id="previous_company_id" name="previous_company_id[]">
+                    <select class="form-control" id="ex_previous_company_id" name="previous_company_id[]">
                         @if($user -> exists && $previousJob -> Company -> IsSocar== 0)
 
                             @foreach($companies as $company)
@@ -72,6 +75,11 @@
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
+            <hr>
+            <div class="input-group-addon">
+                <a href="javascript:void(0)" class="btn btn-danger removeWork" id="delete-previous-job"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>
+            </div>
+            <br>
 
         </div>
     @endforeach

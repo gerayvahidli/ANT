@@ -15,6 +15,7 @@ use App\Email;
 use App\ExamLanguage;
 use App\ExternalProgramApplication;
 use App\Gender;
+use App\JobInfo;
 use App\MobileOperatorCode;
 use App\Phone;
 use App\Education;
@@ -27,24 +28,25 @@ use App\ProgramType;
 use App\University;
 use App\User, Auth;
 use Illuminate\Http\Request, Form, Storage;
+use Illuminate\Queue\Jobs\Job;
 
 class UserController extends Controller
 {
 
-	public function __construct ()
-	{
+    public function __construct()
+    {
 //        Auth::logout();
 //        Auth::loginUsingId(1, true);
-	}
+    }
 
 
-	public function index ()
-	{
-		$user           =
-			User::with( 'country','gender', 'BirthCity','phones','emails','finalEducation','previousEducations'
-                ,'currentJob','previousJobs')
-				->find( \Auth::user()->id );
-		$homePhone = $user->phones -> where('PhoneTypeId',1) -> first();
+    public function index()
+    {
+        $user =
+            User::with('country', 'gender', 'BirthCity', 'phones', 'emails', 'finalEducation', 'previousEducations'
+                , 'currentJob', 'previousJobs')
+                ->find(\Auth::user()->id);
+        $homePhone = $user->phones->where('PhoneTypeId', 1)->first();
 
 //        dd($finalEducation);
 
@@ -67,179 +69,178 @@ class UserController extends Controller
 //				'first_stage_note',
 //			] )->where( 'user_id', $user->id )->get();
 
-		return view( 'frontend.profile.index', compact( 'user', 'homePhone' ) );
-	}
+        return view('frontend.profile.index', compact('user', 'homePhone'));
+    }
 
-	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function showFeedbackForm ()
-	{
-		$user = User::with( 'country', 'city', 'phones.operatorCode' )->find( \Auth::user()->id );
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showFeedbackForm()
+    {
+        $user = User::with('country', 'city', 'phones.operatorCode')->find(\Auth::user()->id);
 
-		return view( 'frontend.profile.feedbackForm', compact( 'user' ) );
-	}
+        return view('frontend.profile.feedbackForm', compact('user'));
+    }
 
-	/**
-	 * @param \Illuminate\Http\Request $request
-	 */
-	public function sendFeedbackMailToTis ( Request $request )
-	{
-		//    return new FromUserToTis($request);
-		$request->validate( [
-			'message' => 'required|string|min:3',
-			'file'    => 'nullable|mimes:jpeg,bmp,png,pdf,doc,docx,xls,xlsx,rar,zip',
-		] );
-		$userData = [
-			'full_name'    => Auth::user()->LastName . ' ' . Auth::user()->FirstName . ' ' . Auth::user()->FatherName,
-			'id_pin'       => Auth::user()->IdentityCardCode,
-			'email'        => Auth::user()->email,
-			'date'         => date( "Y-m-d H:i:s" ),
-			'message'      => $request->message,
-			'file'         => ($request->has('file')) ? $request->file : null,
-			'phone_number' => $request->phone_number
-		];
-		\Mail::to( 'tis@socar.az' )->send( new FromUserToTis( $userData ) );
+    /**
+     * @param \Illuminate\Http\Request $request
+     */
+    public function sendFeedbackMailToTis(Request $request)
+    {
+        //    return new FromUserToTis($request);
+        $request->validate([
+            'message' => 'required|string|min:3',
+            'file' => 'nullable|mimes:jpeg,bmp,png,pdf,doc,docx,xls,xlsx,rar,zip',
+        ]);
+        $userData = [
+            'full_name' => Auth::user()->LastName . ' ' . Auth::user()->FirstName . ' ' . Auth::user()->FatherName,
+            'id_pin' => Auth::user()->IdentityCardCode,
+            'email' => Auth::user()->email,
+            'date' => date("Y-m-d H:i:s"),
+            'message' => $request->message,
+            'file' => ($request->has('file')) ? $request->file : null,
+            'phone_number' => $request->phone_number
+        ];
+        \Mail::to('tis@socar.az')->send(new FromUserToTis($userData));
 //		\Mail::to( 'ilkin.fleydanli@socar.az' )->send( new FromUserToTis( $userData ) );
 
-		return redirect( route( 'profile.index' ) );
-	}
+        return redirect(route('profile.index'));
+    }
 
 
-	/**
-	 * @param \App\User $user
-	 *
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function registration ( User $user )
-	{
-		$countries                = Country::all()->pluck( 'Name', 'id' );
-		$cities                   = City::where( 'IsMain', true )->get()->pluck( 'Name', 'id' );
-		$educationLevels          = EducationLevel::all()->where( 'id', '<', 3 )->pluck( 'Name', 'id' );
-		$universities             = University::orderBy('Name', 'desc')->get()->pluck( 'Name', 'id' );
-		$educationForms           = EducationForm::all()->pluck( 'Name', 'id' );
-		$educationSections        = EducationSection::where( 'IsMain', true )->get()->pluck( 'Name', 'id' );
-		$educationPaymentForms    = EducationPaymentForm::all()->pluck( 'Name', 'id' );
-		$examLanguages            = ExamLanguage::all()->pluck( 'Name', 'id' );
-		$mobilePhoneOperatorCodes = MobileOperatorCode::all()->pluck( 'Code', 'id' );
-		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
+    /**
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function registration(User $user)
+    {
+        $countries = Country::all()->pluck('Name', 'id');
+        $cities = City::where('IsMain', true)->get()->pluck('Name', 'id');
+        $educationLevels = EducationLevel::all()->where('id', '<', 3)->pluck('Name', 'id');
+        $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
+        $educationForms = EducationForm::all()->pluck('Name', 'id');
+        $educationSections = EducationSection::where('IsMain', true)->get()->pluck('Name', 'id');
+        $educationPaymentForms = EducationPaymentForm::all()->pluck('Name', 'id');
+        $examLanguages = ExamLanguage::all()->pluck('Name', 'id');
+        $mobilePhoneOperatorCodes = MobileOperatorCode::all()->pluck('Code', 'id');
+        $programTypes = ProgramType::where('id', '<', 3)->get()->pluck('Name', 'id');
 
-		return view( 'frontend.profile.form',
-			compact( 'user', 'countries', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'examLanguages', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'programTypes' )
-		);
-	}
+        return view('frontend.profile.form',
+            compact('user', 'countries', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'examLanguages', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'programTypes')
+        );
+    }
 
-	/**
-	 * @param \App\User $user
-	 *
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function edit ( User $user )
-	{
-		if ( $user->id != Auth::user()->id ) {
-			return redirect( route( 'profile.edit', Auth::user() ) );
-		}
-		$user->load( 'finalEducation', 'previousEducations', 'phones.operatorCode','BirthCity','emails','currentJob', 'previousJobs' );
-		$countries       = Country::all();
-		$cities          = City::where('IsShow',1) -> get();
-		$educationLevels = EducationLevel::all();
-		$universities             = University::all();
-		$educationForms  = EducationForm::pluck( 'Name', 'id' );
-        $educationSections = EducationSection::all();
-        $educationPaymentForms    = EducationPaymentForm::pluck( 'Name', 'id' );
-//		$examLanguages            = ExamLanguage::all()->pluck( 'Name', 'id' );
-		$mobilePhoneOperatorCodes = MobileOperatorCode::pluck( 'Name', 'id' );
-//		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
-		$genders                  = Gender::all();
-		$companies = Company::where('IsSocar',1) -> get();
-
-		return view( 'frontend.profile.form',
-			compact( 'user', 'countries', 'cities','genders','mobilePhoneOperatorCodes','educationLevels','universities','educationForms','educationSections','educationPaymentForms','companies' )
-		);
-	}
-
-	/**
-	 * @param \Illuminate\Http\Request $request
-	 */
-	public function store ( Request $request )
-	{
-
-
-		$user                         = new User;
-		$user->Email                  = $request->email;
-		$user->FirstName              = $request->FirstName;
-		$user->LastName               = $request->LastName;
-		$user->FatherName             = $request->FatherName;
-		$user->Email                  = $request->email;
-		$user->Password               = $request->password;
-		$user->Dob                    = $request->dateOfBirth;
-		$user->city_id                = 1;
-		$user->country_id             = 1;
-		$user->Address                = $request->Address;
-		$user->IdentityCardNumber     = $request->idCardNumber;
-		$user->IdentityCardCode       = $request->idCardPin;
-		$user->MaidenSurname          = $request->MaidenSurname;
-		$user->IsCurrentlyWorking     = $request->is_currently_working;
-		$user->IsCurrentlyWorkAtSocar = $request->is_currently_working_at_socar;
-		$user->PersonalNumber         = $request->personal_number;
-		$user->WorkCompany            = $request->work_company;
-		$user->WorkExperienceYears    = $request->work_experience;
-		$user->exam_language_id       = 1;
-		$user->save();
-		$finalEducation = $this->storeFinalEducation( $request, $user );
-
-		return [
-			'user'           => $user,
-			'finalEducation' => $finalEducation,
-		];
-
-	}
-
-	public function storeFinalEducation ( Request $request, $user )
-	{
-		$finalEducation                     = new FinalEducation;
-		$finalEducation->user_id            = $user->id;
-		$finalEducation->education_level_id = $request->education_level;
-		$finalEducation->university_id      = $request->university_id;
-		$finalEducation->BeginDate          = $request->BeginDate;
-		$finalEducation->EndDate            = $request->EndDate;
-		$finalEducation->CurrentEduYear     = $request->current_edu_year;
-		$finalEducation->Faculty            = $request->faculty;
-		$finalEducation->Speciality         = $request->speciality;
-		$finalEducation->AdmissionScore     = $request->admission_score;
-		if ( $request->education_section_id == 4 && isset( $request->education_section_id ) ) {
-			$educationSection         = new EducationSection;
-			$educationSection->Name   = $request->education_section_id;
-			$educationSection->IsMain = 0;
-			$educationSection->save();
-			$finalEducation->education_section_id = $educationSection->id;
-		} else {
-			$finalEducation->education_section_id = $request->education_section_id;
-		}
-		$finalEducation->education_form_id         = $request->education_form_id;
-		$finalEducation->education_payment_form_id = $request->education_payement_form_id;
-		$finalEducation->save();
-
-		return $finalEducation;
-	}
-
-
-	/**
-	 * @param \Illuminate\Http\Request $request
-	 * @param \App\User                $user
-	 */
-	public function update ( Request $request, User $user )
-	{
-
-
-//return $user -> previousEducations;
-
-
-
-        if ( $user->id != Auth::user()->id ) {
-            return redirect( route( 'profile.edit', Auth::user() ) );
+    /**
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(User $user)
+    {
+        if ($user->id != Auth::user()->id) {
+            return redirect(route('profile.edit', Auth::user()));
         }
-        
+        $user->load('finalEducation', 'previousEducations', 'phones.operatorCode', 'BirthCity', 'emails', 'currentJob', 'previousJobs');
+        $countries = Country::all();
+        $cities = City::where('IsShow', 1)->get();
+        $educationLevels = EducationLevel::all();
+        $universities = University::all();
+        $educationForms = EducationForm::pluck('Name', 'id');
+        $educationSections = EducationSection::all();
+        $educationPaymentForms = EducationPaymentForm::pluck('Name', 'id');
+//		$examLanguages            = ExamLanguage::all()->pluck( 'Name', 'id' );
+        $mobilePhoneOperatorCodes = MobileOperatorCode::pluck('Name', 'id');
+//		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
+        $genders = Gender::all();
+        $companies = Company::where('IsSocar', 1)->get();
+
+        return view('frontend.profile.form',
+            compact('user', 'countries', 'cities', 'genders', 'mobilePhoneOperatorCodes', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'educationPaymentForms', 'companies')
+        );
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     */
+    public function store(Request $request)
+    {
+
+
+        $user = new User;
+        $user->Email = $request->email;
+        $user->FirstName = $request->FirstName;
+        $user->LastName = $request->LastName;
+        $user->FatherName = $request->FatherName;
+        $user->Email = $request->email;
+        $user->Password = $request->password;
+        $user->Dob = $request->dateOfBirth;
+        $user->city_id = 1;
+        $user->country_id = 1;
+        $user->Address = $request->Address;
+        $user->IdentityCardNumber = $request->idCardNumber;
+        $user->IdentityCardCode = $request->idCardPin;
+        $user->MaidenSurname = $request->MaidenSurname;
+        $user->IsCurrentlyWorking = $request->is_currently_working;
+        $user->IsCurrentlyWorkAtSocar = $request->is_currently_working_at_socar;
+        $user->PersonalNumber = $request->personal_number;
+        $user->WorkCompany = $request->work_company;
+        $user->WorkExperienceYears = $request->work_experience;
+        $user->exam_language_id = 1;
+        $user->save();
+        $finalEducation = $this->storeFinalEducation($request, $user);
+
+        return [
+            'user' => $user,
+            'finalEducation' => $finalEducation,
+        ];
+
+    }
+
+    public function storeFinalEducation(Request $request, $user)
+    {
+        $finalEducation = new FinalEducation;
+        $finalEducation->user_id = $user->id;
+        $finalEducation->education_level_id = $request->education_level;
+        $finalEducation->university_id = $request->university_id;
+        $finalEducation->BeginDate = $request->BeginDate;
+        $finalEducation->EndDate = $request->EndDate;
+        $finalEducation->CurrentEduYear = $request->current_edu_year;
+        $finalEducation->Faculty = $request->faculty;
+        $finalEducation->Speciality = $request->speciality;
+        $finalEducation->AdmissionScore = $request->admission_score;
+        if ($request->education_section_id == 4 && isset($request->education_section_id)) {
+            $educationSection = new EducationSection;
+            $educationSection->Name = $request->education_section_id;
+            $educationSection->IsMain = 0;
+            $educationSection->save();
+            $finalEducation->education_section_id = $educationSection->id;
+        } else {
+            $finalEducation->education_section_id = $request->education_section_id;
+        }
+        $finalEducation->education_form_id = $request->education_form_id;
+        $finalEducation->education_payment_form_id = $request->education_payement_form_id;
+        $finalEducation->save();
+
+        return $finalEducation;
+    }
+
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\User $user
+     */
+    public function update(Request $request, User $user)
+    {
+
+
+//        return $user->previousJobs;
+
+
+        if ($user->id != Auth::user()->id) {
+            return redirect(route('profile.edit', Auth::user()));
+        }
+
 //		return $request;
 //		$request->validate( [
 //			'image'                                => 'image|mimes:jpeg,bmp,png',
@@ -300,43 +301,40 @@ class UserController extends Controller
 ////			'exam_language_id'                     => 'required',
 //		] );
 
-		isset($user->image)?  $user->ImagePath     = $this->createImage( $request, $user->image ):'';
+        isset($user->image) ? $user->ImagePath = $this->createImage($request, $user->image) : '';
 //		$user->email      = $request->email;
-		$user->FirstName  = $request->FirstName;
-		$user->LastName   = $request->LastName;
-		$user->FatherName = $request->FatherName;
-        $user->GenderId   = $request->gender;
-		$user->Dob        = $request->Dob;
-        if ($request -> BirthCityId == 'other') {
+        $user->FirstName = $request->FirstName;
+        $user->LastName = $request->LastName;
+        $user->FatherName = $request->FatherName;
+        $user->GenderId = $request->gender;
+        $user->Dob = $request->Dob;
+        if ($request->BirthCityId == 'other') {
             $city = new City;
-            $city->Name = $request -> otherCity;
+            $city->Name = $request->otherCity;
             $city->IsShow = 0;
             $city->save();
 
             $user->BirthCityId = $city->id;
         } else {
-            $user->BirthCityId = $request -> BirthCityId;
+            $user->BirthCityId = $request->BirthCityId;
         }
-        $user->CitizenCountryId   = $request -> nationality;
-        $user->AddressMain        = $request -> Address;
-        $user->Address2           = $request -> Address2;
-
+        $user->CitizenCountryId = $request->nationality;
+        $user->AddressMain = $request->Address;
+        $user->Address2 = $request->Address2;
 
 
 //        $user->PassportNo =  $request -> idCardNumber;
 //        $user->Fin = $request -> idCardPin;
 
 
-
-
-
-
         $user->save();
-        $mobilePhone         = $this->saveMobilePhone( $request, $user );
-        $previousEducation   = $this->updatePreviousEducation( $request, $user );
+        $mobilePhone = $this->saveMobilePhone($request, $user);
+        $emails = $this->saveEmails($request, $user);
+        $finalEducation = $this->updateFinalEducation($request, $user);
+        $previousEducation = $this->updatePreviousEducation($request, $user);
 
-        $emails              = $this->saveEmails( $request, $user );
-        $finalEducation      = $this->updateFinalEducation( $request, $user );
+        $finalJob = $this->updateJob($request, $user);
+        return $previousJob = $this->updatePreviousJob($request, $user);
 
 
         return "yes";
@@ -344,25 +342,24 @@ class UserController extends Controller
 //		$previousInternship  = $this->savePreviousInternship( $request, $user );
 //		$previousScholarship = $this->savePreviousScholarship( $request, $user );
 
-		flash()->overlay( 'Profildə dəyişiklikər uğurla tamamlandı' );
+        flash()->overlay('Profildə dəyişiklikər uğurla tamamlandı');
 
 //		return response()->json( [
 //			'status' => 'success',
 //			'msg'    => 'Okay',
 //		], 201 );
 
-		return redirect( route( 'profile.index' ) );
-	}
+        return redirect(route('profile.index'));
+    }
 
-	public function updateFinalEducation ( Request $request, $user )
-	{
-
-		if ( isset( $request->final_education_id ) ) {
-			$finalEducation = Education::where( 'UserId', $user->id )->find( $request->final_education_id );
-		} else {
-			$finalEducation          = new FinalEducation;
-			$finalEducation->UserId = $user->id;
-		}
+    public function updateFinalEducation(Request $request, $user)
+    {
+        if (isset($request->final_education_id)) {
+            $finalEducation = Education::where('UserId', $user->id)->find($request->final_education_id);
+        } else {
+            $finalEducation = new FinalEducation;
+            $finalEducation->UserId = $user->id;
+        }
 
         $finalEducation->EducationLevelId = $request->education_level;
         $finalEducation->UniversityId = $request->university_id;
@@ -370,7 +367,7 @@ class UserController extends Controller
         $finalEducation->EndDate = $request->EndDate;
         $finalEducation->Faculty = $request->faculty;
         $finalEducation->Speciality = $request->speciality;
-        $finalEducation->AdmissionScore = ($request->country_id == 1) ? $request-> admission_score  : 0  ;
+        $finalEducation->AdmissionScore = ($request->country_id == 1) ? $request->admission_score : 0;
         $finalEducation->EducationFormId = $request->education_form_id;
         $finalEducation->EducationSectionId = $request->education_section_id;
         $finalEducation->EducationPaymentFormId = $request->education_payment_form_id;
@@ -393,91 +390,189 @@ class UserController extends Controller
 //		if ( isset( $request->education_payment_form_id ) ) {
 //			$finalEducation->education_payment_form_id = $request->education_payment_form_id;
 //		}
-		$finalEducation->save();
+        $finalEducation->save();
 
-		return $finalEducation;
-	}
+        return $finalEducation;
+    }
 
-	public function updatePreviousEducation ( Request $request, $user )
-	{
-		$previousEducationData = [];
+    public function updatePreviousEducation(Request $request, $user)
+    {
+        $previousEducationData = [];
 
-		if ( isset( $request->previous_education_country_id ) ) {
+        if (isset($request->previous_education_country_id)) {
 
-			foreach ( $request->previous_education_country_id as $i => $previousEducationCountryId ) {
+            foreach ($request->previous_education_country_id as $i => $previousEducationCountryId) {
 
 //			    return $request->previous_education_admission_score[ $i ];
-				// make array from form
-				if ( isset( $request->previous_education_university_id[ $i ] ) &&
-				     $request->previous_education_university_id[ $i ] != '' ) {
-					$date                        = 1800;
-					$previousEducationData[ $i ] = [
-						'user_id'            => $user->id,
-						'id'                 => ( isset( $request->previous_education_id[ $i ] ) ) ? $request->previous_education_id[ $i ] : null,
-						'education_level_id' => $request->previous_education_level[ $i ],
-                        'university_id'      => $request->previous_education_university_id[ $i ],
-						'BeginDate'          => ( $request->previous_education_BeginDate[ $i ] ) ? $request->previous_education_BeginDate[ $i ] : $date,
-						'EndDate'            => ( $request->previous_education_EndDate[ $i ] ) ? $request->previous_education_EndDate[ $i ] : $date,
-						'Faculty'            => $request->previous_education_faculty[ $i ],
-                        'Speciality'         => $request->previous_education_speciality[ $i ],
-                        'AdmissionScore'     => $request->previous_education_country_id[ $i ] == 1 ?  $request->previous_education_admission_score[ $i ] : 0,
-                        'education_section_id'         => $request->previous_education_section_id[ $i ],
-                        'education_form_id'         => $request->previous_education_form_id[ $i ],
-                        'education_payment_form_id'         => $request->previous_education_payment_form_id[ $i ],
-                        'GPA'     =>  $request->previous_education_GPA[ $i ]
+                // make array from form
+                if (isset($request->previous_education_university_id[$i]) &&
+                    $request->previous_education_university_id[$i] != '') {
+                    $date = 1800;
+                    $previousEducationData[$i] = [
+                        'user_id' => $user->id,
+                        'id' => (isset($request->previous_education_id[$i])) ? $request->previous_education_id[$i] : null,
+                        'education_level_id' => $request->previous_education_level[$i],
+                        'university_id' => $request->previous_education_university_id[$i],
+                        'BeginDate' => ($request->previous_education_BeginDate[$i]) ? $request->previous_education_BeginDate[$i] : $date,
+                        'EndDate' => ($request->previous_education_EndDate[$i]) ? $request->previous_education_EndDate[$i] : $date,
+                        'Faculty' => $request->previous_education_faculty[$i],
+                        'Speciality' => $request->previous_education_speciality[$i],
+                        'AdmissionScore' => $request->previous_education_country_id[$i] == 1 ? $request->previous_education_admission_score[$i] : 0,
+                        'education_section_id' => $request->previous_education_section_id[$i],
+                        'education_form_id' => $request->previous_education_form_id[$i],
+                        'education_payment_form_id' => $request->previous_education_payment_form_id[$i],
+                        'GPA' => $request->previous_education_GPA[$i]
 
 
                     ];
-				}
-			}
+                }
+            }
 
 
-			// go through previous educations array - if element of this array(previous education) is exists then update else create new previous education
-			foreach ( $previousEducationData as $previousEdu ) {
-				if ( isset( $previousEdu[ 'id' ] ) ) {
-					$previousEducation =
-						Education::where( 'UserId', $user->id )->find( $previousEdu[ 'id' ] );
-					$previousEducation->update( [
-						'UniversityId'      => $previousEdu[ 'university_id' ],
-						'EducationLevelId' => $previousEdu[ 'education_level_id' ],
-						'StartDate'          => $previousEdu[ 'BeginDate' ],
-						'EndDate'            => $previousEdu[ 'EndDate' ],
-                        'Faculty'         => $previousEdu[ 'Faculty' ],
-                        'Speciality'         => $previousEdu[ 'Speciality' ],
-						'AdmissionScore'     => $previousEdu[ 'AdmissionScore' ],
-                        'EducationSectionId'     => $previousEdu[ 'education_section_id' ],
-                        'EducationFormId'     => $previousEdu[ 'education_form_id' ],
-                        'EducationPaymentFormId'     => $previousEdu[ 'education_payment_form_id' ],
-                        'GPA'     =>  $previousEdu[ 'GPA' ]
+            // go through previous educations array - if element of this array(previous education) is exists then update else create new previous education
+            foreach ($previousEducationData as $previousEdu) {
+                if (isset($previousEdu['id'])) {
+                    $previousEducation =
+                        Education::where('UserId', $user->id)->find($previousEdu['id']);
+                    $previousEducation->update([
+                        'UniversityId' => $previousEdu['university_id'],
+                        'EducationLevelId' => $previousEdu['education_level_id'],
+                        'StartDate' => $previousEdu['BeginDate'],
+                        'EndDate' => $previousEdu['EndDate'],
+                        'Faculty' => $previousEdu['Faculty'],
+                        'Speciality' => $previousEdu['Speciality'],
+                        'AdmissionScore' => $previousEdu['AdmissionScore'],
+                        'EducationSectionId' => $previousEdu['education_section_id'],
+                        'EducationFormId' => $previousEdu['education_form_id'],
+                        'EducationPaymentFormId' => $previousEdu['education_payment_form_id'],
+                        'GPA' => $previousEdu['GPA']
 
-                    ] );
-				} else {
-					$previousEducation = Education::create(
-						[
-							'UserId'            => $user->id,
-                            'UniversityId'      => $previousEdu[ 'university_id' ],
-                            'EducationLevelId' => $previousEdu[ 'education_level_id' ],
-                            'StartDate'          => $previousEdu[ 'BeginDate' ],
-                            'EndDate'            => $previousEdu[ 'EndDate' ],
-                            'Faculty'         => $previousEdu[ 'Faculty' ],
-                            'Speciality'         => $previousEdu[ 'Speciality' ],
-                            'AdmissionScore'     => $previousEdu[ 'AdmissionScore' ],
-                            'EducationSectionId'     => $previousEdu[ 'education_section_id' ],
-                            'EducationFormId'     => $previousEdu[ 'education_form_id' ],
-                            'EducationPaymentFormId'     => $previousEdu[ 'education_payment_form_id' ],
-                            'GPA'     =>  $previousEdu[ 'GPA' ],
+                    ]);
+                } else {
+                    $previousEducation = Education::create(
+                        [
+                            'UserId' => $user->id,
+                            'UniversityId' => $previousEdu['university_id'],
+                            'EducationLevelId' => $previousEdu['education_level_id'],
+                            'StartDate' => $previousEdu['BeginDate'],
+                            'EndDate' => $previousEdu['EndDate'],
+                            'Faculty' => $previousEdu['Faculty'],
+                            'Speciality' => $previousEdu['Speciality'],
+                            'AdmissionScore' => $previousEdu['AdmissionScore'],
+                            'EducationSectionId' => $previousEdu['education_section_id'],
+                            'EducationFormId' => $previousEdu['education_form_id'],
+                            'EducationPaymentFormId' => $previousEdu['education_payment_form_id'],
+                            'GPA' => $previousEdu['GPA'],
                             'IsCurrent' => 0
-						]
-					);
-				}
-			}
-		}
-	}
+                        ]
+                    );
+                }
+            }
+        }
+    }
 
-	public function saveMobilePhone ( Request $request, $user )
-	{   Phone::where('UserId',$user -> id) -> where('PhoneTypeId',2) -> delete();
 
-        foreach ( $request->mobilePhone as $mobilePhone ) {
+    public function updateJob(Request $request, $user)
+    {
+
+        if (isset($request->final_job_id)) {
+            $jobInfo = JobInfo::where('UserId', $user->id)->find($request->final_job_id);
+        } else {
+            $jobInfo = new JobInfo;
+            $jobInfo->UserId = $user->id;
+        }
+
+        $jobInfo->CompanyId = $request->company_id;
+        $jobInfo->Department = $request->department;
+        $jobInfo->Organization = $request->organization;
+        $jobInfo->Position = $request->position;
+        $jobInfo->StartDate = $request->StartDate;
+        $jobInfo->TabelNo = $request->tabel_number;
+        $jobInfo->IsCurrent = 1;
+
+        $jobInfo->save();
+
+
+        return $jobInfo;
+    }
+
+    public function updatePreviousJob(Request $request, $user)
+    {
+        $previousJobData = [];
+
+        if (isset($request->previous_company_id)) {
+
+            foreach ($request->previous_company_id as $i => $previousCompanyId) {
+                $companies = Company::all()->pluck('Name')->toArray();
+
+                if ($request->previous_company_id[$i] == 'other' && !in_array($request->otherCompany[$i], $companies)) {
+                    $company = new Company;
+                    $company->Name = $request->otherCompany[$i];
+                    $company->IsSocar = 0;
+                    $company->save();
+                    $company_id = $company->Id;
+                } elseif ($request->previous_company_id[$i] == 'other' && in_array($request->otherCompany[$i], $companies)) {
+                    $company_id = Company::where('name', $request->otherCompany[$i])->first()->Id;
+                } elseif ($request->previous_company_id[$i] != 'other') {
+                    $company_id = $request->previous_company_id[$i];
+                }
+
+
+                // make array from form
+                if (isset($request->previous_company_id[$i]) &&
+                    $request->previous_company_id[$i] != '') {
+                    $date = 1800;
+                    $previousJobData[$i] = [
+                        'user_id' => $user->id,
+                        'company_id' => $company_id,
+                        'id' => (isset($request->previous_job_id[$i])) ? $request->previous_job_id[$i] : null,
+                        'organization' => $request->previous_organization[$i] != '' ? $request->previous_organization[$i] : null,
+                        'department' => $request->previous_department[$i],
+                        'position' => $request->previous_position[$i],
+                        'start_date' => $request->previous_StartDate[$i],
+                        'end_date' => $request->previous_EndDate[$i],
+                    ];
+                }
+            }
+
+
+            // go through previous educations array - if element of this array(previous education) is exists then update else create new previous education
+            foreach ($previousJobData as $previousJob) {
+                if (isset($previousJob['id'])) {
+                    $previousJobInfo =
+                        JobInfo::where('UserId', $user->id)->find($previousJob['id']);
+                    $previousJobInfo->update([
+                        'Department' => $previousJob['department'],
+                        'CompanyId' => $previousJob['company_id'],
+                        'Organization' => $previousJob['organization'],
+                        'Position' => $previousJob['position'],
+                        'StartDate' => $previousJob['start_date'],
+                        'EndDate' => $previousJob['end_date'],
+                    ]);
+                } else {
+                    $previousJobInfo = JobInfo::create(
+                        [
+                            'UserId' => $user->id,
+                            'Department' => $previousJob['department'],
+                            'CompanyId' => $previousJob['company_id'],
+                            'Organization' => $previousJob['organization'],
+                            'Position' => $previousJob['position'],
+                            'StartDate' => $previousJob['start_date'],
+                            'EndDate' => $previousJob['end_date'],
+                            'IsCurrent' => 0
+                        ]
+                    );
+                }
+            }
+        }
+    }
+
+
+    public function saveMobilePhone(Request $request, $user)
+    {
+        Phone::where('UserId', $user->id)->where('PhoneTypeId', 2)->delete();
+
+        foreach ($request->mobilePhone as $mobilePhone) {
             $Phone = new Phone;
             $Phone->PhoneNumber = $mobilePhone['number'];
             $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
@@ -485,12 +580,14 @@ class UserController extends Controller
             $Phone->PhoneTypeId = 2;
 
             $Phone->save();
-		}
-	}
-    public function saveEmails ( Request $request, $user )
-    {   Email::where('UserId',$user -> id) -> delete();
+        }
+    }
 
-        foreach ( $request->email2 as $email ) {
+    public function saveEmails(Request $request, $user)
+    {
+        Email::where('UserId', $user->id)->delete();
+
+        foreach ($request->email2 as $email) {
             $Phone = new Email();
             $Phone->UserId = $user->id;
             $Phone->email = $email;
@@ -561,101 +658,111 @@ class UserController extends Controller
 //		}
 //	}
 
-	/**
-	 * @param \App\User $user
-	 */
-	public function editPassword ( User $user )
-	{
-		return view( 'frontend.profile.passwordChange', compact( 'user' ) );
-	}
+    /**
+     * @param \App\User $user
+     */
+    public function editPassword(User $user)
+    {
+        return view('frontend.profile.passwordChange', compact('user'));
+    }
 
-	/**
-	 * @param \Illuminate\Http\Request $request
-	 * @param \App\User                $user
-	 */
-	public function changePassword ( Request $request, User $user )
-	{
-		if ( \Hash::check( $request->old_password, $user->password ) ) {
-			$user->password = $request->password;
-			$user->save();
-			flash( 'Şifrə müvəffəqiyyətlə dəyişdirildi!' )->success();
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\User $user
+     */
+    public function changePassword(Request $request, User $user)
+    {
+        if (\Hash::check($request->old_password, $user->password)) {
+            $user->password = $request->password;
+            $user->save();
+            flash('Şifrə müvəffəqiyyətlə dəyişdirildi!')->success();
 
-			return redirect( route( 'profile.index' ) );
-		}
-		flash( 'Cari şifrə düzgün daxil edilməyib, zəhmət olmasa düzgün şifrəni daxil edərək bir daha yoxlayın!' )->error();
+            return redirect(route('profile.index'));
+        }
+        flash('Cari şifrə düzgün daxil edilməyib, zəhmət olmasa düzgün şifrəni daxil edərək bir daha yoxlayın!')->error();
 
-		return back();
-	}
+        return back();
+    }
 
-	public function createImage ( Request $request, $oldImage )
-	{
-		if ( $request->hasFile( 'image' ) ) {
-			$image     = $request->image;
-			$extension = $image->getClientOriginalExtension();
-			$imageName = time() . '.' . $extension;
-			$image->move( 'uploads/images/profile/', $imageName );
+    public function createImage(Request $request, $oldImage)
+    {
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            $extension = $image->getClientOriginalExtension();
+            $imageName = time() . '.' . $extension;
+            $image->move('uploads/images/profile/', $imageName);
 
-			return 'uploads/images/profile/' . $imageName;
-		}
+            return 'uploads/images/profile/' . $imageName;
+        }
 
-		return $oldImage;
-	}
+        return $oldImage;
+    }
 
-	/**
-	 * @param \Illuminate\Http\Request $request
-	 *
-	 * @return  $universities
-	 */
-	public function getUniversitiesByCountry ( Request $request )
-	{
-		if ( $request->ajax() ) {
-			$universities = University::where( 'CountryId', $request->country_id )->pluck( 'Name', 'id' );
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return  $universities
+     */
+    public function getUniversitiesByCountry(Request $request)
+    {
+        if ($request->ajax()) {
+            $universities = University::where('CountryId', $request->country_id)->pluck('Name', 'id');
 
-			return json_encode( $universities );
-		}
+            return json_encode($universities);
+        }
 
-	}
+    }
 
-	public function checkUniqueEmail ( Request $request )
-	{
-		if ( $request->ajax() ) {
-			$email = $request->email;
-			$user  = User::where( 'email', $email )->first();
+    public function checkUniqueEmail(Request $request)
+    {
+        if ($request->ajax()) {
+            $email = $request->email;
+            $user = User::where('email', $email)->first();
 //            return json_encode($user);
-			if ( $user ) {
-				return \Response::json( [ 'msg' => 'Belə bir istifadəçi artıq mövcuddur!' ], 400 );
+            if ($user) {
+                return \Response::json(['msg' => 'Belə bir istifadəçi artıq mövcuddur!'], 400);
 //                return json_encode(array("exists" => true));
-			} else {
-				return \Response::json( [ 'msg' => '' ], 200 );
-			}
-		}
-	}
+            } else {
+                return \Response::json(['msg' => ''], 200);
+            }
+        }
+    }
 
-	public function checkUniquePinCode ( Request $request )
-	{
-		if ( $request->ajax() ) {
-			$identityCardCode = $request->idCardPin;
-			$user             = User::where( 'identityCardCode', $identityCardCode )->first();
+    public function checkUniquePinCode(Request $request)
+    {
+        if ($request->ajax()) {
+            $identityCardCode = $request->idCardPin;
+            $user = User::where('identityCardCode', $identityCardCode)->first();
 //            return json_encode($user);
-			if ( $user ) {
-				return \Response::json( [ 'msg' => 'Bu FİN kod ilə artıq müraciət daxil olmuşdur!' ], 400 );
+            if ($user) {
+                return \Response::json(['msg' => 'Bu FİN kod ilə artıq müraciət daxil olmuşdur!'], 400);
 //                return json_encode(array("exists" => true));
-			} else {
-				return \Response::json( [ 'msg' => '' ], 200 );
-			}
-		}
-	}
+            } else {
+                return \Response::json(['msg' => ''], 200);
+            }
+        }
+    }
 
 
-	public function deletePreviousEducation ( Request $request )
-	{
-		 $previous_education = Education::find( $request->previous_education_id );
-		$result             = $previous_education->delete();
-		if ( $result ) {
-			return [ 'status' => 'ok', 'message' => 'Əvvəlki təhsil silindi' ];
-		}
-		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
-	}
+    public function deletePreviousEducation(Request $request)
+    {
+        $previous_education = Education::find($request->previous_education_id);
+        $result = $previous_education->delete();
+        if ($result) {
+            return ['status' => 'ok', 'message' => 'Əvvəlki təhsil silindi'];
+        }
+        return ['status' => 'error', 'message' => 'Xəta baş verdi'];
+    }
+
+    public function deletePreviousJob(Request $request)
+    {
+        $previous_job = JobInfo::find($request->previous_job_id);
+        $result = $previous_job->delete();
+        if ($result) {
+            return ['status' => 'ok', 'message' => 'Əvvəlki təhsil silindi'];
+        }
+        return ['status' => 'error', 'message' => 'Xəta baş verdi'];
+    }
 
 //	public function deleteInternship ( Request $request )
 //	{
@@ -677,47 +784,47 @@ class UserController extends Controller
 //		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
 //	}
 
-	public function loginLdap ()
-	{
-		try {
-			if ( Adldap::auth()->attempt( 'ilkin.fleydanli@socar.az', 'if21ll01ke88', $bindAsUser = true ) ) {
-				dump( \Auth::user() ); // the result always null
-				dd( 'Credentials were correct' );
-			} else {
-				dd( 'Credentials were incorrect' );
-			}
+    public function loginLdap()
+    {
+        try {
+            if (Adldap::auth()->attempt('ilkin.fleydanli@socar.az', 'if21ll01ke88', $bindAsUser = true)) {
+                dump(\Auth::user()); // the result always null
+                dd('Credentials were correct');
+            } else {
+                dd('Credentials were incorrect');
+            }
 
-		} catch ( \Adldap\Auth\UsernameRequiredException $e ) {
-			dd( 'The user didn\'t supply a username' );
-		} catch ( \Adldap\Auth\PasswordRequiredException $e ) {
-			dd( 'The user didn\'t supply a password' );
-		}
+        } catch (\Adldap\Auth\UsernameRequiredException $e) {
+            dd('The user didn\'t supply a username');
+        } catch (\Adldap\Auth\PasswordRequiredException $e) {
+            dd('The user didn\'t supply a password');
+        }
 
 //        $user = Adldap::search()->users()->get();
 //        $login = Adldap::auth()->attempt('ilkin.fleydanli@socar.az', 'if21ll01ke88', $bindAsUser = true);
 //        dd($login);
 //        dd($user);
-	}
+    }
 
-	/* public function applyScholarship($slug, User $user)
-	 {
-		 $reasons = \App\ArmyAvoidReason::pluck('Name', 'id')->toArray();
+    /* public function applyScholarship($slug, User $user)
+     {
+         $reasons = \App\ArmyAvoidReason::pluck('Name', 'id')->toArray();
 
-		 $array = array();
-		 foreach ($reasons as $key => $value) {
+         $array = array();
+         foreach ($reasons as $key => $value) {
 
-			 $from_sql  = ["{0}", "{n}+1"];
-			 $after_sql = [date('Y'), date('Y') + 1];
+             $from_sql  = ["{0}", "{n}+1"];
+             $after_sql = [date('Y'), date('Y') + 1];
 
-			 $text          = str_replace($from_sql, $after_sql, $value);
-			 $array[ $key ] = $text;
-		 }
+             $text          = str_replace($from_sql, $after_sql, $value);
+             $array[ $key ] = $text;
+         }
 
-		 $request->reasons_array' ] = $array;
+         $request->reasons_array' ] = $array;
 
 
-		 return view('frontend.profile.apply.' . $slug . 'Scholarship', $data);
-	 }
+         return view('frontend.profile.apply.' . $slug . 'Scholarship', $data);
+     }
  */
 
 
@@ -793,176 +900,176 @@ class UserController extends Controller
 //	}
 
 
-	public function relCity ( Request $req )
-	{
-		return Form::select( 'university_id', \App\University::where( 'country_id', $req->related_city )
-			->pluck( 'Name', 'id' )
-			->toArray(), null, [
-			'class' => 'form-control',
-			'id'    => 'university_id',
-		] );
-	}
+    public function relCity(Request $req)
+    {
+        return Form::select('university_id', \App\University::where('country_id', $req->related_city)
+            ->pluck('Name', 'id')
+            ->toArray(), null, [
+            'class' => 'form-control',
+            'id' => 'university_id',
+        ]);
+    }
 
 
-	public function uploadArchiveFile ( \App\Http\Requests\ArchiveFileValidation $req, $slug )
-	{
-		$storagePath =
-			Storage::disk( 'public' )->put( 'application/' . $slug . '/' . Auth::user()->id . '/temp', $req->file( 'file' ) );
+    public function uploadArchiveFile(\App\Http\Requests\ArchiveFileValidation $req, $slug)
+    {
+        $storagePath =
+            Storage::disk('public')->put('application/' . $slug . '/' . Auth::user()->id . '/temp', $req->file('file'));
 // Extract the filename
-		$storageName = basename( $storagePath );
+        $storageName = basename($storagePath);
 
-		// $path= Storage::disk('public')-> $req->file('file')->store('application/external');
-		return $storageName;
-	}
+        // $path= Storage::disk('public')-> $req->file('file')->store('application/external');
+        return $storageName;
+    }
 
-	public function storeExternal ( \App\Http\Requests\ExternalApplicationValidation $req )
-	{
+    public function storeExternal(\App\Http\Requests\ExternalApplicationValidation $req)
+    {
 
-		$external_program_app                                       = new \App\ExternalProgramApplication;
-		$external_program_app->specialty_id                         = $req->specialty_id;
-		$external_program_app->specialty_name                       = $req->specialty_name;
-		$external_program_app->program_id                           = $req->program_id;
-		$external_program_app->placement_status_id                  = 3;
-		$external_program_app->HasScholarshipFromOtherCompany       = Auth::user()->hasAppliedToScholarship;
-		$external_program_app->user_id                              = Auth::user()->id;
-		$external_program_app->country_id                           = $req->country_id;
-		$external_program_app->city_name                            = $req->city_name;
-		$external_program_app->university_id                        = $req->university_id;
-		$external_program_app->main_modules                         = $req->main_modules;
-		$external_program_app->EducationBeginDate                   =
-			date( 'Y-m-d H:i:s', strtotime( $req->EducationBeginDate ) );
-		$external_program_app->EducationEndDate                     =
-			date( 'Y-m-d H:i:s', strtotime( $req->EducationEndDate ) );
-		$external_program_app->education_fee                        = $req->education_fee;
-		$external_program_app->education_language                   = $req->education_language;
-		$external_program_app->language_education_certificate_id    = $req->language_education_certificate_id;
-		$external_program_app->language_education_certificate_score = $req->language_education_certificate_score;
-		$external_program_app->deposit_object_id                    = $req->deposit_object_id;
-		$external_program_app->located_city                         = $req->located_city;
-		$external_program_app->work_experience_details              = $req->work_experience_details;
-		$external_program_app->achievements                         = $req->achievements;
-		$external_program_app->about_family                         = $req->about_family;
-		$external_program_app->filename                             = $req->filename;
-		$external_program_app->AuditInsertedUserId                  = 1;
-		$external_program_app->AuditInsertedDateTime                = date( 'Y-m-d H:i:s' );
+        $external_program_app = new \App\ExternalProgramApplication;
+        $external_program_app->specialty_id = $req->specialty_id;
+        $external_program_app->specialty_name = $req->specialty_name;
+        $external_program_app->program_id = $req->program_id;
+        $external_program_app->placement_status_id = 3;
+        $external_program_app->HasScholarshipFromOtherCompany = Auth::user()->hasAppliedToScholarship;
+        $external_program_app->user_id = Auth::user()->id;
+        $external_program_app->country_id = $req->country_id;
+        $external_program_app->city_name = $req->city_name;
+        $external_program_app->university_id = $req->university_id;
+        $external_program_app->main_modules = $req->main_modules;
+        $external_program_app->EducationBeginDate =
+            date('Y-m-d H:i:s', strtotime($req->EducationBeginDate));
+        $external_program_app->EducationEndDate =
+            date('Y-m-d H:i:s', strtotime($req->EducationEndDate));
+        $external_program_app->education_fee = $req->education_fee;
+        $external_program_app->education_language = $req->education_language;
+        $external_program_app->language_education_certificate_id = $req->language_education_certificate_id;
+        $external_program_app->language_education_certificate_score = $req->language_education_certificate_score;
+        $external_program_app->deposit_object_id = $req->deposit_object_id;
+        $external_program_app->located_city = $req->located_city;
+        $external_program_app->work_experience_details = $req->work_experience_details;
+        $external_program_app->achievements = $req->achievements;
+        $external_program_app->about_family = $req->about_family;
+        $external_program_app->filename = $req->filename;
+        $external_program_app->AuditInsertedUserId = 1;
+        $external_program_app->AuditInsertedDateTime = date('Y-m-d H:i:s');
 
-		$external_program_app->save();
-
-
-		$temp_folder        = 'application/external/' . Auth::user()->id . '/temp';
-		$application_folder = 'application/external/' . Auth::user()->id . '/' . $external_program_app->id;
+        $external_program_app->save();
 
 
-		Storage::disk( 'public' )->move( $temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename );
-
-		Storage::disk( 'public' )->deleteDirectory( $temp_folder );
-
-		return view( 'frontend.profile.apply.result' );
-	}
+        $temp_folder = 'application/external/' . Auth::user()->id . '/temp';
+        $application_folder = 'application/external/' . Auth::user()->id . '/' . $external_program_app->id;
 
 
-	public function removeFile ( Request $req )
-	{
-		Storage::disk( 'public' )->delete( 'application/' . $req->slug . '/' . Auth::user()->id . '/temp/' . $req->name );
+        Storage::disk('public')->move($temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename);
 
-		return $req->name;
-	}
+        Storage::disk('public')->deleteDirectory($temp_folder);
 
-	public function storeInternal ( \App\Http\Requests\InternalApplicationValidation $req, $program_id )
-	{
-		$internalProgram = new \App\InternalProgramApplication;
-
-		$internalProgram->HasScholarshipFromOtherCompany = $req->HasScholarshipFromOtherCompany;
-		$internalProgram->user_id                        = Auth::user()->id;
-		$internalProgram->program_id                     = $req->program_id;
-		$internalProgram->placement_status_id            = null;
-		$internalProgram->HasBeenAtArmy                  = 0;
-		$internalProgram->filename                       = $req->filename;
-		$internalProgram->AuditInsertedUserId            = 1;
-		$internalProgram->AuditInsertedDateTime          = date( 'Y-m-d H:i:s' );
-		//$internalProgram->RowVersion=timestamp();
-		$internalProgram->save();
+        return view('frontend.profile.apply.result');
+    }
 
 
-		$temp_folder        = 'application/internal/' . Auth::user()->id . '/temp';
-		$application_folder = 'application/internal/' . Auth::user()->id . '/' . $internalProgram->id;
+    public function removeFile(Request $req)
+    {
+        Storage::disk('public')->delete('application/' . $req->slug . '/' . Auth::user()->id . '/temp/' . $req->name);
+
+        return $req->name;
+    }
+
+    public function storeInternal(\App\Http\Requests\InternalApplicationValidation $req, $program_id)
+    {
+        $internalProgram = new \App\InternalProgramApplication;
+
+        $internalProgram->HasScholarshipFromOtherCompany = $req->HasScholarshipFromOtherCompany;
+        $internalProgram->user_id = Auth::user()->id;
+        $internalProgram->program_id = $req->program_id;
+        $internalProgram->placement_status_id = null;
+        $internalProgram->HasBeenAtArmy = 0;
+        $internalProgram->filename = $req->filename;
+        $internalProgram->AuditInsertedUserId = 1;
+        $internalProgram->AuditInsertedDateTime = date('Y-m-d H:i:s');
+        //$internalProgram->RowVersion=timestamp();
+        $internalProgram->save();
 
 
-		Storage::disk( 'public' )->move( $temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename );
-
-		Storage::disk( 'public' )->deleteDirectory( $temp_folder );
-
-
-		return view( 'frontend.profile.apply.result' );
-
-	}
-
-	public function storePaid ( \App\Http\Requests\SummerInternshipApplicationValidation $req )
-	{
-		$summerInternship                                 = new \App\SummerInternshipApplication;
-		$summerInternship->user_id                        = Auth::user()->id;
-		$summerInternship->program_id                     = $req->program_id;
-		$summerInternship->HasScholarshipFromOtherCompany = 0;
-		$summerInternship->HasBeenAtArmy                  = $req->HasBeenAtArmy;
-		$summerInternship->ArmyAvoidReasonId              = $req->army_avoid_reason_id;
-		$summerInternship->filename                       = $req->filename;
-		$summerInternship->AuditInsertedUserId            = 1;
-		$summerInternship->AuditInsertedDateTime          = date( 'Y-m-d H:i:s' );
-		$summerInternship->save();
+        $temp_folder = 'application/internal/' . Auth::user()->id . '/temp';
+        $application_folder = 'application/internal/' . Auth::user()->id . '/' . $internalProgram->id;
 
 
-		$temp_folder        = 'application/paid/' . Auth::user()->id . '/temp';
-		$application_folder = 'application/paid/' . Auth::user()->id . '/' . $summerInternship->id;
+        Storage::disk('public')->move($temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename);
+
+        Storage::disk('public')->deleteDirectory($temp_folder);
 
 
-		Storage::disk( 'public' )->move( $temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename );
+        return view('frontend.profile.apply.result');
 
-		Storage::disk( 'public' )->deleteDirectory( $temp_folder );
+    }
+
+    public function storePaid(\App\Http\Requests\SummerInternshipApplicationValidation $req)
+    {
+        $summerInternship = new \App\SummerInternshipApplication;
+        $summerInternship->user_id = Auth::user()->id;
+        $summerInternship->program_id = $req->program_id;
+        $summerInternship->HasScholarshipFromOtherCompany = 0;
+        $summerInternship->HasBeenAtArmy = $req->HasBeenAtArmy;
+        $summerInternship->ArmyAvoidReasonId = $req->army_avoid_reason_id;
+        $summerInternship->filename = $req->filename;
+        $summerInternship->AuditInsertedUserId = 1;
+        $summerInternship->AuditInsertedDateTime = date('Y-m-d H:i:s');
+        $summerInternship->save();
 
 
-		return view( 'frontend.profile.apply.result' );
-	}
+        $temp_folder = 'application/paid/' . Auth::user()->id . '/temp';
+        $application_folder = 'application/paid/' . Auth::user()->id . '/' . $summerInternship->id;
 
 
-	public function DownloadExtFile ( Request $req )
-	{
+        Storage::disk('public')->move($temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename);
 
-		return new \App\Http\Resources\External( \App\ExternalProgramApplication::find( $req->app_id ) );
-		/// return new \App\Http\Resources\FileDownload(\App\ExternalProgramApplication::find($req->app_id));
-		//     return Storage::disk('public')->path('app/file.txt');
+        Storage::disk('public')->deleteDirectory($temp_folder);
 
-	}
 
-	public function DownloadIntFile ( Request $req )
-	{
+        return view('frontend.profile.apply.result');
+    }
+
+
+    public function DownloadExtFile(Request $req)
+    {
+
+        return new \App\Http\Resources\External(\App\ExternalProgramApplication::find($req->app_id));
+        /// return new \App\Http\Resources\FileDownload(\App\ExternalProgramApplication::find($req->app_id));
+        //     return Storage::disk('public')->path('app/file.txt');
+
+    }
+
+    public function DownloadIntFile(Request $req)
+    {
 //		return new \App\Http\Resources\Internal( \App\InternalProgramApplication::where()->first() );
-		return new \App\Http\Resources\Internal( \App\InternalProgramApplication::find( $req->app_id ) );
-		// return new \App\Http\Resources\FileDownload('internal',\App\InternalProgramApplication::find($req->app_id));
-		//     return Storage::disk('public')->path('app/file.txt');
+        return new \App\Http\Resources\Internal(\App\InternalProgramApplication::find($req->app_id));
+        // return new \App\Http\Resources\FileDownload('internal',\App\InternalProgramApplication::find($req->app_id));
+        //     return Storage::disk('public')->path('app/file.txt');
 
-	}
+    }
 
 
-	public function DownloadPaidFile ( Request $req )
-	{
-		return new \App\Http\Resources\Paid( \App\SummerInternshipApplication::find( $req->app_id ) );
-		// return new \App\Http\Resources\FileDownload(\App\SummerInternshipApplication::find($req->app_id));
-		//     return Storage::disk('public')->path('app/file.txt');
-	}
+    public function DownloadPaidFile(Request $req)
+    {
+        return new \App\Http\Resources\Paid(\App\SummerInternshipApplication::find($req->app_id));
+        // return new \App\Http\Resources\FileDownload(\App\SummerInternshipApplication::find($req->app_id));
+        //     return Storage::disk('public')->path('app/file.txt');
+    }
 
-	public static function dot_color ( $string, $prog_type )
-	{
-		if ( isset( $prog_type->first()->$string->Name ) && $prog_type->first()->$string->Name === "Seçildi" ) {
-			$dot_color = 'green-dot';
-		} elseif ( isset( $prog_type->first()->$string->Name ) && $prog_type->first()->$string->Name === "Seçilmədi" ) {
-			$dot_color = 'red-dot';
-		} elseif ( isset( $prog_type->first()->$string->Name ) && $prog_type->first()->$string->Name === "Baxılır" ) {
-			$dot_color = 'yellow-dot';
-		} else {
-			$dot_color = '';
-		}
+    public static function dot_color($string, $prog_type)
+    {
+        if (isset($prog_type->first()->$string->Name) && $prog_type->first()->$string->Name === "Seçildi") {
+            $dot_color = 'green-dot';
+        } elseif (isset($prog_type->first()->$string->Name) && $prog_type->first()->$string->Name === "Seçilmədi") {
+            $dot_color = 'red-dot';
+        } elseif (isset($prog_type->first()->$string->Name) && $prog_type->first()->$string->Name === "Baxılır") {
+            $dot_color = 'yellow-dot';
+        } else {
+            $dot_color = '';
+        }
 
-		return $dot_color;
-	}
+        return $dot_color;
+    }
 
 }

@@ -49,8 +49,9 @@
     </div>
     <div class="workFieldGroup" id="workFieldGroup">
 
-        @if($user->exists && isset($user->finalEducation))
-            {{ Form::hidden('final_education_id', $user->finalEducation->first()->Id) }}
+        @if($user->exists && isset($user->currentJob))
+            {{ Form::hidden('final_job_id', $user->currentJob->first()->Id) }}
+
         @endif
 
     <div class="form-group row required ">

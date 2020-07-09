@@ -934,6 +934,23 @@
 
             });
 
+            $(document).on('click', '#delete-previous-job', function(){
+                var previous_job_id = $(this).closest('.workFieldGroup').find('input[name="previous_job_id[]"]').val();
+                console.log(previous_job_id);
+                axios.post('{{ route('deletePreviousJob') }}', {
+                    previous_job_id: previous_job_id,
+                    _token: token
+                })
+                    .then(function (response) {
+                        console.log(response);
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            });
+
             // end of delete previous education
 
             //delete Internship
@@ -1266,6 +1283,13 @@
                 });
             });
 
+            $(document).on('change', 'select[id="ex_previous_company_id"]', function () {
+                var changed = this,
+                    check = changed.value === "other";
+
+                $(changed).next().toggle(check);
+            });
+
             $('body').on('change', '#BirthCityId', function () {
                 $('#otherCity').val('');
                 if (this.value == 'other') {
@@ -1524,8 +1548,11 @@
             @if(!$user -> exists)
             $('#country_id').trigger("change");
             @endif
+
             // $('select#ex_previous_education_country_id').trigger("change");
             $('#previous_company_id').trigger('change');
+            $('select[id="ex_previous_company_id"]').trigger("change");
+
 
         });
 
