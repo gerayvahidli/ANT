@@ -43,8 +43,8 @@
                     {{--                ['class' => 'form-control here', 'id' => 'previous_education_university_id', "data-required-error"=>'Bu sahəni boş buraxmayın'])--}}
                     {{--            }}--}}
                     <select name="previous_education_university_id[]" id="ex_previous_education_university_id" class="form-control">
-                        @foreach($universities as $university)
-                            <option {{$user -> exists && $previousEducation -> university -> Id == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
+                        @foreach(\App\Country::find($previousEducation -> university -> country -> Id)-> universities  as $university)
+                            <option {{$user -> exists && $previousEducation -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -101,7 +101,10 @@
             <div class="form-group row">
                 <label for="previous_education_admission_score" class="col-4 col-form-label">Qəbul balı</label>
                 <div class="col-8">
-                    {{ Form::number('previous_education_admission_score[]', $previousEducation->AdmissionScore, ['class' => 'form-control here', 'id' => 'previous_education_admission_score']) }}
+                    <input type="number" value="{{($user -> exists && isset($previousEducation->AdmissionScore)) ? $previousEducation->AdmissionScore : 0}}" class="form-control here" id ="ex_previous_education_admission_score"
+                    {{$previousEducation -> university -> country -> Id != 1 ? 'readonly' : ''}}
+                    name="previous_education_admission_score[]"
+                    >
                 </div>
             </div>
 

@@ -232,7 +232,7 @@ class UserController extends Controller
 	{
 
 
-
+//return $user -> previousEducations;
 
 
 
@@ -300,7 +300,7 @@ class UserController extends Controller
 ////			'exam_language_id'                     => 'required',
 //		] );
 
-		$user->ImagePath     = $this->createImage( $request, $user->image );
+		isset($user->image)?  $user->ImagePath     = $this->createImage( $request, $user->image ):'';
 //		$user->email      = $request->email;
 		$user->FirstName  = $request->FirstName;
 		$user->LastName   = $request->LastName;
@@ -331,8 +331,9 @@ class UserController extends Controller
 
 
 
-        $user->save();        $mobilePhone         = $this->saveMobilePhone( $request, $user );
-        return $previousEducation   = $this->updatePreviousEducation( $request, $user );
+        $user->save();
+        $mobilePhone         = $this->saveMobilePhone( $request, $user );
+        $previousEducation   = $this->updatePreviousEducation( $request, $user );
 
         $emails              = $this->saveEmails( $request, $user );
         $finalEducation      = $this->updateFinalEducation( $request, $user );
@@ -355,6 +356,7 @@ class UserController extends Controller
 
 	public function updateFinalEducation ( Request $request, $user )
 	{
+
 		if ( isset( $request->final_education_id ) ) {
 			$finalEducation = Education::where( 'UserId', $user->id )->find( $request->final_education_id );
 		} else {
@@ -368,7 +370,7 @@ class UserController extends Controller
         $finalEducation->EndDate = $request->EndDate;
         $finalEducation->Faculty = $request->faculty;
         $finalEducation->Speciality = $request->speciality;
-        $finalEducation->AdmissionScore = (isset($request-> admission_score )) ? $request-> admission_score  : 0;
+        $finalEducation->AdmissionScore = ($request->country_id == 1) ? $request-> admission_score  : 0  ;
         $finalEducation->EducationFormId = $request->education_form_id;
         $finalEducation->EducationSectionId = $request->education_section_id;
         $finalEducation->EducationPaymentFormId = $request->education_payment_form_id;
@@ -403,6 +405,8 @@ class UserController extends Controller
 		if ( isset( $request->previous_education_country_id ) ) {
 
 			foreach ( $request->previous_education_country_id as $i => $previousEducationCountryId ) {
+
+//			    return $request->previous_education_admission_score[ $i ];
 				// make array from form
 				if ( isset( $request->previous_education_university_id[ $i ] ) &&
 				     $request->previous_education_university_id[ $i ] != '' ) {
@@ -411,13 +415,12 @@ class UserController extends Controller
 						'user_id'            => $user->id,
 						'id'                 => ( isset( $request->previous_education_id[ $i ] ) ) ? $request->previous_education_id[ $i ] : null,
 						'education_level_id' => $request->previous_education_level[ $i ],
-                        'country_id'         => $request -> previous_education_country_id,
                         'university_id'      => $request->previous_education_university_id[ $i ],
 						'BeginDate'          => ( $request->previous_education_BeginDate[ $i ] ) ? $request->previous_education_BeginDate[ $i ] : $date,
 						'EndDate'            => ( $request->previous_education_EndDate[ $i ] ) ? $request->previous_education_EndDate[ $i ] : $date,
 						'Faculty'            => $request->previous_education_faculty[ $i ],
                         'Speciality'         => $request->previous_education_speciality[ $i ],
-                        'AdmissionScore'     => ( $previousEducationCountryId == 1 ) ? $request->previous_education_admission_score[ $i ] : 0,
+                        'AdmissionScore'     => $request->previous_education_country_id[ $i ] == 1 ?  $request->previous_education_admission_score[ $i ] : 0,
                         'education_section_id'         => $request->previous_education_section_id[ $i ],
                         'education_form_id'         => $request->previous_education_form_id[ $i ],
                         'education_payment_form_id'         => $request->previous_education_payment_form_id[ $i ],
@@ -427,6 +430,8 @@ class UserController extends Controller
                     ];
 				}
 			}
+
+
 			// go through previous educations array - if element of this array(previous education) is exists then update else create new previous education
 			foreach ( $previousEducationData as $previousEdu ) {
 				if ( isset( $previousEdu[ 'id' ] ) ) {
@@ -434,7 +439,6 @@ class UserController extends Controller
 						Education::where( 'UserId', $user->id )->find( $previousEdu[ 'id' ] );
 					$previousEducation->update( [
 						'UniversityId'      => $previousEdu[ 'university_id' ],
-                        'CountryId'      => $previousEdu[ 'country_id' ],
 						'EducationLevelId' => $previousEdu[ 'education_level_id' ],
 						'StartDate'          => $previousEdu[ 'BeginDate' ],
 						'EndDate'            => $previousEdu[ 'EndDate' ],
@@ -452,7 +456,6 @@ class UserController extends Controller
 						[
 							'UserId'            => $user->id,
                             'UniversityId'      => $previousEdu[ 'university_id' ],
-                            'CountryId'      => $previousEdu[ 'country_id' ],
                             'EducationLevelId' => $previousEdu[ 'education_level_id' ],
                             'StartDate'          => $previousEdu[ 'BeginDate' ],
                             'EndDate'            => $previousEdu[ 'EndDate' ],
@@ -646,7 +649,7 @@ class UserController extends Controller
 
 	public function deletePreviousEducation ( Request $request )
 	{
-		$previous_education = Education::find( $request->previous_education_id );
+		 $previous_education = Education::find( $request->previous_education_id );
 		$result             = $previous_education->delete();
 		if ( $result ) {
 			return [ 'status' => 'ok', 'message' => 'Əvvəlki təhsil silindi' ];

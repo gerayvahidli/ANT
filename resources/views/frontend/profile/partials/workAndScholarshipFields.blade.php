@@ -49,6 +49,10 @@
     </div>
     <div class="workFieldGroup" id="workFieldGroup">
 
+        @if($user->exists && isset($user->finalEducation))
+            {{ Form::hidden('final_education_id', $user->finalEducation->first()->Id) }}
+        @endif
+
     <div class="form-group row required ">
         <label for="company_id" class="col-4 col-form-label">Müəssisə</label>
         <div class="col-8">

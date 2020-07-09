@@ -317,12 +317,12 @@ class RegisterController extends Controller
         }
 
 
-        $activeProgram = ExternalProgram::where('IsActive',1) ->first();
+//        $activeProgram = ExternalProgram::where('IsActive',1) ->first();
 
         $userProgram = new UserProgram;
 
         $userProgram -> UserId = $user ->id;
-        $userProgram -> ProgramId = ($activeProgram) ? $activeProgram -> Id :'';
+        $userProgram -> ProgramId ='';
         $userProgram -> UserProgramStatusId = 1;
         $userProgram -> save();
 

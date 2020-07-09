@@ -42,20 +42,26 @@
         <label for="university_id" class="col-4 col-form-label">Universitet</label>
         <div class="col-8">
 
-{{--            @if(old('country_id')!=null)--}}
-{{--                {{ Form::select('university_id',\App\University::where('country_id',old('country_id'))->pluck('Name','id')->toArray() , ($user->exists) ? $user->finalEducation->university_id : old('university_id'),--}}
-{{--                            ['class' => 'form-control here', 'id' => 'university_id', '',"data-required-error"=>'Universitet sahəsini boş buraxmayın'])--}}
-{{--                }}--}}
-{{--            @elseif ($user->exists && isset($user->finalEducation->university_id))--}}
-{{--                {{ Form::select('university_id', \App\University::where('country_id', $user->finalEducation->university->country_id )->pluck('Name','id')->toArray(), $user->finalEducation->university_id,--}}
-{{--                            ['class' => 'form-control here', 'id' => 'university_id'])--}}
-{{--                }}--}}
-{{--            @else--}}
-{{--                {{ Form::select('university_id', ['' => '---- Universitet seç ----'], ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->university_id : old('university_id'),--}}
-{{--                            ['class' => 'form-control here', 'id' => 'university_id'])--}}
-{{--                }}--}}
-{{--            @endif--}}
-            <select name="university_id" id="university_id" class="form-control"></select>
+            {{--            @if(old('country_id')!=null)--}}
+            {{--                {{ Form::select('university_id',\App\University::where('country_id',old('country_id'))->pluck('Name','id')->toArray() , ($user->exists) ? $user->finalEducation->university_id : old('university_id'),--}}
+            {{--                            ['class' => 'form-control here', 'id' => 'university_id', '',"data-required-error"=>'Universitet sahəsini boş buraxmayın'])--}}
+            {{--                }}--}}
+            {{--            @elseif ($user->exists && isset($user->finalEducation->university_id))--}}
+            {{--                {{ Form::select('university_id', \App\University::where('country_id', $user->finalEducation->university->country_id )->pluck('Name','id')->toArray(), $user->finalEducation->university_id,--}}
+            {{--                            ['class' => 'form-control here', 'id' => 'university_id'])--}}
+            {{--                }}--}}
+            {{--            @else--}}
+            {{--                {{ Form::select('university_id', ['' => '---- Universitet seç ----'], ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->university_id : old('university_id'),--}}
+            {{--                            ['class' => 'form-control here', 'id' => 'university_id'])--}}
+            {{--                }}--}}
+            {{--            @endif--}}
+            <select name="university_id" id="university_id" class="form-control">
+                @if($user -> exists)
+                    @foreach(\App\Country::find($user->finalEducation->first() -> university -> country -> Id)-> universities  as $university)
+                        <option {{$user -> exists && $user->finalEducation->first() -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
+                    @endforeach
+                @endif
+            </select>
 
         </div>
     </div>
@@ -117,7 +123,7 @@
         <div class="col-8">
             {{ Form::number('admission_score',
                 ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->AdmissionScore : old('admission_score'),
-             ['class' => 'form-control', 'required',"data-required-error"=>'Qəbul balı sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"700", 'id' => 'admission_score',
+             ['class' => 'form-control', 'required',"data-required-error"=>'Qəbul balı sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"700", 'id' => 'admission_score',$user->finalEducation->first() -> university -> country -> Id != 1 ? 'readonly' : ''
              ]) }}
             @if ($errors->has('admission_score'))
                 <div class="invalid-feedback">

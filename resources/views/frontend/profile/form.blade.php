@@ -56,10 +56,10 @@
         <div class="row">
             <div class="col-12 col-sm-5 right-dotted-line">
 
-                @if($user->exists && isset($user->image))
+                @if($user->exists && isset($user->ImagePath))
                     <div class="card" style="width: 18rem;">
                         <img class="card-img-top"
-                             src="{{ asset((isset($user->image)) ? $user->image :'img/l60Hf.png') }}"
+                             src="{{ asset((isset($user->ImagePath)) ? $user->ImagePath :'img/l60Hf.png') }}"
                              alt="Card image cap" height="50%">
                     </div>
                     <hr>
@@ -916,9 +916,8 @@
             // end of profile submit - axios
 
             //delete previous education
-            $('#delete-previous-education').click(function () {
-                alert("salam");
-                return false;
+
+            $(document).on('click', '#delete-previous-education', function(){
                 var previous_education_id = $(this).closest('.fieldGroup').find('input[name="previous_education_id[]"]').val();
                 console.log(previous_education_id);
                 axios.post('{{ route('deletePreviousEducation') }}', {
@@ -932,7 +931,9 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+
             });
+
             // end of delete previous education
 
             //delete Internship
@@ -1304,12 +1305,12 @@
                         },
                         success: function (data) {
                             // $('#admission_score').attr('required', true);
-                            $('#admission_score').attr("disabled", false);
+                            $('#admission_score').attr("readonly", false);
                             if (countryId != 1) {
                                 console.log($('input[id="admission_score"]'));
                                 // $('#admission_score').removeProp('required');
                                 $('#admission_score').attr('required', false);
-                                $('#admission_score').attr("disabled", "disabled");
+                                $('#admission_score').attr("readonly", true);
                                 $('#admission_score').val(0);
                             }
                             $('select[id="university_id"]').empty();
@@ -1377,11 +1378,15 @@
 
                 });//end select University by Country for Previous Education 1
             }
+            // $(document).on('change', 'select#ex_previous_education_country_id', function(){
 
             // Select university by country  for Previous Education 1
             $('select#ex_previous_education_country_id').on('change', function () {
-                // console.log( $( this ).val() );
+                var budu =$(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
+                console.log( budu );
                 var countryId = $(this).val();
+                var admissionScore = $(this).parents('.fieldGroup').find('#ex_previous_education_admission_score');
+
                 // alert(countryId);
                 var token = $("input[name='_token']").val();
                 if (countryId) {
@@ -1395,17 +1400,16 @@
                         },
 
                         success: function (data) {
-                            $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#previous_education_admission_score');
                             if (countryId != 1) {
-                                $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#previous_education_admission_score').attr("disabled", true);
-                                $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#previous_education_admission_score').val(0);
+                                admissionScore.attr("readonly", true);
+                                admissionScore.val('');
                                 // $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#previous_education_admission_score').remove();
                             } else {
-                                $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#previous_education_admission_score').attr("disabled", false);
+                                admissionScore.attr("readonly", false);
                             }
-                            $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#ex_previous_education_university_id').empty();
+                            budu.empty();
                             $.each(data, function (key, value) {
-                                $('select#ex_previous_education_country_id').parents('.fieldGroup').find('select#ex_previous_education_university_id').append('<option value="' + key + '">' + value + '</option>');
+                                budu.append('<option value="' + key + '">' + value + '</option>');
                             });
                         },
                         complete: function () {
@@ -1517,8 +1521,10 @@
 
             $('#companies').trigger("change");
             $('#BirthCityId').trigger("change");
+            @if(!$user -> exists)
             $('#country_id').trigger("change");
-            $('select#ex_previous_education_country_id').trigger("change");
+            @endif
+            // $('select#ex_previous_education_country_id').trigger("change");
             $('#previous_company_id').trigger('change');
 
         });
