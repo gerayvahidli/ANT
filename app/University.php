@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class University extends Model
 {
     protected $table = 'Universities';
+    protected $primaryKey = 'Id';
 
     public function finalEducation()
     {
@@ -17,4 +18,10 @@ class University extends Model
     {
         return $this->belongsTo(Country::class,'CountryId');
     }
+
+//    public function specialities()
+//    {
+//        return $this->belongsToMany( SpecialityGroup::class,'SpecialityGroupUniversity','UniversityRefId','SpecialityGroupRefId');
+//    }
+
 }

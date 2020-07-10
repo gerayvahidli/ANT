@@ -25,6 +25,7 @@ use App\PreviousEducation;
 use App\PreviousInternship;
 use App\PreviousScholarship;
 use App\ProgramType;
+use App\SpecialityGroup;
 use App\University;
 use App\User, Auth;
 use Illuminate\Http\Request, Form, Storage;
@@ -806,26 +807,38 @@ class UserController extends Controller
 //        dd($user);
     }
 
-    /* public function applyScholarship($slug, User $user)
+     public function applyScholarship( User $user)
      {
-         $reasons = \App\ArmyAvoidReason::pluck('Name', 'id')->toArray();
-
-         $array = array();
-         foreach ($reasons as $key => $value) {
-
-             $from_sql  = ["{0}", "{n}+1"];
-             $after_sql = [date('Y'), date('Y') + 1];
-
-             $text          = str_replace($from_sql, $after_sql, $value);
-             $array[ $key ] = $text;
-         }
-
-         $request->reasons_array' ] = $array;
+//         $uni =SpecialityGroup::find(1);
+//         $unies = $uni->universities;
+//
+//
+//         $events = $unies->filter(function($event)
+//         {
+//             return $event->country;
+//         });
+//
+//         return $events;
 
 
-         return view('frontend.profile.apply.' . $slug . 'Scholarship', $data);
+//         $reasons = \App\ArmyAvoidReason::pluck('Name', 'id')->toArray();
+//
+//         $array = array();
+//         foreach ($reasons as $key => $value) {
+//
+//             $from_sql  = ["{0}", "{n}+1"];
+//             $after_sql = [date('Y'), date('Y') + 1];
+//
+//             $text          = str_replace($from_sql, $after_sql, $value);
+//             $array[ $key ] = $text;
+//         }
+//
+//         $request->reasons_array = $array;
+
+
+         return view('frontend.profile.apply.externalScholarship');
      }
- */
+ 
 
 
 //	public function applyInternalScholarship ( $slug = 'internal', User $user )
@@ -900,14 +913,33 @@ class UserController extends Controller
 //	}
 
 
-    public function relCity(Request $req)
+    public function relCountry(Request $req)
     {
-        return Form::select('university_id', \App\University::where('country_id', $req->related_city)
-            ->pluck('Name', 'id')
-            ->toArray(), null, [
-            'class' => 'form-control',
-            'id' => 'university_id',
-        ]);
+        $speciality =SpecialityGroup::find($req -> specialty_id);
+        $universities = $speciality->universities;
+
+
+        $countries = $universities->filter(function($university)
+        {
+            return $university->country;
+        });
+
+        return $countries;
+    }
+
+    public function relUniversity(Request $req)
+    {
+//        return $req -> specialty_id;
+        $speciality =SpecialityGroup::find($req -> specialty_id);
+        $universities = $speciality -> universities;
+
+
+        $unis = $universities -> filter(function($uni) use ($req)
+        {
+            return $uni -> CountryId == $req -> country_id;
+        });
+
+        return $unis;
     }
 
 

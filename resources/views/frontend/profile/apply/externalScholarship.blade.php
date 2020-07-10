@@ -45,7 +45,7 @@
 
 
                     <label for="specialty_id" class="col-form-label">İxtisas qrupu</label><br>
-                    {{ Form::select('specialty_id', [''=>'---------']+\App\ExternalProgramApplicationSpecialities::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('specialty_id'))?'errorInput form-control':'form-control']) }}
+                    {{ Form::select('specialty_id', \App\SpecialityGroup::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('specialty_id'))?'errorInput form-control':'form-control','id' => 'specialty_id']) }}
                     <span class="error text-danger"> {{$errors->first('specialty_id')}}</span>
 
 
@@ -62,7 +62,8 @@
 
                 <div class="form-group required">
                     <label for="country_id" class="col-form-label">Ölkə</label>
-                    {{ Form::select('country_id', [''=>'---------']+\App\Country::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('country_id'))?'errorInput form-control':'form-control','id'=>'category_id','onchange'=>'related_city()']) }}
+                    <select class="form-control" name="country_id" id="country_id"></select>
+{{--                    {{ Form::select('country_id', [''=>'---------']+\App\Country::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('country_id'))?'errorInput form-control':'form-control','id'=>'category_id','onchange'=>'related_city()']) }}--}}
                     <span class="error text-danger"> {{$errors->first('country_id')}}</span>
                 </div>
                 <div class="form-group required">
@@ -73,19 +74,20 @@
                 </div>
                 <div class="form-group required">
 
-                    <label for="category_id" class="col-form-label">Təhsil müəssisəsi</label>
+                    <label for="university_id" class="col-form-label">Təhsil müəssisəsi</label>
                     <div id="related_city">
+                        <select class="form-control" name="university_id" id="university_id"></select>
 
 
-                        @if(old('university_id')!=null)
-                            {{ Form::select('university_id', \App\University::where('country_id',old('country_id'))->pluck('Name','id')->toArray() ,null,['class'=>'form-control','id'=>'university_id']) }}
+{{--                        @if(old('university_id')!=null)--}}
+{{--                            {{ Form::select('university_id', \App\University::where('country_id',old('country_id'))->pluck('Name','id')->toArray() ,null,['class'=>'form-control','id'=>'university_id']) }}--}}
 
-                        @else
+{{--                        @else--}}
 
-                            {{ Form::select('university_id', [''=>'---------'],null,['class'=>($errors->has('university_id'))?'errorInput form-control':'form-control','id'=>'category_id']) }}
-                            <span class="error text-danger"> {{$errors->first('university_id')}}</span>
-                            <small id="emailHelp" class="form-text text-muted"><i><b>İlk öncə ölkə seçilməlidir.</b></i></small>
-                        @endif
+{{--                            {{ Form::select('university_id', [''=>'---------'],null,['class'=>($errors->has('university_id'))?'errorInput form-control':'form-control','id'=>'category_id']) }}--}}
+{{--                            <span class="error text-danger"> {{$errors->first('university_id')}}</span>--}}
+{{--                            <small id="emailHelp" class="form-text text-muted"><i><b>İlk öncə ölkə seçilməlidir.</b></i></small>--}}
+{{--                        @endif--}}
 
 
                     </div>
@@ -159,7 +161,7 @@
                     <div class="form-row required test">
                         <div class="form-group col-md-12 required">
                             <label for="inputCity" class="col-form-label">Dil sertifikatı</label>
-                            {{ Form::select('language_education_certificate_id', [''=>'---------']+\App\LanguageEducationCertificate::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('language_education_certificate_id'))?'errorInput form-control language_education_certificate_id':'form-control language_education_certificate_id','id'=>'language_education_certificate_id']) }}
+                            {{ Form::select('language_education_certificate_id', [''=>'---------']+\App\Certificate::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('language_education_certificate_id'))?'errorInput form-control language_education_certificate_id':'form-control language_education_certificate_id','id'=>'language_education_certificate_id']) }}
                             <span class="error text-danger"> {{$errors->first('language_education_certificate_id')}}</span>
                         </div>
                     </div>
@@ -211,29 +213,28 @@
                     <span class="error text-danger"> {{$errors->first('education_language')}}</span>
                 </div>
                 <div class="form-group required">
-                    <input type="checkbox" class="realEstate" data-target="realEstateDiv" />Daşınmaz əmlak
+                    <input type="checkbox" class="realEstate" data-target="realEstateDiv"/>Daşınmaz əmlak
                     <span class="error text-danger"> {{$errors->first('education_language')}}</span>
                 </div>
 
 
-
                 <div id="realEstateDiv">
 
-                <div class="form-group required">
-                    <label for="deposit_object_id" class="col-form-label">Girov predmeti
-                    </label>
-                    {{ Form::select('deposit_object_id', [''=>'---------']+\App\DepositObject::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('deposit_object_id'))?'errorInput form-control':'form-control','id'=>'deposit_object_id']) }}
+                    <div class="form-group required">
+                        <label for="deposit_object_id" class="col-form-label">Girov predmeti
+                        </label>
+                        {{ Form::select('deposit_object_id', [''=>'---------']+\App\Deposit::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('deposit_object_id'))?'errorInput form-control':'form-control','id'=>'deposit_object_id']) }}
 
-                </div>
+                    </div>
 
 
-                <div class="form-group required">
-                    <label for="located_city" class="col-form-label required">Ünvan
-                    </label>
-                    <input type="text" class="form-control {{$errors->has('located_city')?'errorInput':''}}"
-                           name="located_city" value="{{old('located_city')}}" id="exampleInputEmail1">
-                    <span class="error text-danger"> {{$errors->first('located_city')}}</span>
-                </div>
+                    <div class="form-group required">
+                        <label for="located_city" class="col-form-label required">Ünvan
+                        </label>
+                        <input type="text" class="form-control {{$errors->has('located_city')?'errorInput':''}}"
+                               name="located_city" value="{{old('located_city')}}" id="exampleInputEmail1">
+                        <span class="error text-danger"> {{$errors->first('located_city')}}</span>
+                    </div>
 
                     <div class="form-group required">
                         <label for="Owner" class="col-form-label required">Mülkiyyətçi
@@ -259,32 +260,106 @@
                         <span class="error text-danger"> </span>
                     </div>
 
+                    <p class="lead required">Daşınmaz əmlakın dövlət reyestrindən çıxarışının</p>
 
+                    <div class="form-group required">
+                        <label for="exampleInputEmail1" class="col-form-label">Seriya nömrəsi</label>
+                        <div class="form-row align-items-center">
+
+                            <div class="col-sm-3 my-1">
+                                <label class="sr-only col-form-label" for="EducationBeginDate">Seriya</label>
+                                <input type="text" value=""
+                                       name="EducationBeginDate"
+                                       class="form-control  {{$errors->has('EducationBeginDate')?'errorInput':''}}">
+                                <small>Seria</small>
+                                <span class="error text-danger"> {{$errors->first('EducationBeginDate')}}</span>
+                            </div>
+                            <div class="col-sm-9     my-1">
+                                <input type="text" value="{{old('EducationEndDate')}}"
+                                       name="EducationEndDate"
+                                       class="form-control {{$errors->has('EducationEndDate')?'errorInput':''}}">
+                                <small>Nömrə</small>
+
+                                <span class="error text-danger"> {{$errors->first('EducationEndDate')}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="Owner" class="col-form-label required">Reyester nömrəsi
+                            </label>
+                            <input type="email" class="form-control "
+                                   name="Owner" value="" id="Owner">
+                            <span class="error text-danger"> </span>
+                        </div>
+                        <div class="form-group ">
+                            <label for="Owner" class="col-form-label required">Qeydiyyat nömrəsi
+                            </label>
+                            <input type="email" class="form-control "
+                                   name="Owner" value="" id="Owner">
+                            <span class="error text-danger"> </span>
+                        </div>
+                        <div class="form-group ">
+                            <label for="Owner" class="col-form-label required">Qeydiyyat tarixi
+                            </label>
+                            <input type="date" class="form-control "
+                                   name="Owner" value="" id="Owner">
+                            <span class="error text-danger"> </span>
+                        </div>
+                    </div>
                 </div>
 
 
                 <div class="form-group required">
-                    <label for="work_experience_details" class="col-form-label">İş təcrübəsi</label>
-                    <textarea class="form-control {{$errors->has('work_experience_details')?'errorInput':''}}"
-                              name="work_experience_details">{{old('work_experience_details')}}</textarea>
-                    <span class="error text-danger"> {{$errors->first('work_experience_details')}}</span>
-                    <small id="work_experience_details" class="form-text text-muted"><i><b>Müəssisə, vəzifə və
-                                müddət.</b></i></small>
+                    <input type="checkbox" class="bankGuarantee" data-target="bankGuaranteeDiv"/>Bank zəmanəti
+                    <span class="error text-danger"> {{$errors->first('education_language')}}</span>
+                </div>
+
+
+                <div id="bankGuaranteeDiv">
+
+                    <div class="form-group required">
+                        <label for="deposit_object_id" class="col-form-label">Bank
+                        </label>
+                        {{ Form::select('deposit_object_id',\App\Bank::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('deposit_object_id'))?'errorInput form-control':'form-control','id'=>'deposit_object_id']) }}
+
+                    </div>
+
+                    <div class="form-row required">
+                        <div class="form-group col-8">
+                            <label for="education_fee" class="col-form-label">Məbləğ</label>
+                            <input type="number"
+                                   class="form-control col-4 {{$errors->has('education_fee')?'errorInput':''}}"
+                                   value="{{old('education_fee')}}" name="bank_fee" id="education_fee">
+                            <small>Məbləğ</small>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="education_fee" class="col-form-label">Məzənnə</label>
+                            <select class="form-control" name="" id="">
+                                <option value="">AZN</option>
+                                <option value="">EUR</option>
+                                <option value="">DOL</option>
+                            </select>
+                            <small>Məzənnə</small>
+                        </div>
+                        <span class="error text-danger"> {{$errors->first('education_fee')}}</span>
+                    </div>
 
                 </div>
+
                 <div class="form-group required">
                     <label for="achievements" class="col-form-label">Nəaliyyətləri</label>
                     <textarea class="form-control {{$errors->has('achievements')?'errorInput':''}}"
                               name="achievements">{{old('achievements')}}</textarea>
+                    <small>Bu məlumat CV-nizə əlavə ediləcəkdir və komissiya iclasında baxılması üçündür</small>
                     <span class="error text-danger"> {{$errors->first('achievements')}}</span>
                 </div>
                 <div class="form-group required">
                     <label for="about_family" class="col-form-label required">Ailəsi haqqında</label>
                     <textarea class="form-control {{$errors->has('about_family')?'errorInput':''}}"
                               name="about_family">{{old('about_family')}}</textarea>
+                    <small>Ailə üzvü, ad, soyad, təvəllüd, doğum yeri, iş yeri, vəzifəsi (Bu məlumat CV-nizə əlavə
+                        ediləcəkdir və komissiya iclasında baxılması üçündür)</small>
                     <span class="error text-danger"> {{$errors->first('about_family')}}</span>
-                    <small id="emailHelp" class="form-text text-muted"><i><b>Ailə üzvü, ad, soyad, təvəllüd, doğum yeri,
-                                iş yeri, vəzifəsi</b></i></small>
+
 
                 </div>
 
@@ -298,13 +373,103 @@
                             class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"
                             data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="Ümumi həcm 10MB-dan çox olmamalıdır."> ? </a></label>
-                <div class="dropzone {{$errors->has('filename')?'errorInput':''}}" id="myDropzone">
-                    <div class="dz-message" data-dz-message><span style="font-weight: bold"><i><u>.zip</u></i> və ya <i><u>.rar</u> </i>formatında olan sənədinizi dartıb bura atın və ya klik edib həmin sənədi seçin</span>
-                    </div>
+
+
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Şəxsiyyət vəsiqəsinin surəti
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
                 </div>
-                <small id="emailHelp" class="form-text text-muted"><i><b>Yalnız .rar və ya .zip formatında fayllar qəbul
-                            olunur.</b></i></small>
-                <span class="error text-danger"> {{$errors->first('filename')}}</span>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı)
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Xarici universitetə qəbulu təsdiq edən rəsmi sənəd
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Tərcümeyi-hal
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Poliklinikadan 086 No-li tibbi arayış
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Psixoloji dispanserdən arayış
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript)
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">
+                        Birbaşa rəhbərindən müsbət xasiyyətnamə
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <label for="Owner" class="col-form-label required">Şəxsiyyət vəsiqəsinin surəti
+                    </label>
+                    <input type="file" class="form-control "
+                           name="Owner" value="" id="Owner">
+                    <span class="error text-danger"> </span>
+                </div>
+                <div class="form-group required">
+                    <input type="checkbox" class="realEstate" data-target="realEstateDiv"/>
+                    <span style="font-weight:bold;">
+                        Daxil etdiyim məlumatların doğruluğuna zəmanət verirəm
+                    </span>
+                    <span class="error text-danger"> {{$errors->first('education_language')}}</span>
+                </div>
+
+
+                {{--                <div class="dropzone {{$errors->has('filename')?'errorInput':''}}" id="myDropzone">--}}
+                {{--                    <div class="dz-message" data-dz-message><span style="font-weight: bold"><i><u>.zip</u></i> və ya <i><u>.rar</u> </i>formatında olan sənədinizi dartıb bura atın və ya klik edib həmin sənədi seçin</span>--}}
+                {{--                    </div>--}}
+                {{--                </div>--}}
+                {{--                <small id="emailHelp" class="form-text text-muted"><i><b>Yalnız .rar və ya .zip formatında fayllar qəbul--}}
+                {{--                            olunur.</b></i></small>--}}
+                {{--                <span class="error text-danger"> {{$errors->first('filename')}}</span>--}}
                 <br><br>
                 <button type="submit" class="btn btn-primary">Müraciət et</button>
             </div>
@@ -331,8 +496,10 @@
 
 
     <script>
-        $('#realEstateDiv *').prop('disabled', true);
+        $( document ).ready(function() {
 
+        $('#realEstateDiv *').prop('disabled', true);
+        $('#bankGuaranteeDiv *').prop('disabled', true);
 
 
         $('body').on('change', '.language_education_certificate_id', function () {
@@ -344,14 +511,21 @@
             }
         });
 
-        $(".realEstate").change(function() {
-            if(this.checked) {
+        $(".realEstate").change(function () {
+            if (this.checked) {
                 $('#realEstateDiv *').prop('disabled', false);
-            }else{
+            } else {
                 $('#realEstateDiv *').prop('disabled', true);
             }
         });
 
+        $(".bankGuarantee").change(function () {
+            if (this.checked) {
+                $('#bankGuaranteeDiv *').prop('disabled', false);
+            } else {
+                $('#bankGuaranteeDiv *').prop('disabled', true);
+            }
+        });
 
 
         function related_city() {
@@ -424,7 +598,7 @@
             var fieldHtml = ('<div id="certificates" class="certificates"> <div class="form-row required">\n' +
                 '                        <div class="form-group col-md-10 required">\n' +
                 '                            <label for="inputCity" class="col-form-label">Dil sertifikatı</label>\n' +
-                '                            {{ Form::select('language_education_certificate_id', [''=>'---------']+\App\LanguageEducationCertificate::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('language_education_certificate_id'))?'errorInput form-control language_education_certificate_id':'form-control language_education_certificate_id','id'=>'language_education_certificate_id']) }}' +
+                '                            {{ Form::select('language_education_certificate_id', [''=>'---------']+\App\Certificate::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('language_education_certificate_id'))?'errorInput form-control language_education_certificate_id':'form-control language_education_certificate_id','id'=>'language_education_certificate_id']) }}' +
                 '                            <span class="error text-danger"> {{$errors->first('language_education_certificate_id')}}</span>\n' +
                 '                        </div>                        <div class="form-group col-md-2 ">\n' +
                 '                            <label for="inputCity" class="col-form-label">&nbsp</label>\n' +
@@ -472,7 +646,9 @@
                 '                            ' +
                 '                                ');
             x++; //Increment field counter
-            $(wrapper).after(fieldHtml); //Add field html
+            $(wrapper).after(fieldHtml); //Add field html\
+
+
         });
         //Once remove button is clicked
         $('body').on('click', '.remove_button', function (e) {
@@ -481,6 +657,67 @@
             x--; //Decrement field counter
         });
 
+        // $( "#specialty_id" ).change(function() {
+        $(document).on('change', '#specialty_id', function() {
+            $('select[id="country_id"]').empty()
+            $.ajax({
+
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{url('rel_country')}}",
+                data: {specialty_id: $('select[name="specialty_id"]').val()},
+                cache: true,
+                success:
+                    function (data) {
+
+                        $.each(data, function (key, value) {
+
+                            $('select[id="country_id"]').append('<option value="' + value.CountryId + '">' + value.country.Name + '</option>');
+
+                        });
+
+                    }
+            });
+            setTimeout( function()
+            {
+            $( "#country_id" ).trigger('change');
+            }, 1000);
+        });
+
+        // $( "#country_id" ).change(function() {
+        $(document).on('change', '#country_id', function() {
+
+            $('select[id="university_id"]').empty()
+            $.ajax({
+
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{url('rel_university')}}",
+                data: {
+                    country_id: $('#country_id').val(),
+                    specialty_id: $('select[name="specialty_id"]').val()
+                },
+                cache: true,
+                success:
+                    function (data) {
+
+                        $.each(data, function (key, value) {
+
+                            $('select[id="university_id"]').append('<option value="' + value.Id + '">' + value.Name + '</option>');
+
+                        });
+
+                    }
+            });
+        });
+
+
+        $( "#specialty_id" ).trigger('change');
+        });
 
     </script>
 @endsection

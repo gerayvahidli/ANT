@@ -115,7 +115,7 @@
                         </tbody>
                     </table>
                 </div>
-                {{--                @include('frontend.profile.partials.programApplicationAndTrackingPanel')--}}
+{{--                                @include('frontend.profile.partials.programApplicationAndTrackingPanel')--}}
                 <div class="row">
                     <div class="col-4">
                         <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
@@ -134,10 +134,7 @@
                     </div>
 
                     <div class="col-4">
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-primary btn-block">Çıxış</button>
-                        </form>
+                        <a class="btn btn-outline-primary btn-block" href="{{ route('applyScholarship') }}">Müraciət et</a>
                     </div>
 
                 </div>

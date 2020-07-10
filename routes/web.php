@@ -77,6 +77,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.', 'mi
 });
 
 Route::post('/rel_city', 'UserController@relCity');//Ajax
+Route::post('/rel_country', 'UserController@relCountry');//Ajax
+Route::post('/rel_university', 'UserController@relUniversity');//Ajax
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -91,19 +93,20 @@ Route::group(['middleware' => 'auth'], function () {
 
     //user program apply
     //Route::get('/apply/{slug}/scholarship', 'UserController@applyScholarship');
-    Route::get('/apply/internal/scholarship/{program_id}', 'UserController@applyInternalScholarship')->middleware(\App\Http\Middleware\CheckInternalProgramApplicant::class);
-
-    Route::get('/apply/external/scholarship/{program_id}', 'UserController@program_type')->middleware(\App\Http\Middleware\CheckExternalProgramApplicant::class);
-    Route::get('/apply/paid/scholarship/{program_id}', 'UserController@applyPaidScholarship')->middleware(\App\Http\Middleware\CheckInternshipProgramApplicant::class);
-
-
-    Route::post('/apply/external/scholarship/{program_id}', 'UserController@storeExternal');
-    Route::post('/apply/internal/scholarship/{program_id}', 'UserController@storeInternal');
-    Route::post('/apply/paid/scholarship/{program_id}', 'UserController@storePaid');
-
-
-    Route::post('/upload/{slug}/uploadArchiveFile', 'UserController@uploadArchiveFile');//Dropzone issue
-    Route::post('/remove/{slug}/file', 'UserController@removeFile');
+//    Route::get('/apply/internal/scholarship/{program_id}', 'UserController@applyInternalScholarship')->middleware(\App\Http\Middleware\CheckInternalProgramApplicant::class);
+////
+////    Route::get('/apply/external/scholarship/{program_id}', 'UserController@program_type')->middleware(\App\Http\Middleware\CheckExternalProgramApplicant::class);
+////    Route::get('/apply/paid/scholarship/{program_id}', 'UserController@applyPaidScholarship')->middleware(\App\Http\Middleware\CheckInternshipProgramApplicant::class);
+////
+////
+////    Route::post('/apply/external/scholarship/{program_id}', 'UserController@storeExternal');
+////    Route::post('/apply/internal/scholarship/{program_id}', 'UserController@storeInternal');
+////    Route::post('/apply/paid/scholarship/{program_id}', 'UserController@storePaid');
+////
+////
+////    Route::post('/upload/{slug}/uploadArchiveFile', 'UserController@uploadArchiveFile');//Dropzone issue
+////    Route::post('/remove/{slug}/file', 'UserController@removeFile');
+    Route::get('/apply', 'UserController@applyScholarship')->name('applyScholarship');
 
 
 });
