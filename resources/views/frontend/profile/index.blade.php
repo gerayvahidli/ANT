@@ -134,7 +134,7 @@
                     </div>
 
                     <div class="col-4">
-                        <a class="btn btn-outline-primary btn-block" href="{{ route('applyScholarship') }}">Müraciət et</a>
+                        <a class="btn btn-outline-primary btn-block" href="{{ route('showApplyScholarshipForm') }}">Müraciət et</a>
                     </div>
 
                 </div>

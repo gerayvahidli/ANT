@@ -807,7 +807,7 @@ class UserController extends Controller
 //        dd($user);
     }
 
-     public function applyScholarship( User $user)
+     public function showApplyScholarshipForm( User $user)
      {
 //         $uni =SpecialityGroup::find(1);
 //         $unies = $uni->universities;
@@ -838,6 +838,13 @@ class UserController extends Controller
 
          return view('frontend.profile.apply.externalScholarship');
      }
+
+
+    public function applyScholarship( User $user, Request $request)
+    {
+        return $request;
+    }
+
  
 
 

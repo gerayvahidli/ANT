@@ -106,7 +106,8 @@ Route::group(['middleware' => 'auth'], function () {
 ////
 ////    Route::post('/upload/{slug}/uploadArchiveFile', 'UserController@uploadArchiveFile');//Dropzone issue
 ////    Route::post('/remove/{slug}/file', 'UserController@removeFile');
-    Route::get('/apply', 'UserController@applyScholarship')->name('applyScholarship');
+    Route::get('/apply', 'UserController@showApplyScholarshipForm')->name('showApplyScholarshipForm');
+    Route::post('apply', 'UserController@applyScholarship')->name('applyScholarship');
 
 
 });

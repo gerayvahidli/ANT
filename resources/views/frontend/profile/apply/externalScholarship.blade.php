@@ -37,8 +37,8 @@
 
         <h3 style="text-align: center;">Xarici təqaüd proqramına müraciət</h3>
         <hr>
-        {{Form::open(['url'=>'apply/external/scholarship/'.Request::segment(4),'class'=>'form-horizontal'])}}
-        <input type="hidden" name="program_id" value="{{Request::segment(4)}}">
+        <form name="applyForm" id="applyForm" action="" method="post" enctype="multipart/form-data">
+
         <div class="row">
             <div class="col-md-10 " style="margin:0 auto;">
                 <div class="form-group required">
@@ -380,7 +380,7 @@
                         Şəxsiyyət vəsiqəsinin surəti
                     </label>
                     <input type="file" class="form-control "
-                           name="Owner" value="" id="Owner">
+                           name="passport" value="" id="passport">
                     <span class="error text-danger"> </span>
                 </div>
                 <div class="form-group required">
@@ -442,13 +442,6 @@
                 <div class="form-group required">
                     <label for="Owner" class="col-form-label required">
                         Birbaşa rəhbərindən müsbət xasiyyətnamə
-                    </label>
-                    <input type="file" class="form-control "
-                           name="Owner" value="" id="Owner">
-                    <span class="error text-danger"> </span>
-                </div>
-                <div class="form-group required">
-                    <label for="Owner" class="col-form-label required">Şəxsiyyət vəsiqəsinin surəti
                     </label>
                     <input type="file" class="form-control "
                            name="Owner" value="" id="Owner">
@@ -717,6 +710,44 @@
 
 
         $( "#specialty_id" ).trigger('change');
+        });
+
+
+
+
+        $('form#applyForm').submit(function (event) {
+
+
+            event.preventDefault();
+            var formdata = new FormData(this); // high importance!;
+
+            // console.log(formdata);
+            // return false;
+
+            $.ajax({
+                url: '{{route('applyScholarship')}}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'JSON',
+                type: 'POST',
+                data: formdata,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+
+                    console.log("success");
+
+
+                },
+                error: function (data) {
+                    console.log("error");
+                    // console.log(data);
+                }
+            });
+
+
         });
 
     </script>
