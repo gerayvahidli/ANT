@@ -9,6 +9,7 @@ use App\EducationLevel;
 use App\EducationPaymentForm;
 use App\EducationSection;
 use App\ExternalProgramProgram;
+use App\Region;
 use App\UserProgram;
 use App\ExternalProgram;
 use App\Education;
@@ -126,7 +127,8 @@ class RegisterController extends Controller
     {
         $countries = Country::all();
         $companies = Company::where('IsSocar',1)->get();
-        $cities = City::where('IsShow',1) -> get();
+        $cities = City::where('IsShow',1) -> orderBy('Name') -> get();
+        $regions = Region::where('IsShow',1) -> orderBy('Name') -> get();
         $educationLevels = EducationLevel::all();
         $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
         $educationForms = EducationForm::pluck('Name', 'id');
@@ -137,7 +139,7 @@ class RegisterController extends Controller
 
 
         return view('frontend.profile.form',
-            compact('user', 'countries', 'companies', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'genders')
+            compact('user', 'countries', 'companies', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities','regions', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'genders')
         );
     }
 
@@ -195,6 +197,17 @@ class RegisterController extends Controller
         } else {
             $user->BirthCityId = $data['BirthCityId'];
         }
+        if ($data['address_region'] == 'other') {
+            $city = new Region;
+            $city->Name = $data ['address_region'];
+            $city->IsShow = 0;
+            $city->save();
+
+            $user->BirthCityId = $city->id;
+        } else {
+            $user->BirthCityId = $data['address_region'];
+        }
+
 
 
 
@@ -322,7 +335,7 @@ class RegisterController extends Controller
         $userProgram = new UserProgram;
 
         $userProgram -> UserId = $user ->id;
-        $userProgram -> ProgramId ='';
+        $userProgram -> ProgramId = null;
         $userProgram -> UserProgramStatusId = 1;
         $userProgram -> save();
 

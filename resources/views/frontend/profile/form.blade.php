@@ -262,6 +262,7 @@
                         </select>
                         <input type="text" class="form-control" name="otherCity" id="otherCity" style="display: none"
                                value="{{$user -> exists && $user -> BirthCity -> IsShow == 0 ? $user -> BirthCity -> Name :''  }}"
+                               data-required-error="Digər rayonun adını yazın"
                                placeholder="Digər rayonun adını bura yazın"/>
 
                         @if ($errors->has('BirthCityId'))
@@ -337,6 +338,42 @@
 
                     </div>
                 </div>
+
+                <div class="form-group row required">
+                    <label for="address_region" class="col-4 col-form-label">Faktiki yaşayış ünvanının yerləşdiyi
+                        rayon</label>
+                    <div class="col-8">
+                        <select name="address_region" id="address_region" class="form-control">
+                            @if($user -> exists && $user -> RegionId -> IsShow == 0)
+
+                                @foreach($regions as $region)
+                                    <option value="{{$region -> Id}}">{{$region -> Name}}</option>
+                                @endforeach
+                                <option value="other" selected>Digər</option>
+
+                            @else
+                                @foreach($regions as $region)
+                                    <option {{ $user -> exists &&  $user -> BithCityId == $city-> Id ? 'selected' :''   }} value="{{$region -> Id}}">{{$region -> Name}}</option>
+                                @endforeach
+                                <option value="other">Digər</option>
+                            @endif
+                        </select>
+                        <input type="text" class="form-control" name="other_address_region" id="other_address_region"
+                               style="display: none"
+                               value="{{$user -> exists && $user -> RegionId -> IsShow == 0 ? $user -> RegionId -> Name :''  }}"
+                               data-required-error="Digər rayonun adını yazın"
+                               placeholder="Digər rayonun adını bura yazın"/>
+
+                        @if ($errors->has('BirthCityId'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('BirthCityId') }}</strong>
+                            </div>
+                        @endif
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+
                 <div class="form-group row ">
                     <label for="Address" class="col-4 col-form-label">Faktiki yaşayış ünvanı</label>
                     <div class="col-8">
@@ -401,7 +438,8 @@
                     @if($user->exists && count($user->phones))
                         @foreach($user->phones->where('PhoneTypeId',2) as $phone)
                             <div class="form-group row required" id="mobilePhones">
-                                <label for="phone" class="col-md-4 col-form-label">Mobil telefon-{{$loop -> iteration}}</label>
+                                <label for="phone" class="col-md-4 col-form-label">Mobil
+                                    telefon-{{$loop -> iteration}}</label>
 
                                 <div class="col-3">
                                     {{ Form::select('mobilePhone[' . $loop->index . '][operatorCode]', $mobilePhoneOperatorCodes, ( isset($phone->PhoneNumber) ) ? $phone->mobile_operator_code_id : old('mobilePhoneOperatorCode'), ['class' => 'form-control here', 'id' => 'mobilePhoneOperatorCode']) }}
@@ -609,7 +647,7 @@
 
                 @include('frontend.profile.partials.workAndScholarshipFields')
                 @include('frontend.profile.partials.previousWorkAndScholarshipFields')
-                <div class="form-group row" >
+                <div class="form-group row">
                     <div class="form-group col-3">
                         <label class="form-check-label" for="defaultCheck1">
                             Əvvəlki iş təcrübəsi
@@ -672,7 +710,6 @@
             $('#getPrametersByFin').click(function () {
 
 
-
                 var fin = $('#idCardPin').val();
                 var token = $("input[name='_token']").val();
 
@@ -714,34 +751,17 @@
             // console.log(token);
             // profile submit - axios
 
-            var return_first = function () {
-                var tmp = null;
-                var fin = $('#idCardPin').val();
-
-                $.ajax({
-                    async: false,
-                    url: '{{ url('/getPrametersByFin') }}',
-                    data: {'fin': fin, '_token': token},
-                    type: "post",
-                    dataType: "json",
-                    success: function (data) {
-                        tmp = data;
-                    }
-
-                    });
-                return tmp;
-            }();
-
 
 
             $('#profile-form').submit(function (stay) {
 
-                @if(!$user -> exists)
+
+                        @if(!$user -> exists)
                 var fin = $('#idCardPin').val();
                 var tabel_number = $('#tabel_number').val();
-                var error =1;
+                var error = 1;
 
-                if(tabel_number.length != 9 && fin != '') {
+                if (tabel_number.length != 9 && fin != '') {
 
                     $.ajax({
                         async: false,
@@ -750,7 +770,7 @@
                         type: "post",
                         dataType: "json",
                         success: function (data) {
-                            if ((data.OutParams.Status != 3 && data.OutParams.Status != '' ) || data.OutParams.Status == '') {
+                            if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '') {
                                 alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
                                 error = 1;
                             } else {
@@ -828,7 +848,7 @@
                     .then((response) => {
                         // console.log('correct');
                         console.log(response);
-                        {{--window.location.href = '{{ route('profile.index') }}';--}}
+                        window.location.href = '{{ route('profile.index') }}';
                     }).catch((error) => {
                     if (error.response) {
                         // The request was made and the server responded with a status code
@@ -917,7 +937,7 @@
 
             //delete previous education
 
-            $(document).on('click', '#delete-previous-education', function(){
+            $(document).on('click', '#delete-previous-education', function () {
                 var previous_education_id = $(this).closest('.fieldGroup').find('input[name="previous_education_id[]"]').val();
                 console.log(previous_education_id);
                 axios.post('{{ route('deletePreviousEducation') }}', {
@@ -934,7 +954,7 @@
 
             });
 
-            $(document).on('click', '#delete-previous-job', function(){
+            $(document).on('click', '#delete-previous-job', function () {
                 var previous_job_id = $(this).closest('.workFieldGroup').find('input[name="previous_job_id[]"]').val();
                 console.log(previous_job_id);
                 axios.post('{{ route('deletePreviousJob') }}', {
@@ -1294,8 +1314,21 @@
                 $('#otherCity').val('');
                 if (this.value == 'other') {
                     $('#otherCity').show();
+                    $('#otherCity').prop('required', true);
                 } else {
                     $('#otherCity').hide();
+                    $('#otherCity').prop('required', false);
+                }
+            });
+
+            $('body').on('change', '#address_region', function () {
+                $('#other_address_region').val('');
+                if (this.value == 'other') {
+                    $('#other_address_region').show();
+                    $('#other_address_region').prop('required', true);
+                } else {
+                    $('#other_address_region').hide();
+                    $('#other_address_region').prop('required', false);
                 }
             });
 
@@ -1402,12 +1435,13 @@
 
                 });//end select University by Country for Previous Education 1
             }
+
             // $(document).on('change', 'select#ex_previous_education_country_id', function(){
 
             // Select university by country  for Previous Education 1
             $('select#ex_previous_education_country_id').on('change', function () {
-                var budu =$(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
-                console.log( budu );
+                var budu = $(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
+                console.log(budu);
                 var countryId = $(this).val();
                 var admissionScore = $(this).parents('.fieldGroup').find('#ex_previous_education_admission_score');
 

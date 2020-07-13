@@ -10,8 +10,12 @@ class SpecialityGroup extends Model
     protected $primaryKey = 'Id';
 
 
-    public function universities()
+
+
+    public function specializations()
     {
-        return $this->belongsToMany( University::class,'SpecialityGroupUniversity','SpecialityGroupRefId','UniversityRefId');
+        return $this->hasMany(Specialization::class,'SpecialityGroupId','Id');
+
     }
+
 }

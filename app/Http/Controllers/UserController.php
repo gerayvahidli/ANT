@@ -7,6 +7,7 @@ use App\ApplicationStageResult;
 use App\City;
 use App\Company;
 use App\Country;
+use App\Currency;
 use App\EducationForm;
 use App\EducationLevel;
 use App\EducationPaymentForm;
@@ -19,12 +20,14 @@ use App\JobInfo;
 use App\MobileOperatorCode;
 use App\Phone;
 use App\Education;
+use App\Specialization;
 use App\InternalProgramApplication;
 use App\Mail\FromUserToTis;
 use App\PreviousEducation;
 use App\PreviousInternship;
 use App\PreviousScholarship;
 use App\ProgramType;
+use App\Specialiation;
 use App\SpecialityGroup;
 use App\University;
 use App\User, Auth;
@@ -807,45 +810,21 @@ class UserController extends Controller
 //        dd($user);
     }
 
-     public function showApplyScholarshipForm( User $user)
-     {
-//         $uni =SpecialityGroup::find(1);
-//         $unies = $uni->universities;
-//
-//
-//         $events = $unies->filter(function($event)
-//         {
-//             return $event->country;
-//         });
-//
-//         return $events;
+    public function showApplyScholarshipForm(User $user)
+    {
+
+        $currencies = Currency::orderBy('name')->get();
+
+        return view('frontend.profile.apply.externalScholarship', compact('currencies'));
+    }
 
 
-//         $reasons = \App\ArmyAvoidReason::pluck('Name', 'id')->toArray();
-//
-//         $array = array();
-//         foreach ($reasons as $key => $value) {
-//
-//             $from_sql  = ["{0}", "{n}+1"];
-//             $after_sql = [date('Y'), date('Y') + 1];
-//
-//             $text          = str_replace($from_sql, $after_sql, $value);
-//             $array[ $key ] = $text;
-//         }
-//
-//         $request->reasons_array = $array;
-
-
-         return view('frontend.profile.apply.externalScholarship');
-     }
-
-
-    public function applyScholarship( User $user, Request $request)
+    public function applyScholarship(User $user, Request $request)
     {
         return $request;
     }
 
- 
+
 
 
 //	public function applyInternalScholarship ( $slug = 'internal', User $user )
@@ -922,31 +901,56 @@ class UserController extends Controller
 
     public function relCountry(Request $req)
     {
-        $speciality =SpecialityGroup::find($req -> specialty_id);
-        $universities = $speciality->universities;
+        $specialization = Specialization::find($req -> specialization_id);
+        $universities = $specialization -> universities;
 
-
-        $countries = $universities->filter(function($university)
-        {
-            return $university->country;
+       return  $universitiesWithCountries = $universities->filter(function ($uni)  {
+            return $uni->country;
         });
 
-        return $countries;
     }
 
     public function relUniversity(Request $req)
     {
 //        return $req -> specialty_id;
-        $speciality =SpecialityGroup::find($req -> specialty_id);
-        $universities = $speciality -> universities;
+        $req -> specialty_id != null ? $specialization = SpecialityGroup::find($req -> specialty_id) -> specializations -> first() :
+            $specialization = Specialization::find($req -> specialization_id);
 
 
-        $unis = $universities -> filter(function($uni) use ($req)
-        {
-            return $uni -> CountryId == $req -> country_id;
+        $universities = $specialization -> universities;
+
+
+        $unis = $universities->filter(function ($uni) use ($req) {
+            return $uni->CountryId == $req->country_id;
         });
 
         return $unis;
+    }
+
+    public function relSpecialization(Request $req)
+    {
+        $speciality = SpecialityGroup::find($req->specialty_id);
+        $specializations = $speciality->specializations;
+
+        $specialization_select_options = '';
+        foreach ($specializations as $specialization) {
+            $specialization_select_options .= '<option value="' . $specialization->Id . '">' . $specialization->Name . '</option>';
+        }
+        $specialization_select = '<select name="specialization" id="specialization_id" class="form-control specialization_select">' . $specialization_select_options . '</select>';
+
+        $universitiesWithCountry = $specializations->filter(function ($specializations) {
+            return $specializations->universities ->filter(function ($university) {
+                return $university->country;
+            });
+        });
+
+        return response()->json([
+            'count' => $specializations->count(),
+            'specializations' => $specialization,
+            'specializations_select' => $specialization_select,
+            'universitiesWithCountry' => $universitiesWithCountry -> first()
+        ]);
+
     }
 
 

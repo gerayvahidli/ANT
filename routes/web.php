@@ -79,6 +79,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.', 'mi
 Route::post('/rel_city', 'UserController@relCity');//Ajax
 Route::post('/rel_country', 'UserController@relCountry');//Ajax
 Route::post('/rel_university', 'UserController@relUniversity');//Ajax
+Route::post('/rel_specialization', 'UserController@relSpecialization');//Ajax
 
 
 Route::group(['middleware' => 'auth'], function () {
