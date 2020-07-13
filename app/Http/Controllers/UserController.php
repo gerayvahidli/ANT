@@ -901,10 +901,10 @@ class UserController extends Controller
 
     public function relCountry(Request $req)
     {
-        $specialization = Specialization::find($req -> specialization_id);
-        $universities = $specialization -> universities;
+        $specialization = Specialization::find($req->specialization_id);
+        $universities = $specialization->universities;
 
-       return  $universitiesWithCountries = $universities->filter(function ($uni)  {
+        return $universitiesWithCountries = $universities->filter(function ($uni) {
             return $uni->country;
         });
 
@@ -912,15 +912,20 @@ class UserController extends Controller
 
     public function relUniversity(Request $req)
     {
-//        return $req -> specialty_id;
-        $req -> specialty_id != null ? $specialization = SpecialityGroup::find($req -> specialty_id) -> specializations -> first() :
-            $specialization = Specialization::find($req -> specialization_id);
+//        return $req;
+
+        if ( isset($req->specialization_id)) {
+            $specialization = Specialization::find($req->specialization_id);
+        } else {
+            $specialization = SpecialityGroup::find($req->speciality_id)->specializations->first();
+
+        }
 
 
-        $universities = $specialization -> universities;
+         $universities = $specialization->universities;
 
 
-        $unis = $universities->filter(function ($uni) use ($req) {
+          $unis = $universities->filter(function ($uni) use ($req) {
             return $uni->CountryId == $req->country_id;
         });
 
@@ -929,7 +934,7 @@ class UserController extends Controller
 
     public function relSpecialization(Request $req)
     {
-        $speciality = SpecialityGroup::find($req->specialty_id);
+        $speciality = SpecialityGroup::find($req->speciality_id);
         $specializations = $speciality->specializations;
 
         $specialization_select_options = '';
@@ -939,7 +944,7 @@ class UserController extends Controller
         $specialization_select = '<select name="specialization" id="specialization_id" class="form-control specialization_select">' . $specialization_select_options . '</select>';
 
         $universitiesWithCountry = $specializations->filter(function ($specializations) {
-            return $specializations->universities ->filter(function ($university) {
+            return $specializations->universities->filter(function ($university) {
                 return $university->country;
             });
         });
@@ -948,7 +953,7 @@ class UserController extends Controller
             'count' => $specializations->count(),
             'specializations' => $specialization,
             'specializations_select' => $specialization_select,
-            'universitiesWithCountry' => $universitiesWithCountry -> first()
+            'universitiesWithCountry' => $universitiesWithCountry->first()
         ]);
 
     }

@@ -67,9 +67,9 @@
                     <div class="form-group required">
 
 
-                        <label for="specialty_id" class="col-form-label">İxtisas qrupu</label><br>
-                        {{ Form::select('specialty_id', \App\SpecialityGroup::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('specialty_id'))?'errorInput form-control':'form-control','id' => 'specialty_id']) }}
-                        <span class="error text-danger"> {{$errors->first('specialty_id')}}</span>
+                        <label for="speciality_id" class="col-form-label">İxtisas qrupu</label><br>
+                        {{ Form::select('speciality_id', \App\SpecialityGroup::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('speciality_id'))?'errorInput form-control':'form-control','id' => 'speciality_id']) }}
+                        <span class="error text-danger"> {{$errors->first('speciality_id')}}</span>
 
 
                     </div>
@@ -687,8 +687,8 @@
                 x--; //Decrement field counter
             });
 
-            // $( "#specialty_id" ).change(function() {
-            $(document).on('change', '#specialty_id', function () {
+            // $( "#speciality_id" ).change(function() {
+            $(document).on('change', '#speciality_id', function () {
                 $('select[id="country_id"]').empty()
                 $.ajax({
 
@@ -697,7 +697,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url: "{{url('rel_specialization')}}",
-                    data: {specialty_id: $('select[name="specialty_id"]').val()},
+                    data: {speciality_id: $('select[name="speciality_id"]').val()},
                     cache: true,
                     success:
                         function (data) {
@@ -747,8 +747,8 @@
                     url: "{{url('rel_university')}}",
                     data: {
                         country_id: $('#country_id').val(),
-                        specialty_id: $('select[name="specialty_id"]').val()  ? $('select[name="specialty_id"]').val() : null ,
-                        specialization_id: $('select[name="specialization"]').val() ? $('select[name="specialization"]').val() : null
+                        speciality_id:  $('select[name="speciality_id"]').val()  ,
+                        specialization_id: $('select[name="specialization"]').val()
                     },
                     cache: true,
                     success:
@@ -806,7 +806,7 @@
 
 
 
-            $("#specialty_id").trigger('change');
+            $("#speciality_id").trigger('change');
         });
 
 
