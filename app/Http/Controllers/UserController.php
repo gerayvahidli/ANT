@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Adldap\Laravel\Facades\Adldap;
 use App\ApplicationStageResult;
+use App\Certificate;
 use App\City;
 use App\Company;
 use App\Country;
@@ -13,6 +14,7 @@ use App\EducationLevel;
 use App\EducationPaymentForm;
 use App\EducationSection;
 use App\Email;
+use App\EPApplication;
 use App\ExamLanguage;
 use App\ExternalProgramApplication;
 use App\Gender;
@@ -28,6 +30,7 @@ use App\PreviousInternship;
 use App\PreviousScholarship;
 use App\ProgramType;
 use App\Specialiation;
+use App\ExternalProgram;
 use App\SpecialityGroup;
 use App\University;
 use App\User, Auth;
@@ -814,14 +817,46 @@ class UserController extends Controller
     {
 
         $currencies = Currency::orderBy('name')->get();
+        $certificates = Certificate::all();
 
-        return view('frontend.profile.apply.externalScholarship', compact('currencies'));
+        return view('frontend.profile.apply.externalScholarship', compact('currencies','certificates'));
     }
 
 
-    public function applyScholarship(User $user, Request $request)
+    public function applyScholarship( Request $request)
     {
-        return $request;
+
+//        return Specialization::find($request -> specialization_id);
+        $application = new EPApplication;
+        $application -> ProgramId = ExternalProgram::where('IsActive',1) ->first() -> Id;
+        $application -> UserId    = Auth::user()->id;
+        $application -> Speciality    = isset($request -> specialization_id) ? Specialization::find($request -> specialization_id) -> Name : $request -> specialization_name ;
+        $application -> SpecializationId    = isset($request -> specialization_id) ? $request -> specialization_id : null ;
+        $application -> SpecialityGroupId    = $request -> speciality_id ;
+        $application -> CountryId   = $request -> country_id;
+        $application -> UniversityId    =  $request -> university_id;
+        $application -> city    = $request -> city_name;
+        $application -> MainModule   = $request -> main_modules;
+        $application -> AdditionalModule    = $request -> additional_modules;
+        $application -> StartTime    = date('Y-m-d', strtotime( $request -> education_start_date));
+        $application -> Amount    = $request -> education_fee['amount'];
+        $application -> CurrencyId    =  $request -> education_fee['currency'];
+        $application -> EducationLang    = $request -> education_language;
+        $application -> Achievments    = $request -> achievements;
+        $application -> FamilyInfo    = $request -> about_family;
+        $application -> ApplyDate = date("Y-m-d H:i:s");
+        $application -> EdEduLevelId    = 2;
+        $application -> StartDate = $request -> EducationBeginDate;
+        $application -> EndDate = $request -> EducationEndDate;
+        $application -> CityId    = 1;
+        $application -> CurrentStageSending  = false;
+
+        $application -> save();
+
+
+
+
+
     }
 
 
@@ -941,7 +976,7 @@ class UserController extends Controller
         foreach ($specializations as $specialization) {
             $specialization_select_options .= '<option value="' . $specialization->Id . '">' . $specialization->Name . '</option>';
         }
-        $specialization_select = '<select name="specialization" id="specialization_id" class="form-control specialization_select">' . $specialization_select_options . '</select>';
+        $specialization_select = '<select name="specialization_id" id="specialization_id" class="form-control specialization_select">' . $specialization_select_options . '</select>';
 
         $universitiesWithCountry = $specializations->filter(function ($specializations) {
             return $specializations->universities->filter(function ($university) {

@@ -60,7 +60,8 @@
 
         <h3 style="text-align: center;">Xarici təqaüd proqramına müraciət</h3>
         <hr>
-        <form name="applyForm" id="applyForm" action="" method="post" enctype="multipart/form-data" data-toggle="validator" role="form">
+        <form name="applyForm" id="applyForm" action="" method="post" enctype="multipart/form-data"
+              data-toggle="validator" role="form">
 
             <div class="row">
                 <div class="col-md-10 " style="margin:0 auto;">
@@ -75,14 +76,14 @@
                     </div>
 
                     <div class="form-group required specialization_div">
-                        <label for="specialty_name" class="col-form-label">İxtisaslaşma</label>
-{{--                        <select class="form-control" name="specialization_id" id="specialization_id"></select>--}}
-                        <input id="specialty_name"
-{{--                               style="display: none"--}}
-                               data-required-error='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
-                               type="text" class="form-control {{$errors->has('specialty_name')?'errorInput':''}}"
-                               name="specialty_name" value="{{old('specialty_name')}}">
-                        <span class="error text-danger"> {{$errors->first('specialty_name')}}</span>
+                        <label for="specialization_name" class="col-form-label">İxtisaslaşma</label>
+                        {{--                        <select class="form-control" name="specialization_id" id="specialization_id"></select>--}}
+                        <input id="specialization_name"
+                               {{--                               style="display: none"--}}
+                               data-required-error='İxtisaslaşma sahəsini boş burxamayın'
+                               type="text" class="form-control {{$errors->has('specialization_name')?'errorInput':''}}"
+                               name="specialization_name" value="{{old('specialization_name')}}">
+                        <span class="error text-danger"> {{$errors->first('specialization_name')}}</span>
                         <div class="help-block with-errors"></div>
 
                     </div>
@@ -102,7 +103,7 @@
                     </div>
                     <div class="form-group required">
 
-                        <label for="unibuversity_id" class="col-form-label">Təhsil müəssisəsi</label>
+                        <label for="university_id" class="col-form-label">Təhsil müəssisəsi</label>
                         <div id="related_city">
                             <select class="form-control" name="university_id" id="university_id"></select>
 
@@ -130,10 +131,10 @@
                     </div>
 
                     <div class="form-group required">
-                        <label for="main_modules" class="col-form-label">Əlavə (seçmə) modullar</label>
-                        <textarea class="form-control {{$errors->has('main_modules')?'errorInput':''}}"
-                                  name="main_modules">{{old('main_modules')}}</textarea>
-                        <span class="error text-danger"> {{$errors->first('main_modules')}}</span>
+                        <label for="additional_modules" class="col-form-label">Əlavə (seçmə) modullar</label>
+                        <textarea class="form-control {{$errors->has('additional_modules')?'errorInput':''}}"
+                                  name="additional_modules">{{old('additional_modules')}}</textarea>
+                        <span class="error text-danger"> {{$errors->first('additional_modules')}}</span>
                     </div>
 
 
@@ -143,14 +144,14 @@
 
                             <div class="col-sm-6 my-1">
                                 <label class="sr-only col-form-label" for="EducationBeginDate">Başlama tarixi</label>
-                                <input type="text" value="{{old('EducationBeginDate')}}" id="datepicker1"
+                                <input type="number" value="{{old('EducationBeginDate')}}"
                                        name="EducationBeginDate"
                                        class="form-control  {{$errors->has('EducationBeginDate')?'errorInput':''}}">
                                 <span class="error text-danger"> {{$errors->first('EducationBeginDate')}}</span>
                             </div>
                             <div class="col-sm-6 my-1">
                                 <label class="sr-only" for="EducationEndDate">Bitmə tarixi</label>
-                                <input type="text" id="datepicker2" value="{{old('EducationEndDate')}}"
+                                <input type="number"  value="{{old('EducationEndDate')}}"
                                        name="EducationEndDate"
                                        class="form-control {{$errors->has('EducationEndDate')?'errorInput':''}}">
 
@@ -161,22 +162,23 @@
 
                     <div class="form-group required">
                         <label for="education_start_date" class="col-form-label">Təhsilin başlama tarixi</label>
-                        <input type="text" value="{{old('EducationBeginDate')}}" id="datepicker3"
+                        <input type="text" value="{{old('education_start_date')}}" id="datepicker3"
                                name="education_start_date"
-                               class="form-control  {{$errors->has('EducationBeginDate')?'errorInput':''}}">
-                        <span class="error text-danger"> {{$errors->first('EducationBeginDate')}}</span>
+                               class="form-control  {{$errors->has('education_start_date')?'errorInput':''}}">
+                        <span class="error text-danger"> {{$errors->first('education_start_date')}}</span>
                     </div>
 
                     <div class="form-row required">
                         <div class="form-group col-8">
-                            <label for="education_fee" class="col-form-label">Təhsil haqqı</label>
+                            <label for="education_fee[amount]" class="col-form-label">Təhsil haqqı</label>
                             <input type="number"
-                                   class="form-control col-4 {{$errors->has('education_fee')?'errorInput':''}}"
-                                   value="{{old('education_fee')}}" name="education_fee" id="education_fee">
+                                   class="form-control col-4 {{$errors->has('education_fee[amount]')?'errorInput':''}}"
+                                   value="{{old('education_fee[amount]')}}" name="education_fee[amount]"
+                                   id="education_fee">
                         </div>
                         <div class="form-group col-4">
-                            <label for="education_fee_currency" class="col-form-label">Məzənnə</label>
-                            <select class="form-control" name="education_fee_currency" id="education_fee_currency">
+                            <label for="education_fee[currency]" class="col-form-label">Məzənnə</label>
+                            <select class="form-control" name="education_fee[currency]" id="education_fee_currency">
                                 @foreach($currencies as $currency)
                                     <option value="{{$currency -> Id}}">{{ $currency -> Name}}</option>
                                 @endforeach
@@ -185,21 +187,30 @@
                         <span class="error text-danger"> {{$errors->first('education_fee')}}</span>
                     </div>
 
-                    <div class="certificates">
+                    <div class="certificates" id="certificates">
                         <div class="form-row required test">
-                            <div class="form-group col-md-12 required">
+                            <div class="form-group col-12 required">
                                 <label for="inputCity" class="col-form-label">Dil sertifikatı</label>
-                                {{ Form::select('language_education_certificate_id', [''=>'---------']+\App\Certificate::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('language_education_certificate_id'))?'errorInput form-control language_education_certificate_id':'form-control language_education_certificate_id','id'=>'language_education_certificate_id']) }}
+                                <div class="d-flex">
+                                <select name="language_education_certificate_id[0][certificate]" id=""
+                                        class="form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} "
+                                        id="language_education_certificate_id">
+                                    @foreach($certificates as $certificate)
+                                        <option value="{{$certificate -> Id}}">{{$certificate -> Name}}</option>
+                                    @endforeach
+                                </select>
+                                </div>
                                 <span class="error text-danger"> {{$errors->first('language_education_certificate_id')}}</span>
                             </div>
+
                         </div>
                         <div class="form-group required languageLevel" style="display: none">
                             <label for="" class="col-form-label">Dil bilmə səviyyəsi</label>
                             <div class="form-row align-items-center">
                                 <div class="col-sm-3 ">
-                                    <input type="number" step="any" min="0" id="" value="00000"
-                                           name=""
-                                           onkeydown="return ValidateInput(this);"
+                                    <input type="number" step="any" min="0" id="" value="0"
+                                           name="language_education_certificate_id[0][reading]"
+                                           onkeydown=""
                                            class="form-control ">
                                     <small>oxuma</small>
                                     <span class="error text-danger"></span>
@@ -208,7 +219,7 @@
                                 <div class="col-sm-3 ">
                                     <input type="number" step="any" min="0" id="" value="0"
                                            id=""
-                                           name=""
+                                           name="language_education_certificate_id[0][writing]"
                                            class="form-control">
                                     <small>yazma</small>
                                     <span class="error text-danger"> </span>
@@ -216,7 +227,7 @@
 
                                 <div class="col-sm-3 ">
                                     <input type="number" step="any" min="0" id="" value="0"
-                                           name=""
+                                           name="language_education_certificate_id[0][speaking]"
                                            class="form-control ">
                                     <small>danışıq</small>
                                     <span class="error text-danger"></span>
@@ -225,7 +236,7 @@
                                 <div class="col-sm-3 ">
                                     <input type="number" step="any" min="0" id="" value="0"
                                            id=""
-                                           name=""
+                                           name="language_education_certificate_id[0][speaking]"
                                            class="form-control">
                                     <small>dinləmə</small>
                                     <span class="error text-danger"></span>
@@ -233,6 +244,7 @@
 
                             </div>
                         </div>
+
 
                     </div>
                     <button id="addCertificate" type="button" class="form-control btn btn-primary">Əlavə et</button>
@@ -244,7 +256,8 @@
                         <span class="error text-danger"> {{$errors->first('education_language')}}</span>
                     </div>
                     <div class="form-group required">
-                        <input type="checkbox" class="realEstate" data-target="realEstateDiv"/>Daşınmaz əmlak
+                        <input name="realEstate" type="checkbox" class="realEstate" data-target="realEstateDiv"/>Daşınmaz
+                        əmlak
                         <span class="error text-danger"> {{$errors->first('education_language')}}</span>
                     </div>
 
@@ -254,85 +267,89 @@
                         <div class="form-group required">
                             <label for="deposit_object_id" class="col-form-label">Girov predmeti
                             </label>
-                            {{ Form::select('deposit_object_id', [''=>'---------']+\App\Deposit::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('deposit_object_id'))?'errorInput form-control':'form-control','id'=>'deposit_object_id']) }}
+                            {{ Form::select('realEstate_deposit_object_id', [''=>'---------']+\App\Deposit::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('realEstate_deposit_object_id'))?'errorInput form-control':'form-control','id'=>'realEstate_deposit_object_id']) }}
 
                         </div>
 
 
                         <div class="form-group required">
-                            <label for="located_city" class="col-form-label required">Ünvan
+                            <label for="realEstate_located_city" class="col-form-label required">Ünvan
                             </label>
-                            <input type="text" class="form-control {{$errors->has('located_city')?'errorInput':''}}"
-                                   name="located_city" value="{{old('located_city')}}" id="exampleInputEmail1">
-                            <span class="error text-danger"> {{$errors->first('located_city')}}</span>
+                            <input type="text"
+                                   class="form-control {{$errors->has('realEstate_located_city')?'errorInput':''}}"
+                                   name="realEstate_located_city" value="{{old('realEstate_located_city')}}"
+                                   id="realEstate_located_city">
+                            <span class="error text-danger"> {{$errors->first('realEstate_located_city')}}</span>
                         </div>
 
                         <div class="form-group required">
-                            <label for="Owner" class="col-form-label required">Mülkiyyətçi
+                            <label for="realEstate_owner" class="col-form-label required">Mülkiyyətçi
                             </label>
                             <input type="text" class="form-control "
-                                   name="Owner" value="" id="Owner">
+                                   name="realEstate_owner" value="" id="realEstate_owner">
                             <span class="error text-danger"> </span>
                         </div>
 
                         <div class="form-group required">
-                            <label for="Owner" class="col-form-label required">Mülkiyyətçinin əlaqə nömrəsi
+                            <label for="realEstate_owner_contact" class="col-form-label required">Mülkiyyətçinin əlaqə
+                                nömrəsi
                             </label>
                             <input type="text" class="form-control "
-                                   name="Owner" value="" id="Owner">
+                                   name="realEstate_owner_contact" value="" id="realEstate_owner_contact">
                             <span class="error text-danger"> </span>
                         </div>
 
                         <div class="form-group ">
-                            <label for="Owner" class="col-form-label required">Mülkiyyətçinin poçt ünvanı
+                            <label for="realEstate_owner_email" class="col-form-label required">Mülkiyyətçinin poçt
+                                ünvanı
                             </label>
                             <input type="email" class="form-control "
-                                   name="Owner" value="" id="Owner">
+                                   name="realEstate_owner_email" value="" id="realEstate_owner_email">
                             <span class="error text-danger"> </span>
                         </div>
 
                         <p class="lead required">Daşınmaz əmlakın dövlət reyestrindən çıxarışının</p>
 
                         <div class="form-group required">
-                            <label for="exampleInputEmail1" class="col-form-label">Seriya nömrəsi</label>
+                            <label for="realEstate" class="col-form-label">Seriya nömrəsi</label>
                             <div class="form-row align-items-center">
 
                                 <div class="col-sm-3 my-1">
-                                    <label class="sr-only col-form-label" for="EducationBeginDate">Seriya</label>
+                                    <label class="sr-only col-form-label" for="realEstateSNO[serial]">Seriya</label>
                                     <input type="text" value=""
-                                           name="EducationBeginDate"
-                                           class="form-control  {{$errors->has('EducationBeginDate')?'errorInput':''}}">
+                                           name="realEstateSNO[serial]"
+                                           class="form-control  {{$errors->has('realEstateSNO[serial]')?'errorInput':''}}">
                                     <small>Seria</small>
-                                    <span class="error text-danger"> {{$errors->first('EducationBeginDate')}}</span>
+                                    <span class="error text-danger"> {{$errors->first('realEstateSNO[serial]')}}</span>
                                 </div>
                                 <div class="col-sm-9     my-1">
-                                    <input type="text" value="{{old('EducationEndDate')}}"
-                                           name="EducationEndDate"
-                                           class="form-control {{$errors->has('EducationEndDate')?'errorInput':''}}">
+                                    <input type="text" value="{{old('realEstateSNO[number]')}}"
+                                           name="realEstateSNO[number]"
+                                           class="form-control {{$errors->has('realEstateSNO[number]')?'errorInput':''}}">
                                     <small>Nömrə</small>
 
                                     <span class="error text-danger"> {{$errors->first('EducationEndDate')}}</span>
                                 </div>
                             </div>
                             <div class="form-group ">
-                                <label for="Owner" class="col-form-label required">Reyester nömrəsi
+                                <label for="realEstate_reyester" class="col-form-label required">Reyester nömrəsi
                                 </label>
                                 <input type="email" class="form-control "
-                                       name="Owner" value="" id="Owner">
+                                       name="realEstate_reyester" value="" id="realEstate_reyester">
                                 <span class="error text-danger"> </span>
                             </div>
                             <div class="form-group ">
-                                <label for="Owner" class="col-form-label required">Qeydiyyat nömrəsi
+                                <label for="realEstate_registry" class="col-form-label required">Qeydiyyat nömrəsi
                                 </label>
                                 <input type="email" class="form-control "
-                                       name="Owner" value="" id="Owner">
+                                       name="realEstate_registry" value="" id="realEstate_registry">
                                 <span class="error text-danger"> </span>
                             </div>
                             <div class="form-group ">
-                                <label for="Owner" class="col-form-label required">Qeydiyyat tarixi
+                                <label for="realEstate_registry_date" class="col-form-label required">Qeydiyyat tarixi
                                 </label>
                                 <input type="date" class="form-control "
-                                       name="Owner" value="" id="Owner">
+                                       name="realEstate_registry_date" value="" id="realEstate_registry_date">
                                 <span class="error text-danger"> </span>
                             </div>
                         </div>
@@ -340,7 +357,8 @@
 
 
                     <div class="form-group required">
-                        <input type="checkbox" class="bankGuarantee" data-target="bankGuaranteeDiv"/>Bank zəmanəti
+                        <input type="checkbox" class="bankGuarantee" name="bank_guarantee"
+                               data-target="bankGuaranteeDiv" id="bank_guarantee"/>Bank zəmanəti
                         <span class="error text-danger"> {{$errors->first('education_language')}}</span>
                     </div>
 
@@ -348,30 +366,30 @@
                     <div id="bankGuaranteeDiv">
 
                         <div class="form-group required">
-                            <label for="deposit_object_id" class="col-form-label">Bank
+                            <label for="bank_id" class="col-form-label">Bank
                             </label>
-                            {{ Form::select('deposit_object_id',\App\Bank::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('deposit_object_id'))?'errorInput form-control':'form-control','id'=>'deposit_object_id']) }}
+                            {{ Form::select('bank_id',\App\Bank::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('bank_id'))?'errorInput form-control':'form-control','id'=>'bank_id']) }}
 
                         </div>
 
                         <div class="form-row required">
                             <div class="form-group col-8">
-                                <label for="education_fee" class="col-form-label">Məbləğ</label>
+                                <label for="bank_fee[amount]" class="col-form-label">Məbləğ</label>
                                 <input type="number"
-                                       class="form-control col-4 {{$errors->has('education_fee')?'errorInput':''}}"
-                                       value="{{old('education_fee')}}" name="bank_fee" id="education_fee">
+                                       class="form-control col-4 {{$errors->has('bank_fee[amount]')?'errorInput':''}}"
+                                       value="{{old('bank_fee[amount]')}}" name="bank_fee[amount]" id="bank_fee">
                                 <small>Məbləğ</small>
                             </div>
                             <div class="form-group col-4">
-                                <label for="bank_currency" class="col-form-label">Məzənnə</label>
-                                <select class="form-control" name="bank_currency" id="bank_currency">
+                                <label for="bank_fee[currency]" class="col-form-label">Məzənnə</label>
+                                <select class="form-control" name="bank_fee[currency]" id="bank_fee[currency]">
                                     @foreach($currencies as $currency)
                                         <option value="{{$currency -> Id}}">{{ $currency -> Name}}</option>
                                     @endforeach
                                 </select>
                                 <small>Məzənnə</small>
                             </div>
-                            <span class="error text-danger"> {{$errors->first('education_fee')}}</span>
+                            <span class="error text-danger"> {{$errors->first('bank_fee[currency]')}}</span>
                         </div>
 
                     </div>
@@ -397,8 +415,8 @@
                     <input type="hidden" id="filename" value="{{old('filename')}}" name="filename">
 
 
-                    <input type="hidden" id="dropzone_filezone" value="{{old('dropzone_filezone')}}"
-                           name="dropzone_filezone">
+                    {{--                    <input type="hidden" id="dropzone_filezone" value="{{old('dropzone_filezone')}}"--}}
+                    {{--                           name="dropzone_filezone">--}}
 
                     <label for="exampleInputEmail1" class="col-form-label">Sənədinizi əlavə edin <a
                                 class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"
@@ -407,84 +425,83 @@
 
 
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="passport_copy" class="col-form-label required">
                             Şəxsiyyət vəsiqəsinin surəti
                         </label>
                         <input type="file" class="form-control "
-                               name="passport" value="" id="passport">
+                               name="passport_copy" value="" id="passport_copy">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="certificate_document" class="col-form-label required">
                             Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı)
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="certificate_document" value="" id="certificate_document">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="university_document" class="col-form-label required">
                             Xarici universitetə qəbulu təsdiq edən rəsmi sənəd
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="university_document" value="" id="university_document">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="biography" class="col-form-label required">
                             Tərcümeyi-hal
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="biography" value="" id="biography">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="medical_certificate" class="col-form-label required">
                             Poliklinikadan 086 No-li tibbi arayış
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="medical_certificate" value="" id="medical_certificate">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="psychological_dispensary" class="col-form-label required">
                             Psixoloji dispanserdən arayış
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="psychological_dispensary" value="" id="psychological_dispensary">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="academic_transcript" class="col-form-label required">
                             Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript)
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="academic_transcript" value="" id="academic_transcript">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="realEstate_document" class="col-form-label required">
                             Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən
                             çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="realEstate_document" value="" id="realEstate_document">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="Owner" class="col-form-label required">
+                        <label for="testimonial" class="col-form-label required">
                             Birbaşa rəhbərindən müsbət xasiyyətnamə
                         </label>
                         <input type="file" class="form-control "
-                               name="Owner" value="" id="Owner">
+                               name="testimonial" value="" id="testimonial">
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <input type="checkbox" class="realEstate" data-target="realEstateDiv"/>
+                        <input type="checkbox" name="i_accept" id="i_accept"/>
                         <span style="font-weight:bold;">
                         Daxil etdiyim məlumatların doğruluğuna zəmanət verirəm
-                    </span>
-                        <span class="error text-danger"> {{$errors->first('education_language')}}</span>
+                        </span>
                     </div>
 
 
@@ -524,7 +541,6 @@
     <script>
 
 
-
         $(document).ready(function () {
 
 
@@ -534,12 +550,16 @@
 
             $('body').on('change', '.language_education_certificate_id', function () {
                 let val = $('option:selected', this).text();
+                console.log(val);
                 if (val == "IELTS" || val == "TOEFL IBT") {
                     $(this).parents('.certificates').children().last().show()
                 } else {
                     $(this).parents('.certificates').children().last().hide()
                 }
             });
+
+            $('.language_education_certificate_id').trigger('change');
+
 
             $(".realEstate").change(function () {
                 if (this.checked) {
@@ -615,7 +635,7 @@
 
 
             var addButton = $('#addCertificate'); //Add button selector
-            var wrapper = $('.certificates'); //Input field wrapper
+            var wrapper = $('#certificates'); //Input field wrapper
 
             // var fieldHTML = '<div class="form-group row required" id="mobilePhones">' + $("#phones").html() + '<div class="col-1"><a href="javascript:void(0);" class="remove_button"><span class="fa fa-minus"></span></a></div></div>'; //New input field html
             var x = 1; //Initial field counter is 1
@@ -625,56 +645,68 @@
             //Once add button is clicked
             $(addButton).click(function () {
                 //Check maximum number of input fields
-                var fieldHtml = ('<div id="certificates" class="certificates"> <div class="form-row required">\n' +
-                    '                        <div class="form-group col-md-10 required">\n' +
-                    '                            <label for="inputCity" class="col-form-label">Dil sertifikatı</label>\n' +
-                    '                            {{ Form::select('language_education_certificate_id', [''=>'---------']+\App\Certificate::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('language_education_certificate_id'))?'errorInput form-control language_education_certificate_id':'form-control language_education_certificate_id','id'=>'language_education_certificate_id']) }}' +
-                    '                            <span class="error text-danger"> {{$errors->first('language_education_certificate_id')}}</span>\n' +
-                    '                        </div>                        <div class="form-group col-md-2 ">\n' +
-                    '                            <label for="inputCity" class="col-form-label">&nbsp</label>\n' +
-                    '                            <a href="javascript:void(0);" class="form-control remove_button btn btn-danger btn-sm"><span\n' +
-                    '                                        class="fa fa-times"></span></a>\n' +
-                    '                        </div>' +
-                    '                    </div>' +
-                    '                    <div class="form-group required languageLevel" style="display: none">\n' +
-                    '                        <label for="" class="col-form-label">Dil bilmə səviyyəsi</label>\n' +
-                    '                        <div class="form-row align-items-center">\n' +
-                    '                            <div class="col-sm-3 ">\n' +
-                    '                                <input type="number" step="any" min="0" id="" value="0"\n' +
-                    '                                       name=""\n' +
-                    '                                       class="form-control ">\n' +
-                    '                                <small>oxuma</small>\n' +
-                    '                                <span class="error text-danger"></span>\n' +
-                    '                            </div>\n' +
-                    '\n' +
-                    '                            <div class="col-sm-3 ">\n' +
-                    '                                <input type="number" sstep="any" min="0" id="" value="0"\n' +
-                    '                                       name=""\n' +
-                    '                                       class="form-control">\n' +
-                    '                                <small>yazma</small>\n' +
-                    '                                <span class="error text-danger"> </span>\n' +
-                    '                            </div>\n' +
-                    '\n' +
-                    '                            <div class="col-sm-3 ">\n' +
-                    '                                <input type="number" sstep="any" min="0" id="" value="0"\n' +
-                    '                                       name=""\n' +
-                    '                                       class="form-control ">\n' +
-                    '                                <small>danışıq</small>\n' +
-                    '                                <span class="error text-danger"></span>\n' +
-                    '                            </div>\n' +
-                    '\n' +
-                    '                            <div class="col-sm-3 ">\n' +
-                    '                                <input type="number" step="any" min="0" id="" value="0"\n' +
-                    '                                       name=""\n' +
-                    '                                       class="form-control">\n' +
-                    '                                <small>dinləmə</small>\n' +
-                    '                                <span class="error text-danger"></span>\n' +
-                    '                            </div>\n' +
-                    '\n' +
-                    '                        </div>\n' +
-                    '                    </div></div> ' +
-                    '                            ' +
-                    '                                ');
+                var fieldHtml = ("  <div class=\"certificates\" id=\"certificates\">\n" +
+                    "                        <div class=\"form-row required test\">\n" +
+                    "                            <div class=\"form-group col-12 required\">\n" +
+                    "                                <label for=\"inputCity\" class=\"col-form-label\">Dil sertifikatı</label>\n" +
+                    "                                <div class=\"d-flex\">\n" +
+                    "                                <select name=\"language_education_certificate_id["+x+"][certificate]\" id=\"\"\n" +
+                    "                                        class=\"form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} \"\n" +
+                    "                                        id=\"language_education_certificate_id\">\n" +
+                    "                                    @foreach($certificates as $certificate)\n" +
+                    "                                        <option value=\"{{$certificate -> Id}}\">{{$certificate -> Name}}</option>\n" +
+                    "                                    @endforeach\n" +
+                    "                                </select>\n" +
+                    "                                    <input type=\"button\" class=\"btn btn-danger remove_button\" value=\"Sil\" />\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <span class=\"error text-danger\"> {{$errors->first('language_education_certificate_id')}}</span>\n" +
+                    "                            </div>\n" +
+                    "\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"form-group required languageLevel\" style=\"display: none\">\n" +
+                    "                            <label for=\"\" class=\"col-form-label\">Dil bilmə səviyyəsi</label>\n" +
+                    "                            <div class=\"form-row align-items-center\">\n" +
+                    "                                <div class=\"col-sm-3 \">\n" +
+                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
+                    "                                           name=\"language_education_certificate_id["+x+"][reading]\"\n" +
+                    "                                           onkeydown=\"\"\n" +
+                    "                                           class=\"form-control \">\n" +
+                    "                                    <small>oxuma</small>\n" +
+                    "                                    <span class=\"error text-danger\"></span>\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"col-sm-3 \">\n" +
+                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
+                    "                                           id=\"\"\n" +
+                    "                                           name=\"language_education_certificate_id["+x+"][writing]\"\n" +
+                    "                                           class=\"form-control\">\n" +
+                    "                                    <small>yazma</small>\n" +
+                    "                                    <span class=\"error text-danger\"> </span>\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"col-sm-3 \">\n" +
+                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
+                    "                                           name=\"language_education_certificate_id["+x+"][speaking]\"\n" +
+                    "                                           class=\"form-control \">\n" +
+                    "                                    <small>danışıq</small>\n" +
+                    "                                    <span class=\"error text-danger\"></span>\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"col-sm-3 \">\n" +
+                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
+                    "                                           id=\"\"\n" +
+                    "                                           name=\"language_education_certificate_id["+x+"][listening]\"\n" +
+                    "                                           class=\"form-control\">\n" +
+                    "                                    <small>dinləmə</small>\n" +
+                    "                                    <span class=\"error text-danger\"></span>\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                            </div>\n" +
+                    "                        </div>\n" +
+                    "\n" +
+                    "\n" +
+                    "                    </div>");
                 x++; //Increment field counter
                 $(wrapper).after(fieldHtml); //Add field html\
 
@@ -701,33 +733,31 @@
                     cache: true,
                     success:
                         function (data) {
-                        var limit = 0;
+                            var limit = 0;
 
-                        if(data.count < 2)
-                        {
-                            $('#specialty_name').show();
-                            $('.specialization_select').remove();
-                            $.each(data.universitiesWithCountry.universities, function (key, value) {
+                            if (data.count < 2) {
+                                $('#specialization_name').show();
+                                $('.specialization_select').remove();
+                                $.each(data.universitiesWithCountry.universities, function (key, value) {
 
-                                if(limit != value.country.Id ){
-                                $('select[id="country_id"]').append('<option value="' + value.country.Id + '">' + value.country.Name + '</option>');
-                                }
-                                limit = value.country.Id;
+                                    if (limit != value.country.Id) {
+                                        $('select[id="country_id"]').append('<option value="' + value.country.Id + '">' + value.country.Name + '</option>');
+                                    }
+                                    limit = value.country.Id;
 
-                            });
-                            setTimeout(function () {
-                                $('#country_id').trigger('change');
-                            }, 1000);
+                                });
+                                setTimeout(function () {
+                                    $('#country_id').trigger('change');
+                                }, 1000);
 
-                        }else{
+                            } else {
 
-                           $('.specialization_div').append(data.specializations_select)
-                            $('#specialty_name').hide();
+                                $('.specialization_div').append(data.specializations_select)
+                                $('#specialization_name').hide();
 
                                 $('#specialization_id').trigger('change');
 
-                        }
-
+                            }
 
 
                         }
@@ -747,7 +777,7 @@
                     url: "{{url('rel_university')}}",
                     data: {
                         country_id: $('#country_id').val(),
-                        speciality_id:  $('select[name="speciality_id"]').val()  ,
+                        speciality_id: $('select[name="speciality_id"]').val(),
                         specialization_id: $('select[name="specialization"]').val()
                     },
                     cache: true,
@@ -782,13 +812,13 @@
                     cache: true,
                     success:
                         function (data) {
-                        var limit = 0;
+                            var limit = 0;
 
                             $.each(data, function (key, value) {
 
-                                if(limit !=value.country.Id ){
+                                if (limit != value.country.Id) {
 
-                                $('select[id="country_id"]').append('<option value="' + value.country.Id + '">' + value.country.Name + '</option>');
+                                    $('select[id="country_id"]').append('<option value="' + value.country.Id + '">' + value.country.Name + '</option>');
                                 }
                                 limit = value.country.Id;
 
@@ -803,16 +833,8 @@
             });
 
 
-
-
-
             $("#speciality_id").trigger('change');
         });
-
-
-
-
-
 
 
         $('form#applyForm').submit(function (event) {
