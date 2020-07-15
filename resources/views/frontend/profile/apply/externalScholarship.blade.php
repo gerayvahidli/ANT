@@ -518,6 +518,22 @@
             </div>
         </form>
 
+        <div class="modal fade" id="bsModal3" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body" style="text-align: center">
+                        <img width="50" src="{{asset('images/success-icon-png-6.jpg')}}" alt="">
+                       <h2>MÜRACİƏTİNİZ UĞURLA TAMAMLANDI.</h2>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"> Bağla</button>
+                   </div>
+                </div>
+            </div>
+        </div>
 
     </div>
     <br>
@@ -707,8 +723,9 @@
                     "\n" +
                     "\n" +
                     "                    </div>");
+                $('body').find('.certificates:last').after(fieldHtml); //Add field html\
+
                 x++; //Increment field counter
-                $(wrapper).after(fieldHtml); //Add field html\
 
 
             });
@@ -859,9 +876,13 @@
                 processData: false,
                 success: function (data) {
 
-                    console.log("success");
-
-
+                    if(data.status="succes")
+                    {
+                    $("#bsModal3").modal('show');
+                    setTimeout(function () {
+                        window.location.href = '{{ url('/') }}';
+                    }, 2000);
+                    }
                 },
                 error: function (data) {
                     console.log("error");
@@ -871,6 +892,7 @@
 
 
         });
+
 
     </script>
 @endsection

@@ -846,7 +846,6 @@ class UserController extends Controller
 
     public function applyScholarship( Request $request)
     {
-//        return $request;
 
         $application = new EPApplication;
         $application -> ProgramId = ExternalProgram::where('IsActive',1) ->first() -> Id;
@@ -884,9 +883,11 @@ class UserController extends Controller
 
         $application -> save();
 
-       return $this -> storeLanguageCertificate($application,$request);
+        $this -> storeLanguageCertificate($application,$request);
         isset( $request -> realEstate) ? $this -> storeRealEstate($application,$request) : '';
         isset( $request -> bank_guarantee) ? $this -> storeBankGuarantee($application,$request) : '';
+
+        return response()->json(['status' => 'success']);
 
 
 
