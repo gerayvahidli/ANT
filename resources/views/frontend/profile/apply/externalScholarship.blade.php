@@ -236,7 +236,7 @@
                                 <div class="col-sm-3 ">
                                     <input type="number" step="any" min="0" id="" value="0"
                                            id=""
-                                           name="language_education_certificate_id[0][speaking]"
+                                           name="language_education_certificate_id[0][listening]"
                                            class="form-control">
                                     <small>dinləmə</small>
                                     <span class="error text-danger"></span>
