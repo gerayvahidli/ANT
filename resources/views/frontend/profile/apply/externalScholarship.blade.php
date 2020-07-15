@@ -609,8 +609,6 @@
                     success:
                         function (data) {
                             $("#related_city").html(data).slideDown('slow');
-
-
                         }
                 });
 
@@ -876,7 +874,7 @@
                 processData: false,
                 success: function (data) {
 
-                    if(data.status="succes")
+                    if(data.status=="success")
                     {
                     $("#bsModal3").modal('show');
                     setTimeout(function () {
