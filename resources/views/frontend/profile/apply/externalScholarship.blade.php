@@ -334,14 +334,14 @@
                             <div class="form-group ">
                                 <label for="realEstate_reyester" class="col-form-label required">Reyester nömrəsi
                                 </label>
-                                <input type="email" class="form-control "
+                                <input type="text" class="form-control "
                                        name="realEstate_reyester" value="" id="realEstate_reyester">
                                 <span class="error text-danger"> </span>
                             </div>
                             <div class="form-group ">
                                 <label for="realEstate_registry" class="col-form-label required">Qeydiyyat nömrəsi
                                 </label>
-                                <input type="email" class="form-control "
+                                <input type="text" class="form-control "
                                        name="realEstate_registry" value="" id="realEstate_registry">
                                 <span class="error text-danger"> </span>
                             </div>

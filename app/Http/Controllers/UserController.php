@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Adldap\Laravel\Facades\Adldap;
 use App\ApplicationStageResult;
+use App\BankGuarantee;
 use App\Certificate;
 use App\City;
 use App\Company;
@@ -19,9 +20,12 @@ use App\ExamLanguage;
 use App\ExternalProgramApplication;
 use App\Gender;
 use App\JobInfo;
+use App\LangLevel;
 use App\MobileOperatorCode;
 use App\Phone;
 use App\Education;
+use App\RealEstate;
+use App\Region;
 use App\Specialization;
 use App\InternalProgramApplication;
 use App\Mail\FromUserToTis;
@@ -33,6 +37,7 @@ use App\Specialiation;
 use App\ExternalProgram;
 use App\SpecialityGroup;
 use App\University;
+use Carbon\Carbon;
 use App\User, Auth;
 use Illuminate\Http\Request, Form, Storage;
 use Illuminate\Queue\Jobs\Job;
@@ -145,12 +150,14 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+
         if ($user->id != Auth::user()->id) {
             return redirect(route('profile.edit', Auth::user()));
         }
         $user->load('finalEducation', 'previousEducations', 'phones.operatorCode', 'BirthCity', 'emails', 'currentJob', 'previousJobs');
         $countries = Country::all();
         $cities = City::where('IsShow', 1)->get();
+        $regions = Region::where('IsShow', 1)->get();
         $educationLevels = EducationLevel::all();
         $universities = University::all();
         $educationForms = EducationForm::pluck('Name', 'id');
@@ -163,7 +170,7 @@ class UserController extends Controller
         $companies = Company::where('IsSocar', 1)->get();
 
         return view('frontend.profile.form',
-            compact('user', 'countries', 'cities', 'genders', 'mobilePhoneOperatorCodes', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'educationPaymentForms', 'companies')
+            compact('user', 'countries', 'cities','regions', 'genders', 'mobilePhoneOperatorCodes', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'educationPaymentForms', 'companies')
         );
     }
 
@@ -325,6 +332,20 @@ class UserController extends Controller
         } else {
             $user->BirthCityId = $request->BirthCityId;
         }
+
+        if ($request -> address_region == 'other') {
+            $region = new Region;
+            $region -> Name = $request -> other_address_region;
+            $region -> IsShow = 0;
+            $region -> save();
+
+            $user -> RegionId = $region->Id;
+        } else {
+            $user -> RegionId = $request -> address_region;
+        }
+
+
+
         $user->CitizenCountryId = $request->nationality;
         $user->AddressMain = $request->Address;
         $user->Address2 = $request->Address2;
@@ -825,8 +846,8 @@ class UserController extends Controller
 
     public function applyScholarship( Request $request)
     {
+//        return $request;
 
-//        return Specialization::find($request -> specialization_id);
         $application = new EPApplication;
         $application -> ProgramId = ExternalProgram::where('IsActive',1) ->first() -> Id;
         $application -> UserId    = Auth::user()->id;
@@ -848,14 +869,94 @@ class UserController extends Controller
         $application -> EdEduLevelId    = 2;
         $application -> StartDate = $request -> EducationBeginDate;
         $application -> EndDate = $request -> EducationEndDate;
-        $application -> CityId    = 1;
         $application -> CurrentStageSending  = false;
+
+        $application -> PassportDocPath = $this -> uploadDocuments($request->file('passport_copy'),'pass');
+        $application -> AboutCandidateDocPath = $this -> uploadDocuments($request->file('biography'),'bio');
+        $application -> AcceptDocPath = $this -> uploadDocuments($request->file('university_document'),'uniDoc');
+        $application -> CertificateDocPath = $this -> uploadDocuments($request->file('certificate_document'),'cerDoc');
+        $application -> MedicalDocPath = $this -> uploadDocuments($request->file('medical_certificate'),'medCer');
+        $application -> depositDocPath = $this -> uploadDocuments($request->file('realEstate_document'),'reDoc');
+        $application -> ReferenceDocPath = $this -> uploadDocuments($request->file('testimonial'),'ref');
+        $application -> PsychologicalDispensaryPath = $this -> uploadDocuments($request->file('psychological_dispensary'),'pd');
+        $application -> AcademicTranscriptPath = $this -> uploadDocuments($request->file('academic_transcript'),'at');
+
 
         $application -> save();
 
+       return $this -> storeLanguageCertificate($application,$request);
+        isset( $request -> realEstate) ? $this -> storeRealEstate($application,$request) : '';
+        isset( $request -> bank_guarantee) ? $this -> storeBankGuarantee($application,$request) : '';
 
 
 
+
+
+    }
+
+
+    public function uploadDocuments ($file,$prefix)
+    {
+
+        $file_extension = $file -> getClientOriginalExtension();
+        $filename = Auth::user() -> id."_".$prefix ."_".str_random('5'). '.' . $file_extension;
+
+
+        Storage::put('ApplicationDocuments/' . $filename, (string) file_get_contents($file), 'public');
+//       return $file_path = Storage::url('ApplicationDocuments/' . $filename);
+
+        return $filename;
+    }
+
+
+     public function storeRealEstate($application, $request)
+     {
+         $realEstate = new RealEstate;
+
+         $realEstate -> ApplicationId = $application -> Id;
+         $realEstate -> DepositId = $request -> realEstate_deposit_object_id;
+         $realEstate -> Address = $request -> realEstate_located_city;
+         $realEstate -> Owner = $request -> realEstate_owner;
+         $realEstate -> Phone = $request -> realEstate_owner_contact;
+         $realEstate -> Email = $request -> realEstate_owner_email;
+         $realEstate -> SerialNo = $request -> realEstateSNO['serial'].$request -> realEstateSNO['number'];
+         $realEstate -> ReyestrNo = $request -> realEstate_reyester;
+         $realEstate -> RegistrNo = $request -> realEstate_registry;
+         $realEstate -> RegistrDate = $request -> realEstate_registry_date;
+
+         $realEstate -> save();
+
+     }
+
+    public function storeBankGuarantee($application, $request)
+    {
+        $bankGuarantee = new BankGuarantee;
+
+        $bankGuarantee -> ApplicationId = $application -> Id;
+        $bankGuarantee -> BankId = $request -> bank_id;
+        $bankGuarantee -> Amount = $request -> bank_fee['amount'];
+        $bankGuarantee -> CurrencyId = $request -> bank_fee['currency'];
+
+        $bankGuarantee -> save();
+
+    }
+
+    public function storeLanguageCertificate($application, $request)
+    {
+        foreach ($request -> language_education_certificate_id as $certificate){
+
+        $languageCertificate= new LangLevel();
+
+        $languageCertificate -> ApplicationId = $application -> Id;
+        $languageCertificate -> CertificateId = $certificate['certificate'];
+        $languageCertificate -> Listening = $certificate ['listening'] ;
+        $languageCertificate -> Writting = $certificate ['writing'] ;
+        $languageCertificate -> Reading = $certificate ['reading'] ;
+        $languageCertificate -> Speaking = $certificate ['speaking'] ;
+
+
+        $languageCertificate -> save();
+        }
 
     }
 

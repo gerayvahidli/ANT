@@ -197,15 +197,16 @@ class RegisterController extends Controller
         } else {
             $user->BirthCityId = $data['BirthCityId'];
         }
-        if ($data['address_region'] == 'other') {
-            $city = new Region;
-            $city->Name = $data ['address_region'];
-            $city->IsShow = 0;
-            $city->save();
 
-            $user->BirthCityId = $city->id;
+        if ($data['address_region'] == 'other') {
+            $region = new Region;
+            $region -> Name = $data ['other_address_region'];
+            $region -> IsShow = 0;
+            $region -> save();
+
+            $user -> RegionId = $region->Id;
         } else {
-            $user->BirthCityId = $data['address_region'];
+            $user -> RegionId = $data['address_region'];
         }
 
 

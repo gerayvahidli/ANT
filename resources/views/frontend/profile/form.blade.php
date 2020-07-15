@@ -344,7 +344,7 @@
                         rayon</label>
                     <div class="col-8">
                         <select name="address_region" id="address_region" class="form-control">
-                            @if($user -> exists && $user -> RegionId -> IsShow == 0)
+                            @if($user -> exists && $user -> region -> IsShow == 0)
 
                                 @foreach($regions as $region)
                                     <option value="{{$region -> Id}}">{{$region -> Name}}</option>
@@ -352,15 +352,17 @@
                                 <option value="other" selected>Digər</option>
 
                             @else
+
                                 @foreach($regions as $region)
-                                    <option {{ $user -> exists &&  $user -> BithCityId == $city-> Id ? 'selected' :''   }} value="{{$region -> Id}}">{{$region -> Name}}</option>
+                                    <option {{ $user -> exists &&  $user -> region -> Id == $region-> Id ? 'selected' :''   }} value="{{$region -> Id}}">{{$region -> Name}}</option>
                                 @endforeach
                                 <option value="other">Digər</option>
+
                             @endif
                         </select>
                         <input type="text" class="form-control" name="other_address_region" id="other_address_region"
                                style="display: none"
-                               value="{{$user -> exists && $user -> RegionId -> IsShow == 0 ? $user -> RegionId -> Name :''  }}"
+                               value="{{$user -> exists && $user -> region -> IsShow == 0 ? $user -> Region -> Name :''  }}"
                                data-required-error="Digər rayonun adını yazın"
                                placeholder="Digər rayonun adını bura yazın"/>
 
@@ -1322,7 +1324,7 @@
             });
 
             $('body').on('change', '#address_region', function () {
-                $('#other_address_region').val('');
+                // $('#other_address_region').val('');
                 if (this.value == 'other') {
                     $('#other_address_region').show();
                     $('#other_address_region').prop('required', true);
@@ -1331,6 +1333,8 @@
                     $('#other_address_region').prop('required', false);
                 }
             });
+
+            $('#address_region').trigger('change');
 
 
             //remove fields group

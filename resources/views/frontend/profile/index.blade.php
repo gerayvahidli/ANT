@@ -79,6 +79,10 @@
                             <td>{{ $user->Address2 }}</td>
                         </tr>
                         <tr>
+                            <th>Faktiki yaşayış ünvanının yerləşdiyi rayon</th>
+                            <td>{{ $user->region -> Name }}</td>
+                        </tr>
+                        <tr>
                             <th>Şəhər telefon nömrəsi</th>
                             <td>{{$homePhone->operatorCode->Name . $homePhone -> PhoneNumber}}</td>
                         </tr>

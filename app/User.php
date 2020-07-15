@@ -113,6 +113,11 @@ class User extends Authenticatable
         return $this->belongsTo( City::class,'BirthCityId','Id' );
     }
 
+    public function region()
+    {
+        return $this->belongsTo( Region::class,'RegionId','Id' );
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
