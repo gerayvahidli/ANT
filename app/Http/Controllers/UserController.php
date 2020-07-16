@@ -38,6 +38,7 @@ use App\Specialiation;
 use App\ExternalProgram;
 use App\SpecialityGroup;
 use App\University;
+use App\UserProgram;
 use Carbon\Carbon;
 use App\User, Auth;
 use Illuminate\Http\Request, Form, Storage;
@@ -60,6 +61,8 @@ class UserController extends Controller
                 , 'currentJob', 'previousJobs')
                 ->find(\Auth::user()->id);
         $homePhone = $user->phones->where('PhoneTypeId', 1)->first();
+        $active_program_id = ExternalProgram::where('IsActive',1) ->first() -> Id;
+        $user_active_program_status = $user -> userPrograms -> where ('ProgramId',\App\ExternalProgram::where('IsActive',1) ->first() -> Id) -> first()->UserProgramStatusId;
 
 //        dd($finalEducation);
 
@@ -82,7 +85,7 @@ class UserController extends Controller
 //				'first_stage_note',
 //			] )->where( 'user_id', $user->id )->get();
 
-        return view('frontend.profile.index', compact('user', 'homePhone'));
+        return view('frontend.profile.index', compact('user', 'homePhone','user_active_program_status'));
     }
 
     /**
@@ -152,6 +155,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
 
+
         if ($user->id != Auth::user()->id) {
             return redirect(route('profile.edit', Auth::user()));
         }
@@ -169,6 +173,9 @@ class UserController extends Controller
 //		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
         $genders = Gender::all();
         $companies = Company::where('IsSocar', 1)->get();
+
+
+
 
         return view('frontend.profile.form',
             compact('user', 'countries', 'cities','regions', 'genders', 'mobilePhoneOperatorCodes', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'educationPaymentForms', 'companies')
@@ -880,6 +887,7 @@ class UserController extends Controller
         $application -> depositDocPath = $this -> uploadDocuments($request->file('realEstate_document'),'reDoc');
         $application -> ReferenceDocPath = $this -> uploadDocuments($request->file('testimonial'),'ref');
         $application -> PsychologicalDispensaryPath = $this -> uploadDocuments($request->file('psychological_dispensary'),'pd');
+        $application -> OwnerPassportDocPath = $this -> uploadDocuments($request->file('owner_passport'),'pd');
         $application -> AcademicTranscriptPath = $this -> uploadDocuments($request->file('academic_transcript'),'at');
 
 
@@ -888,6 +896,13 @@ class UserController extends Controller
         $this -> storeLanguageCertificate($application,$request);
         isset( $request -> realEstate) ? $this -> storeRealEstate($application,$request) : '';
         isset( $request -> bank_guarantee) ? $this -> storeBankGuarantee($application,$request) : '';
+
+
+        $userProgram = UserProgram::where('UserId',Auth::user()->id)->first();
+
+        $userProgram -> ProgramId =  $application -> ProgramId;
+        $userProgram -> UserProgramStatusId =  2;
+        $userProgram -> save();
 
         return response()->json(['status' => 'success']);
 

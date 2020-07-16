@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class UserProgram extends Model
 {
     protected $table = 'UserPrograms';
+    protected $primaryKey = 'Id';
     public    $timestamps = false;
     protected $fillable   = [
         'userId',
+        'ProgramId',
         'UserProgramStatusId'
     ];
 

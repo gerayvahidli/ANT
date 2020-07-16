@@ -119,7 +119,7 @@
                         </tbody>
                     </table>
                 </div>
-{{--                                @include('frontend.profile.partials.programApplicationAndTrackingPanel')--}}
+                {{--                                @include('frontend.profile.partials.programApplicationAndTrackingPanel')--}}
                 <div class="row">
                     <div class="col-4">
                         <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
@@ -137,9 +137,13 @@
                         @endif
                     </div>
 
-                    <div class="col-4">
-                        <a class="btn btn-outline-primary btn-block" href="{{ route('showApplyScholarshipForm') }}">Müraciət et</a>
-                    </div>
+
+                    @if( $user_active_program_status == 1)
+                        <div class="col-4">
+                            <a class="btn btn-outline-primary btn-block" href="{{ route('showApplyScholarshipForm') }}">Müraciət
+                                et</a>
+                        </div>
+                    @endif
 
                 </div>
             </div>
@@ -216,79 +220,79 @@
                     Əvvəlki təhsil
                 </button>
 
-                                <div class="collapse" id="collapsePreviousEducation">
-                                    @forelse($user -> previousEducations as $previousEducation)
-                                        <br>
-                                        <div class="card">
-                                            <h5 class="card-header">
-                                                Əvvəlki Təhsil {{ $loop->iteration }}
-                                            </h5>
-                                            <div class="card-body p-0">
-                                                <div class="table-responsive">
-                                                    <table class="table table-borderless">
-                                                        <tbody>
-                                                        <tr>
-                                                            <th>Təhsil pilləsi</th>
-                                                            <td>{{ $previousEducation -> educationLevel -> Name }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Ölkə</th>
-                                                            <td>{{ $previousEducation -> university -> country -> Name }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Universitet</th>
-                                                            <td>{{ $previousEducation -> university -> Name }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Fakültə</th>
-                                                            <td>{{$previousEducation ->  Faculty  }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>İxtisas</th>
-                                                            <td>
-                                                                {{ $previousEducation -> Speciality }}
-                                                            </td>
-                                                        </tr>
-                                                        @if(isset($previousEducation->AdmissionScore) && $previousEducation->AdmissionScore > 0)
-                                                            <tr>
-                                                                <th>Qəbul Balı</th>
-                                                                <td>{{ $previousEducation->AdmissionScore }}</td>
-                                                            </tr>
-                                                        @endif
-                                                        @php($date = date_create_from_format('Y-m-d H:i:s', '1800-01-01 00:00:00'))
-                                                        @if(isset($previousEducation->StartDate) && $previousEducation->StartDate != $date)
-                                                            <tr>
-                                                                <th>Təhsil Müddəti</th>
-                                                                <td>{{  $previousEducation -> StartDate."-".$previousEducation -> EndDate }}</td>
-                                                            </tr>
-                                                        @endif
-                                                        <tr>
-                                                            <th>Orta bal</th>
-                                                            <td>{{ $previousEducation -> GPA }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Bölmə</th>
-                                                            <td>{{ $previousEducation -> educationSection -> Name }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Təhsil forması</th>
-                                                            <td>{{ $previousEducation -> educationForm -> Name }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Təhsil Qrupu</th>
-                                                            <td>{{ $previousEducation -> educationPaymentForm -> Name }}</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    @empty
-                                        Əvvəlki təhsil daxil edilməyib
-                                    @endforelse
-
+                <div class="collapse" id="collapsePreviousEducation">
+                    @forelse($user -> previousEducations as $previousEducation)
+                        <br>
+                        <div class="card">
+                            <h5 class="card-header">
+                                Əvvəlki Təhsil {{ $loop->iteration }}
+                            </h5>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                        <tr>
+                                            <th>Təhsil pilləsi</th>
+                                            <td>{{ $previousEducation -> educationLevel -> Name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Ölkə</th>
+                                            <td>{{ $previousEducation -> university -> country -> Name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Universitet</th>
+                                            <td>{{ $previousEducation -> university -> Name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Fakültə</th>
+                                            <td>{{$previousEducation ->  Faculty  }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>İxtisas</th>
+                                            <td>
+                                                {{ $previousEducation -> Speciality }}
+                                            </td>
+                                        </tr>
+                                        @if(isset($previousEducation->AdmissionScore) && $previousEducation->AdmissionScore > 0)
+                                            <tr>
+                                                <th>Qəbul Balı</th>
+                                                <td>{{ $previousEducation->AdmissionScore }}</td>
+                                            </tr>
+                                        @endif
+                                        @php($date = date_create_from_format('Y-m-d H:i:s', '1800-01-01 00:00:00'))
+                                        @if(isset($previousEducation->StartDate) && $previousEducation->StartDate != $date)
+                                            <tr>
+                                                <th>Təhsil Müddəti</th>
+                                                <td>{{  $previousEducation -> StartDate."-".$previousEducation -> EndDate }}</td>
+                                            </tr>
+                                        @endif
+                                        <tr>
+                                            <th>Orta bal</th>
+                                            <td>{{ $previousEducation -> GPA }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Bölmə</th>
+                                            <td>{{ $previousEducation -> educationSection -> Name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Təhsil forması</th>
+                                            <td>{{ $previousEducation -> educationForm -> Name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Təhsil Qrupu</th>
+                                            <td>{{ $previousEducation -> educationPaymentForm -> Name }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
+                            </div>
+                        </div>
+
+                    @empty
+                        Əvvəlki təhsil daxil edilməyib
+                    @endforelse
+
+                </div>
                 <hr>
 
                 <div class="card">
@@ -309,10 +313,10 @@
                                 </tr>
 
                                 @if(isset($user -> currentJob -> first() -> Organization))
-                                <tr>
-                                    <th>Təşkilat</th>
-                                    <td>{{$user -> currentJob -> first() -> Organization}}</td>
-                                </tr>
+                                    <tr>
+                                        <th>Təşkilat</th>
+                                        <td>{{$user -> currentJob -> first() -> Organization}}</td>
+                                    </tr>
                                 @endif
                                 <tr>
                                     <th>Struktur Bölmə</th>
@@ -344,51 +348,52 @@
                 <hr>
                 <div class="collapse" id="collapsePreviousWork">
                     @forelse($user -> previousJobs as $previousJob)
-                    <div class="card">
-                        <h5 class="card-header">
-                            Əvvəlki iş yeri {{ $loop->iteration }}
-                        </h5>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-borderless">
-                                    <tbody>
-                                    <tr>
-                                        <th>Müəssisə</th>
-                                        {{--{{ dd($user->IsCurrentlyWorkAtSocar) }}--}}
-                                        <td>{{$previousJob -> company -> Name}}</td>
-                                    </tr>
-                                    @if(isset($previousJob -> Organization))
-                                    <tr>
-                                        <th>Təşkilat</th>
-                                        <td>{{$previousJob -> Organization}}</td>
-                                    </tr>
-                                    @endif
-                                    <tr>
-                                        <th>Struktur Bölmə</th>
-                                        <td>{{$previousJob -> Department}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Vəzifə</th>
-                                        <td>{{$previousJob -> Position}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>İşə qəbul tarixi</th>
-                                        <td>{{ date('d-m-Y', strtotime( $previousJob -> StartDate))}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>İşdən ayrılma tarixi</th>
-                                        <td>{{ date('d-m-Y', strtotime($previousJob -> EndDate))}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <div class="card">
+                            <h5 class="card-header">
+                                Əvvəlki iş yeri {{ $loop->iteration }}
+                            </h5>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                        <tr>
+                                            <th>Müəssisə</th>
+                                            {{--{{ dd($user->IsCurrentlyWorkAtSocar) }}--}}
+                                            <td>{{$previousJob -> company -> Name}}</td>
+                                        </tr>
+                                        @if(isset($previousJob -> Organization))
+                                            <tr>
+                                                <th>Təşkilat</th>
+                                                <td>{{$previousJob -> Organization}}</td>
+                                            </tr>
+                                        @endif
+                                        <tr>
+                                            <th>Struktur Bölmə</th>
+                                            <td>{{$previousJob -> Department}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Vəzifə</th>
+                                            <td>{{$previousJob -> Position}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>İşə qəbul tarixi</th>
+                                            <td>{{ date('d-m-Y', strtotime( $previousJob -> StartDate))}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>İşdən ayrılma tarixi</th>
+                                            <td>{{ date('d-m-Y', strtotime($previousJob -> EndDate))}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
                         <hr>
-                        @empty
+                    @empty
                         Əvvəlki iş təcrübəsi yoxdur.
                     @endforelse
                 </div>
+
 
             </div>
         </div>

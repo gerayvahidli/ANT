@@ -126,27 +126,34 @@ class User extends Authenticatable
         return $this->belongsTo( Country::class,'CitizenCountryId','Id'  );
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function externalProgramApplications()
-    {
-        return $this->hasMany( ExternalProgramApplication::class );
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function internalProgramApplications()
-    {
-        return $this->hasMany( InternalProgramApplication::class );
-    }
 
     public function gender()
     {
         return $this->belongsTo( Gender::class );
     }
 
+
+    public function userPrograms()
+    {
+        return $this->hasMany( UserProgram::class,'UserId','id' );
+    }
+
+
+//    /**
+//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//     */
+//    public function externalProgramApplications()
+//    {
+//        return $this->hasMany( ExternalProgramApplication::class );
+//    }
+//
+//    /**
+//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//     */
+//    public function internalProgramApplications()
+//    {
+//        return $this->hasMany( InternalProgramApplication::class );
+//    }
 
 
 

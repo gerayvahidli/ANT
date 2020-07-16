@@ -151,8 +151,11 @@
                         <div class="form-row align-items-center">
 
                             <div class="col-sm-6 my-1">
-                                <input type="number" value="{{old('EducationBeginDate')}}"
+                                <input type="text"
+                                       value="{{old('EducationBeginDate')}}"
+                                       autocomplete="off"
                                        name="EducationBeginDate"
+                                       maxlength="4"
                                        class="form-control  {{$errors->has('EducationBeginDate')?'errorInput':''}}"
                                        {{--                                       required--}}
                                        {{--                                       data-required-error='Təhsilin başlama ili sahəsini boş burxamayın'--}}
@@ -165,7 +168,10 @@
                             </div>
                             <div class="col-sm-6 my-1">
                                 <label class="sr-only" for="EducationEndDate">Bitmə tarixi</label>
-                                <input type="number" value="{{old('EducationEndDate')}}"
+                                <input type="text"
+                                       value="{{old('EducationEndDate')}}"
+                                       autocomplete="off"
+                                       maxlength="4"
                                        name="EducationEndDate"
                                        class="form-control {{$errors->has('EducationEndDate')?'errorInput':''}}"
                                        {{--                                       required--}}
@@ -215,7 +221,7 @@
                     </div>
 
                     <div class="certificates" id="certificates">
-                        <div class="form-row required test">
+                        <div class="form-row  test">
                             <div class="form-group col-12 required">
                                 <label for="inputCity" class="col-form-label">Dil sertifikatı</label>
                                 <div class="d-flex">
@@ -233,40 +239,62 @@
                             </div>
 
                         </div>
-                        <div class="form-group required languageLevel" style="display: none">
+                        <div class="form-group  languageLevel" style="display: none">
                             <label for="" class="col-form-label">Dil bilmə səviyyəsi</label>
                             <div class="form-row align-items-center">
                                 <div class="col-sm-3 ">
-                                    <input type="number" step="any" min="0" id="" value="0"
+                                    <input type="number"
+                                           step="any"
+                                           min="0"
+                                           id=""
                                            name="language_education_certificate_id[0][reading]"
                                            onkeydown=""
-                                           class="form-control ">
+                                           class="form-control"
+                                           placeholder="0"
+                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                    >
                                     <small>oxuma</small>
                                     <span class="error text-danger"></span>
                                 </div>
 
                                 <div class="col-sm-3 ">
-                                    <input type="number" step="any" min="0" id="" value="0"
+                                    <input type="number"
+                                           step="any"
+                                           min="0"
                                            id=""
                                            name="language_education_certificate_id[0][writing]"
-                                           class="form-control">
+                                           class="form-control"
+                                           placeholder="0"
+                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                    >
                                     <small>yazma</small>
                                     <span class="error text-danger"> </span>
                                 </div>
 
                                 <div class="col-sm-3 ">
-                                    <input type="number" step="any" min="0" id="" value="0"
+                                    <input type="number"
+                                           step="any"
+                                           min="0"
+                                           id=""
                                            name="language_education_certificate_id[0][speaking]"
-                                           class="form-control ">
+                                           class="form-control "
+                                           placeholder="0"
+                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                    >
                                     <small>danışıq</small>
                                     <span class="error text-danger"></span>
                                 </div>
 
                                 <div class="col-sm-3 ">
-                                    <input type="number" step="any" min="0" id="" value="0"
+                                    <input type="number"
+                                           step="any"
+                                           min="0"
                                            id=""
                                            name="language_education_certificate_id[0][listening]"
-                                           class="form-control">
+                                           class="form-control"
+                                           placeholder="0"
+                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                    >
                                     <small>dinləmə</small>
                                     <span class="error text-danger"></span>
                                 </div>
@@ -725,7 +753,8 @@
                     {{--                            olunur.</b></i></small>--}}
                     {{--                <span class="error text-danger"> {{$errors->first('filename')}}</span>--}}
                     <br><br>
-                    <input value="Müraciət et" type="submit" class="btn btn-primary">
+                    <button onclick="window.history.back();" type="button" class="btn btn-danger" data-dismiss="modal"> Geri</button>
+                    <input  value="Müraciət et" type="submit" class="btn" id="apply_it" disabled>
                 </div>
             </div>
         </form>
@@ -775,6 +804,15 @@
 
             $('#realEstateDiv *').prop('disabled', true);
             $('#bankGuaranteeDiv *').prop('disabled', true);
+
+            $("#i_accept").click(function() {
+                var checked_status = this.checked;
+                if (checked_status == true) {
+                    $("#apply_it").attr("disabled",false);
+                } else {
+                    $("#apply_it").attr("disabled", true);
+                }
+            });
 
 
             $('body').on('change', '.language_education_certificate_id', function () {
@@ -876,7 +914,7 @@
                 //Check maximum number of input fields
                 var fieldHtml = ("  <div class=\"certificates\" id=\"certificates\">\n" +
                     "                        <div class=\"form-row required test\">\n" +
-                    "                            <div class=\"form-group col-12 required\">\n" +
+                    "                            <div class=\"form-group col-12 \">\n" +
                     "                                <label for=\"inputCity\" class=\"col-form-label\">Dil sertifikatı</label>\n" +
                     "                                <div class=\"d-flex\">\n" +
                     "                                <select name=\"language_education_certificate_id[" + x + "][certificate]\" id=\"\"\n" +
@@ -893,21 +931,20 @@
                     "                            </div>\n" +
                     "\n" +
                     "                        </div>\n" +
-                    "                        <div class=\"form-group required languageLevel\" style=\"display: none\">\n" +
+                    "                        <div class=\"form-group  languageLevel\" style=\"display: none\">\n" +
                     "                            <label for=\"\" class=\"col-form-label\">Dil bilmə səviyyəsi</label>\n" +
                     "                            <div class=\"form-row align-items-center\">\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
-                    "                                           name=\"language_education_certificate_id[" + x + "][reading]\"\n" +
-                    "                                           onkeydown=\"\"\n" +
+                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n  name=\"language_education_certificate_id[" + x + "][reading]\"\n" +
                     "                                           class=\"form-control \">\n" +
                     "                                    <small>oxuma</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
                     "                                </div>\n" +
                     "\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
-                    "                                           id=\"\"\n" +
+                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n     id=\"\"\n" +
                     "                                           name=\"language_education_certificate_id[" + x + "][writing]\"\n" +
                     "                                           class=\"form-control\">\n" +
                     "                                    <small>yazma</small>\n" +
@@ -915,16 +952,16 @@
                     "                                </div>\n" +
                     "\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
-                    "                                           name=\"language_education_certificate_id[" + x + "][speaking]\"\n" +
+                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n  name=\"language_education_certificate_id[" + x + "][speaking]\"\n" +
                     "                                           class=\"form-control \">\n" +
                     "                                    <small>danışıq</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
                     "                                </div>\n" +
                     "\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" value=\"0\"\n" +
-                    "                                           id=\"\"\n" +
+                    "                                    <input type=\"number\"  step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
+                    "                                   onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n  id=\"\"\n" +
                     "                                           name=\"language_education_certificate_id[" + x + "][listening]\"\n" +
                     "                                           class=\"form-control\">\n" +
                     "                                    <small>dinləmə</small>\n" +
