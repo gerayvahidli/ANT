@@ -298,7 +298,7 @@
                                 class="realEstate"
                                 data-target="realEstateDiv"
                                 required
-                                data-required-error = "Davam etmək üçün bank daşınmaz əmlak və ya bank zəmanəti (və ya hər ikisi) seçin"
+                                data-required-error = "Davam etmək üçün  daşınmaz əmlak və ya bank zəmanəti (və ya hər ikisi) seçin"
                         />Daşınmaz
                         əmlak
                         <div class="help-block with-errors"></div>
