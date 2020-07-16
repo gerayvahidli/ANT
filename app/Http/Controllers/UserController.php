@@ -10,6 +10,7 @@ use App\City;
 use App\Company;
 use App\Country;
 use App\Currency;
+use App\Deposit;
 use App\EducationForm;
 use App\EducationLevel;
 use App\EducationPaymentForm;
@@ -839,8 +840,9 @@ class UserController extends Controller
 
         $currencies = Currency::orderBy('name')->get();
         $certificates = Certificate::all();
+        $deposites = Deposit::all();
 
-        return view('frontend.profile.apply.externalScholarship', compact('currencies','certificates'));
+        return view('frontend.profile.apply.externalScholarship', compact('currencies','certificates','deposites'));
     }
 
 
