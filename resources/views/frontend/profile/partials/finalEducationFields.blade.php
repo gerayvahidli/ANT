@@ -122,7 +122,7 @@
         <label for="admission_score" class="col-4 col-form-label">Qəbul balı</label>
         <div class="col-8">
             {{ Form::number('admission_score',
-                ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->AdmissionScore : old('admission_score'),
+                ($user->exists && isset($user->finalEducation)) ? str_replace(' ', '', $user->finalEducation->first()->AdmissionScore)  : old('admission_score'),
              ['class' => 'form-control', 'required',"data-required-error"=>'Qəbul balı sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"700", 'id' => 'admission_score', $user ->exists && $user-> finalEducation -> first() -> university -> country -> Id != 1 ? 'readonly' : ''
              ]) }}
             @if ($errors->has('admission_score'))

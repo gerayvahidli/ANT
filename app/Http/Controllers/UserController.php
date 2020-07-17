@@ -61,8 +61,10 @@ class UserController extends Controller
                 , 'currentJob', 'previousJobs')
                 ->find(\Auth::user()->id);
         $homePhone = $user->phones->where('PhoneTypeId', 1)->first();
-        $active_program_id = ExternalProgram::where('IsActive',1) ->first() -> Id;
-        $user_active_program_status = $user -> userPrograms -> where ('ProgramId',\App\ExternalProgram::where('IsActive',1) ->first() -> Id) -> first()->UserProgramStatusId;
+        $active_program_id = ExternalProgram::where('IsActive', 1)->first()->Id;
+        $user_active_program = $user->userPrograms->where('ProgramId', $active_program_id)->first();
+
+        !empty($user_active_program) ? $user_active_program_status = $user_active_program->UserProgramStatusId : $user_active_program_status = [];
 
 //        dd($finalEducation);
 
@@ -85,7 +87,7 @@ class UserController extends Controller
 //				'first_stage_note',
 //			] )->where( 'user_id', $user->id )->get();
 
-        return view('frontend.profile.index', compact('user', 'homePhone','user_active_program_status'));
+        return view('frontend.profile.index', compact('user', 'homePhone', 'user_active_program_status'));
     }
 
     /**
@@ -175,10 +177,8 @@ class UserController extends Controller
         $companies = Company::where('IsSocar', 1)->get();
 
 
-
-
         return view('frontend.profile.form',
-            compact('user', 'countries', 'cities','regions', 'genders', 'mobilePhoneOperatorCodes', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'educationPaymentForms', 'companies')
+            compact('user', 'countries', 'cities', 'regions', 'genders', 'mobilePhoneOperatorCodes', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'educationPaymentForms', 'companies')
         );
     }
 
@@ -341,17 +341,16 @@ class UserController extends Controller
             $user->BirthCityId = $request->BirthCityId;
         }
 
-        if ($request -> address_region == 'other') {
+        if ($request->address_region == 'other') {
             $region = new Region;
-            $region -> Name = $request -> other_address_region;
-            $region -> IsShow = 0;
-            $region -> save();
+            $region->Name = $request->other_address_region;
+            $region->IsShow = 0;
+            $region->save();
 
-            $user -> RegionId = $region->Id;
+            $user->RegionId = $region->Id;
         } else {
-            $user -> RegionId = $request -> address_region;
+            $user->RegionId = $request->address_region;
         }
-
 
 
         $user->CitizenCountryId = $request->nationality;
@@ -849,135 +848,183 @@ class UserController extends Controller
         $certificates = Certificate::all();
         $deposites = Deposit::all();
 
-        return view('frontend.profile.apply.externalScholarship', compact('currencies','certificates','deposites'));
+        return view('frontend.profile.apply.externalScholarship', compact('currencies', 'certificates', 'deposites'));
     }
 
 
-    public function applyScholarship( Request $request)
+    public function applyScholarship(Request $request)
     {
 
+//
+//        $request->validate([
+//
+//
+//            'bank_fee.amount' => 'required_if:bank_guarantee,on',
+//            'realEstate_located_city' => 'required_if:realEstate,on',
+//            'bank_guarantee' => 'required_without:realEstate',
+//            'realEstate' => 'required_without:bank_guarantee',
+//
+//        ]);
+
+        ////this part will be used as helper--start
+
+        $count = 0;
+
+        $arr= [];
+        foreach ($request->language_education_certificate_id as $certificate) {
+
+            array_push($arr,$certificate['certificate']);
+
+            switch ($certificate['certificate'])
+            {
+                case 1:
+                    ($certificate['writing'] >= 6.5 && $certificate['speaking'] >= 6.5 && $certificate['general'] >= 6) ? $count++ : '';
+                case 2:
+                    ($certificate['writing'] >= 23 || $certificate['speaking'] >= 23 || $certificate['general'] >= 80) ? $count++ : '';
+            }
+
+        }
+
+//        return $arr;
+
+
+        if (($count <= 1 && array_intersect([1,2],$arr) && !in_array(4,$arr)) )
+        {
+            return response()->json(['status' => 'error']);
+        }
+
+        ////this part will be used as helper---end
+
+
         $application = new EPApplication;
-        $application -> ProgramId = ExternalProgram::where('IsActive',1) ->first() -> Id;
-        $application -> UserId    = Auth::user()->id;
-        $application -> Speciality    = isset($request -> specialization_id) ? Specialization::find($request -> specialization_id) -> Name : $request -> specialization_name ;
-        $application -> SpecializationId    = isset($request -> specialization_id) ? $request -> specialization_id : null ;
-        $application -> SpecialityGroupId    = $request -> speciality_id ;
-        $application -> CountryId   = $request -> country_id;
-        $application -> UniversityId    =  $request -> university_id;
-        $application -> city    = $request -> city_name;
-        $application -> MainModule   = $request -> main_modules;
-        $application -> AdditionalModule    = $request -> additional_modules;
-        $application -> StartTime    = date('Y-m-d', strtotime( $request -> education_start_date));
-        $application -> Amount    = $request -> education_fee['amount'];
-        $application -> CurrencyId    =  $request -> education_fee['currency'];
-        $application -> EducationLang    = $request -> education_language;
-        $application -> Achievments    = $request -> achievements;
-        $application -> FamilyInfo    = $request -> about_family;
-        $application -> ApplyDate = date("Y-m-d H:i:s");
-        $application -> EdEduLevelId    = 2;
-        $application -> StartDate = $request -> EducationBeginDate;
-        $application -> EndDate = $request -> EducationEndDate;
-        $application -> CurrentStageSending  = false;
+        $application->ProgramId = ExternalProgram::where('IsActive', 1)->first()->Id;
+        $application->UserId = Auth::user()->id;
+        $application->Speciality = isset($request->specialization_id) ? Specialization::find($request->specialization_id)->Name : $request->specialization_name;
+        $application->SpecializationId = isset($request->specialization_id) ? $request->specialization_id : null;
+        $application->SpecialityGroupId = $request->speciality_id;
+        $application->CountryId = $request->country_id;
+        $application->UniversityId = $request->university_id;
+        $application->city = $request->city_name;
+        $application->MainModule = $request->main_modules;
+        $application->AdditionalModule = $request->additional_modules;
+        $application->StartTime = date('Y-m-d', strtotime($request->education_start_date));
+        $application->Amount = $request->education_fee['amount'];
+        $application->CurrencyId = $request->education_fee['currency'];
+        $application->EducationLang = $request->education_language;
+        $application->Achievments = $request->achievements;
+        $application->FamilyInfo = $request->about_family;
+        $application->ApplyDate = date("Y-m-d H:i:s");
+        $application->EdEduLevelId = 2;
+        $application->StartDate = $request->EducationBeginDate;
+        $application->EndDate = $request->EducationEndDate;
+        $application->CurrentStageSending = false;
 
-        $application -> PassportDocPath = $this -> uploadDocuments($request->file('passport_copy'),'pass');
-        $application -> AboutCandidateDocPath = $this -> uploadDocuments($request->file('biography'),'bio');
-        $application -> AcceptDocPath = $this -> uploadDocuments($request->file('university_document'),'uniDoc');
-        $application -> CertificateDocPath = $this -> uploadDocuments($request->file('certificate_document'),'cerDoc');
-        $application -> MedicalDocPath = $this -> uploadDocuments($request->file('medical_certificate'),'medCer');
-        $application -> depositDocPath = $this -> uploadDocuments($request->file('realEstate_document'),'reDoc');
-        $application -> ReferenceDocPath = $this -> uploadDocuments($request->file('testimonial'),'ref');
-        $application -> PsychologicalDispensaryPath = $this -> uploadDocuments($request->file('psychological_dispensary'),'pd');
-        $application -> OwnerPassportDocPath = $this -> uploadDocuments($request->file('owner_passport'),'pd');
-        $application -> AcademicTranscriptPath = $this -> uploadDocuments($request->file('academic_transcript'),'at');
-
-
-        $application -> save();
-
-        $this -> storeLanguageCertificate($application,$request);
-        isset( $request -> realEstate) ? $this -> storeRealEstate($application,$request) : '';
-        isset( $request -> bank_guarantee) ? $this -> storeBankGuarantee($application,$request) : '';
+        $request->hasFile('passport_copy') ? $application->PassportDocPath = $this->uploadDocuments($request->file('passport_copy'), 'pass') : '';
+        $request->hasFile('biography') ? $application->AboutCandidateDocPath = $this->uploadDocuments($request->file('biography'), 'bio') : '';
+        $request->hasFile('university_document') ? $application->AcceptDocPath = $this->uploadDocuments($request->file('university_document'), 'uniDoc') : '';
+        $request->hasFile('certificate_document') ? $application->CertificateDocPath = $this->uploadDocuments($request->file('certificate_document'), 'cerDoc') : '';
+        $request->hasFile('medical_certificate') ? $application->MedicalDocPath = $this->uploadDocuments($request->file('medical_certificate'), 'medCer') : '';
+        $request->hasFile('realEstate_document') ? $application->depositDocPath = $this->uploadDocuments($request->file('realEstate_document'), 'reDoc') : '';
+        $request->hasFile('testimonial') ? $application->ReferenceDocPath = $this->uploadDocuments($request->file('testimonial'), 'ref') : '';
+        $request->hasFile('psychological_dispensary') ? $application->PsychologicalDispensaryPath = $this->uploadDocuments($request->file('psychological_dispensary'), 'pd') : '';
+        $request->hasFile('owner_passport') ? $application->OwnerPassportDocPath = $this->uploadDocuments($request->file('owner_passport'), 'pd') : '';
+        $request->hasFile('academic_transcript') ? $application->AcademicTranscriptPath = $this->uploadDocuments($request->file('academic_transcript'), 'at') : '';
 
 
-        $userProgram = UserProgram::where('UserId',Auth::user()->id)->first();
+        $application->save();
 
-        $userProgram -> ProgramId =  $application -> ProgramId;
-        $userProgram -> UserProgramStatusId =  2;
-        $userProgram -> save();
+        $this->storeLanguageCertificate($application, $request);
+        isset($request->realEstate) ? $this->storeRealEstate($application, $request) : '';
+        isset($request->bank_guarantee) ? $this->storeBankGuarantee($application, $request) : '';
+
+
+        $userProgram = UserProgram::where('UserId', Auth::user()->id)->first();
+
+        $userProgram->ProgramId = $application->ProgramId;
+        $userProgram->UserProgramStatusId = 2;
+        $userProgram->save();
 
         return response()->json(['status' => 'success']);
 
 
-
-
-
     }
 
 
-    public function uploadDocuments ($file,$prefix)
+    public function uploadDocuments($file, $prefix)
     {
 
-        $file_extension = $file -> getClientOriginalExtension();
-        $filename = Auth::user() -> id."_".$prefix ."_".str_random('5'). '.' . $file_extension;
+        $file_extension = $file->getClientOriginalExtension();
+        $filename = Auth::user()->id . "_" . $prefix . "_" . str_random('5') . '.' . $file_extension;
 
 
-        Storage::put('ApplicationDocuments/' . $filename, (string) file_get_contents($file), 'public');
+        Storage::put('ApplicationDocuments/' . $filename, (string)file_get_contents($file), 'public');
 //       return $file_path = Storage::url('ApplicationDocuments/' . $filename);
 
         return $filename;
     }
 
 
-     public function storeRealEstate($application, $request)
-     {
-         $realEstate = new RealEstate;
+    public function storeRealEstate($application, $request)
+    {
+        $realEstate = new RealEstate;
 
-         $realEstate -> ApplicationId = $application -> Id;
-         $realEstate -> DepositId = $request -> realEstate_deposit_object_id;
-         $realEstate -> Address = $request -> realEstate_located_city;
-         $realEstate -> Owner = $request -> realEstate_owner;
-         $realEstate -> Phone = $request -> realEstate_owner_contact;
-         $realEstate -> Email = $request -> realEstate_owner_email;
-         $realEstate -> SerialNo = $request -> realEstateSNO['serial'].$request -> realEstateSNO['number'];
-         $realEstate -> ReyestrNo = $request -> realEstate_reyester;
-         $realEstate -> RegistrNo = $request -> realEstate_registry;
-         $realEstate -> RegistrDate = $request -> realEstate_registry_date;
+        $realEstate->ApplicationId = $application->Id;
+        $realEstate->DepositId = $request->realEstate_deposit_object_id;
+        $realEstate->Address = $request->realEstate_located_city;
+        $realEstate->Owner = $request->realEstate_owner;
+        $realEstate->Phone = $request->realEstate_owner_contact;
+        $realEstate->Email = $request->realEstate_owner_email;
+        $realEstate->SerialNo = $request->realEstateSNO['serial'] . $request->realEstateSNO['number'];
+        $realEstate->ReyestrNo = $request->realEstate_reyester;
+        $realEstate->RegistrNo = $request->realEstate_registry;
+        $realEstate->RegistrDate = $request->realEstate_registry_date;
 
-         $realEstate -> save();
+        $realEstate->save();
 
-     }
+    }
 
     public function storeBankGuarantee($application, $request)
     {
         $bankGuarantee = new BankGuarantee;
 
-        $bankGuarantee -> ApplicationId = $application -> Id;
-        $bankGuarantee -> BankId = $request -> bank_id;
-        $bankGuarantee -> Amount = $request -> bank_fee['amount'];
-        $bankGuarantee -> CurrencyId = $request -> bank_fee['currency'];
+        $bankGuarantee->ApplicationId = $application->Id;
+        $bankGuarantee->BankId = $request->bank_id;
+        $bankGuarantee->Amount = $request->bank_fee['amount'];
+        $bankGuarantee->CurrencyId = $request->bank_fee['currency'];
 
-        $bankGuarantee -> save();
+        $bankGuarantee->save();
 
     }
 
     public function storeLanguageCertificate($application, $request)
     {
-        foreach ($request -> language_education_certificate_id as $certificate){
 
-        $languageCertificate= new LangLevel();
+        foreach ($request->language_education_certificate_id as $certificate) {
+            if (!empty($certificate['certificate'])) {
 
-        $languageCertificate -> ApplicationId = $application -> Id;
-        $languageCertificate -> CertificateId = $certificate['certificate'];
-        $languageCertificate -> Listening = $certificate ['listening'] ;
-        $languageCertificate -> Writting = $certificate ['writing'] ;
-        $languageCertificate -> Reading = $certificate ['reading'] ;
-        $languageCertificate -> Speaking = $certificate ['speaking'] ;
+                if (!empty($certificate['otherCertificate_name'])) {
+
+                    $newCertificate = new Certificate();
+                    $newCertificate->Name = $certificate['otherCertificate_name'];
+                    $newCertificate->IsShow = 0;
+                    $newCertificate->save();
+                }
+                $languageCertificate = new LangLevel();
+
+                $languageCertificate->ApplicationId = $application->Id;
+                $languageCertificate->CertificateId = !empty($certificate['otherCertificate_name']) ? $newCertificate->Id : $certificate['certificate'];
+                $languageCertificate->Listening = $certificate ['listening'];
+                $languageCertificate->Writting = $certificate ['writing'];
+                $languageCertificate->Reading = $certificate ['reading'];
+                $languageCertificate->Speaking = $certificate ['speaking'];
+                $languageCertificate->FinalScore = !empty($certificate['otherCertificate_name']) ? $certificate['otherCertificate_point'] : $certificate ['general'];
 
 
-        $languageCertificate -> save();
+                $languageCertificate->save();
+            }
+
         }
-
     }
-
 
 
 
@@ -1068,7 +1115,7 @@ class UserController extends Controller
     {
 //        return $req;
 
-        if ( isset($req->specialization_id)) {
+        if (isset($req->specialization_id)) {
             $specialization = Specialization::find($req->specialization_id);
         } else {
             $specialization = SpecialityGroup::find($req->speciality_id)->specializations->first();
@@ -1076,10 +1123,10 @@ class UserController extends Controller
         }
 
 
-         $universities = $specialization->universities;
+        $universities = $specialization->universities;
 
 
-          $unis = $universities->filter(function ($uni) use ($req) {
+        $unis = $universities->filter(function ($uni) use ($req) {
             return $uni->CountryId == $req->country_id;
         });
 

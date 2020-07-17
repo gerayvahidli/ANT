@@ -102,7 +102,7 @@
             <div class="form-group row">
                 <label for="previous_education_admission_score" class="col-4 col-form-label">Qəbul balı</label>
                 <div class="col-8">
-                    <input type="number" value="{{($user -> exists && isset($previousEducation->AdmissionScore)) ? $previousEducation->AdmissionScore : 0}}" class="form-control here" id ="ex_previous_education_admission_score"
+                    <input type="number" value="{{($user -> exists && isset($previousEducation->AdmissionScore)) ? str_replace(' ', '', $previousEducation->AdmissionScore)  : 0}}" class="form-control here" id ="ex_previous_education_admission_score"
                     {{$previousEducation -> university -> country -> Id != 1 ? 'readonly' : ''}}
                     name="previous_education_admission_score[]"
                     >

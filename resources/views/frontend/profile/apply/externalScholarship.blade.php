@@ -228,7 +228,7 @@
                                     <select name="language_education_certificate_id[0][certificate]" id=""
                                             class="form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} "
                                             id="language_education_certificate_id">
-                                        <option>---</option>
+                                        <option value="">---</option>
                                         @foreach($certificates as $certificate)
                                             <option value="{{$certificate -> Id}}">{{$certificate -> Name}}</option>
                                         @endforeach
@@ -299,11 +299,37 @@
                                     <span class="error text-danger"></span>
                                 </div>
 
+                                <div class="col-sm-3 offset-4 ">
+                                    <input type="number"
+                                           step="any"
+                                           min="0"
+                                           id=""
+                                           name="language_education_certificate_id[0][general]"
+                                           class="form-control"
+                                           placeholder="0"
+                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                    >
+                                    <small>ümumi</small>
+                                    <span class="error text-danger"></span>
+                                </div>
+
                             </div>
                         </div>
 
+                        <div class="form-group row otherCertificate " >
+                            <div class="col-sm-6">
+                                <input id="otherCertificate_name" class="form-control input-group-lg reg_name" type="text" name="language_education_certificate_id[0][otherCertificate_name]">
+                                <small>Serifikatın adı</small>
+                            </div>
+                            <div class="col-sm-6">
+                                <input id="otherCertificate_point" class="form-control input-group-lg reg_name" type="text" name="language_education_certificate_id[0][otherCertificate_point]"  placeholder="0">
+                                <small>Bal</small>
+                            </div>
+                        </div>
 
-                    </div>
+                        </div>
+
+
                     <button id="addCertificate" type="button" class="form-control btn btn-primary">Əlavə et</button>
 
                     <div class="form-group ">
@@ -819,10 +845,16 @@
                 let val = $('option:selected', this).text();
                 console.log(val);
                 if (val == "IELTS" || val == "TOEFL IBT") {
-                    $(this).parents('.certificates').children().last().show()
-                } else {
-                    $(this).parents('.certificates').children().last().hide()
+                    $(this).parents('.certificates').children('.languageLevel').show();
+                    $(this).parents('.certificates').children('.otherCertificate').hide();
+                } else if (val == "Digər") {
+                    $(this).parents('.certificates').children('.otherCertificate').show()
+                    $(this).parents('.certificates').children('.languageLevel').hide()
+                }else{
+                    $(this).parents('.certificates').children('.languageLevel').hide()
+                    $(this).parents('.certificates').children('.otherCertificate').hide();
                 }
+
             });
 
             $('.language_education_certificate_id').trigger('change');
@@ -912,21 +944,22 @@
             //Once add button is clicked
             $(addButton).click(function () {
                 //Check maximum number of input fields
-                var fieldHtml = ("  <div class=\"certificates\" id=\"certificates\">\n" +
-                    "                        <div class=\"form-row required test\">\n" +
-                    "                            <div class=\"form-group col-12 \">\n" +
+                var fieldHtml = ("<div class=\"certificates\" id=\"certificates\">\n" +
+                    "                        <div class=\"form-row  test\">\n" +
+                    "                            <div class=\"form-group col-12 required\">\n" +
                     "                                <label for=\"inputCity\" class=\"col-form-label\">Dil sertifikatı</label>\n" +
                     "                                <div class=\"d-flex\">\n" +
-                    "                                <select name=\"language_education_certificate_id[" + x + "][certificate]\" id=\"\"\n" +
-                    "                                        class=\"form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} \"\n" +
-                    "                                        id=\"language_education_certificate_id\">\n" +
-                    "                                    @foreach($certificates as $certificate)\n" +
-                    "                                        <option value=\"{{$certificate -> Id}}\">{{$certificate -> Name}}</option>\n" +
-                    "                                    @endforeach\n" +
-                    "                                </select>\n" +
-                    "                                    <input type=\"button\" class=\"btn btn-danger remove_button\" value=\"Sil\" />\n" +
+                    "                                    <select name=\"language_education_certificate_id[" + x + "][certificate]\" id=\"\"\n" +
+                    "                                            class=\"form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} \"\n" +
+                    "                                            id=\"language_education_certificate_id\">\n" +
+                    "                                        <option value=\"\">---</option>\n" +
+                    "                                        @foreach($certificates as $certificate)\n" +
+                    "                                            <option value=\"{{$certificate -> Id}}\">{{$certificate -> Name}}</option>\n" +
+                    "                                        @endforeach\n" +
+                    "                                    </select>\n" +
+                    "<input type=\"button\" class=\"btn btn-danger remove_button\" value=\"Sil\" />\n" +
                     "                                </div>\n" +
-                    "\n" +
+                    "                                <div class=\"help-block with-errors\"></div>\n" +
                     "                                <span class=\"error text-danger\"> {{$errors->first('language_education_certificate_id')}}</span>\n" +
                     "                            </div>\n" +
                     "\n" +
@@ -935,44 +968,91 @@
                     "                            <label for=\"\" class=\"col-form-label\">Dil bilmə səviyyəsi</label>\n" +
                     "                            <div class=\"form-row align-items-center\">\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n  name=\"language_education_certificate_id[" + x + "][reading]\"\n" +
-                    "                                           class=\"form-control \">\n" +
+                    "                                    <input type=\"number\"\n" +
+                    "                                           step=\"any\"\n" +
+                    "                                           min=\"0\"\n" +
+                    "                                           id=\"\"\n" +
+                    "                                           name=\"language_education_certificate_id[" + x + "][reading]\"\n" +
+                    "                                           onkeydown=\"\"\n" +
+                    "                                           class=\"form-control\"\n" +
+                    "                                           placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                    >\n" +
                     "                                    <small>oxuma</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
                     "                                </div>\n" +
                     "\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n     id=\"\"\n" +
+                    "                                    <input type=\"number\"\n" +
+                    "                                           step=\"any\"\n" +
+                    "                                           min=\"0\"\n" +
+                    "                                           id=\"\"\n" +
                     "                                           name=\"language_education_certificate_id[" + x + "][writing]\"\n" +
-                    "                                           class=\"form-control\">\n" +
+                    "                                           class=\"form-control\"\n" +
+                    "                                           placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                    >\n" +
                     "                                    <small>yazma</small>\n" +
                     "                                    <span class=\"error text-danger\"> </span>\n" +
                     "                                </div>\n" +
                     "\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\" step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n  name=\"language_education_certificate_id[" + x + "][speaking]\"\n" +
-                    "                                           class=\"form-control \">\n" +
+                    "                                    <input type=\"number\"\n" +
+                    "                                           step=\"any\"\n" +
+                    "                                           min=\"0\"\n" +
+                    "                                           id=\"\"\n" +
+                    "                                           name=\"language_education_certificate_id[" + x + "][speaking]\"\n" +
+                    "                                           class=\"form-control \"\n" +
+                    "                                           placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                    >\n" +
                     "                                    <small>danışıq</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
                     "                                </div>\n" +
                     "\n" +
                     "                                <div class=\"col-sm-3 \">\n" +
-                    "                                    <input type=\"number\"  step=\"any\" min=\"0\" id=\"\" placeholder=\"0\"\n" +
-                    "                                   onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n  id=\"\"\n" +
+                    "                                    <input type=\"number\"\n" +
+                    "                                           step=\"any\"\n" +
+                    "                                           min=\"0\"\n" +
+                    "                                           id=\"\"\n" +
                     "                                           name=\"language_education_certificate_id[" + x + "][listening]\"\n" +
-                    "                                           class=\"form-control\">\n" +
+                    "                                           class=\"form-control\"\n" +
+                    "                                           placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                    >\n" +
                     "                                    <small>dinləmə</small>\n" +
+                    "                                    <span class=\"error text-danger\"></span>\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"col-sm-3 offset-4 \">\n" +
+                    "                                    <input type=\"number\"\n" +
+                    "                                           step=\"any\"\n" +
+                    "                                           min=\"0\"\n" +
+                    "                                           id=\"\"\n" +
+                    "                                           name=\"language_education_certificate_id[" + x + "][general]\"\n" +
+                    "                                           class=\"form-control\"\n" +
+                    "                                           placeholder=\"0\"\n" +
+                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                    >\n" +
+                    "                                    <small>ümumi</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
                     "                                </div>\n" +
                     "\n" +
                     "                            </div>\n" +
                     "                        </div>\n" +
                     "\n" +
+                    "                        <div class=\"form-group row otherCertificate \" >\n" +
+                    "                            <div class=\"col-sm-6\">\n" +
+                    "                                <input id=\"otherCertificate_name\" class=\"form-control input-group-lg reg_name\" type=\"text\" name=\"language_education_certificate_id[" + x + "][otherCertificate_name]\">\n" +
+                    "                                <small>Serifikatın adı</small>\n" +
+                    "                            </div>\n" +
+                    "                            <div class=\"col-sm-6\">\n" +
+                    "                                <input id=\"otherCertificate_point\" class=\"form-control input-group-lg reg_name\" type=\"text\" name=\"language_education_certificate_id[" + x + "][otherCertificate_point]\"  placeholder=\"0\">\n" +
+                    "                                <small>Bal</small>\n" +
+                    "                            </div>\n" +
+                    "                        </div>\n" +
                     "\n" +
-                    "                    </div>");
+                    "                        </div>\n");
                 $('body').find('.certificates:last').after(fieldHtml); //Add field html\
 
                 x++; //Increment field counter
@@ -1005,6 +1085,7 @@
 
                             if (data.count < 2) {
                                 $('#specialization_name').show();
+                                $('#specialization_name').attr('required',true);
                                 $('.specialization_select').remove();
                                 $.each(data.universitiesWithCountry.universities, function (key, value) {
 
@@ -1022,6 +1103,7 @@
 
                                 $('.specialization_div').append(data.specializations_select)
                                 $('#specialization_name').hide();
+                                $('#specialization_name').attr('required',false);
 
                                 $('#specialization_id').trigger('change');
 
@@ -1130,8 +1212,12 @@
                     if (data.status == "success") {
                         $("#bsModal3").modal('show');
                         setTimeout(function () {
-                            window.location.href = '{{ url('/') }}';
+                            window.location.href = '{{ route('profile.index') }}';
                         }, 2000);
+                    }
+                    if(data.status == 'error')
+                    {
+                        alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”")
                     }
                 },
                 error: function (data) {

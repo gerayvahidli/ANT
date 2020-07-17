@@ -723,7 +723,7 @@
                     dataType: "json",
                     success: function (data) {
                         console.log(data);
-                        if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '') {
+                        if ((data.OutParams.Status == 0 ) ) {
                             alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ")
                         }
                         if (data.OutParams.Status == '') {
@@ -772,10 +772,15 @@
                         type: "post",
                         dataType: "json",
                         success: function (data) {
-                            if ((data.OutParams.Status != 3 && data.OutParams.Status != '') || data.OutParams.Status == '') {
+                            if (data.OutParams.Status == 0 ) {
                                 alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
                                 error = 1;
-                            } else {
+                            } else if(data.OutParams.Status == '')
+                            {
+                                alert(data.ErrMsg.ErrorMessage)
+                                error = 1;
+                            }
+                            else {
                                 error = 2
                             }
 
@@ -850,7 +855,7 @@
                     .then((response) => {
                         // console.log('correct');
                         console.log(response);
-                        window.location.href = '{{ route('profile.index') }}';
+                        {{--window.location.href = '{{ route('profile.index') }}';--}}
                     }).catch((error) => {
                     if (error.response) {
                         // The request was made and the server responded with a status code
