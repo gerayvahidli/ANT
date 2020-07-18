@@ -125,7 +125,7 @@
                         <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
                                     class="fa fa-edit"></i>Profili dəyiş</a>
                         @if($user->exists)
-                            <a href="{{ url('/profile/' . $user->id . '/password') }}"
+                            <a href="{{ route('profile.password.edit') }}"
                                class="btn btn-outline-primary btn-block">Şifrəni dəyiş</a>
                         @endif
                     </div>

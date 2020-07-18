@@ -855,7 +855,7 @@
                     .then((response) => {
                         // console.log('correct');
                         console.log(response);
-                        {{--window.location.href = '{{ route('profile.index') }}';--}}
+                        window.location.href = '{{ route('profile.index') }}';
                     }).catch((error) => {
                     if (error.response) {
                         // The request was made and the server responded with a status code

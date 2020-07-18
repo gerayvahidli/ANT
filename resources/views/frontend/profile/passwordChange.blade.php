@@ -4,7 +4,7 @@
     <section class="profile">
         <div class="row">
             <h3 class="mx-auto">
-                Şifrə dəyiş
+                Şifrəni dəyiş
             </h3>
             <br>
         </div>
@@ -13,59 +13,60 @@
             'method' => 'put',
         ]) }}
         <div class="row">
-            <div class="col-12 col-sm-5 right-dotted-line">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ asset((isset($user->image)) ? $user->image :'img/l60Hf.png') }}" height="160" alt="Card image cap">
-                    <div class="card-body">
-                        <p class="card-text">{{ $user->FirstName . ' ' . $user->LastName }}</p>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-borderless">
-                        <tbody>
-                        <tr>
-                            <td>Vətəndaşlığı</td>
-                            <td>{{ $user->country->Name }}</td>
-                        </tr>
-                        <tr>
-                            <td>Təvəllüd</td>
-                            <td>{{ $user->Dob->formatLocalized('%d %B %Y') }}</td>
-                        </tr>
-                        <tr>
-                            <td>Anadan olduğu yer</td>
-                            <td>{{ $user->city->Name }}</td>
-                        </tr>
-                        <tr>
-                            <td>Ünvan</td>
-                            <td>{{ $user->Address }}</td>
-                        </tr>
-                        <tr>
-                            <td>E-mail</td>
-                            <td>{{ $user->email }}</td>
-                        </tr>
-                        <tr>
-                            <td>Telefon</td>
-                            <td>
-                                @foreach($user->phones as $phoneNumber)
-                                    {{ $phoneNumber->operatorCode->Code . $phoneNumber->PhoneNumber }}
-                                    <br>
-                                @endforeach
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Şəxsiyyət vəsiqəsinin nömrəsi</td>
-                            <td>{{ $user->IdentityCardNumber }}</td>
-                        </tr>
-                        <tr>
-                            <td>Şəxsiyyət vəsiqəsinin FİN kodu</td>
-                            <td>{{ $user->IdentityCardCode }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+{{--            <div class="col-12 col-sm-5 right-dotted-line">--}}
+{{--                <div class="card" style="width: 18rem;">--}}
+{{--                    <img class="card-img-top" src="{{ asset((isset($user->image)) ? $user->image :'img/l60Hf.png') }}" height="160" alt="Card image cap">--}}
+{{--                    <div class="card-body">--}}
+{{--                        <p class="card-text">{{ $user->FirstName . ' ' . $user->LastName }}</p>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="table-responsive">--}}
+{{--                    <table class="table table-borderless">--}}
+{{--                        <tbody>--}}
+{{--                        <tr>--}}
+{{--                            <td>Vətəndaşlığı</td>--}}
+{{--                            <td>{{ $user->country->Name }}</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>Təvəllüd</td>--}}
+{{--                            <td>{{ $user->Dob->formatLocalized('%d %B %Y') }}</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>Anadan olduğu yer</td>--}}
+{{--                            <td>{{ $user->city->Name }}</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>Ünvan</td>--}}
+{{--                            <td>{{ $user->Address }}</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>E-mail</td>--}}
+{{--                            <td>{{ $user->email }}</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>Telefon</td>--}}
+{{--                            <td>--}}
+{{--                                @foreach($user->phones as $phoneNumber)--}}
+{{--                                    {{ $phoneNumber->operatorCode->Code . $phoneNumber->PhoneNumber }}--}}
+{{--                                    <br>--}}
+{{--                                @endforeach--}}
+{{--                            </td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>Şəxsiyyət vəsiqəsinin nömrəsi</td>--}}
+{{--                            <td>{{ $user->IdentityCardNumber }}</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>Şəxsiyyət vəsiqəsinin FİN kodu</td>--}}
+{{--                            <td>{{ $user->IdentityCardCode }}</td>--}}
+{{--                        </tr>--}}
+{{--                        </tbody>--}}
+{{--                    </table>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
-            <div class="col-12 col-sm-7">
+
+            <div class="col-12 col-sm-7 container-fluid" >
                 <div class="form-group row">
                     <label for="current_password" class="col-md-4 col-form-label">Cari Şifrə</label>
 
@@ -110,6 +111,7 @@
                 <div class="form-group row">
                     <div class="offset-4 col-8">
                         {{ Form::submit('Yadda saxla', ['class' => 'btn btn-primary']) }}
+                        <button type="button" onclick="window.history.back();" class="btn btn-danger">Geri</button>
                     </div>
                 </div>
 

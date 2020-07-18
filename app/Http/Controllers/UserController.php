@@ -66,26 +66,6 @@ class UserController extends Controller
 
         !empty($user_active_program) ? $user_active_program_status = $user_active_program->UserProgramStatusId : $user_active_program_status = [];
 
-//        dd($finalEducation);
-
-//
-//		$externalProgramApplication =
-//			ExternalProgramApplication::with( [
-//				'placementStatus',
-//				'firstStageResult',
-//				'testStageResult',
-//				'interviewStageResult',
-//				'first_stage_note',
-//			] )->where( 'user_id', $user->id )->get();
-//
-//		$internalProgramApplication =
-//			InternalProgramApplication::with( [
-//				'placementStatus',
-//				'firstStageResult',
-//				'testStageResult',
-//				'interviewStageResult',
-//				'first_stage_note',
-//			] )->where( 'user_id', $user->id )->get();
 
         return view('frontend.profile.index', compact('user', 'homePhone', 'user_active_program_status'));
     }
@@ -95,7 +75,7 @@ class UserController extends Controller
      */
     public function showFeedbackForm()
     {
-        $user = User::with('country', 'city', 'phones.operatorCode')->find(\Auth::user()->id);
+        $user =Auth::user();
 
         return view('frontend.profile.feedbackForm', compact('user'));
     }
@@ -188,7 +168,6 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-
         $user = new User;
         $user->Email = $request->email;
         $user->FirstName = $request->FirstName;
@@ -254,9 +233,6 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
-
-//        return $user->previousJobs;
 
 
         if ($user->id != Auth::user()->id) {
@@ -356,8 +332,6 @@ class UserController extends Controller
         $user->CitizenCountryId = $request->nationality;
         $user->AddressMain = $request->Address;
         $user->Address2 = $request->Address2;
-
-
 //        $user->PassportNo =  $request -> idCardNumber;
 //        $user->Fin = $request -> idCardPin;
 
@@ -369,10 +343,9 @@ class UserController extends Controller
         $previousEducation = $this->updatePreviousEducation($request, $user);
 
         $finalJob = $this->updateJob($request, $user);
-        return $previousJob = $this->updatePreviousJob($request, $user);
+        $previousJob = $this->updatePreviousJob($request, $user);
 
 
-        return "yes";
 
 //		$previousInternship  = $this->savePreviousInternship( $request, $user );
 //		$previousScholarship = $this->savePreviousScholarship( $request, $user );
@@ -408,23 +381,7 @@ class UserController extends Controller
         $finalEducation->EducationPaymentFormId = $request->education_payment_form_id;
         $finalEducation->GPA = $request->GPA;
         $finalEducation->IsCurrent = 1;
-//		if ( $request->education_section_id == 4 && $request->has( 'education_section' ) ) {
-//			$educationSection         = new EducationSection;
-//			$educationSection->Name   = $request->education_section;
-//			$educationSection->IsMain = 0;
-//			$educationSection->save();
-//			$finalEducation->education_section_id = $educationSection->id;
-//		} else {
-//			if ( isset( $request->education_section_id ) ) {
-//				$finalEducation->education_section_id = $request->education_section_id;
-//			}
-//		}
-//		if ( isset( $request->education_form_id ) ) {
-//			$finalEducation->education_form_id = $request->education_form_id;
-//		}
-//		if ( isset( $request->education_payment_form_id ) ) {
-//			$finalEducation->education_payment_form_id = $request->education_payment_form_id;
-//		}
+
         $finalEducation->save();
 
         return $finalEducation;
@@ -633,71 +590,13 @@ class UserController extends Controller
     }
 
 
-//	public function savePreviousInternship ( Request $request, $user )
-//	{
-//		if ( isset( $request->haveBeenIntern ) && $request->haveBeenIntern == 0 ) {
-//			$previousInternships = PreviousInternship::where( 'user_id', $user->id )->get();
-//			foreach ( $previousInternships as $i => $previousInternship ) {
-//				$previousInternship->delete();
-//			}
-//		}
-//
-//		if ( isset( $request->haveBeenIntern ) && $request->haveBeenIntern == 1 && isset( $request->internship_department[ 0 ] ) ) {
-//			foreach ( $request->internship_department as $i => $previousInternshipDepartment ) {
-//				if ( isset( $request->internship_id[ $i ] ) ) {
-//					$previousInternship                  = PreviousInternship::where( 'user_id', $user->id )->find( $request->internship_id[ $i ] );
-//					$previousInternship->department      = $request->internship_department[ $i ];
-//					$previousInternship->internship_date = $request->internship_date[ $i ];
-//					$previousInternship->save();
-//				} else {
-//					$previousInternship                  = new PreviousInternship;
-//					$previousInternship->user_id         = $user->id;
-//					$previousInternship->department      = $request->internship_department[ $i ];
-//					$previousInternship->internship_date = $request->internship_date[ $i ];
-//					$previousInternship->save();
-//				}
-//			}
-//		}
-//
-//	}
-//
-//	public function savePreviousScholarship ( Request $request, $user )
-//	{
-//
-//		if ( $request->hasAppliedToScholarship != 1 || ( isset( $request->haveBeenScholar ) && $request->haveBeenScholar != 1 ) ) {
-//			$previousScholarships = PreviousScholarship::where( 'user_id', $user->id )->get();
-//			foreach ( $previousScholarships as $previousScholarship ) {
-//				$previousScholarship->delete();
-//			}
-//		}
-//
-//		if ( isset( $request->hasAppliedToScholarship ) && isset( $request->haveBeenScholar ) && $request->hasAppliedToScholarship == 1 && $request->haveBeenScholar == 1 && $request->has( 'previous_scholarship_type' ) ) {
-//			foreach ( $request->get( 'previous_scholarship_type' ) as $key => $previous_scholarship_type ) {
-//				if ( isset( $request->previous_scholarship_id[ $key ] ) ) {
-//					if ( isset( $request->previous_scholarship_date[ $key ] ) ) {
-//						$previousScholarship                   = PreviousScholarship::where( 'user_id', $user->id )->find( $request->previous_scholarship_id[ $key ] );
-//						$previousScholarship->program_type_id  = $request->previous_scholarship_type[ $key ];
-//						$previousScholarship->scholarship_date = $request->previous_scholarship_date[ $key ];
-//						$previousScholarship->save();
-//					}
-//				} else {
-//					if ( isset( $request->previous_scholarship_date[ $key ] ) ) {
-//						$previousScholarship                   = new PreviousScholarship;
-//						$previousScholarship->user_id          = $user->id;
-//						$previousScholarship->program_type_id  = $request->previous_scholarship_type[ $key ];
-//						$previousScholarship->scholarship_date = $request->previous_scholarship_date[ $key ];
-//						$previousScholarship->save();
-//					}
-//				}
-//			}
-//		}
-//	}
 
     /**
      * @param \App\User $user
      */
     public function editPassword(User $user)
     {
+
         return view('frontend.profile.passwordChange', compact('user'));
     }
 
@@ -705,10 +604,16 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\User $user
      */
-    public function changePassword(Request $request, User $user)
+    public function changePassword(Request $request)
     {
-        if (\Hash::check($request->old_password, $user->password)) {
-            $user->password = $request->password;
+
+        $this->validate($request, [
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $user = Auth::user();
+        if (\Hash::check($request->current_password, $user->password)) {
+            $user->password = \Hash::make($request->password);
             $user->save();
             flash('Şifrə müvəffəqiyyətlə dəyişdirildi!')->success();
 
@@ -845,7 +750,7 @@ class UserController extends Controller
     {
 
         $currencies = Currency::orderBy('name')->get();
-        $certificates = Certificate::all();
+        $certificates = Certificate::where('IsShow',1) -> get();
         $deposites = Deposit::all();
 
         return view('frontend.profile.apply.externalScholarship', compact('currencies', 'certificates', 'deposites'));
@@ -855,16 +760,6 @@ class UserController extends Controller
     public function applyScholarship(Request $request)
     {
 
-//
-//        $request->validate([
-//
-//
-//            'bank_fee.amount' => 'required_if:bank_guarantee,on',
-//            'realEstate_located_city' => 'required_if:realEstate,on',
-//            'bank_guarantee' => 'required_without:realEstate',
-//            'realEstate' => 'required_without:bank_guarantee',
-//
-//        ]);
 
         ////this part will be used as helper--start
 
@@ -885,15 +780,51 @@ class UserController extends Controller
 
         }
 
-//        return $arr;
 
 
-        if (($count <= 1 && array_intersect([1,2],$arr) && !in_array(4,$arr)) )
+        if (($count <= 1 && array_intersect([1,2],$arr) && !array_intersect([3,4],$arr)) )
         {
             return response()->json(['status' => 'error']);
         }
 
         ////this part will be used as helper---end
+
+
+
+
+        $request->validate([
+            'city_name' => 'required|max:100',
+            'bank_guarantee' => 'required_without:realEstate',
+            'realEstate' => 'required_without:bank_guarantee',
+            'realEstate_located_city' => 'required_if:realEstate,on|max:20',
+            'realEstate_owner' => 'required_if:realEstate,on|max:100',
+            'realEstate_owner_contact' => 'required_if:realEstate,on|max:50',
+            'realEstate_owner_email' => 'max:100|email|nullable',
+            'realEstateSNO.serial' => 'required_if:realEstate,on|max:50',
+            'realEstateSNO.number' => 'required_if:realEstate,on|max:50',
+            'realEstate_registry' => 'required_if:realEstate,on|max:100',
+            'realEstate_registry_date' => 'required_if:realEstate,on',
+            'realEstate_registry' => 'required_if:realEstate,on|max:100',
+            'bank_fee.amount' => 'required_if:bank_guarantee,on',
+
+            'achievements' => 'required',
+            'about_family' => 'required',
+
+            'passport_copy' => 'required',
+            'certificate_document' => 'required',
+            'university_document' => 'required',
+            'biography' => 'required',
+            'medical_certificate' => 'required',
+            'psychological_dispensary' => 'required',
+            'academic_transcript' => 'required',
+            'realEstate_document' => 'required',
+            'realEstate_document' => 'required',
+            'testimonial' => 'required',
+
+
+        ]);
+
+
 
 
         $application = new EPApplication;
@@ -917,7 +848,9 @@ class UserController extends Controller
         $application->EdEduLevelId = 2;
         $application->StartDate = $request->EducationBeginDate;
         $application->EndDate = $request->EducationEndDate;
-        $application->CurrentStageSending = false;
+        $application->CurrentStageId = 3;
+        $application->LastStageId = 3;
+        $application->CurrentStageSending = true;
 
         $request->hasFile('passport_copy') ? $application->PassportDocPath = $this->uploadDocuments($request->file('passport_copy'), 'pass') : '';
         $request->hasFile('biography') ? $application->AboutCandidateDocPath = $this->uploadDocuments($request->file('biography'), 'bio') : '';

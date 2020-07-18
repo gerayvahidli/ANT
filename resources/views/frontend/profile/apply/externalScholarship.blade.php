@@ -187,7 +187,7 @@
                         <div class="help-block with-errors"></div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group ">
                         <label for="education_start_date" class="col-form-label">Təhsilin başlama tarixi</label>
                         <input type="date" value="{{old('education_start_date')}}"
                                name="education_start_date"
@@ -202,9 +202,11 @@
                         <div class="form-group col-8">
                             <label for="education_fee[amount]" class="col-form-label">Təhsil haqqı</label>
                             <input type="number"
+                                   required
                                    class="form-control col-4 {{$errors->has('education_fee[amount]')?'errorInput':''}}"
                                    value="{{old('education_fee[amount]')}}" name="education_fee[amount]"
                                    id="education_fee"
+                                   min = "0"
                                    onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
                             >
                         </div>
@@ -222,7 +224,7 @@
 
                     <div class="certificates" id="certificates">
                         <div class="form-row  test">
-                            <div class="form-group col-12 required">
+                            <div class="form-group col-12 ">
                                 <label for="inputCity" class="col-form-label">Dil sertifikatı</label>
                                 <div class="d-flex">
                                     <select name="language_education_certificate_id[0][certificate]" id=""
@@ -734,7 +736,7 @@
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
-                    <div class="form-group required">
+                    <div class="form-group ">
                         <label for="owner_passport" class="col-form-label required">
                             Girov sahibinin şəxsiyyət vəsiqəsi
                         </label>
@@ -1097,7 +1099,7 @@
                                 });
                                 setTimeout(function () {
                                     $('#country_id').trigger('change');
-                                }, 1000);
+                                }, 500);
 
                             } else {
 
@@ -1128,7 +1130,7 @@
                     data: {
                         country_id: $('#country_id').val(),
                         speciality_id: $('select[name="speciality_id"]').val(),
-                        specialization_id: $('select[name="specialization"]').val()
+                        specialization_id: $('select[name="specialization_id"]').val()
                     },
                     cache: true,
                     success:
@@ -1176,7 +1178,7 @@
 
                             setTimeout(function () {
                                 $('#country_id').trigger('change');
-                            }, 1000);
+                            },500);
 
                         }
                 });
