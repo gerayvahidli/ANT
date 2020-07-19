@@ -723,10 +723,10 @@
                     dataType: "json",
                     success: function (data) {
                         console.log(data);
-                        if ((data.OutParams.Status == 0 ) ) {
+                        if (data.OutParams.Status === 0  ) {
                             alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ")
                         }
-                        if (data.OutParams.Status == '') {
+                        else if (data.OutParams.Status === '') {
                             alert(data.ErrMsg.ErrorMessage)
                         }
                         $('#FirstName').val(data.OutParams.FirstName);
@@ -763,7 +763,7 @@
                 var tabel_number = $('#tabel_number').val();
                 var error = 1;
 
-                if (tabel_number.length != 9 && fin != '') {
+                if (tabel_number != '99999999' && fin != '') {
 
                     $.ajax({
                         async: false,
@@ -1160,8 +1160,8 @@
             var wrapperEmail = $('#emailFieldGroup'); //Input field wrapper
 
             // var fieldHTML = '<div class="form-group row required" id="mobilePhones">' + $("#phones").html() + '<div class="col-1"><a href="javascript:void(0);" class="remove_button"><span class="fa fa-minus"></span></a></div></div>'; //New input field html
-            var x = {{count($user->phones)}}; //Initial field counter is 1
-            var y = {{count($user -> emails)}}; //Initial email field counter is 1
+            var x = {{$user -> exists ? count($user->phones) : 1}}; //Initial field counter is 1
+            var y = {{$user -> exists ? count($user -> emails): 1}}; //Initial email field counter is 1
 
 
             //Once add button is clicked

@@ -1,5 +1,5 @@
 @if($user->exists && count($user->previousJobs))
-    <p class="lead"> ƏVVƏLKI İŞ YERLƏRİ</p>
+    <p class="lead"> ƏVVƏLKİ İŞ YERLƏRİ</p>
     @foreach($user->previousJobs as $previousJob)
         <div class="workFieldGroup" id="workFieldGroup{{ $loop->iteration }}">
             <p class="lead"> Əvvəlki iş yeri {{$loop -> iteration}}</p>
@@ -43,8 +43,14 @@
             <div class="form-group row required ">
                 <label for="previous_department" class="col-4 col-form-label">Struktur Bölmə</label>
                 <div class="col-8">
-                    <input value="{{  $user -> exists  ? $previousJob -> Department : null }}" class="form-control"
-                           type="text" name="previous_department[]" id="">
+                    <input value="{{  $user -> exists  ? $previousJob -> Department : null }}"
+                           class="form-control"
+                           type="text"
+                           name="previous_department[]"
+                           id=""
+                           required
+                           data-required-error="Struktur Bölmə sahəsi boş qala bilməz"
+                    >
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -52,8 +58,14 @@
             <div class="form-group row required">
                 <label for="previous_position" class="col-4 col-form-label">Vəzifə</label>
                 <div class="col-8">
-                    <input value="{{  $user -> exists  ? $previousJob -> Position : null }}" class="form-control"
-                           type="text" name="previous_position[]" id="previous_position">
+                    <input value="{{  $user -> exists  ? $previousJob -> Position : null }}"
+                           class="form-control"
+                           type="text"
+                           name="previous_position[]"
+                           id="previous_position"
+                           required
+                           data-required-error="Vəzifə sahəsi boş qala bilməz"
+                    >
                     <div class="help-block with-errors"></div>
                 </div>
             </div>

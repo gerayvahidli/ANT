@@ -69,7 +69,7 @@
     <div class="form-group row required">
         <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti(il)</label>
         <div class="col-4 form-group">
-            {{ Form::number('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->StartDate : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Başlanğıc tarixi sahəsini sahəsini boş buraxmayın','id'=> 'BeginDate','autocomplete' => 'none']) }}
+            {{ Form::number('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->StartDate : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Başlanğıc tarixi sahəsini sahəsini boş buraxmayın','id'=> 'BeginDate','autocomplete' => 'none','min'=>'0','max'=>date('Y'),'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
             @if ($errors->has('BeginDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('BeginDate') }}</strong>
@@ -80,7 +80,7 @@
 
         </div>
         <div class="col-4 form-group">
-            {{ Form::number('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->EndDate : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Bitmə tarixi sahəsini sahəsini boş buraxmayın','id'=> 'EndDate','autocomplete' => 'none']) }}
+            {{ Form::number('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->EndDate : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Bitmə tarixi sahəsini sahəsini boş buraxmayın','id'=> 'EndDate','autocomplete' => 'none','min'=>'0','max'=>date('Y')+10,'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
             @if ($errors->has('EndDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('EndDate') }}</strong>
@@ -123,8 +123,10 @@
         <div class="col-8">
             {{ Form::number('admission_score',
                 ($user->exists && isset($user->finalEducation)) ? str_replace(' ', '', $user->finalEducation->first()->AdmissionScore)  : old('admission_score'),
-             ['class' => 'form-control', 'required',"data-required-error"=>'Qəbul balı sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"700", 'id' => 'admission_score', $user ->exists && $user-> finalEducation -> first() -> university -> country -> Id != 1 ? 'readonly' : ''
+             ['class' => 'form-control', 'required',"data-required-error"=>'Qəbul balı sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"700",'min'=>'0', 'placeholder' => '0','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189', 'id' => 'admission_score', $user ->exists && $user-> finalEducation -> first() -> university -> country -> Id != 1 ? 'readonly' : ''
              ]) }}
+
+
             @if ($errors->has('admission_score'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('admission_score') }}</strong>
@@ -178,7 +180,8 @@
         <div class="col-8">
             {{ Form::number('GPA',
                 ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->GPA : old('GPA'),
-             ['class' => 'form-control', 'step' => '0.1', 'required',"data-required-error"=>'Orta bal sahəsini sahəsini boş buraxmayın',"data-error"=>'Orta bal maksimum 100-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"100", 'id' => 'GPA',
+             ['class' => 'form-control', 'step' => '0.1', 'required',"data-required-error"=>'Orta bal sahəsini sahəsini boş buraxmayın',"data-error"=>'Orta bal maksimum 100-dən yuxarı olmamamalıdır','maxlength'=>'3','min' => '0','max' => '100', 'placeholder' => '0','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+              'id' => 'GPA',
              ]) }}
             @if ($errors->has('GPA'))
                 <div class="invalid-feedback">

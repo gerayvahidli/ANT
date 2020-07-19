@@ -2,56 +2,14 @@
 <p class="lead">
     İş yeri
 </p>
-<div class="row form-group required">
 
-{{--    <label for="is-working" class="col-4 col-form-label">Hazırda işləyirsinizmi?</label>--}}
-    <div class="col-8">
-{{--        <div class="form-check form-check-inline">--}}
-{{--            <input class="form-check-input" type="radio" id="isCurrentlyWorking1" value="1"--}}
-{{--                   name="is_currently_working"--}}
-{{--                   {{ ($user->exists && $user->IsCurrentlyWorking == 1) ? 'checked' : (old('is_currently_working') == 1  ? 'checked' : '' ) }} required--}}
-{{--                   data-error="Lütfən birini seçin">--}}
-{{--            <label class="form-check-label" for="is_currently_working">Bəli</label>--}}
-{{--        </div>--}}
-{{--        <div class="form-check form-check-inline">--}}
-{{--            <input class="form-check-input" type="radio" id="isCurrentlyWorking2" value="0"--}}
-{{--                   name="is_currently_working"--}}
-{{--                   {{ ($user->exists && $user->IsCurrentlyWorking == 0) ? 'checked' : '' }} required>--}}
-{{--            <label class="form-check-label" for="is_currently_working">Xeyr</label>--}}
-{{--        </div>--}}
-{{--        @if ($errors->has('isCurrentlyWorking'))--}}
-{{--            <div class="invalid-feedback">--}}
-{{--                <strong>{{ $errors->first('isCurrentlyWorking') }}</strong>--}}
-{{--            </div>--}}
-{{--        @endif--}}
-
-{{--        <div class="help-block with-errors radio-errors"></div>--}}
-    </div>
-</div>
 
 <div id="workFieldGroup" style="{{ $user->exists && $user->IsCurrentlyWorking == 1 ? '' : '' }}">
 
-    <div class="row form-group">
-{{--        <label for="is-working" class="col-4 col-form-label">SOCAR əməkdaşısınızmı?</label>--}}
-        <div class="col-8">
-{{--            <div class="form-check form-check-inline">--}}
-{{--                <input class="form-check-input" type="radio" id="isWorkingAtSocar1" value="1"--}}
-{{--                       name="is_currently_working_at_socar" {{ ($user->exists && $user->IsCurrentlyWorkAtSocar == 1) ? 'checked' : ( old('is_currently_working_at_socar') ? old('is_currently_working_at_socar') : '' ) }}>--}}
-{{--                <label class="form-check-label" for="inlineRadio1">Bəli</label>--}}
-{{--            </div>--}}
-{{--            <div class="form-check form-check-inline">--}}
-{{--                <input class="form-check-input" type="radio" id="isWorkingAtSocar2" value="0"--}}
-{{--                       name="is_currently_working_at_socar" {{ ($user->exists && $user->IsCurrentlyWorkAtSocar == 0) ? 'checked' : ( old('is_currently_working_at_socar') ? old('is_currently_working_at_socar') : '' ) }}>--}}
-{{--                <label class="form-check-label" for="inlineRadio2">Xeyr</label>--}}
-{{--            </div>--}}
-
-        </div>
-    </div>
     <div class="workFieldGroup" id="workFieldGroup">
 
         @if($user->exists && isset($user->currentJob))
             {{ Form::hidden('final_job_id', $user->currentJob->first()->Id) }}
-
         @endif
 
     <div class="form-group row required ">
@@ -134,7 +92,7 @@
             <div class="col-8">
                 {{ Form::text('tabel_number',
                     ( $user->exists && isset($user -> currentJob) ) ? $user -> currentJob -> first() -> TabelNo : ( old('tabel_number')  ? old('tabel_number') : null ),
-                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-required-error"=>'Tabel nömrəniz sahəsini boş buraxmayın','id' =>'tabel_number']
+                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-required-error"=>'Tabel nömrəniz sahəsini boş buraxmayın','id' =>'tabel_number', 'pattern'=>'\d*', 'data-pattern-error'=>'Yalnız rəqəm daxil edin']
                 ) }}
                 @if ($errors->has('tabel_number'))
                     <div class="invalid-feedback">

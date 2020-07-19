@@ -8,6 +8,7 @@ class Phone extends Model
 {
     protected $table = 'Phones';
     public    $timestamps = false;
+    protected $primaryKey = 'Id';
     protected $fillable   = [
         'userId',
         'OperatorCodeId',

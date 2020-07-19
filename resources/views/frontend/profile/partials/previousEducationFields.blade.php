@@ -8,17 +8,11 @@
             <div class="form-group row">
                 <label for="previous_education_level" class="col-4 col-form-label">Təhsil Pilləsi</label>
                 <div class="col-8">
-                    {{--{{ dd($user->finalEducation) }}--}}
-{{--                    {{ Form::select('previous_education_level[]', $educationLevels, ($user->exists && isset($previousEducation->education_level_id)) ? $previousEducation->education_level_id : old('education_level'),--}}
-{{--                       ['class' => 'form-control here', 'placeholder' => '---- Təhsil Pilləsini seç ----', 'required', "data-required-error"=>'Təhsil Pilləsi sahəsini boş buraxmayın']--}}
-{{--                    ) }}--}}
-
                     <select name="previous_education_level[]" id="education_level" class="form-control">
                         @foreach($educationLevels as $educationLevel)
                             <option {{$user -> exists && $previousEducation -> EducationLevelId == $educationLevel -> Id ? 'selected' : ''}} value="{{$educationLevel -> Id}}">{{$educationLevel -> Name}}</option>
                         @endforeach
                     </select>
-
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -26,9 +20,6 @@
             <div class="form-group row">
                 <label for="country" class="col-4 col-form-label">Ölkə seç</label>
                 <div class="col-8">
-                    {{--            {{ Form::select('previous_education_country_id[]', $countries, null,--}}
-                    {{--                ['class' => 'form-control here', 'placeholder'=>'---- Ölkə seç ----', 'id' => 'previous_education_country_id', "data-required-error"=>'Bu sahəni boş buraxmayın']--}}
-                    {{--            ) }}--}}
                     <select name="previous_education_country_id[]" id="ex_previous_education_country_id" class="form-control">
                         @foreach($countries as $country)
                             <option {{$user -> exists && $previousEducation -> university -> country -> Id == $country -> Id ? 'selected' : ''}} value="{{$country -> Id}}">{{$country -> Name}}</option>
@@ -40,9 +31,6 @@
             <div class="form-group row">
                 <label for="university_id" class="col-4 col-form-label">Universitet</label>
                 <div class="col-8">
-                    {{--            {{ Form::select('previous_education_university_id[]', ['' => '---- Universitet seç ----'], null,--}}
-                    {{--                ['class' => 'form-control here', 'id' => 'previous_education_university_id', "data-required-error"=>'Bu sahəni boş buraxmayın'])--}}
-                    {{--            }}--}}
                     <select name="previous_education_university_id[]" id="ex_previous_education_university_id" class="form-control">
                         @foreach(\App\Country::find($previousEducation -> university -> country -> Id)-> universities  as $university)
                             <option {{$user -> exists && $previousEducation -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
@@ -51,51 +39,30 @@
                 </div>
             </div>
 
-{{--            <div class="form-group row">--}}
-{{--                <label for="country" class="col-4 col-form-label">Ölkə seç</label>--}}
-{{--                <div class="col-8">--}}
-{{--                    --}}{{--{{ dd($countries) }}--}}
-{{--                    <select name="previous_education_country_id[]" id="ex_previous_education_country_id" class="form-control here"  data-required-error="Bu sahəni boş buraxmayın">--}}
-{{--                        @foreach($countries as $country => $name)--}}
-{{--                            <option value="{{ $country }}" {{ ($country == $previousEducation->university) ? 'selected' : '' }}>{{ $name }}</option>--}}
-{{--                        @endforeach--}}
-{{--                    </select>--}}
-{{--                    --}}{{--{{ Form::select('previous_education_country_id[]', $countries, $previousEducation->university->country_id,--}}
-{{--                        --}}{{--['class' => 'form-control here', 'placeholder'=>'---- Ölkə seç ----', 'id' => 'ex_previous_education_country_id' ]--}}
-{{--                    --}}{{--) }}--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="form-group row">--}}
-{{--                <label for="university_id" class="col-4 col-form-label">Universitet</label>--}}
-{{--                <div class="col-8">--}}
-{{--                    {{ Form::select('previous_education_university_id[]',\App\University::where('country_id', $previousEducation->university)->pluck('Name','id')->toArray() , $previousEducation->university->id,--}}
-{{--                                ['class' => 'form-control here', 'id' => 'ex_previous_education_university_id', "data-required-error"=>'Universitet sahəsini boş buraxmayın'])--}}
-{{--                    }}--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
             <div class="form-group row">
                 <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti(il)</label>
-                <div class="col-4">
-                    {{ Form::number('previous_education_BeginDate[]', $previousEducation->StartDate, ['class' => 'form-control here', 'id' => 'datePicker111', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+                <div class="col-4 form-group">
+                    {{ Form::number('previous_education_BeginDate[]', $previousEducation->StartDate, ['class' => 'form-control here', 'required', "data-required-error"=>'Bu sahəni boş buraxmayın','min'=>'0','max'=>date('Y'),'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+                    <div class="help-block with-errors"></div>
                 </div>
-                <div class="col-4">
-                    {{ Form::number('previous_education_EndDate[]', $previousEducation->EndDate, ['class' => 'form-control here', 'id' => 'datePicker111', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+                <div class="col-4 form-group">
+                    {{ Form::number('previous_education_EndDate[]', $previousEducation->EndDate, ['class' => 'form-control here', 'required', "data-required-error"=>'Bu sahəni boş buraxmayın','min'=>'0','max'=>date('Y')+10,'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="speciality" class="col-4 col-form-label">Fakültə</label>
                 <div class="col-8">
-                    {{ Form::text('previous_education_faculty[]', $previousEducation->Faculty, ['class' => 'form-control here', 'id'=> 'previous_education_speciality','required',"data-required-error"=>'İxtisas sahəsini boş buraxmayın']) }}
+                    {{ Form::text('previous_education_faculty[]', $previousEducation->Faculty, ['class' => 'form-control here', 'id'=> 'previous_education_speciality','required',"data-required-error"=>'Fakültə sahəsini boş buraxmayın']) }}
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="speciality" class="col-4 col-form-label">İxtisas</label>
                 <div class="col-8">
-                    {{ Form::text('previous_education_speciality[]', $previousEducation->Speciality, ['class' => 'form-control here', 'id'=> 'previous_education_speciality', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+                    {{ Form::text('previous_education_speciality[]', $previousEducation->Speciality, ['class' => 'form-control here', 'id'=> 'previous_education_speciality', "data-required-error"=>'İxtisas sahəsini boş buraxmayın']) }}
                 </div>
             </div>
 
@@ -105,7 +72,14 @@
                     <input type="number" value="{{($user -> exists && isset($previousEducation->AdmissionScore)) ? str_replace(' ', '', $previousEducation->AdmissionScore)  : 0}}" class="form-control here" id ="ex_previous_education_admission_score"
                     {{$previousEducation -> university -> country -> Id != 1 ? 'readonly' : ''}}
                     name="previous_education_admission_score[]"
+                    data-error="Qəbul balı maksimum 700-dən yuxarı olmamamalıdır"
+                    maxlength="3"
+                    max="700"
+                    min="1"
+                    placeholder = "0"
+                    onkeydown ="return event.keyCode !== 69 && event.keyCode !== 189"
                     >
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 
@@ -143,7 +117,8 @@
             <div class="form-group row">
                 <label for="previous_education_GPA" class="col-4 col-form-label">Orta bal (GPA)</label>
                 <div class="col-8">
-                    {{ Form::number('previous_education_GPA[]', $previousEducation -> GPA, ['class' => 'form-control here', 'id' => 'previous_education_GPA','step' => '0.1','min' => '1']) }}
+                    {{ Form::number('previous_education_GPA[]', $previousEducation -> GPA, ['class' => 'form-control here', 'id' => 'previous_education_GPA','step' => '0.1','required',"data-required-error"=>'Orta bal sahəsini sahəsini boş buraxmayın',"data-error"=>'Orta bal maksimum 100-dən yuxarı olmamamalıdır','maxlength'=>'3','min' => '0','max' => '100', 'placeholder' => '0','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 

@@ -75,34 +75,34 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-			'image'                                => 'required|image|mimes:jpeg,bmp,png',
+            'image' => 'required|image|mimes:jpeg,bmp,png',
             'FirstName' => 'required|max:255',
-			'LastName'                             => 'required|max:255',
-			'FatherName'                           => 'required|max:255',
-			'gender'                               => 'required',
-            'Dob'                                  => 'required|date',
-            'Address'                              => 'required',
-            'homePhone'                            => 'required|digits:7',
-//          'mobilePhone[0][number]'               => 'digits:7',
+            'LastName' => 'required|max:255',
+            'FatherName' => 'required|max:255',
+            'gender' => 'required',
+            'Dob' => 'required|date',
+            'Address' => 'required',
+            'homePhone' => 'required|digits:7',
+            'mobilePhone.0.number' => 'required|digits:7',
             'email' => 'required|string|email|max:255|unique:user',
+            'email2.0' => 'required|string|email|max:255',
+
 //            'email.*' => 'required|string|email|max:255',
 
             'password' => 'required|string|min:6|confirmed',
-            'BeginDate'                            => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
-            'EndDate'                              => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
-            'faculty'                              => 'required',
-            'speciality'                           => 'required',
-            'admission_score'                      => 'required',
-            'GPA'                                  => 'required|between:0,99.99',
-            'department'                           => 'required',
-            'position'                             => 'required',
-            'StartDate'                            => 'required',
-            'tabel_number'                         => 'required',
+            'BeginDate' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+            'EndDate' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+            'faculty' => 'required',
+            'speciality' => 'required',
+            'admission_score' => 'required',
+            'GPA' => 'required|between:0,99.99',
+            'department' => 'required',
+            'position' => 'required',
+            'StartDate' => 'required',
+            'tabel_number' => 'required|numeric',
 
-            'idCardPin'                            => 'required|max:7|unique:user,Fin',
-            'idCardNumber'                         => 'required|max:8|unique:user,PassportNo',
-
-
+            'idCardPin' => 'required|max:7|unique:user,Fin',
+            'idCardNumber' => 'required|max:8|unique:user,PassportNo',
 
 
 //            'password' => [
@@ -126,9 +126,9 @@ class RegisterController extends Controller
     public function showRegistrationForm(User $user)
     {
         $countries = Country::all();
-        $companies = Company::where('IsSocar',1)->get();
-        $cities = City::where('IsShow',1) -> orderBy('Name') -> get();
-        $regions = Region::where('IsShow',1) -> orderBy('Name') -> get();
+        $companies = Company::where('IsSocar', 1)->get();
+        $cities = City::where('IsShow', 1)->orderBy('Name')->get();
+        $regions = Region::where('IsShow', 1)->orderBy('Name')->get();
         $educationLevels = EducationLevel::all();
         $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
         $educationForms = EducationForm::pluck('Name', 'id');
@@ -139,7 +139,7 @@ class RegisterController extends Controller
 
 
         return view('frontend.profile.form',
-            compact('user', 'countries', 'companies', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities','regions', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'genders')
+            compact('user', 'countries', 'companies', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'regions', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'genders')
         );
     }
 
@@ -200,16 +200,14 @@ class RegisterController extends Controller
 
         if ($data['address_region'] == 'other') {
             $region = new Region;
-            $region -> Name = $data ['other_address_region'];
-            $region -> IsShow = 0;
-            $region -> save();
+            $region->Name = $data ['other_address_region'];
+            $region->IsShow = 0;
+            $region->save();
 
-            $user -> RegionId = $region->Id;
+            $user->RegionId = $region->Id;
         } else {
-            $user -> RegionId = $data['address_region'];
+            $user->RegionId = $data['address_region'];
         }
-
-
 
 
         $user->save();
@@ -224,23 +222,26 @@ class RegisterController extends Controller
 
         foreach ($data['mobilePhone'] as $mobilePhone) {
 
-            $Phone = new Phone;
-            $Phone->PhoneNumber = $mobilePhone['number'];
-            $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
-            $Phone->UserId = $user->id;
-            $Phone->PhoneTypeId = 2;
+            if (!empty($mobilePhone['number'])) {
+                $Phone = new Phone;
+                $Phone->PhoneNumber = $mobilePhone['number'];
+                $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
+                $Phone->UserId = $user->id;
+                $Phone->PhoneTypeId = 2;
 
-            $Phone->save();
+                $Phone->save();
+            }
         }
 
         foreach ($data['email2'] as $email2) {
+            if (!empty($email2)) {
+                $Email = new Email;
+                $Email->email = $email2;
+                $Email->UserId = $user->id;
+                $Email->IsMain = 0;
 
-            $Email = new Email;
-            $Email->email = $email2;
-            $Email->UserId = $user->id;
-            $Email->IsMain = 0;
-
-            $Email->save();
+                $Email->save();
+            }
         }
 
         $finalEducation = new Education;
@@ -263,25 +264,25 @@ class RegisterController extends Controller
 
         if (isset($data['previous_education_country_id'])) {
             foreach ($data['previous_education_country_id'] as $i => $previousEducationCountryId) {
-                if (isset($data['previous_education_university_id'][$i]) &&
+                if ($data['previous_education_faculty'][$i] != '' &&
                     $data['previous_education_speciality'][$i] != '') {
-                    $date = '2010';
+                    $date = '0000';
                     $previousEducation = new Education;
-                    $previousEducation -> UserId = $user->id;
-                    $previousEducation -> EducationLevelId = $data['previous_education_level'][$i];
-                    $previousEducation -> UniversityId = $data['previous_education_university_id'][$i];
-                    $previousEducation -> StartDate = ($data['previous_education_BeginDate'][$i]) ? $data['previous_education_BeginDate'][$i] : $date;
-                    $previousEducation -> EndDate = ($data['previous_education_EndDate'][$i]) ? $data['previous_education_EndDate'][$i] : $date;
-                    $previousEducation -> Faculty = $data['previous_education_faculty'][$i];
-                    $previousEducation -> Speciality = $data['previous_education_speciality'][$i];
-                    $previousEducation -> AdmissionScore = (isset($data['previous_education_admission_score'][$i])) ? $data['previous_education_admission_score'][$i] : 0;
-                    $previousEducation -> EducationFormId = $data['previous_education_form_id'][$i];
-                    $previousEducation -> EducationSectionId = $data['previous_education_section_id'][$i];
-                    $previousEducation -> EducationPaymentFormId = $data['previous_education_payment_form_id'][$i];
-                    $previousEducation -> GPA = $data['previous_education_GPA'][$i];
-                    $previousEducation -> IsCurrent = 0;
+                    $previousEducation->UserId = $user->id;
+                    $previousEducation->EducationLevelId = $data['previous_education_level'][$i];
+                    $previousEducation->UniversityId = $data['previous_education_university_id'][$i];
+                    $previousEducation->StartDate = ($data['previous_education_BeginDate'][$i]) ? $data['previous_education_BeginDate'][$i] : $date;
+                    $previousEducation->EndDate = ($data['previous_education_EndDate'][$i]) ? $data['previous_education_EndDate'][$i] : $date;
+                    $previousEducation->Faculty = $data['previous_education_faculty'][$i];
+                    $previousEducation->Speciality = $data['previous_education_speciality'][$i];
+                    $previousEducation->AdmissionScore = (isset($data['previous_education_admission_score'][$i])) ? $data['previous_education_admission_score'][$i] : 0;
+                    $previousEducation->EducationFormId = $data['previous_education_form_id'][$i];
+                    $previousEducation->EducationSectionId = $data['previous_education_section_id'][$i];
+                    $previousEducation->EducationPaymentFormId = $data['previous_education_payment_form_id'][$i];
+                    $previousEducation->GPA = (isset($data['previous_education_GPA'][$i])) ? $data['previous_education_GPA'][$i] : 0;
+                    $previousEducation->IsCurrent = 0;
 
-                    $previousEducation -> save();
+                    $previousEducation->save();
 
                 }
             }
@@ -298,12 +299,13 @@ class RegisterController extends Controller
         $jobInfo->TabelNo = $data['tabel_number'];
         $jobInfo->IsCurrent = 1;
 
-        $jobInfo -> save();
+        $jobInfo->save();
 
 
         if (isset($data['previous_company_id'])) {
             foreach ($data['previous_company_id'] as $i => $previous_company_id) {
-                if (isset($data['previous_company_id'][$i]) && $data['previous_position'][$i] != '') {
+                if ($data['previous_department'][$i] != '' && $data['previous_position'][$i] != '') {
+                    $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2000-00-00 00:00:00');
                     $previousJobInfo = new JobInfo;
                     $previousJobInfo->UserId = $user->id;
                     if ($data['previous_company_id'][$i] == 'other') {
@@ -318,9 +320,9 @@ class RegisterController extends Controller
                     $previousJobInfo->Department = $data['previous_department'][$i];
                     $previousJobInfo->Organization = $data['previous_organization'][$i];
                     $previousJobInfo->Position = $data['previous_position'][$i];
-                    $previousJobInfo->StartDate = $data['previous_StartDate'][$i];
-                    $previousJobInfo->EndDate = $data['previous_EndDate'][$i];
-//                $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
+                    $previousJobInfo->StartDate = isset($data['previous_StartDate'][$i]) ? $data['previous_StartDate'][$i] : $date;
+                    $previousJobInfo->EndDate = isset($data['previous_EndDate'][$i]) ? $data['previous_EndDate'][$i] : '';
+//                  $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
                     $previousJobInfo->IsCurrent = 0;
 
                     $previousJobInfo->save();
@@ -335,18 +337,10 @@ class RegisterController extends Controller
 
         $userProgram = new UserProgram;
 
-        $userProgram -> UserId = $user ->id;
-        $userProgram -> ProgramId = null;
-        $userProgram -> UserProgramStatusId = 1;
-        $userProgram -> save();
-
-
-
-
-
-
-
-
+        $userProgram->UserId = $user->id;
+        $userProgram->ProgramId = null;
+        $userProgram->UserProgramStatusId = 1;
+        $userProgram->save();
 
 
         return $user;
@@ -507,29 +501,28 @@ class RegisterController extends Controller
     public function getPrametersByFin(Request $request)
     {
 
-       $data =  $request::all() ;
+        $data = $request::all();
 
-       $fin = $data['fin'];
+        $fin = $data['fin'];
 
         define('API_WSDL', 'http://sochadcil.socar.local:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship1/430/yws_scholarship1/yws_scholarship1?sap-client=430?WSDL');
         ini_set("soap.wsdl_cache_enabled", "0");
 
 
-
         try {
-            $client = new \SoapClient(API_WSDL,    array(
-                'trace'    => true,
-                'login'    => 'hrregister',
+            $client = new \SoapClient(API_WSDL, array(
+                'trace' => true,
+                'login' => 'hrregister',
                 'password' => 'HR@reg20',
             ));
             $res = $client->YfmScholarship(array(
                 'ImFincode' => $fin
             ));
-            return response(json_encode($res))   ;
+            return response(json_encode($res));
         } catch (SoapFault $exception) {
-            echo "<pre>faultcode: '".$exception->faultcode."'</pre>";
-            echo "<pre>faultstring: '".$exception->getMessage()."'</pre>";
-            $err=1;
+            echo "<pre>faultcode: '" . $exception->faultcode . "'</pre>";
+            echo "<pre>faultstring: '" . $exception->getMessage() . "'</pre>";
+            $err = 1;
         }
 
     }

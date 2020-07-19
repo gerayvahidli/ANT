@@ -75,7 +75,7 @@ class UserController extends Controller
      */
     public function showFeedbackForm()
     {
-        $user =Auth::user();
+        $user = Auth::user();
 
         return view('frontend.profile.feedbackForm', compact('user'));
     }
@@ -233,6 +233,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+//        return $request;
 
 
         if ($user->id != Auth::user()->id) {
@@ -346,7 +347,6 @@ class UserController extends Controller
         $previousJob = $this->updatePreviousJob($request, $user);
 
 
-
 //		$previousInternship  = $this->savePreviousInternship( $request, $user );
 //		$previousScholarship = $this->savePreviousScholarship( $request, $user );
 
@@ -398,8 +398,11 @@ class UserController extends Controller
 //			    return $request->previous_education_admission_score[ $i ];
                 // make array from form
                 if (isset($request->previous_education_university_id[$i]) &&
-                    $request->previous_education_university_id[$i] != '') {
-                    $date = 1800;
+                    $request->previous_education_university_id[$i] != ''
+                    && $request->previous_education_faculty[$i] != ''
+                    && $request->previous_education_speciality[$i] != ''
+                ) {
+                    $date = 0000;
                     $previousEducationData[$i] = [
                         'user_id' => $user->id,
                         'id' => (isset($request->previous_education_id[$i])) ? $request->previous_education_id[$i] : null,
@@ -512,8 +515,8 @@ class UserController extends Controller
 
                 // make array from form
                 if (isset($request->previous_company_id[$i]) &&
-                    $request->previous_company_id[$i] != '') {
-                    $date = 1800;
+                    $request->previous_company_id[$i] != '' && $request->previous_department[$i] && $request->previous_position[$i]) {
+                    $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2000-00-00 00:00:00');
                     $previousJobData[$i] = [
                         'user_id' => $user->id,
                         'company_id' => $company_id,
@@ -521,7 +524,7 @@ class UserController extends Controller
                         'organization' => $request->previous_organization[$i] != '' ? $request->previous_organization[$i] : null,
                         'department' => $request->previous_department[$i],
                         'position' => $request->previous_position[$i],
-                        'start_date' => $request->previous_StartDate[$i],
+                        'start_date' => isset( $request->previous_StartDate[$i]) ?  $request->previous_StartDate[$i] : $date ,
                         'end_date' => $request->previous_EndDate[$i],
                     ];
                 }
@@ -565,13 +568,15 @@ class UserController extends Controller
         Phone::where('UserId', $user->id)->where('PhoneTypeId', 2)->delete();
 
         foreach ($request->mobilePhone as $mobilePhone) {
-            $Phone = new Phone;
-            $Phone->PhoneNumber = $mobilePhone['number'];
-            $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
-            $Phone->UserId = $user->id;
-            $Phone->PhoneTypeId = 2;
+            if ($mobilePhone['number'] != '') {
+                $Phone = new Phone;
+                $Phone->PhoneNumber = $mobilePhone['number'];
+                $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
+                $Phone->UserId = $user->id;
+                $Phone->PhoneTypeId = 2;
 
-            $Phone->save();
+                $Phone->save();
+            }
         }
     }
 
@@ -580,15 +585,16 @@ class UserController extends Controller
         Email::where('UserId', $user->id)->delete();
 
         foreach ($request->email2 as $email) {
-            $Phone = new Email();
-            $Phone->UserId = $user->id;
-            $Phone->email = $email;
-            $Phone->IsMain = 0;
+            if (!empty($email)) {
+                $Phone = new Email();
+                $Phone->UserId = $user->id;
+                $Phone->email = $email;
+                $Phone->IsMain = 0;
 
-            $Phone->save();
+                $Phone->save();
+            }
         }
     }
-
 
 
     /**
@@ -750,7 +756,7 @@ class UserController extends Controller
     {
 
         $currencies = Currency::orderBy('name')->get();
-        $certificates = Certificate::where('IsShow',1) -> get();
+        $certificates = Certificate::where('IsShow', 1)->get();
         $deposites = Deposit::all();
 
         return view('frontend.profile.apply.externalScholarship', compact('currencies', 'certificates', 'deposites'));
@@ -765,13 +771,12 @@ class UserController extends Controller
 
         $count = 0;
 
-        $arr= [];
+        $arr = [];
         foreach ($request->language_education_certificate_id as $certificate) {
 
-            array_push($arr,$certificate['certificate']);
+            array_push($arr, $certificate['certificate']);
 
-            switch ($certificate['certificate'])
-            {
+            switch ($certificate['certificate']) {
                 case 1:
                     ($certificate['writing'] >= 6.5 && $certificate['speaking'] >= 6.5 && $certificate['general'] >= 6) ? $count++ : '';
                 case 2:
@@ -781,15 +786,11 @@ class UserController extends Controller
         }
 
 
-
-        if (($count <= 1 && array_intersect([1,2],$arr) && !array_intersect([3,4],$arr)) )
-        {
+        if (($count < 1 && array_intersect([1, 2], $arr) && !array_intersect([3, 4], $arr))) {
             return response()->json(['status' => 'error']);
         }
 
         ////this part will be used as helper---end
-
-
 
 
         $request->validate([
@@ -823,8 +824,6 @@ class UserController extends Controller
 
 
         ]);
-
-
 
 
         $application = new EPApplication;

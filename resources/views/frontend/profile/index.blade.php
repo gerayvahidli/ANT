@@ -377,11 +377,11 @@
                                         </tr>
                                         <tr>
                                             <th>İşə qəbul tarixi</th>
-                                            <td>{{ date('d-m-Y', strtotime( $previousJob -> StartDate))}}</td>
+                                            <td>{{ isset($previousJob -> StartDate) ? date('d-m-Y', strtotime( $previousJob -> StartDate)) : ''}}</td>
                                         </tr>
                                         <tr>
                                             <th>İşdən ayrılma tarixi</th>
-                                            <td>{{ date('d-m-Y', strtotime($previousJob -> EndDate))}}</td>
+                                            <td>{{ isset($previousJob -> EndDate) ? date('d-m-Y', strtotime($previousJob -> EndDate)) : ''}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
