@@ -185,9 +185,6 @@
             </select>
             <input type="text" class="form-control" name="otherCompany[]" style="display: none"
                    placeholder="Digər müəssisənin adını bura yazın"/>
-
-            <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
-
             <div class="help-block with-errors"></div>
         </div>
     </div>

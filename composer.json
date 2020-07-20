@@ -18,7 +18,8 @@
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.6",
-        "mikefrancis/laravel-secureheaders": "^1.4"
+        "mikefrancis/laravel-secureheaders": "^1.4",
+        "league/flysystem-ziparchive" : "^1.0 "
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",

@@ -383,7 +383,7 @@
                                value="{{ ($user->exists) ? $user->Address2 : old('Address2') }}"
                                placeholder="Faktiki yaşayış ünvanı"
                                type="text"
-                               required
+{{--                               required--}}
                                data-required-error='Faktiki yaşayış ünvanı sahəsini boş buraxmayın'
                                class="{{ ($errors->has('Address2')) ? 'form-control is-invalid' :'form-control' }}"
                         >

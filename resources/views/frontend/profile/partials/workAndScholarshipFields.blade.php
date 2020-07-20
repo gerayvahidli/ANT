@@ -21,7 +21,7 @@
                 @endforeach
             </select>
 
-            <span class="badge badge-danger">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
+            <span class="badge">Birgə müəssisələrdə işləyənlər proqrama müraciət edə bilməzlər</span>
             @if ($errors->has('company_id'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('company_id') }}</strong>

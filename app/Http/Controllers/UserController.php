@@ -43,6 +43,9 @@ use Carbon\Carbon;
 use App\User, Auth;
 use Illuminate\Http\Request, Form, Storage;
 use Illuminate\Queue\Jobs\Job;
+use League\Flysystem\Filesystem;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
+use App\Helpers\Helper;
 
 class UserController extends Controller
 {
@@ -754,7 +757,6 @@ class UserController extends Controller
 
     public function showApplyScholarshipForm(User $user)
     {
-
         $currencies = Currency::orderBy('name')->get();
         $certificates = Certificate::where('IsShow', 1)->get();
         $deposites = Deposit::all();
@@ -765,32 +767,23 @@ class UserController extends Controller
 
     public function applyScholarship(Request $request)
     {
+//        return $request -> file();
 
-
-        ////this part will be used as helper--start
-
-        $count = 0;
-
-        $arr = [];
-        foreach ($request->language_education_certificate_id as $certificate) {
-
-            array_push($arr, $certificate['certificate']);
-
-            switch ($certificate['certificate']) {
-                case 1:
-                    ($certificate['writing'] >= 6.5 && $certificate['speaking'] >= 6.5 && $certificate['general'] >= 6) ? $count++ : '';
-                case 2:
-                    ($certificate['writing'] >= 23 || $certificate['speaking'] >= 23 || $certificate['general'] >= 80) ? $count++ : '';
-            }
-
+        if (!Helper::checkFileTypeInZip($request -> file()))
+        {
+            return response()->json([
+                'status' => 'error',
+                'code' => '403'
+            ]);
         }
 
 
-        if (($count < 1 && array_intersect([1, 2], $arr) && !array_intersect([3, 4], $arr))) {
-            return response()->json(['status' => 'error']);
+        if (!Helper::checkCertificateScore($request)) {
+            return response()->json([
+                'status' => 'error',
+                'code' => '400'
+            ]);
         }
-
-        ////this part will be used as helper---end
 
 
         $request->validate([
@@ -811,16 +804,16 @@ class UserController extends Controller
             'achievements' => 'required',
             'about_family' => 'required',
 
-            'passport_copy' => 'required',
-            'certificate_document' => 'required',
-            'university_document' => 'required',
-            'biography' => 'required',
-            'medical_certificate' => 'required',
-            'psychological_dispensary' => 'required',
-            'academic_transcript' => 'required',
-            'realEstate_document' => 'required',
-            'realEstate_document' => 'required',
-            'testimonial' => 'required',
+            'passport_copy' => 'required|mimes:jpg,zip,pdf',
+            'certificate_document' => 'required|mimes:jpg,zip,pdf',
+            'university_document' => 'required|mimes:jpg,zip,pdf',
+            'biography' => 'required|mimes:jpg,zip,pdf',
+            'medical_certificate' => 'required|mimes:jpg,zip,pdf',
+            'psychological_dispensary' => 'required|mimes:jpg,zip,pdf',
+            'academic_transcript' => 'required|mimes:jpg,zip,pdf',
+            'realEstate_document' => 'required|mimes:jpg,zip,pdf',
+            'owner_passport' => 'nullable|mimes:jpg,zip,pdf',
+            'testimonial' => 'required|mimes:jpg,zip,pdf',
 
 
         ]);

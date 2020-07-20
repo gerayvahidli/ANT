@@ -206,7 +206,7 @@
                                    class="form-control col-4 {{$errors->has('education_fee[amount]')?'errorInput':''}}"
                                    value="{{old('education_fee[amount]')}}" name="education_fee[amount]"
                                    id="education_fee"
-                                   min = "0"
+                                   min="0"
                                    onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
                             >
                         </div>
@@ -230,7 +230,6 @@
                                     <select name="language_education_certificate_id[0][certificate]" id=""
                                             class="form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} "
                                             id="language_education_certificate_id">
-                                        <option value="">---</option>
                                         @foreach($certificates as $certificate)
                                             <option value="{{$certificate -> Id}}">{{$certificate -> Name}}</option>
                                         @endforeach
@@ -318,18 +317,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group row otherCertificate " >
+                        <div class="form-group row otherCertificate ">
                             <div class="col-sm-6">
-                                <input id="otherCertificate_name" class="form-control input-group-lg reg_name" type="text" name="language_education_certificate_id[0][otherCertificate_name]">
+                                <input id="otherCertificate_name" class="form-control input-group-lg reg_name"
+                                       type="text" name="language_education_certificate_id[0][otherCertificate_name]">
                                 <small>Serifikatın adı</small>
                             </div>
-                            <div class="col-sm-6">
-                                <input id="otherCertificate_point" class="form-control input-group-lg reg_name" type="text" name="language_education_certificate_id[0][otherCertificate_point]"  placeholder="0">
+                            <div class="col-sm-6 form-group">
+                                <input id="otherCertificate_point"
+                                       class="form-control input-group-lg reg_name"
+                                       type="text"
+                                       name="language_education_certificate_id[0][otherCertificate_point]"
+                                       placeholder="0"
+                                       pattern="\d*"
+                                       data-pattern-error="Yalnız rəqəm daxil edin">
                                 <small>Bal</small>
+                                <div class="help-block with-errors"></div>
                             </div>
                         </div>
 
-                        </div>
+                    </div>
 
 
                     <button id="addCertificate" type="button" class="form-control btn btn-primary">Əlavə et</button>
@@ -349,12 +356,12 @@
                         <span class="error text-danger"> {{$errors->first('education_language')}}</span>
                     </div>
                     <div class="form-group required">
-                        <input  name="realEstate"
-                                type="checkbox"
-                                class="realEstate"
-                                data-target="realEstateDiv"
-                                required
-                                data-required-error = "Davam etmək üçün  daşınmaz əmlak və ya bank zəmanəti (və ya hər ikisi) seçin"
+                        <input name="realEstate"
+                               type="checkbox"
+                               class="realEstate"
+                               data-target="realEstateDiv"
+                               required
+                               data-required-error="Davam etmək üçün  daşınmaz əmlak və ya bank zəmanəti (və ya hər ikisi) seçin"
                         />Daşınmaz
                         əmlak
                         <div class="help-block with-errors"></div>
@@ -439,7 +446,7 @@
                                    name="realEstate_owner_email"
                                    value=""
                                    id="realEstate_owner_email"
-{{--                                   required--}}
+                                   {{--                                   required--}}
                                    data-required-error='Mülkiyyətçinin poçt
                                    ünvanı  sahəsini boş burxamayın'
                                    maxlength="100"
@@ -609,11 +616,11 @@
                     {{--                    <input type="hidden" id="dropzone_filezone" value="{{old('dropzone_filezone')}}"--}}
                     {{--                           name="dropzone_filezone">--}}
 
-                    <label for="exampleInputEmail1" class="col-form-label">Sənədinizi əlavə edin
-{{--                        <a  class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"--}}
-{{--                                data-toggle="tooltip" rel="tooltip" data-placement="top"--}}
-{{--                                title="Həcm 10MB-dan çox olmamalıdır."> ? </a>--}}
-                    </label>
+                    <p for="exampleInputEmail1" class="lead">Sənədlərinizi əlavə edin
+                        <a class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"
+                           data-toggle="tooltip" rel="tooltip" data-placement="top"
+                           title="Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg formatından fərqli ola bilməz! ">Mütləq oxuyun</a>
+                    </p>
 
 
                     <div class="form-group required">
@@ -625,7 +632,8 @@
                                value=""
                                id="passport_copy"
                                required
-                               data-required-error='Şəxsiyyət vəsiqəsinin surəti sahəsini boş burxamayın'
+                               data-required-error='Şəxsiyyət vəsiqəsinin surəti sahəsini boş burxamayın',
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -640,7 +648,7 @@
                                id="certificate_document"
                                required
                                data-required-error='Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı) sahəsini boş burxamayın'
-
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -655,6 +663,7 @@
                                id="university_document"
                                required
                                data-required-error='Xarici universitetə qəbulu təsdiq edən rəsmi sənəd sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -670,6 +679,7 @@
                                id="biography"
                                required
                                data-required-error='Tərcümeyi-hal sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -685,6 +695,7 @@
                                id="medical_certificate"
                                required
                                data-required-error='Poliklinikadan 086 No-li tibbi arayış sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -700,6 +711,7 @@
                                id="psychological_dispensary"
                                required
                                data-required-error='Psixoloji dispanserdən arayış sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -715,6 +727,7 @@
                                id="academic_transcript"
                                required
                                data-required-error='Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript) sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -732,6 +745,7 @@
                                required
                                data-required-error='Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən
                             çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
@@ -741,12 +755,14 @@
                             Girov sahibinin şəxsiyyət vəsiqəsi
                         </label>
                         <input type="file"
-                               class="form-control"
+                               class="form-control myfile"
                                name="owner_passport"
                                value=""
                                id="owner_passport"
-{{--                               required--}}
-                               data-required-error='Girov sahibinin şəxsiyyət vəsiqəsi  sahəsini boş burxamayın'>
+                               {{--                               required--}}
+                               data-required-error='Girov sahibinin şəxsiyyət vəsiqəsi  sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
+                        >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
@@ -761,7 +777,9 @@
                                value=""
                                id="testimonial"
                                required
-                               data-required-error='Birbaşa rəhbərindən müsbət xasiyyətnamə sahəsini boş burxamayın'>
+                               data-required-error='Birbaşa rəhbərindən müsbət xasiyyətnamə sahəsini boş burxamayın'
+                               accept=".jpg,.pdf,.zip"
+                        >
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
@@ -781,8 +799,10 @@
                     {{--                            olunur.</b></i></small>--}}
                     {{--                <span class="error text-danger"> {{$errors->first('filename')}}</span>--}}
                     <br><br>
-                    <button onclick="window.history.back();" type="button" class="btn btn-danger" data-dismiss="modal"> Geri</button>
-                    <input  value="Müraciət et" type="submit" class="btn" id="apply_it" disabled>
+                    <button onclick="window.history.back();" type="button" class="btn btn-danger" data-dismiss="modal">
+                        Geri
+                    </button>
+                    <input value="Müraciət et" type="submit" class="btn" id="apply_it" disabled>
                 </div>
             </div>
         </form>
@@ -829,14 +849,13 @@
 
         $(document).ready(function () {
 
-
             $('#realEstateDiv *').prop('disabled', true);
             $('#bankGuaranteeDiv *').prop('disabled', true);
 
-            $("#i_accept").click(function() {
+            $("#i_accept").click(function () {
                 var checked_status = this.checked;
                 if (checked_status == true) {
-                    $("#apply_it").attr("disabled",false);
+                    $("#apply_it").attr("disabled", false);
                 } else {
                     $("#apply_it").attr("disabled", true);
                 }
@@ -852,7 +871,7 @@
                 } else if (val == "Digər") {
                     $(this).parents('.certificates').children('.otherCertificate').show()
                     $(this).parents('.certificates').children('.languageLevel').hide()
-                }else{
+                } else {
                     $(this).parents('.certificates').children('.languageLevel').hide()
                     $(this).parents('.certificates').children('.otherCertificate').hide();
                 }
@@ -872,10 +891,10 @@
 
             $(".bankGuarantee").change(function () {
                 if (this.checked) {
-                    $(".realEstate").attr('required',false)
+                    $(".realEstate").attr('required', false)
                     $('#bankGuaranteeDiv *').prop('disabled', false);
                 } else {
-                    $(".realEstate").attr('required',true   )
+                    $(".realEstate").attr('required', true)
                     $('#bankGuaranteeDiv *').prop('disabled', true);
                 }
             });
@@ -954,7 +973,6 @@
                     "                                    <select name=\"language_education_certificate_id[" + x + "][certificate]\" id=\"\"\n" +
                     "                                            class=\"form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} \"\n" +
                     "                                            id=\"language_education_certificate_id\">\n" +
-                    "                                        <option value=\"\">---</option>\n" +
                     "                                        @foreach($certificates as $certificate)\n" +
                     "                                            <option value=\"{{$certificate -> Id}}\">{{$certificate -> Name}}</option>\n" +
                     "                                        @endforeach\n" +
@@ -1087,7 +1105,7 @@
 
                             if (data.count < 2) {
                                 $('#specialization_name').show();
-                                $('#specialization_name').attr('required',true);
+                                $('#specialization_name').attr('required', true);
                                 $('.specialization_select').remove();
                                 $.each(data.universitiesWithCountry.universities, function (key, value) {
 
@@ -1105,7 +1123,7 @@
 
                                 $('.specialization_div').append(data.specializations_select)
                                 $('#specialization_name').hide();
-                                $('#specialization_name').attr('required',false);
+                                $('#specialization_name').attr('required', false);
 
                                 $('#specialization_id').trigger('change');
 
@@ -1178,7 +1196,7 @@
 
                             setTimeout(function () {
                                 $('#country_id').trigger('change');
-                            },500);
+                            }, 500);
 
                         }
                 });
@@ -1217,10 +1235,12 @@
                             window.location.href = '{{ route('profile.index') }}';
                         }, 2000);
                     }
-                    if(data.status == 'error')
-                    {
-                        alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”")
-                    }
+                    (data.status == 'error' && data.code == "400") ?
+                        alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”") :
+                        (data.status == 'error' && data.code == "403") ?
+                            alert("Yüklədiyiniz zip-in içində pdf və jpg tipindən başqa tipdə fayl olmadığından əmin olun") : '';
+
+
                 },
                 error: function (data) {
                     console.log("error");
