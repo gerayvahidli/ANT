@@ -6,7 +6,7 @@
 <b>İstifadəçi:</b> {{ $data['full_name'] }}<hr>
 <b>E-mail:</b> {{ $data['email'] }}<hr>
 <b>Əlaqə telefonu:</b> {{ $data['phone_number'] }}<hr>
-<b>Pin kod:</b> {{ $data['id_pin'] }}<hr>
+<b>Fin kod:</b> {{ $data['id_pin'] }}<hr>
 <b>Tarix:</b> {{ $data['date'] }}<hr>
 
 <br><br><br>

@@ -84,8 +84,10 @@
                                data-required-error='İxtisaslaşma sahəsini boş burxamayın'
                                maxlength="500"
                                data-error='İxtisaslaşma maksimum 500 simvoldan ibarət olmalidir'
-                               type="text" class="form-control {{$errors->has('specialization_name')?'errorInput':''}}"
-                               name="specialization_name" value="{{old('specialization_name')}}">
+                               type="text"
+                               class="form-control  {{$errors->has('specialization_name')?'errorInput':''}}"
+                               name="specialization_name"
+                               value="{{old('specialization_name')}}">
                         <span class="error text-danger"> {{$errors->first('specialization_name')}}</span>
                         <div class="help-block with-errors"></div>
 
@@ -146,7 +148,7 @@
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="exampleInputEmail1" class="col-form-label">Təhsil müddəti</label>
                         <div class="form-row align-items-center">
 
@@ -157,8 +159,8 @@
                                        name="EducationBeginDate"
                                        maxlength="4"
                                        class="form-control  {{$errors->has('EducationBeginDate')?'errorInput':''}}"
-                                       {{--                                       required--}}
-                                       {{--                                       data-required-error='Təhsilin başlama ili sahəsini boş burxamayın'--}}
+                                       required
+                                       data-required-error='Təhsil müddəti sahəsini boş burxamayın'
                                        max="{{date("Y")}}"
                                        data-error='Təhsilin başlama ili cari ildən böyük ola bilməz'
                                        onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
@@ -174,12 +176,11 @@
                                        maxlength="4"
                                        name="EducationEndDate"
                                        class="form-control {{$errors->has('EducationEndDate')?'errorInput':''}}"
-                                       {{--                                       required--}}
-                                       {{--                                       data-required-error='Təhsilin bitmə ili sahəsini boş burxamayın'--}}
+                                       required
+                                       data-required-error='Təhsil müddəti sahəsini boş burxamayın'
                                        max="{{date("Y")}}"
                                        data-error='Təhsilin bitmə ili cari ildən böyük ola bilməz'
                                        onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
-                                >
                                 <small>Bitmə ili</small>
                                 <span class="error text-danger"> {{$errors->first('EducationEndDate')}}</span>
                             </div>
@@ -191,24 +192,24 @@
                         <label for="education_start_date" class="col-form-label">Təhsilin başlama tarixi</label>
                         <input type="date" value="{{old('education_start_date')}}"
                                name="education_start_date"
-                               class="form-control  {{$errors->has('education_start_date')?'errorInput':''}}"
-                               onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
-                        >
+                               class="form-control  {{$errors->has('education_start_date')?'errorInput':''}}">
                         <div class="help-block with-errors"></div>
                         <span class="error text-danger"> {{$errors->first('education_start_date')}}</span>
                     </div>
 
-                    <div class="form-row required">
-                        <div class="form-group col-8">
+                    <div class="form-row ">
+                        <div class="form-group col-8 required">
                             <label for="education_fee[amount]" class="col-form-label">Təhsil haqqı</label>
                             <input type="number"
                                    required
+                                   data-required-error='Təhsil haqqı sahəsini boş burxamayın'
                                    class="form-control col-4 {{$errors->has('education_fee[amount]')?'errorInput':''}}"
                                    value="{{old('education_fee[amount]')}}" name="education_fee[amount]"
                                    id="education_fee"
                                    min="0"
-                                   onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                   onkeydown="return event.keyCode !== 69 && event.keyCode !== 189"
                             >
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group col-4">
                             <label for="education_fee[currency]" class="col-form-label">Məzənnə</label>
@@ -249,10 +250,9 @@
                                            min="0"
                                            id=""
                                            name="language_education_certificate_id[0][reading]"
-                                           onkeydown=""
                                            class="form-control"
                                            placeholder="0"
-                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                           onkeydown="return event.keyCode !== 69 && event.keyCode !== 189"
                                     >
                                     <small>oxuma</small>
                                     <span class="error text-danger"></span>
@@ -266,7 +266,7 @@
                                            name="language_education_certificate_id[0][writing]"
                                            class="form-control"
                                            placeholder="0"
-                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                           onkeydown="return event.keyCode !== 69 && event.keyCode !== 189"
                                     >
                                     <small>yazma</small>
                                     <span class="error text-danger"> </span>
@@ -280,7 +280,7 @@
                                            name="language_education_certificate_id[0][speaking]"
                                            class="form-control "
                                            placeholder="0"
-                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                           onkeydown="return event.keyCode !== 69 && event.keyCode !== 189"
                                     >
                                     <small>danışıq</small>
                                     <span class="error text-danger"></span>
@@ -294,7 +294,7 @@
                                            name="language_education_certificate_id[0][listening]"
                                            class="form-control"
                                            placeholder="0"
-                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                           onkeydown="return event.keyCode !== 69 && event.keyCode !== 189"
                                     >
                                     <small>dinləmə</small>
                                     <span class="error text-danger"></span>
@@ -308,7 +308,7 @@
                                            name="language_education_certificate_id[0][general]"
                                            class="form-control"
                                            placeholder="0"
-                                           onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                           onkeydown="return event.keyCode !== 69 && event.keyCode !== 189"
                                     >
                                     <small>ümumi</small>
                                     <span class="error text-danger"></span>
@@ -318,21 +318,26 @@
                         </div>
 
                         <div class="form-group row otherCertificate ">
-                            <div class="col-sm-6">
-                                <input id="otherCertificate_name" class="form-control input-group-lg reg_name"
-                                       type="text" name="language_education_certificate_id[0][otherCertificate_name]">
+                            <div class="col-sm-6 form-group">
+                                <input id="otherCertificate_name"
+                                       class="form-control input-group-lg reg_name"
+                                       data-required-error = "Serifikatın adı sahəsini boş buraxmayın"
+                                       maxlength="50"
+                                       type="text"
+                                       name="language_education_certificate_id[0][otherCertificate_name]">
                                 <small>Serifikatın adı</small>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="col-sm-6 form-group">
                                 <input id="otherCertificate_point"
+                                       min="0"
+                                       step="any"
                                        class="form-control input-group-lg reg_name"
-                                       type="text"
+                                       type="number"
                                        name="language_education_certificate_id[0][otherCertificate_point]"
                                        placeholder="0"
-                                       pattern="\d*"
-                                       data-pattern-error="Yalnız rəqəm daxil edin">
+                                       onkeydown="return event.keyCode !== 69 && event.keyCode !== 189">
                                 <small>Bal</small>
-                                <div class="help-block with-errors"></div>
                             </div>
                         </div>
 
@@ -553,8 +558,12 @@
                         <div class="form-group required">
                             <label for="bank_id" class="col-form-label">Bank
                             </label>
-                            {{ Form::select('bank_id',\App\Bank::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('bank_id'))?'errorInput form-control':'form-control','id'=>'bank_id']) }}
-
+                            <select name="bank_id" id="bank_id"
+                                    class="form-control {{$errors->has('bank_id') ? 'errorInput' : '' }} ">
+                                @foreach($banks as $bank)
+                                    <option value="{{$bank->Id}}">{{$bank -> Name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-row required">
@@ -619,7 +628,7 @@
                     <p for="exampleInputEmail1" class="lead">Sənədlərinizi əlavə edin
                         <a class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"
                            data-toggle="tooltip" rel="tooltip" data-placement="top"
-                           title="Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg formatından fərqli ola bilməz! ">Mütləq oxuyun</a>
+                           title="Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg formatından fərqli ola bilməz! ">Qeyd</a>
                     </p>
 
 
@@ -632,7 +641,7 @@
                                value=""
                                id="passport_copy"
                                required
-                               data-required-error='Şəxsiyyət vəsiqəsinin surəti sahəsini boş burxamayın',
+                               data-required-error='Şəxsiyyət vəsiqəsinin surəti sahəsini boş burxamayın' ,
                                accept=".jpg,.pdf,.zip"
                         >
                         <div class="help-block with-errors"></div>
@@ -868,12 +877,15 @@
                 if (val == "IELTS" || val == "TOEFL IBT") {
                     $(this).parents('.certificates').children('.languageLevel').show();
                     $(this).parents('.certificates').children('.otherCertificate').hide();
+                    $('#otherCertificate_name').attr('required',false);
                 } else if (val == "Digər") {
                     $(this).parents('.certificates').children('.otherCertificate').show()
                     $(this).parents('.certificates').children('.languageLevel').hide()
+                    $('#otherCertificate_name').attr('required',true);
                 } else {
                     $(this).parents('.certificates').children('.languageLevel').hide()
                     $(this).parents('.certificates').children('.otherCertificate').hide();
+                    $('#otherCertificate_name').attr('required',false);
                 }
 
             });
@@ -996,7 +1008,7 @@
                     "                                           onkeydown=\"\"\n" +
                     "                                           class=\"form-control\"\n" +
                     "                                           placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                           onkeydown=\"return event.keyCode !== 69 && event.keyCode !== 189\"\n" +
                     "                                    >\n" +
                     "                                    <small>oxuma</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
@@ -1010,7 +1022,7 @@
                     "                                           name=\"language_education_certificate_id[" + x + "][writing]\"\n" +
                     "                                           class=\"form-control\"\n" +
                     "                                           placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                           onkeydown=\"return event.keyCode !== 69 && event.keyCode !== 189\"\n" +
                     "                                    >\n" +
                     "                                    <small>yazma</small>\n" +
                     "                                    <span class=\"error text-danger\"> </span>\n" +
@@ -1024,7 +1036,7 @@
                     "                                           name=\"language_education_certificate_id[" + x + "][speaking]\"\n" +
                     "                                           class=\"form-control \"\n" +
                     "                                           placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                           onkeydown=\"return event.keyCode !== 69 && event.keyCode !== 189\"\n" +
                     "                                    >\n" +
                     "                                    <small>danışıq</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
@@ -1038,7 +1050,7 @@
                     "                                           name=\"language_education_certificate_id[" + x + "][listening]\"\n" +
                     "                                           class=\"form-control\"\n" +
                     "                                           placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                           onkeydown=\"return event.keyCode !== 69 && event.keyCode !== 189\"\n" +
                     "                                    >\n" +
                     "                                    <small>dinləmə</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
@@ -1052,7 +1064,7 @@
                     "                                           name=\"language_education_certificate_id[" + x + "][general]\"\n" +
                     "                                           class=\"form-control\"\n" +
                     "                                           placeholder=\"0\"\n" +
-                    "                                           onkeydown=\"return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))\"\n" +
+                    "                                           onkeydown=\"return event.keyCode !== 69 && event.keyCode !== 189\"\n" +
                     "                                    >\n" +
                     "                                    <small>ümumi</small>\n" +
                     "                                    <span class=\"error text-danger\"></span>\n" +
@@ -1067,7 +1079,14 @@
                     "                                <small>Serifikatın adı</small>\n" +
                     "                            </div>\n" +
                     "                            <div class=\"col-sm-6\">\n" +
-                    "                                <input id=\"otherCertificate_point\" class=\"form-control input-group-lg reg_name\" type=\"text\" name=\"language_education_certificate_id[" + x + "][otherCertificate_point]\"  placeholder=\"0\">\n" +
+                    "                                <input id=\"otherCertificate_point\"\n" +
+                    "                                       min=\"0\"\n" +
+                    "                                       step=\"any\"\n" +
+                    "                                       class=\"form-control input-group-lg reg_name\"\n" +
+                    "                                       type=\"number\"\n" +
+                    "                                       name=\"language_education_certificate_id[" + x + "][otherCertificate_point]\"\n" +
+                    "                                       placeholder=\"0\"\n" +
+                    "                                       onkeydown=\"return event.keyCode !== 69 && event.keyCode !== 189\">"+
                     "                                <small>Bal</small>\n" +
                     "                            </div>\n" +
                     "                        </div>\n" +
@@ -1104,8 +1123,6 @@
                             var limit = 0;
 
                             if (data.count < 2) {
-                                $('#specialization_name').show();
-                                $('#specialization_name').attr('required', true);
                                 $('.specialization_select').remove();
                                 $.each(data.universitiesWithCountry.universities, function (key, value) {
 
@@ -1121,9 +1138,7 @@
 
                             } else {
 
-                                $('.specialization_div').append(data.specializations_select)
-                                $('#specialization_name').hide();
-                                $('#specialization_name').attr('required', false);
+                                $('#specialization_name').before(data.specializations_select)
 
                                 $('#specialization_id').trigger('change');
 

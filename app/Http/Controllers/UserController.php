@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Adldap\Laravel\Facades\Adldap;
 use App\ApplicationStageResult;
+use App\Bank;
 use App\BankGuarantee;
 use App\Certificate;
 use App\City;
@@ -760,8 +761,9 @@ class UserController extends Controller
         $currencies = Currency::orderBy('name')->get();
         $certificates = Certificate::where('IsShow', 1)->get();
         $deposites = Deposit::all();
+        $banks = Bank::where('IsActive',1) -> get();
 
-        return view('frontend.profile.apply.externalScholarship', compact('currencies', 'certificates', 'deposites'));
+        return view('frontend.profile.apply.externalScholarship', compact('currencies', 'certificates', 'deposites','banks'));
     }
 
 
@@ -787,7 +789,11 @@ class UserController extends Controller
 
 
         $request->validate([
+            'specialization_name' => 'required|max:500',
             'city_name' => 'required|max:100',
+            'language_education_certificate_id.0.otherCertificate_name' => 'required_if:language_education_certificate_id.0.certificate,4|max:50',
+            'EducationBeginDate' => 'required|numeric|digits:4',
+            'EducationEndDate' => 'required|numeric|digits:4',
             'bank_guarantee' => 'required_without:realEstate',
             'realEstate' => 'required_without:bank_guarantee',
             'realEstate_located_city' => 'required_if:realEstate,on|max:20',
@@ -804,16 +810,16 @@ class UserController extends Controller
             'achievements' => 'required',
             'about_family' => 'required',
 
-            'passport_copy' => 'required|mimes:jpg,zip,pdf',
-            'certificate_document' => 'required|mimes:jpg,zip,pdf',
-            'university_document' => 'required|mimes:jpg,zip,pdf',
-            'biography' => 'required|mimes:jpg,zip,pdf',
-            'medical_certificate' => 'required|mimes:jpg,zip,pdf',
-            'psychological_dispensary' => 'required|mimes:jpg,zip,pdf',
-            'academic_transcript' => 'required|mimes:jpg,zip,pdf',
-            'realEstate_document' => 'required|mimes:jpg,zip,pdf',
-            'owner_passport' => 'nullable|mimes:jpg,zip,pdf',
-            'testimonial' => 'required|mimes:jpg,zip,pdf',
+            'passport_copy' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'certificate_document' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'university_document' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'biography' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'medical_certificate' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'psychological_dispensary' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'academic_transcript' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'realEstate_document' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'owner_passport' => 'nullable|mimes:jpeg,jpg,zip,pdf',
+            'testimonial' => 'required|mimes:jpeg,jpg,zip,pdf',
 
 
         ]);
@@ -822,7 +828,7 @@ class UserController extends Controller
         $application = new EPApplication;
         $application->ProgramId = ExternalProgram::where('IsActive', 1)->first()->Id;
         $application->UserId = Auth::user()->id;
-        $application->Speciality = isset($request->specialization_id) ? Specialization::find($request->specialization_id)->Name : $request->specialization_name;
+        $application->Speciality = $request->specialization_name;
         $application->SpecializationId = isset($request->specialization_id) ? $request->specialization_id : null;
         $application->SpecialityGroupId = $request->speciality_id;
         $application->CountryId = $request->country_id;

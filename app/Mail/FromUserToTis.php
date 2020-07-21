@@ -32,7 +32,7 @@ class FromUserToTis extends Mailable
 		if (isset($this->data[ 'file' ])) {
 			return $this->from( 'noreply@socar.az' )
 				->replyTo($this->data[ 'email' ], $this->data[ 'full_name' ])
-				->subject( 'Müraciət' )
+				->subject( 'XTP Müraciət' )
 				->markdown( 'emails.user.toTis' )
 				->attach( $this->data[ 'file' ]->getRealPath(), [ 'as' => $this->data[ 'file' ]->getClientOriginalName(), 'mime' => $this->data[ 'file' ]->getClientMimeType() ] )
 				->with( [ 'data' => $this->data ] );
