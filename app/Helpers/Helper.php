@@ -35,15 +35,32 @@ class Helper
     {
         $count = 0;
 
-        foreach ($files as $file) {
+
+        foreach ($files as $key => $file) {
             if ($file->getClientOriginalExtension() == "zip") {
+
                 $filesystem = new Filesystem(new ZipArchiveAdapter($file));
+
                 foreach ($filesystem->listContents() as $object) {
+
                     !(in_array($object['extension'], ['pdf', 'jpg'])) ? $count++ : '';
+                    $name = $key;
+
                 }
+
+                if ($count > 0) {
+
+                    return array([
+                        'name' => $name,
+                        'count' => $count,
+                        'status' => 'error',
+                        'code' => '403'
+                    ]);
+                }
+
             }
         }
-        return $count < 1;
+
     }
 
 

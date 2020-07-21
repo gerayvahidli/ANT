@@ -633,9 +633,7 @@
 
 
                     <div class="form-group required">
-                        <label for="passport_copy" class="col-form-label required">
-                            Şəxsiyyət vəsiqəsinin surəti
-                        </label>
+                        <label for="passport_copy" class="col-form-label required">Şəxsiyyət vəsiqəsinin surəti</label>
                         <input type="file" class="form-control "
                                name="passport_copy"
                                value=""
@@ -648,9 +646,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="certificate_document" class="col-form-label required">
-                            Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı)
-                        </label>
+                        <label for="certificate_document" class="col-form-label required">Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı)</label>
                         <input type="file" class="form-control "
                                name="certificate_document"
                                value=""
@@ -663,9 +659,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="university_document" class="col-form-label required">
-                            Xarici universitetə qəbulu təsdiq edən rəsmi sənəd
-                        </label>
+                        <label for="university_document" class="col-form-label required">Xarici universitetə qəbulu təsdiq edən rəsmi sənəd</label>
                         <input type="file" class="form-control "
                                name="university_document"
                                value=""
@@ -678,9 +672,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="biography" class="col-form-label required">
-                            Tərcümeyi-hal
-                        </label>
+                        <label for="biography" class="col-form-label required">Tərcümeyi-hal</label>
                         <input type="file"
                                class="form-control "
                                name="biography"
@@ -694,9 +686,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="medical_certificate" class="col-form-label required">
-                            Poliklinikadan 086 No-li tibbi arayış
-                        </label>
+                        <label for="medical_certificate" class="col-form-label required">Poliklinikadan 086 No-li tibbi arayış</label>
                         <input type="file"
                                class="form-control "
                                name="medical_certificate"
@@ -710,9 +700,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="psychological_dispensary" class="col-form-label required">
-                            Psixoloji dispanserdən arayış
-                        </label>
+                        <label for="psychological_dispensary" class="col-form-label required">Psixoloji dispanserdən arayış</label>
                         <input type="file"
                                class="form-control "
                                name="psychological_dispensary"
@@ -726,9 +714,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="academic_transcript" class="col-form-label required">
-                            Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript)
-                        </label>
+                        <label for="academic_transcript" class="col-form-label required">Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript)</label>
                         <input type="file"
                                class="form-control "
                                name="academic_transcript"
@@ -742,10 +728,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="realEstate_document" class="col-form-label required">
-                            Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən
-                            çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya
-                        </label>
+                        <label for="realEstate_document" class="col-form-label required">Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya</label>
                         <input type="file"
                                class="form-control "
                                name="realEstate_document"
@@ -777,9 +760,7 @@
                     </div>
 
                     <div class="form-group required">
-                        <label for="testimonial" class="col-form-label required">
-                            Birbaşa rəhbərindən müsbət xasiyyətnamə
-                        </label>
+                        <label for="testimonial" class="col-form-label required">Birbaşa rəhbərindən müsbət xasiyyətnamə</label>
                         <input type="file"
                                class="form-control "
                                name="testimonial"
@@ -1250,10 +1231,14 @@
                             window.location.href = '{{ route('profile.index') }}';
                         }, 2000);
                     }
+
+                    var label = $("label[for='"+data.name+"']");
+
+
                     (data.status == 'error' && data.code == "400") ?
                         alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”") :
                         (data.status == 'error' && data.code == "403") ?
-                            alert("Yüklədiyiniz zip-in içində pdf və jpg tipindən başqa tipdə fayl olmadığından əmin olun") : '';
+                            alert(label.text() +" xanasında yüklədiyiniz zip-in içində pdf və jpg tipindən başqa tipdə fayl olmadığından əmin olun") : '';
 
 
                 },

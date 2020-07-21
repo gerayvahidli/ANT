@@ -771,14 +771,6 @@ class UserController extends Controller
     {
 //        return $request -> file();
 
-        if (!Helper::checkFileTypeInZip($request -> file()))
-        {
-            return response()->json([
-                'status' => 'error',
-                'code' => '403'
-            ]);
-        }
-
 
         if (!Helper::checkCertificateScore($request)) {
             return response()->json([
@@ -786,6 +778,14 @@ class UserController extends Controller
                 'code' => '400'
             ]);
         }
+
+
+        if ( isset(Helper::checkFileTypeInZip($request -> file())[0]) && Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0)
+        {
+            return response()->json(Helper::checkFileTypeInZip($request -> file())[0]);
+        }
+
+
 
 
         $request->validate([
