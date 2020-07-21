@@ -138,6 +138,11 @@ class User extends Authenticatable
         return $this->hasMany( UserProgram::class,'UserId','id' );
     }
 
+    public function applications()
+    {
+        return $this -> hasMany(EPApplication::class,'UserId','id');
+    }
+
 
 //    /**
 //     * @return \Illuminate\Database\Eloquent\Relations\HasMany

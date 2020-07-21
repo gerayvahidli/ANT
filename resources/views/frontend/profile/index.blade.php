@@ -51,7 +51,7 @@
                                 @if(isset( $user->GenderId ))
                                     @if($user->GenderId == 1)
                                         Kişi
-                                    @elseif($user->GenderId == 1)
+                                    @elseif($user->GenderId == 2)
                                         Qadın
                                     @endif
                                 @endif
@@ -119,7 +119,7 @@
                         </tbody>
                     </table>
                 </div>
-                {{--                                @include('frontend.profile.partials.programApplicationAndTrackingPanel')--}}
+                @include('frontend.profile.partials.programApplicationAndTrackingPanel')
                 <div class="row">
                     <div class="col-4">
                         <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
@@ -393,7 +393,6 @@
                         Əvvəlki iş təcrübəsi yoxdur.
                     @endforelse
                 </div>
-
 
             </div>
         </div>

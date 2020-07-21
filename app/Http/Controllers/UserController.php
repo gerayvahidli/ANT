@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Adldap\Laravel\Facades\Adldap;
-use App\ApplicationStageResult;
+use App\StageResult;
+use App\ApplicationStage;
 use App\Bank;
 use App\BankGuarantee;
 use App\Certificate;
@@ -67,11 +68,14 @@ class UserController extends Controller
         $homePhone = $user->phones->where('PhoneTypeId', 1)->first();
         $active_program_id = ExternalProgram::where('IsActive', 1)->first()->Id;
         $user_active_program = $user->userPrograms->where('ProgramId', $active_program_id)->first();
+        $last_application = $user -> applications -> last()   ;
+        $application_stage = $last_application -> applicationStage;
+
 
         !empty($user_active_program) ? $user_active_program_status = $user_active_program->UserProgramStatusId : $user_active_program_status = [];
 
 
-        return view('frontend.profile.index', compact('user', 'homePhone', 'user_active_program_status'));
+        return view('frontend.profile.index', compact('user', 'homePhone', 'user_active_program_status','last_application','application_stage'));
     }
 
     /**
@@ -141,10 +145,10 @@ class UserController extends Controller
     public function edit(User $user)
     {
 
-
         if ($user->id != Auth::user()->id) {
             return redirect(route('profile.edit', Auth::user()));
         }
+
         $user->load('finalEducation', 'previousEducations', 'phones.operatorCode', 'BirthCity', 'emails', 'currentJob', 'previousJobs');
         $countries = Country::all();
         $cities = City::where('IsShow', 1)->get();
@@ -238,6 +242,8 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
 //        return $request;
+
+
 
 
         if ($user->id != Auth::user()->id) {

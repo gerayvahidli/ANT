@@ -743,9 +743,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group ">
-                        <label for="owner_passport" class="col-form-label required">
-                            Girov sahibinin şəxsiyyət vəsiqəsi
-                        </label>
+                        <label for="owner_passport" class="col-form-label required">Girov sahibinin şəxsiyyət vəsiqəsi</label>
                         <input type="file"
                                class="form-control myfile"
                                name="owner_passport"
@@ -1239,7 +1237,6 @@
                         alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”") :
                         (data.status == 'error' && data.code == "403") ?
                             alert(label.text() +" xanasında yüklədiyiniz zip-in içində pdf və jpg tipindən başqa tipdə fayl olmadığından əmin olun") : '';
-
 
                 },
                 error: function (data) {

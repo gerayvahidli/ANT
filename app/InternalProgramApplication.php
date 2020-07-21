@@ -36,16 +36,16 @@ class InternalProgramApplication extends Model
 
     public function firstStageResult()
     {
-        return $this->belongsTo(ApplicationStageResult::class,'FirstSelStageResultId','Id');
+        return $this->belongsTo(StageResult::class,'FirstSelStageResultId','Id');
     }
 
     public function testStageResult()
     {
-        return $this->belongsTo(ApplicationStageResult::class,'TestStageResultId','Id');
+        return $this->belongsTo(StageResult::class,'TestStageResultId','Id');
     }
 
     public function interviewStageResult()
     {
-        return $this->belongsTo(ApplicationStageResult::class,'InterviewStageResultId','Id');
+        return $this->belongsTo(StageResult::class,'InterviewStageResultId','Id');
     }
 }
