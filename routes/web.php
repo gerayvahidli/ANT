@@ -14,7 +14,7 @@ Route::get('/abc', function () {
 
 Route::get('/DTP', function () {
 //    echo 'test';exit;
-    return redirect(url('/youthprogsnew/public'));
+    return redirect(Config::get('app.url').'/youthprogsnew/public');
 });
 
 
