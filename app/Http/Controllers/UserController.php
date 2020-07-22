@@ -69,13 +69,14 @@ class UserController extends Controller
         $active_program_id = ExternalProgram::where('IsActive', 1)->first()->Id;
         $user_active_program = $user->userPrograms->where('ProgramId', $active_program_id)->first();
         $last_application = $user -> applications -> last()   ;
-        $application_stage = $last_application -> applicationStage;
+
+//        return $last_application ;
 
 
         !empty($user_active_program) ? $user_active_program_status = $user_active_program->UserProgramStatusId : $user_active_program_status = [];
 
 
-        return view('frontend.profile.index', compact('user', 'homePhone', 'user_active_program_status','last_application','application_stage'));
+        return view('frontend.profile.index', compact('user', 'homePhone', 'user_active_program_status','last_application'));
     }
 
     /**

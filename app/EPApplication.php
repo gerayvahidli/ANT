@@ -67,5 +67,10 @@ class EPApplication extends Model
         return $this -> belongsTo(ApplicationStage::class,'LastStageId','Id')->with('stage','stageResult');
     }
 
+    public function applicationStageNotes()
+    {
+        return $this -> hasMany(AppStageNote::class,'ApplicationId');
+    }
+
 
 }

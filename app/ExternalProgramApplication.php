@@ -27,7 +27,7 @@ class ExternalProgramApplication extends Model
 
      public function first_stage_note()
     {
-        return $this->belongsTo(ApplicationStageResultNote::class,'FirstSelStageResultNoteId','Id');
+        return $this->belongsTo(AppStageNote::class,'FirstSelStageResultNoteId','Id');
     }
 
     public function firstStageResult()

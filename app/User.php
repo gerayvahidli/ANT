@@ -140,7 +140,7 @@ class User extends Authenticatable
 
     public function applications()
     {
-        return $this -> hasMany(EPApplication::class,'UserId','id');
+        return $this -> hasMany(EPApplication::class,'UserId','id')->with('applicationStageNotes','applicationStage');
     }
 
 

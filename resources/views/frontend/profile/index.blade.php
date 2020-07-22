@@ -119,7 +119,9 @@
                         </tbody>
                     </table>
                 </div>
+                @if(!$user -> applications -> isEmpty() )
                 @include('frontend.profile.partials.programApplicationAndTrackingPanel')
+                @endif
                 <div class="row">
                     <div class="col-4">
                         <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i
