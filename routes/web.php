@@ -80,7 +80,7 @@ Route::post('/rel_specialization', 'UserController@relSpecialization');//Ajax
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile', 'UserController@index')->name('profile.index');
     Route::get('/profile/{user}/edit', 'UserController@edit')->name('profile.edit');
-    Route::match(['post', 'put'], '/ppasswordrofile/store', 'UserController@store')->name('profile.store');
+    Route::match(['post', 'put'], '/profile/store', 'UserController@store')->name('profile.store');
     Route::match(['patch', 'put'], '/profile/{user}/update', 'UserController@update')->name('profile.update');
     Route::get('/profile/password', 'UserController@editPassword')->name('profile.password.edit');
     Route::match(['patch', 'put'], '/profile/changePassword', 'UserController@changePassword')->name('profile.password.change');

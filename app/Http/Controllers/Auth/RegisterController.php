@@ -493,7 +493,7 @@ class RegisterController extends Controller
     {
         $extension = $image->getClientOriginalExtension();
         $imageName = time() . '.' . $extension;
-        $image->move('uploads/images/profile/', $imageName);
+        $image->move(public_path('uploads/images/profile/'), $imageName);
 
         return 'uploads/images/profile/' . $imageName;
     }

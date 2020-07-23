@@ -245,11 +245,14 @@ class UserController extends Controller
 //        return $request;
 
 
+//       return $this->createImage($request, $user->image)  ;
 
 
         if ($user->id != Auth::user()->id) {
             return redirect(route('profile.edit', Auth::user()));
         }
+
+
 
 //		return $request;
 //		$request->validate( [
@@ -311,7 +314,7 @@ class UserController extends Controller
 ////			'exam_language_id'                     => 'required',
 //		] );
 
-        isset($user->image) ? $user->ImagePath = $this->createImage($request, $user->image) : '';
+        $user->ImagePath = $this->createImage($request, $user->ImagePath) ;
 //		$user->email      = $request->email;
         $user->FirstName = $request->FirstName;
         $user->LastName = $request->LastName;
@@ -647,7 +650,7 @@ class UserController extends Controller
             $image = $request->image;
             $extension = $image->getClientOriginalExtension();
             $imageName = time() . '.' . $extension;
-            $image->move('uploads/images/profile/', $imageName);
+            $image->move(public_path('uploads/images/profile/') , $imageName);
 
             return 'uploads/images/profile/' . $imageName;
         }
