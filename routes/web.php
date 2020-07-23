@@ -12,11 +12,6 @@ Route::get('/abc', function () {
     Artisan::call('config:cache');
 });
 
-Route::get('/DTP', function () {
-//    echo 'test';exit;
-    return redirect(Config::get('app.url').'/youthprogsnew/public');
-});
-
 
 
 

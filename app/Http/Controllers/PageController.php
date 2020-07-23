@@ -84,7 +84,7 @@ class PageController extends Controller
 		return view( 'frontend.pages.term', compact( 'term', 'page' ) );
 	}
 
-	public function specialities (  )
+	public function specialities ( )
 	{
 		$page = ProgramType::with( 'specialities' )->where( 'ShortName', 'XTP' )->firstOrFail();
 		$speciality = Speciality::with( [
