@@ -13,6 +13,8 @@ class Admin extends Authenticatable
 
     protected $table      = 'Admins';
     public $timestamps = false;
+    protected $connection = 'sqlsrv2';
+
     //protected $dateFormat = 'Y-m-d H:i:s+';
 
 

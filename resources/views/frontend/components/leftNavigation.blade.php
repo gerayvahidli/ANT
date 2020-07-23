@@ -21,7 +21,7 @@
                             aria-expanded="false" aria-controls="collapseTwo">
                         <a class=""
                            href="{{route('page.show')}}">
-                            {!! basename(base_path()) == 'XTP' ? '<i class="fas fa-angle-right menu-icon" ></i>' : '' !!}
+                            {!! basename(base_path()) == 'XTP' ? '<i style="font-weight:bold" class="fa fa-angle-right" ></i>' : '' !!}
                             Xarici təqaüd proqramı
                         </a>
                     </button>

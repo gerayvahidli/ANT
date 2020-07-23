@@ -230,10 +230,7 @@ Route::get('/universitylist', function () {
 
 )->name('XTPunilist');
 
-Route::get('/requestforExternal', function () {
-    $page = ProgramType::with('specialities')->where('ShortName', 'XTP')->firstOrFail();
-    return view('frontend.pages.externalProgram.requestExternal')->with(compact('page'));
-})->name('XTPrequest');
+
 
 
 
