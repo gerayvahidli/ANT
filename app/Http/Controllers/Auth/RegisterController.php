@@ -90,8 +90,8 @@ class RegisterController extends Controller
 //            'email.*' => 'required|string|email|max:255',
 
             'password' => 'required|string|min:6|confirmed',
-            'BeginDate' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
-            'EndDate' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+            'BeginDate' => 'required|digits:4|integer|min:1900|max:20100',
+            'EndDate' => 'required|digits:4|integer|min:1900|max:2100',
             'faculty' => 'required',
             'speciality' => 'required',
             'admission_score' => 'required',
@@ -244,10 +244,23 @@ class RegisterController extends Controller
             }
         }
 
+
+
+        if ($data['university_id'] == 'other'){
+
+            $university = new University;
+            $university -> Name = $data['otherUniversity'];
+            $university -> IsAvailable = 0;
+            $university -> CountryId = $data['country_id'];
+            $university -> IsShow = 0;
+            $university -> save();
+
+        }
+
         $finalEducation = new Education;
         $finalEducation->UserId = $user->id;
         $finalEducation->EducationLevelId = $data['education_level'];
-        $finalEducation->UniversityId = $data['university_id'];
+        $finalEducation->UniversityId = $data['university_id'] == 'other'? $university -> Id  : $data['university_id'];
         $finalEducation->StartDate = $data['BeginDate'];
         $finalEducation->EndDate = $data['EndDate'];
         $finalEducation->Faculty = $data['faculty'];
@@ -258,7 +271,6 @@ class RegisterController extends Controller
         $finalEducation->EducationPaymentFormId = $data['education_payment_form_id'];
         $finalEducation->GPA = $data['GPA'];
         $finalEducation->IsCurrent = 1;
-
 
         $finalEducation->save();
 
@@ -505,9 +517,8 @@ class RegisterController extends Controller
 
         $fin = $data['fin'];
 
-        define('API_WSDL', 'http://sochadcil.socar.local:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship1/430/yws_scholarship1/yws_scholarship1?sap-client=430?WSDL');
+        define('API_WSDL', 'http://192.168.17.47:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/430/yws_scholarship/yws_scholarship?sap-client=430');
         ini_set("soap.wsdl_cache_enabled", "0");
-
 
         try {
             $client = new \SoapClient(API_WSDL, array(

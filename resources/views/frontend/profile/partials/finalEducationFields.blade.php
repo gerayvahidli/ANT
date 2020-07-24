@@ -48,6 +48,7 @@
                     @foreach(\App\Country::find($user->finalEducation->first() -> university -> country -> Id)-> universities  as $university)
                         <option {{$user -> exists && $user->finalEducation->first() -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
                     @endforeach
+                    <option value="other">Digər</option>
                 @endif
             </select>
 

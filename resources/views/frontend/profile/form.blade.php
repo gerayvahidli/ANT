@@ -1080,85 +1080,6 @@
 
         $(document).ready(function () {
 
-            {{--$('#idCardPin').change(function () {--}}
-            {{--    var idCardPin = $(this).val();--}}
-            {{--    var token = $("input[name='_token']").val();--}}
-            {{--    if (idCardPin) {--}}
-            {{--        $.ajax({--}}
-            {{--            url: '{{ url('/checkUniquePinCode') }}',--}}
-            {{--            type: "post",--}}
-            {{--            dataType: "json",--}}
-            {{--            data: {idCardPin: idCardPin, _token: token},--}}
-            {{--            beforeSend: function () {--}}
-            {{--                // $('#loader').css("visibility", "visible");--}}
-            {{--                $('#idCardPin').removeClass('is-invalid');--}}
-            {{--                $('div#idCardPinErrorText').empty();--}}
-            {{--                $('#loaderModal').modal('show');--}}
-            {{--                $('.alert-danger').hide();--}}
-            {{--            },--}}
-            {{--            success: function (data) {--}}
-            {{--                $('#loaderModal').modal('hide');--}}
-            {{--                $('#idCardPin').removeClass('is-invalid');--}}
-            {{--                $('div#idCardPinErrorText').empty();--}}
-            {{--                $('#idCardPin').addClass('is-valid');--}}
-            {{--                // console.log(data.responseJSON);--}}
-            {{--            },--}}
-            {{--            error: function (data) {--}}
-            {{--                $('#loaderModal').modal('hide');--}}
-            {{--                $('div#idCardPinErrorText').append(data.responseJSON.msg);--}}
-            {{--                // console.log(data.responseJSON.msg);--}}
-            {{--                $('#idCardPin').addClass('is-invalid');--}}
-            {{--                $('.alert-danger').show();--}}
-            {{--                $('#form-error-list').append('<li>' + data.responseJSON.msg + '</li>');--}}
-            {{--                // scroll to error list--}}
-            {{--                $([document.documentElement, document.body]).animate({--}}
-            {{--                    scrollTop: $('.alert-danger').offset().top--}}
-            {{--                }, 2000);--}}
-            {{--            },--}}
-            {{--            complete: function () {--}}
-            {{--                $('#loaderModal').modal('hide');--}}
-            {{--                // $('#loader').css("visibility", "hidden");--}}
-            {{--            }--}}
-            {{--        });--}}
-            {{--    }--}}
-            {{--});--}}
-
-            {{--$('#email').change(function () {--}}
-
-            {{--    var email = $(this).val();--}}
-            {{--    var token = $("input[name='_token']").val();--}}
-            {{--    if (email) {--}}
-            {{--        $.ajax({--}}
-            {{--            url: '{{ url('/checkUniqueEmail') }}',--}}
-            {{--            type: "post",--}}
-            {{--            dataType: "json",--}}
-            {{--            data: {email: email, _token: token},--}}
-            {{--            beforeSend: function () {--}}
-            {{--                // $('#loader').css("visibility", "visible");--}}
-            {{--                $('#email').removeClass('is-invalid');--}}
-            {{--                $('div#emailErrorText').empty();--}}
-            {{--            },--}}
-            {{--            success: function (data) {--}}
-            {{--                $('#email').removeClass('is-invalid');--}}
-            {{--                $('div#emailErrorText').empty();--}}
-            {{--                $('#email').addClass('is-valid');--}}
-            {{--                // console.log(data.responseJSON);--}}
-            {{--            },--}}
-            {{--            error: function (data) {--}}
-            {{--                $('div#emailErrorText').append(data.responseJSON.msg);--}}
-            {{--                // console.log(data.responseJSON.msg);--}}
-            {{--                $('#email').addClass('is-invalid');--}}
-            {{--            },--}}
-            {{--            complete: function () {--}}
-            {{--                // $('#loader').css("visibility", "hidden");--}}
-            {{--            }--}}
-            {{--        });--}}
-            {{--    }--}}
-
-            {{--});--}}
-
-            // add fields to form - profile
-
             var maxField = 100; //Input fields increment limitation
             var maxFieldEmail = 100; //Input fields increment limitation
             var addButton = $('#addPhoneField'); //Add button selector
@@ -1329,6 +1250,7 @@
 
 
 
+
             $('body').on('change', '#BirthCityId', function () {
                 $('#otherCity').val('');
                 if (this.value == 'other') {
@@ -1353,6 +1275,17 @@
 
             $('#address_region').trigger('change');
 
+
+            $( ".university" ).change(function() {
+
+               if ($(this).val() == 'other')
+               {
+                   $(this).after(' <input type="text" name="otherUniversity" class="form-control otherUniversity"  required data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
+               }else{
+                  $(this).next('.otherUniversity').remove();
+               }
+
+            });
 
             //remove fields group
             $("body").on("click", ".remove", function () {
@@ -1399,6 +1332,8 @@
                                 $('select[id="university_id"]').append('<option value="' + key + '">' + value + '</option>');
 
                             });
+                            $('select[id="university_id"]').append('<option value="other">Digər</option>');
+
                         },
                         complete: function () {
                             $('#loader').css("visibility", "hidden");
@@ -1462,7 +1397,6 @@
             // Select university by country  for Previous Education 1
             $('select#ex_previous_education_country_id').on('change', function () {
                 var budu = $(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
-                console.log(budu);
                 var countryId = $(this).val();
                 var admissionScore = $(this).parents('.fieldGroup').find('#ex_previous_education_admission_score');
 

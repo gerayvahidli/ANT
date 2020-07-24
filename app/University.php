@@ -9,6 +9,8 @@ class University extends Model
     protected $table = 'Universities';
     protected $primaryKey = 'Id';
 
+    public $timestamps = false;
+
     public function finalEducation()
     {
         return $this->hasMany( FinalEducation::class);
