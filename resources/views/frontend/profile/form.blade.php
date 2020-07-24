@@ -22,6 +22,12 @@
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 
         }
+        form input.error {
+            border: 1px solid red;
+        }
+        form label.error {
+            color: red;
+        }
     </style>
 
 
@@ -69,7 +75,7 @@
                     <label for="image" class="col-4 col-form-label">Şəkil</label>
                     <div class="col-8">
 
-                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : 'required','data-error'=>'Şəkil sahəsini boş buraxmayın']) }}
+                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : 'required','data-msg-required'=>'Şəkil sahəsini boş buraxmayın']) }}
                         @if ($errors->has('image'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('image') }}</strong>
@@ -86,7 +92,7 @@
                                value="{{ ($user->exists) ? $user->Fin : old('idCardPin') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
                                class="{{ ($errors->has('idCardPin')) ? 'form-control is-invalid' :'form-control' }}"
-                               data-required-error='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
+                               data-msg-required='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
                                maxlength="7" minlength="7"
                                data-error='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
                                 {{ ($user->exists) ? 'disabled' : '' }}
@@ -117,7 +123,7 @@
                                placeholder="Şəxsiyyət vəsiqəsinin nömrəsi" type="text"
                                class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid' :'form-control' }}"
                                maxlength="8"
-                               data-required-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
+                               data-msg-required='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
                                pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
                                data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
                                 {{ ($user->exists) ? 'readonly' : '' }}
@@ -140,7 +146,7 @@
                     <label for="FirstName" class="col-4 col-form-label">Ad</label>
                     <div class="col-8">
                         {{ Form::text('FirstName', ($user->exists) ? $user->FirstName : old('FirstName'),
-                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control', 'placeholder' => 'Ad', 'id' => 'FirstName', 'required','data-error'=>'Adınız sahəsini boş buraxmayın']) }}
+                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control', 'placeholder' => 'Ad', 'id' => 'FirstName', 'required','data-msg-required'=>'Adınız sahəsini boş buraxmayın']) }}
                         @if ($errors->has('FirstName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('FirstName') }}</strong>
@@ -158,7 +164,7 @@
                                type="text"
                                class="{{ ($errors->has('LastName')) ? 'form-control is-invalid' :'form-control here' }}"
                                required
-                               data-error='Soyadınız sahəsini boş buraxmayın'>
+                               data-msg-required='Soyadınız sahəsini boş buraxmayın'>
                         @if ($errors->has('LastName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('LastName') }}</strong>
@@ -176,7 +182,7 @@
                                placeholder="Ata adı" type="text"
                                class="{{ ($errors->has('FatherName')) ? 'form-control is-invalid' :'form-control' }}"
                                required
-                               data-error='Ata adı sahəsini boş buraxmayın'>
+                               data-msg-required='Ata adı sahəsini boş buraxmayın'>
                         @if ($errors->has('FatherName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('FatherName') }}</strong>
@@ -233,7 +239,7 @@
                 <div class="form-group row required">
                     <label for="Dob" class="col-4 col-form-label">Təvəllüd</label>
                     <div class="col-8">
-                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'Təvvəllüd sahəsini boş buraxmayın','id' => 'Dob']) }}
+                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'Təvvəllüd sahəsini boş buraxmayın','id' => 'Dob']) }}
                         @if ($errors->has('Dob'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('Dob') }}</strong>
@@ -283,7 +289,7 @@
                             <input type="password"
                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                    name="password"
-                                   data-required-error='Şifrə sahəsini boş buraxmayın' minlength="6"
+                                   data-msg-required='Şifrə sahəsini boş buraxmayın' minlength="6"
                                    required
                                    data-error='Şifrə minimum 6 simvoldan ibarət olmalıdır' id="inputPassword">
 
@@ -300,10 +306,10 @@
                         <label for="password-confirm" class="col-md-4 col-form-label">Şifrəni təkrarla</label>
 
                         <div class="col-8">
-                            <input id="inputPasswordConfirm" type="password" data-match="#inputPassword"
+                            <input id="inputPasswordConfirm" type="password" equalto="#inputPassword"
                                    class="form-control" name="password_confirmation"
-                                   data-required-error='Şifrə təkrarla boş buraxmayın'
-                                   data-error="Şifrə və şifrə təkrarı sahələri eyni olmalıdır"
+                                   data-msg-required='Şifrə təkrarla boş buraxmayın'
+                                   data-msg-equalto="Şifrə və şifrə təkrarı sahələri eyni olmalıdır"
                             >
                             <div class="help-block with-errors"></div>
                         </div>
@@ -325,7 +331,7 @@
                                type="text"
                                class="{{ ($errors->has('Address')) ? 'form-control is-invalid' :'form-control' }}"
                                required
-                               data-required-error='Ünvan sahəsini boş buraxmayın'>
+                               data-msg-required='Ünvan sahəsini boş buraxmayın'>
                         <div class="help-block with-errors"></div>
                         <small id="addressHelpBlock" class="form-text text-muted">
                             şəxsiyyəti təsdiq edən sənədə əsasən qeydiyyatda olduğu ünvan
@@ -384,7 +390,7 @@
                                placeholder="Faktiki yaşayış ünvanı"
                                type="text"
 {{--                               required--}}
-                               data-required-error='Faktiki yaşayış ünvanı sahəsini boş buraxmayın'
+                               data-msg-required='Faktiki yaşayış ünvanı sahəsini boş buraxmayın'
                                class="{{ ($errors->has('Address2')) ? 'form-control is-invalid' :'form-control' }}"
                         >
                         <div class="help-block with-errors"></div>
@@ -418,7 +424,7 @@
                                required
                                value="{{ ($user->exists && isset($user->phones->where('PhoneTypeId',1) -> first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('homePhone') }}"
                                maxlength="7"
-                               data-required-error='Şəhər telefon nömrəsi sahəsini boş buraxmayın'
+                               data-msg-required='Şəhər telefon nömrəsi sahəsini boş buraxmayın'
                                pattern="\d*"
                                data-pattern-error="Yalnız rəqəm daxil edin">
 
@@ -459,7 +465,7 @@
                                            value="{{ ($user->exists && isset($phone->PhoneNumber)) ? $phone->PhoneNumber : old('phoneNumber') }}"
 
                                            maxlength="7"
-                                           data-required-error='Telefon nömrəsi sahəsini boş buraxmayın'
+                                           data-msg-required='Telefon nömrəsi sahəsini boş buraxmayın'
                                            pattern="\d*"
                                            data-pattern-error="Yalnız rəqəm daxil edin">
 
@@ -498,7 +504,7 @@
                                        required
                                        value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"
                                        maxlength="7"
-                                       data-required-error='Mobil telefon sahəsini boş buraxmayın' pattern="\d*"
+                                       data-msg-required='Mobil telefon sahəsini boş buraxmayın' pattern="\d*"
                                        data-pattern-error="Yalnız rəqəm daxil edin">
 
                                 @if ($errors->has('phoneNumber'))
@@ -528,7 +534,7 @@
                                class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
                                value="{{ ($user->exists) ? $user->email : old('email') }}"
                                data-error='E-Mail ünvanı düzgün qeyd edin'
-                               data-required-error='E-Mail Address sahəsini boş buraxmayın'
+                               data-msg-required='E-Mail Address sahəsini boş buraxmayın'
                                 {{ ($user->exists) ? 'disabled': '' }}
                         >
 
@@ -554,7 +560,7 @@
                                            name='email2[{{ $loop->index }}]'
                                            value="{{ ($email->exists && isset($email->email)) ? $email->email : old('email2') }}"
                                            data-error='E-Mail ünvanı düzgün qeyd edin'
-                                           data-required-error='Elektron poçt ünvanı(şəxsi) sahəsini boş buraxmayın'>
+                                           data-msg-required='Elektron poçt ünvanı(şəxsi) sahəsini boş buraxmayın'>
 
                                     @if ($errors->has('email2'))
                                         <div class="invalid-feedback">
@@ -581,7 +587,7 @@
                                        required
                                        value="{{ ($user->exists) ? $user->email2 : old('email2') }}"
                                        data-error='E-Mail ünvanı düzgün qeyd edin'
-                                       data-required-error='Elektron poçt ünvanı(şəxsi) sahəsini boş buraxmayın'
+                                       data-msg-required='Elektron poçt ünvanı(şəxsi) sahəsini boş buraxmayın'
                                         {{ ($user->exists) ? 'disabled': '' }}
                                 >
 
@@ -667,24 +673,6 @@
                     </div>
                 </div>
 
-
-                {{--                <div class="form-group row required">--}}
-                {{--                    <label for="exam_language_id" class="col-4 col-form-label">İmtahanı hansı dildə verə--}}
-                {{--                        bilərsiniz</label>--}}
-                {{--                    <div class="col-8">--}}
-                {{--                        {{ Form::select('exam_language_id', $examLanguages, ($user->exists) ? $user->exam_language_id : old('exam_language_id'),--}}
-                {{--                            ['class' => ($errors->has('exam_language_id')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Dili seç ----', 'id' => 'exam_language_id', 'required','data-required-error'=>'İmtahan dili sahəsini boş buraxmayın']--}}
-                {{--                        ) }}--}}
-                {{--                        <div class="help-block with-errors"></div>--}}
-                {{--                        @if ($errors->has('exam_language_id'))--}}
-                {{--                            <div class="invalid-feedback">--}}
-                {{--                                <strong>{{ $errors->first('exam_language_id') }}</strong>--}}
-                {{--                            </div>--}}
-                {{--                        @endif--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-
-
                 <div class="form-group row">
                     <div class="offset-4 col-8">
                         {{ Form::submit('Yadda saxla', ['class' => 'btn btn-primary','id' =>'submitForm']) }}
@@ -701,10 +689,28 @@
     </section>
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="{{asset('js/validator.js')}}"></script>
+{{--    <script src="{{asset('js/validator.js')}}"></script>--}}
 @endsection
 
 @section('footerScripts')
+    <script src="{{asset('js/jquery.validate.min.js')}}"></script>
+
+    <script>
+        // Wait for the DOM to be ready
+        $(function() {
+            // Initialize form validation on the registration form.
+            // It has the name attribute "registration"
+            var validator = $("form[id='profile-form']").validate();
+
+            validator.element(".email_2_val");
+
+
+        });
+
+    </script>
+
+
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -756,6 +762,7 @@
 
 
             $('#profile-form').submit(function (stay) {
+
 
 
                         @if(!$user -> exists)
@@ -1213,8 +1220,8 @@
                     var fieldHtml = ('<div class="form-group row " id="emails">' +
                         '<label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>\n' +
                         '    <div class="col-7">\n' +
-                        '        <input id="email2" type="text"\n' +
-                        '               class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
+                        '        <input id="email2-'+y+'" type="email"\n' +
+                        '               class=" email_2_val form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
                         '               name="email2[' + y + ']"\n' +
                         '               \n' +
                         '              >\n' +
@@ -1232,6 +1239,9 @@
                         '</div>');
                     y++; //Increment field counter
                     $(wrapperEmail).append(fieldHtml); //Add field html
+
+
+
                 }
             });
 
@@ -1316,6 +1326,8 @@
 
                 $(changed).next().toggle(check);
             });
+
+
 
             $('body').on('change', '#BirthCityId', function () {
                 $('#otherCity').val('');

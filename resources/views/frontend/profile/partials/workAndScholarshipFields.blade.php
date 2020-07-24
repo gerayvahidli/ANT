@@ -47,7 +47,7 @@
         <div class="col-8">
             {{ Form::text('department',
             ($user->exists && isset($user->currentJob)) ? $user -> currentJob -> first() -> Department : null,
-             ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Struktur Bölmə sahəsini boş buraxmayın'  ]) }}
+             ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'Struktur Bölmə sahəsini boş buraxmayın'  ]) }}
             @if ($errors->has('department'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('department') }}</strong>
@@ -62,7 +62,7 @@
         <div class="col-8">
             {{ Form::text('position',
             ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> Position : null,
-             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control', 'required',"data-required-error"=>'Vəzifə sahəsini boş buraxmayın','id' => 'position']) }}
+             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'Vəzifə sahəsini boş buraxmayın','id' => 'position']) }}
             @if ($errors->has('position'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('position') }}</strong>
@@ -76,7 +76,7 @@
     <div class="form-group row required">
         <label for="StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            {{ Form::date('StartDate', ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> StartDate : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-required-error'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate']) }}
+            {{ Form::date('StartDate', ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> StartDate : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate']) }}
             @if ($errors->has('StartDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('StartDate') }}</strong>
@@ -92,7 +92,7 @@
             <div class="col-8">
                 {{ Form::text('tabel_number',
                     ( $user->exists && isset($user -> currentJob) ) ? $user -> currentJob -> first() -> TabelNo : ( old('tabel_number')  ? old('tabel_number') : null ),
-                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-required-error"=>'Tabel nömrəniz sahəsini boş buraxmayın','id' =>'tabel_number', 'pattern'=>'\d*', 'data-pattern-error'=>'Yalnız rəqəm daxil edin']
+                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-msg-required"=>'Tabel nömrəniz sahəsini boş buraxmayın','id' =>'tabel_number', 'pattern'=>'\d*', 'data-pattern-error'=>'Yalnız rəqəm daxil edin']
                 ) }}
                 @if ($errors->has('tabel_number'))
                     <div class="invalid-feedback">
