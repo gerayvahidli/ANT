@@ -361,8 +361,7 @@ class UserController extends Controller
         $previousJob = $this->updatePreviousJob($request, $user);
 
 
-//		$previousInternship  = $this->savePreviousInternship( $request, $user );
-//		$previousScholarship = $this->savePreviousScholarship( $request, $user );
+
 
         flash()->overlay('Profildə dəyişiklikər uğurla tamamlandı');
 
@@ -382,9 +381,26 @@ class UserController extends Controller
             $finalEducation = new FinalEducation;
             $finalEducation->UserId = $user->id;
         }
+        $universities = University::all()->pluck('Name')->toArray();
+
+        if ($request->university_id == 'other' && !in_array($request->otherUniversity, $universities)) {
+            $university = new University;
+            $university->Name = $request->otherUniversity;
+            $university -> CountryId = $request->country_id;
+            $university->IsAvailable = 0;
+            $university->IsShow = 0;
+            $university->save();
+            $university_id = $university->Id;
+        } elseif ($request->university_id == 'other' && in_array($request->otherUniversity, $universities)) {
+            $university_id = University::where('name', $request->otherUniversity)->first()->Id;
+        } elseif ($request->university_id != 'other') {
+            $university_id = $request->university_id;
+        }
+
+
 
         $finalEducation->EducationLevelId = $request->education_level;
-        $finalEducation->UniversityId = $request->university_id;
+        $finalEducation->UniversityId = $university_id;
         $finalEducation->StartDate = $request->BeginDate;
         $finalEducation->EndDate = $request->EndDate;
         $finalEducation->Faculty = $request->faculty;
@@ -409,7 +425,23 @@ class UserController extends Controller
 
             foreach ($request->previous_education_country_id as $i => $previousEducationCountryId) {
 
-//			    return $request->previous_education_admission_score[ $i ];
+                $universities = University::all()->pluck('Name')->toArray();
+
+                if ($request->previous_education_university_id[$i] == 'other' && !in_array($request->previous_otherUniversity[$i], $universities)) {
+                    $university = new University;
+                    $university->Name = $request->previous_otherUniversity[$i];
+                    $university -> CountryId = $request->previous_education_country_id[$i];
+                    $university->IsAvailable = 0;
+                    $university->IsShow = 0;
+                    $university->save();
+                    $university_id = $university->Id;
+                } elseif ($request->previous_education_university_id[$i] == 'other' && in_array($request->previous_otherUniversity[$i], $universities)) {
+                    $university_id = University::where('name', $request->previous_otherUniversity[$i])->first()->Id;
+                } elseif ($request->previous_education_university_id[$i] != 'other') {
+                    $university_id = $request->previous_education_university_id[$i];
+                }
+
+
                 // make array from form
                 if (isset($request->previous_education_university_id[$i]) &&
                     $request->previous_education_university_id[$i] != ''
@@ -421,7 +453,7 @@ class UserController extends Controller
                         'user_id' => $user->id,
                         'id' => (isset($request->previous_education_id[$i])) ? $request->previous_education_id[$i] : null,
                         'education_level_id' => $request->previous_education_level[$i],
-                        'university_id' => $request->previous_education_university_id[$i],
+                        'university_id' => $university_id,
                         'BeginDate' => ($request->previous_education_BeginDate[$i]) ? $request->previous_education_BeginDate[$i] : $date,
                         'EndDate' => ($request->previous_education_EndDate[$i]) ? $request->previous_education_EndDate[$i] : $date,
                         'Faculty' => $request->previous_education_faculty[$i],

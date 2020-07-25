@@ -1374,7 +1374,6 @@
                                 $('#admission_score').attr("readonly", true);
                                 $('#admission_score').val(0);
                             }
-                            $('select[id="university_id"]').empty();
                             // $('select[id="university_id"]').append('<option>---- Universitet seç ----</option>');
 
                             $.each(data, function (key, value) {
@@ -1382,7 +1381,7 @@
                                 $('select[id="university_id"]').append('<option value="' + key + '">' + value + '</option>');
 
                             });
-                            $('select[id="university_id"]').append('<option value="other">Digər</option>');
+                            $('select[id="university_id"]').append('<option {{$user -> exists && $user->finalEducation->first() -> university  -> IsShow == 0 ? "selected" : ""}} value="other">Digər</option>');
 
                         },
                         complete: function () {
@@ -1471,8 +1470,9 @@
                 var admissionScore = $(this).parents('.fieldGroup').find('#ex_previous_education_admission_score');
                 $(this).parents().next('.universityDiv').find('.ex_previous_otherUniversity').remove() ;
 
-                var forSelected =$(this).parents().next('.universityDiv').find('.ex_previous_otherUniversity').val() ;
-                // alert(countryId);
+
+                var forSelected =$(this).parents().next('.universityDiv').find('.checkOtherUniversity').val() ;
+
                 var token = $("input[name='_token']").val();
                 if (countryId) {
                     $.ajax({
@@ -1497,7 +1497,7 @@
                                 universitySelect.append('<option value="' + key + '">' + value + '</option>');
                             });
 
-                            forSelected != '' ? universitySelect.append('<option selected  value="other">Digər</option>') : budu.append('<option value="other">Digər</option>');
+                            typeof  forSelected !== 'undefined' ?  universitySelect.append('<option selected value="other">Digər</option>'): universitySelect.append('<option  value="other">Digər</option>') ;
                         },
                         complete: function () {
                             $('#loader').css("visibility", "hidden");
@@ -1517,17 +1517,25 @@
 
             $(document).on('change', '.ex_previous_university', function () {
 
+
                 if ($(this).val() == 'other')
                 {
-                    $(this).after(' <input type="text" name="ex_previous_otherUniversity[]" ' +
+
+                    var element = ' <input type="text" name="previous_otherUniversity[]" ' +
                         'class="form-control ex_previous_otherUniversity"  ' +
-                        'required maxlength="500" ' +
-                        'value="'+$(this).next().val()+'"' +
-                        'data-msg-required ="Digər univeristetin adını boş buraxmayın" ' +
-                        'placeholder="Digər universitetin adını bura yazın">\n');
+                        'required maxlength="500" ';
+
+                    $(this).next().length ? element += 'value="'+ $(this).next().val()+'"' : '';
+
+                    element += 'data-msg-required ="Digər univeristetin adını boş buraxmayın" ' +
+                        'placeholder="Digər universitetin adını bura yazın">\n'
+
+                    $(this).after(element);
+
                 }else{
                     $(this).next('.ex_previous_otherUniversity').remove();
                 }
+
 
             });
 

@@ -50,7 +50,7 @@
                     </select>
 
                     @if($user -> exists  && $previousEducation -> university -> IsShow == 0)
-                        <input type="text" class="form-control" value="{{$previousEducation -> university -> Name}}" style="display: none">
+                        <input type="text" class="form-control checkOtherUniversity" value="{{$previousEducation -> university -> Name}}" style="display: none">
                     @endif
 
                 </div>
