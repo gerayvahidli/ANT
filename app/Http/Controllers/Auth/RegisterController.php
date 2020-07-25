@@ -82,27 +82,51 @@ class RegisterController extends Controller
             'gender' => 'required',
             'Dob' => 'required|date',
             'Address' => 'required',
+            'otherCity' => 'required_if:BirthCityId,other',
+            'other_address_region' => 'required_if:address_region,other',
             'homePhone' => 'required|digits:7',
-            'mobilePhone.0.number' => 'required|digits:7',
+            'mobilePhone.*.number' => 'required|digits:7',
             'email' => 'required|string|email|max:255|unique:user',
-            'email2.0' => 'required|string|email|max:255',
-
-//            'email.*' => 'required|string|email|max:255',
-
+            'email2.*' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
-            'BeginDate' => 'required|digits:4|integer|min:1900|max:20100',
+            'idCardPin' => 'required|max:7|unique:user,Fin',
+            'idCardNumber' => 'required|max:8|unique:user,PassportNo',
+
+
+            'BeginDate' => 'required|digits:4|integer|min:1900|max:2100',
             'EndDate' => 'required|digits:4|integer|min:1900|max:2100',
-            'faculty' => 'required',
-            'speciality' => 'required',
-            'admission_score' => 'required',
-            'GPA' => 'required|between:0,99.99',
-            'department' => 'required',
-            'position' => 'required',
+            'faculty' => 'required|max:500',
+            'speciality' => 'required|max:500',
+            'admission_score' => 'required|integer|max:700',
+            'GPA' => 'required|numeric|max:100',
+            'otherUniversity' => 'required_if:university_id,other|max:500',
+
+            'previous_education_BeginDate.*' => 'required|digits:4|integer|min:1900|max:2100',
+            'previous_education_BeginDate.*' => 'required|digits:4|integer|min:1900|max:2100',
+            'previous_education_faculty.*' => 'required|max:500',
+            'previous_education_speciality.*' => 'required|max:500',
+            'previous_education_admission_score.*' => 'required|integer|max:700',
+            'previous_education_GPA.*' => 'required|numeric|max:100',
+            'previous_otherUniversity.*' => 'required|max:500',
+
+
+            'department' => 'required|max:500',
+            'position' => 'required|max:500',
             'StartDate' => 'required',
             'tabel_number' => 'required|numeric',
 
-            'idCardPin' => 'required|max:7|unique:user,Fin',
-            'idCardNumber' => 'required|max:8|unique:user,PassportNo',
+
+            'previous_department.*' => 'required|max:500',
+            'previous_position.*' => 'required|max:500',
+            'previous_StartDate.*' => 'required',
+            'previous_tabel_number.*' => 'required|numeric',
+            'otherCompany.*' => 'required|max:500'
+
+
+
+
+
+
 
 
 //            'password' => [
@@ -276,13 +300,22 @@ class RegisterController extends Controller
 
         if (isset($data['previous_education_country_id'])) {
             foreach ($data['previous_education_country_id'] as $i => $previousEducationCountryId) {
-                if ($data['previous_education_faculty'][$i] != '' &&
-                    $data['previous_education_speciality'][$i] != '') {
+                if ($data['previous_education_faculty'][$i] != '') {
                     $date = '0000';
                     $previousEducation = new Education;
                     $previousEducation->UserId = $user->id;
+                    if ($data['previous_education_university_id'][$i] == 'other') {
+                        $university = new University;
+                        $university->Name = $data['otherUniversity'][$i];
+                        $university -> CountryId = $data['previous_education_country_id'][$i];
+                        $university->IsAvailable = 0;
+                        $university->IsShow = 0;
+                        $university->save();
+                        $previousEducation -> UniversityId = $university -> Id;
+                    } else {
+                        $previousEducation -> UniversityId = $data['previous_education_university_id'][$i];
+                    }
                     $previousEducation->EducationLevelId = $data['previous_education_level'][$i];
-                    $previousEducation->UniversityId = $data['previous_education_university_id'][$i];
                     $previousEducation->StartDate = ($data['previous_education_BeginDate'][$i]) ? $data['previous_education_BeginDate'][$i] : $date;
                     $previousEducation->EndDate = ($data['previous_education_EndDate'][$i]) ? $data['previous_education_EndDate'][$i] : $date;
                     $previousEducation->Faculty = $data['previous_education_faculty'][$i];

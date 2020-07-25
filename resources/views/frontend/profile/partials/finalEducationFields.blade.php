@@ -58,7 +58,18 @@
     <div class="form-group row required">
         <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti(il)</label>
         <div class="col-4 form-group">
-            {{ Form::number('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->StartDate : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'Başlanğıc tarixi sahəsini sahəsini boş buraxmayın','id'=> 'BeginDate','autocomplete' => 'none','min'=>'1900','max'=>'2100','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+            {{ Form::number('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->StartDate : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control',
+             'required',
+             'id'=> 'BeginDate',
+             'autocomplete' => 'none',
+             'min'=>'1900',
+             'max'=>'2100',
+             'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+             "data-msg-required"=>'Başlanğıc tarixi sahəsini boş buraxmayın',
+             "data-msg-max"=>'Başlanğıc tarixi maksimum 2100 ola bilər',
+             "data-msg-min"=>'Başlanğıc tarixi minimum 1900 ola bilər'
+
+             ]) }}
             @if ($errors->has('BeginDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('BeginDate') }}</strong>
@@ -69,7 +80,18 @@
 
         </div>
         <div class="col-4 form-group">
-            {{ Form::number('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->EndDate : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'Bitmə tarixi sahəsini sahəsini boş buraxmayın','id'=> 'EndDate','autocomplete' => 'none','min'=>'1900','max'=>'2100','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+            {{ Form::number('EndDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->EndDate : old('EndDate'), ['class' => ($errors->has('EndDate')) ? 'form-control is-invalid' :'form-control',
+            'required',
+            'id'=> 'EndDate',
+            'autocomplete' => 'none',
+            'min'=>'1900',
+            'max'=>'2100',
+            'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+             "data-msg-required"=>'Bitmə tarixi sahəsini boş buraxmayın',
+             "data-msg-max"=>'Bitmə tarixi maksimum 2100 ola bilər',
+             "data-msg-min"=>'Bitmə tarixi minimum 1900 ola bilər'
+
+            ]) }}
             @if ($errors->has('EndDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('EndDate') }}</strong>
@@ -82,7 +104,10 @@
     <div class="form-group row required">
         <label for="faculty" class="col-4 col-form-label">Fakültə</label>
         <div class="col-8">
-            {{ Form::text('faculty', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->Faculty : old('faculty'), ['class' => ($errors->has('faculty')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'Fakultə sahəsini boş buraxmayın']) }}
+            {{ Form::text('faculty', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->Faculty : old('faculty'), ['class' => ($errors->has('faculty')) ? 'form-control is-invalid' :'form-control',
+            'required',
+            'maxlength' => '500',
+            "data-msg-required"=>'Fakultə sahəsini boş buraxmayın']) }}
             @if ($errors->has('faculty'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('faculty') }}</strong>
@@ -96,7 +121,10 @@
     <div class="form-group row required">
         <label for="speciality" class="col-4 col-form-label">İxtisas</label>
         <div class="col-8">
-            {{ Form::text('speciality', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->Speciality : old('speciality'), ['class' => ($errors->has('speciality')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'İxtisas sahəsini boş buraxmayın']) }}
+            {{ Form::text('speciality', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->Speciality : old('speciality'), ['class' => ($errors->has('speciality')) ? 'form-control is-invalid' :'form-control',
+            'required',
+            'maxlength' => '500',
+            "data-msg-required"=>'İxtisas sahəsini boş buraxmayın']) }}
             @if ($errors->has('speciality'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('speciality') }}</strong>
@@ -112,7 +140,17 @@
         <div class="col-8">
             {{ Form::number('admission_score',
                 ($user->exists && isset($user->finalEducation)) ? str_replace(' ', '', $user->finalEducation->first()->AdmissionScore)  : old('admission_score'),
-             ['class' => 'form-control', 'required',"data-msg-required"=>'Qəbul balı sahəsini boş buraxmayın',"data-error"=>'Qəbul balı maksimum 700-dən yuxarı olmamamalıdır','maxlength'=>'3','max'=>"700",'min'=>'0', 'placeholder' => '0','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189', 'id' => 'admission_score', $user ->exists && $user-> finalEducation -> first() -> university -> country -> Id != 1 ? 'readonly' : ''
+             ['class' => 'form-control',
+              'id' => 'admission_score', $user ->exists && $user-> finalEducation -> first() -> university -> country -> Id != 1 ? 'readonly' : '',
+             'required',
+             'max'=>"700",
+             'min'=>'0',
+             'placeholder' => '0',
+             'oninput'=> 'this.value = Math.round(this.value)',
+             "data-msg-required"=>'Qəbul balı sahəsini sahəsini boş buraxmayın',
+             "data-msg-max"=>'Qəbul balı maksimum 700 ola bilər',
+             "data-msg-min"=>'Qəbul balı minimum 0 ola bilər',
+
              ]) }}
 
 
@@ -169,8 +207,17 @@
         <div class="col-8">
             {{ Form::number('GPA',
                 ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->GPA : old('GPA'),
-             ['class' => 'form-control', 'step' => '0.1', 'required',"data-msg-required"=>'Orta bal sahəsini sahəsini boş buraxmayın',"data-error"=>'Orta bal maksimum 100-dən yuxarı olmamamalıdır','maxlength'=>'3','min' => '0','max' => '100', 'placeholder' => '0','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
-              'id' => 'GPA',
+             ['class' => 'form-control',
+             'step' => 'any',
+             'id' => 'GPA',
+             'required',
+             'min' => '0',
+             'max' => '100',
+             'placeholder' => '0',
+             'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+             "data-msg-required"=>'Orta bal sahəsini sahəsini boş buraxmayın',
+             "data-msg-max"=>'Orta bal (GPA) maksimum 100 ola bilər',
+             "data-msg-min"=>'Orta bal (GPA) minimum 0 ola bilər',
              ]) }}
             @if ($errors->has('GPA'))
                 <div class="invalid-feedback">

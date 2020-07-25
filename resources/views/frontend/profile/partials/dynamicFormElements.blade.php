@@ -32,12 +32,12 @@
     </div>
 
     <div class="form-group row">
-        <label for="university_id" class="col-4 col-form-label">Universitet</label>
+        <label for="university_id" class="col-4 col-form-label ">Universitet</label>
         <div class="col-8">
 {{--            {{ Form::select('previous_education_university_id[]', ['' => '---- Universitet seç ----'], null,--}}
 {{--                ['class' => 'form-control here', 'id' => 'previous_education_university_id', "data-required-error"=>'Bu sahəni boş buraxmayın'])--}}
 {{--            }}--}}
-            <select name="previous_education_university_id[]" id="previous_education_university_id" class="form-control">
+            <select name="previous_education_university_id[]" id="previous_education_university_id" class="form-control previous_university">
             </select>
         </div>
     </div>
@@ -45,16 +45,37 @@
     <div class="form-group row">
         <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti</label>
         <div class="col-4">
-            {{ Form::number('previous_education_BeginDate[]', '', ['class' => 'form-control here','', "data-required-error"=>'Başlanğıc tarixi sahəsi boş qala bilməz','id' => 'previous_education_BeginDate','min'=>'1900','max'=>'2100','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+            {{ Form::number('previous_education_BeginDate[]', '', ['class' => 'form-control here',
+         'required',
+         'id' => 'previous_education_BeginDate',
+         'autocomplete' => 'none',
+         'min'=>'1900',
+         'max'=>'2100',
+         'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+         "data-msg-required"=>'Başlama tarixi sahəsini boş buraxmayın',
+         "data-msg-max"=>'Başlama tarixi maksimum 2100 ola bilər',
+         "data-msg-min"=>'Başlama tarixi minimum 1900 ola bilər']) }}
         </div>
         <div class="col-4">
-            {{ Form::number('previous_education_EndDate[]', '', ['class' => 'form-control here','required', "data-required-error"=>'Bitmə tarixi sahəsi boş qala bilməz','id' => 'previous_education_EndDate','min'=>'1900','max'=>'2100','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+            {{ Form::number('previous_education_EndDate[]', '', ['class' => 'form-control here',
+          'required',
+          'id' => 'previous_education_EndDate',
+          'min'=>'1900',
+          'max'=>'2100',
+          'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+          "data-msg-required"=>'Bitmə tarixi sahəsini boş buraxmayın',
+          "data-msg-max"=>'Bitmə tarixi maksimum 2100 ola bilər',
+          "data-msg-min"=>'Bitmə tarixi minimum 1900 ola bilər'   ]) }}
         </div>
     </div>
     <div class="form-group row">
         <label for="speciality" class="col-4 col-form-label">Fakültə</label>
         <div class="col-8">
-            {{ Form::text('previous_education_faculty[]', null, ['class' => 'form-control here', 'id'=> 'previous_education_faculty', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+            {{ Form::text('previous_education_faculty[]', null, ['class' => 'form-control here',
+          'id'=> 'previous_education_faculty',
+          'required',
+          'maxlength' => '500',
+          "data-msg-required"=>'Fakultə sahəsini boş buraxmayın']) }}
         </div>
     </div>
 
@@ -62,14 +83,31 @@
     <div class="form-group row">
         <label for="speciality" class="col-4 col-form-label">İxtisas</label>
         <div class="col-8">
-            {{ Form::text('previous_education_speciality[]', null, ['class' => 'form-control here', 'id'=> 'previous_education_speciality', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
+            {{ Form::text('previous_education_speciality[]', null, ['class' => 'form-control here',
+          'id'=> 'previous_education_speciality',
+          'required',
+          'maxlength' => '500',
+          "data-msg-required"=>'İxtisas sahəsini boş buraxmayın'
+
+          ]) }}
         </div>
     </div>
 
     <div class="form-group row">
         <label for="previous_education_admission_score" class="col-4 col-form-label">Qəbul balı</label>
         <div class="col-8">
-            {{ Form::number('previous_education_admission_score[]', 0, ['class' => 'form-control here', 'id' => 'previous_education_admission_score','min' => '0','max' => '100', 'placeholder' => '0','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+            {{ Form::number('previous_education_admission_score[]', 0, ['class' => 'form-control here',
+         'id' => 'previous_education_admission_score',
+         'required',
+         'min' => '0',
+         'max' => '700',
+         'placeholder' => '0',
+         'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+         'oninput'=> 'this.value = Math.round(this.value)',
+         "data-msg-required"=>'Qəbul balı sahəsini sahəsini boş buraxmayın',
+         "data-msg-max"=>'Qəbul balı maksimum 700 ola bilər',
+         "data-msg-min"=>'Qəbul balı minimum 0 ola bilər',
+         ]) }}
         </div>
     </div>
 
@@ -107,7 +145,19 @@
     <div class="form-group row">
         <label for="previous_education_GPA" class="col-4 col-form-label">Orta bal (GPA)</label>
         <div class="col-8">
-            {{ Form::number('previous_education_GPA[]', null, ['class' => 'form-control here', 'id' => 'previous_education_GPA', 'min' => '0','max' => '100', 'placeholder' => '0','onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189']) }}
+            {{ Form::number('previous_education_GPA[]', null, ['class' => 'form-control here',
+         'id' => 'previous_education_GPA',
+         'required',
+         'step' => 'any',
+         'min' => '0',
+         'max' => '100',
+         'placeholder' => '0',
+         'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+         "data-msg-required"=>'Orta bal sahəsini sahəsini boş buraxmayın',
+         "data-msg-max"=>'Orta bal (GPA) maksimum 100 ola bilər',
+         "data-msg-min"=>'Orta bal (GPA) minimum 0 ola bilər',
+
+         ]) }}
         </div>
     </div>
     <div class="input-group-addon">
@@ -115,62 +165,11 @@
                                                                          aria-hidden="true"></span> Ləğv et</a>
     </div>
     <hr>
-</div> {{--fieldGroup for previous education--}}
-
-{{-- fieldGroup for previous internships --}}
-<div class="card card-body previousInternshipFieldGroupCopy" id="previousInternshipFieldGroupCopy" style="">
-    <hr>
-    <div class="form-group row">
-        <label for="internship_department" class="col-4 col-form-label">Təcrübə keçdiyiniz
-            müəssisə</label>
-        <div class="col-8">
-            {{ Form::text('internship_department[]', null, ['class' => 'form-control here', 'placeholder' => 'Təcrübə keçdiyiniz müəssisə', 'id' => 'internship_department', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label for="internship_date" class="col-4 col-form-label">Təcrübə keçdiyiniz
-            tarix</label>
-        <div class="col-8">
-            {{ Form::date('internship_date[]', null, ['class' => 'form-control here', 'placeholder' => now(), 'id' => 'internship_date', "data-required-error"=>'Bu sahəni boş buraxmayın']) }}
-        </div>
-    </div>
-    <div class="input-group-addon">
-        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove"
-                                                                         aria-hidden="true"></span> Ləğv et</a>
-    </div>
-
 </div>
-{{-- end fieldGroup for previous internships --}}
 
 
-{{-- fieldGroup for previous internships --}}
-<div class="card card-body previousScholarshipFieldGroupCopy" id="previousScholarshipFieldGroupCopy" style="">
-    <hr>
-    <div class="row form-group">
-        <label for="previous_scholarship_type" class="col-4 col-form-label">Təqaüd növü</label>
-        {{--        <div class="col-8">--}}
-        {{--            {{ Form::select('previous_scholarship_type[]', $programTypes,--}}
-        {{--             null,--}}
-        {{--              ['class' => 'form-control']) }}--}}
-        {{--        </div>--}}
-    </div>
-    <div class="row form-group">
-        <label for="previous_scholarship_date" class="col-4 col-form-label">Təqaüd tarixi</label>
-        <div class="col-8">
-            {{ Form::date('previous_scholarship_date[]', null, ['class' => 'form-control']) }}
-        </div>
-    </div>
-    <hr>
-    <div class="input-group-addon">
-        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove"
-                                                                         aria-hidden="true"></span> Ləğv et</a>
-    </div>
-</div>
-{{-- end fieldGroup for previous internships --}}
+{{--fieldGroup for previous work--}}
 
-
-{{-- fieldGroup for previous internships --}}
 <div class="card card-body previousWorkFieldGroupCopy" id="previousWorkFieldGroupCopy" style="">
     <hr>
     <div class="form-group row required">
@@ -183,9 +182,6 @@
                 @endforeach
                 <option value="other">Digər</option>
             </select>
-            <input type="text" class="form-control" name="otherCompany[]" style="display: none"
-                   placeholder="Digər müəssisənin adını bura yazın"/>
-            <div class="help-block with-errors"></div>
         </div>
     </div>
     <div class="form-group row ">

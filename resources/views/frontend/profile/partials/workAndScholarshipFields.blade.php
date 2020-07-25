@@ -34,7 +34,9 @@
         <div class="col-8">
             {{ Form::text('organization',
             ($user->exists && isset($user -> currentJob -> first() -> Organization)) ? $user -> currentJob -> first() -> Organization : null,
-             ['class' => ($errors->has('organization')) ? 'form-control is-invalid' :'form-control']) }}
+             ['class' => ($errors->has('organization')) ? 'form-control is-invalid' :'form-control',
+              'maxlength' => '500',
+             ]) }}
             @if ($errors->has('organization'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('organization') }}</strong>
@@ -47,7 +49,10 @@
         <div class="col-8">
             {{ Form::text('department',
             ($user->exists && isset($user->currentJob)) ? $user -> currentJob -> first() -> Department : null,
-             ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'Struktur Bölmə sahəsini boş buraxmayın'  ]) }}
+             ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control',
+             'required',
+             'maxlength' => '500',
+             "data-msg-required"=>'Struktur Bölmə sahəsini boş buraxmayın'  ]) }}
             @if ($errors->has('department'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('department') }}</strong>
@@ -62,7 +67,12 @@
         <div class="col-8">
             {{ Form::text('position',
             ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> Position : null,
-             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control', 'required',"data-msg-required"=>'Vəzifə sahəsini boş buraxmayın','id' => 'position']) }}
+             ['class' => ($errors->has('position')) ? 'form-control is-invalid' :'form-control',
+             'id' => 'position',
+             'required',
+             "data-msg-required"=>'Vəzifə sahəsini boş buraxmayın',
+             'maxlength' => '500'
+             ]) }}
             @if ($errors->has('position'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('position') }}</strong>
@@ -92,7 +102,11 @@
             <div class="col-8">
                 {{ Form::text('tabel_number',
                     ( $user->exists && isset($user -> currentJob) ) ? $user -> currentJob -> first() -> TabelNo : ( old('tabel_number')  ? old('tabel_number') : null ),
-                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid' :'form-control','required',"data-msg-required"=>'Tabel nömrəniz sahəsini boş buraxmayın','id' =>'tabel_number', 'pattern'=>'\d*', 'data-pattern-error'=>'Yalnız rəqəm daxil edin']
+                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid number' :'form-control number',
+                     'id' =>'tabel_number',
+                     'required',
+                     "data-msg-required"=>'Tabel nömrəniz sahəsini boş buraxmayın',
+                     'data-msg-number'=>'Yalnız rəqəm daxil edin']
                 ) }}
                 @if ($errors->has('tabel_number'))
                     <div class="invalid-feedback">
@@ -103,7 +117,7 @@
                 <div class="help-block with-errors"></div>
             </div>
         </div>
-    </div> {{--div#socarWorkField--}}
+    </div>
 
 
 </div>
@@ -111,8 +125,6 @@
 </div>
 
 
-{{--div#workFieldGroup--}}
- {{--work history field group--}}
 
  {{--Scholarship section--}}
 @include('frontend.profile.partials.scholarshipFields')

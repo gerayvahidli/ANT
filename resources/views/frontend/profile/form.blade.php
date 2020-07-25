@@ -22,11 +22,11 @@
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 
         }
-        form input.error {
-            border: 1px solid red;
+        form input.error, input.is-invalid {
+            border: 1px solid red !important;
         }
-        form label.error {
-            color: red;
+        form label.error, div.invalid-feedback {
+            color: red !important;
         }
     </style>
 
@@ -93,8 +93,9 @@
                                placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
                                class="{{ ($errors->has('idCardPin')) ? 'form-control is-invalid' :'form-control' }}"
                                data-msg-required='Şəxsiyyət vəsiqəsinin FİN kodu sahəsini boş buraxmayın'
-                               maxlength="7" minlength="7"
-                               data-error='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
+                               maxlength="7"
+                               minlength="7"
+                               data-msg-minlength='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
                                 {{ ($user->exists) ? 'disabled' : '' }}
                         >
                         <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">FİN kod nədir?
@@ -120,12 +121,14 @@
                     <div class="col-8">
                         <input id="idCardNumber" name="idCardNumber"
                                value="{{ ($user->exists) ? $user->PassportNo : old('idCardNumber') }}"
-                               placeholder="Şəxsiyyət vəsiqəsinin nömrəsi" type="text"
-                               class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid' :'form-control' }}"
+                               placeholder="Şəxsiyyət vəsiqəsinin nömrəsi"
+                               type="text"
+                               class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid number' :'form-control number' }}"
                                maxlength="8"
-                               data-msg-required='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın' minlength="6"
-                               pattern="\d*" data-pattern-error="Yalnız rəqəm daxil edin"
-                               data-error='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
+                               minlength="6"
+                               data-msg-required='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın'
+                               data-msg-number="Yalnız rəqəm daxil edin"
+                               data-msg-minlength ='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
                                 {{ ($user->exists) ? 'readonly' : '' }}
                         >
 
@@ -146,7 +149,12 @@
                     <label for="FirstName" class="col-4 col-form-label">Ad</label>
                     <div class="col-8">
                         {{ Form::text('FirstName', ($user->exists) ? $user->FirstName : old('FirstName'),
-                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control', 'placeholder' => 'Ad', 'id' => 'FirstName', 'required','data-msg-required'=>'Adınız sahəsini boş buraxmayın']) }}
+                        ['class' => ($errors->has('FirstName')) ? 'form-control is-invalid' :'form-control',
+                        'placeholder' => 'Ad',
+                        'id' => 'FirstName',
+                        'required',
+                        'maxlength' => '150',
+                        'data-msg-required' => 'Adınız sahəsini boş buraxmayın']) }}
                         @if ($errors->has('FirstName'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('FirstName') }}</strong>
@@ -160,10 +168,12 @@
                     <label for="LastName" class="col-4 col-form-label">Soyad</label>
                     <div class="col-8">
                         <input id="LastName" name="LastName"
-                               value="{{ ($user->exists) ? $user->LastName : old('LastName') }}" placeholder="Soyad"
+                               value="{{ ($user->exists) ? $user->LastName : old('LastName') }}"
+                               placeholder="Soyad"
                                type="text"
                                class="{{ ($errors->has('LastName')) ? 'form-control is-invalid' :'form-control here' }}"
                                required
+                               maxlength="150"
                                data-msg-required='Soyadınız sahəsini boş buraxmayın'>
                         @if ($errors->has('LastName'))
                             <div class="invalid-feedback">
@@ -177,11 +187,14 @@
                 <div class="form-group row required">
                     <label for="FatherName" class="col-4 col-form-label">Ata adı</label>
                     <div class="col-8">
-                        <input id="FatherName" name="FatherName"
+                        <input id="FatherName"
+                               name="FatherName"
                                value="{{ ($user->exists) ? $user->FatherName : old('FatherName') }}"
-                               placeholder="Ata adı" type="text"
+                               placeholder="Ata adı"
+                               type="text"
                                class="{{ ($errors->has('FatherName')) ? 'form-control is-invalid' :'form-control' }}"
                                required
+                               maxlength="150"
                                data-msg-required='Ata adı sahəsini boş buraxmayın'>
                         @if ($errors->has('FatherName'))
                             <div class="invalid-feedback">
@@ -202,11 +215,6 @@
                             @endforeach
                         </select>
 
-
-                        {{--                        {!!  Form::select('gender', $genders, ($user->exists) ? $user->gender_id : old('gender'),--}}
-                        {{--                        ['class' => ($errors->has('gender')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Cins seç ----', '','data-required-error'=>'Cins sahəsini boş buraxmayın']--}}
-                        {{--                        ) !!}--}}
-
                         @if ($errors->has('gender'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('gender') }}</strong>
@@ -219,9 +227,6 @@
                 <div class="form-group row required">
                     <label for="nationality" class="col-4 col-form-label">Vətəndaşlığı</label>
                     <div class="col-8">
-                        {{--                        {{ Form::select('nationality', $countries, ($user->exists) ? $user->country_id : old('nationality'),--}}
-                        {{--                            ['class' => ($errors->has('nationality')) ? 'form-control is-invalid' :'form-control', 'placeholder' => '---- Vətəndaşlığı seç ----', '','data-required-error'=>'Vətəndaşlığı sahəsini boş buraxmayın']--}}
-                        {{--                        ) }}--}}
                         <select name="nationality" id="nationality" class="form-control">
                             @foreach($countries as $country)
                                 <option {{ $user -> exists && $user -> CitizenCountryId == $country -> Id ? 'selected' :''   }} value="{{$country -> Id }}">{{$country -> Name}}</option>
@@ -260,22 +265,22 @@
                                 <option value="other" selected>Digər</option>
 
                             @else
+
                                 @foreach($cities as $city)
                                     <option {{ $user -> exists &&  $user -> BithCityId == $city-> Id ? 'selected' :''   }} value="{{$city -> Id}}">{{$city -> Name}}</option>
                                 @endforeach
                                 <option value="other">Digər</option>
+
                             @endif
+
                         </select>
-                        <input type="text" class="form-control" name="otherCity" id="otherCity" style="display: none"
-                               value="{{$user -> exists && $user -> BirthCity -> IsShow == 0 ? $user -> BirthCity -> Name :''  }}"
-                               data-required-error="Digər rayonun adını yazın"
-                               placeholder="Digər rayonun adını bura yazın"/>
 
                         @if ($errors->has('BirthCityId'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('BirthCityId') }}</strong>
                             </div>
                         @endif
+
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
@@ -289,9 +294,11 @@
                             <input type="password"
                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                    name="password"
-                                   data-msg-required='Şifrə sahəsini boş buraxmayın' minlength="6"
+                                   data-msg-required='Şifrə sahəsini boş buraxmayın'
+                                   minlength="6"
                                    required
-                                   data-error='Şifrə minimum 6 simvoldan ibarət olmalıdır' id="inputPassword">
+                                   data-msg-minlength='Şifrə minimum 6 simvoldan ibarət olmalıdır'
+                                   id="inputPassword">
 
                             @if ($errors->has('password'))
                                 <div class="invalid-feedback">
@@ -306,8 +313,11 @@
                         <label for="password-confirm" class="col-md-4 col-form-label">Şifrəni təkrarla</label>
 
                         <div class="col-8">
-                            <input id="inputPasswordConfirm" type="password" equalto="#inputPassword"
-                                   class="form-control" name="password_confirmation"
+                            <input id="inputPasswordConfirm"
+                                   type="password"
+                                   equalto="#inputPassword"
+                                   class="form-control"
+                                   name="password_confirmation"
                                    data-msg-required='Şifrə təkrarla boş buraxmayın'
                                    data-msg-equalto="Şifrə və şifrə təkrarı sahələri eyni olmalıdır"
                             >
@@ -327,10 +337,12 @@
                     <label for="Address" class="col-4 col-form-label">Qeydiyyat ünvanı</label>
                     <div class="col-8">
                         <input id="Address" name="Address"
-                               value="{{ ($user->exists) ? $user->AddressMain : old('Address') }}" placeholder="Ünvan"
+                               value="{{ ($user->exists) ? $user->AddressMain : old('Address') }}"
+                               placeholder="Ünvan"
                                type="text"
                                class="{{ ($errors->has('Address')) ? 'form-control is-invalid' :'form-control' }}"
                                required
+                               maxlength="3000"
                                data-msg-required='Ünvan sahəsini boş buraxmayın'>
                         <div class="help-block with-errors"></div>
                         <small id="addressHelpBlock" class="form-text text-muted">
@@ -366,11 +378,6 @@
 
                             @endif
                         </select>
-                        <input type="text" class="form-control" name="other_address_region" id="other_address_region"
-                               style="display: none"
-                               value="{{$user -> exists && $user -> region -> IsShow == 0 ? $user -> Region -> Name :''  }}"
-                               data-required-error="Digər rayonun adını yazın"
-                               placeholder="Digər rayonun adını bura yazın"/>
 
                         @if ($errors->has('BirthCityId'))
                             <div class="invalid-feedback">
@@ -389,7 +396,8 @@
                                value="{{ ($user->exists) ? $user->Address2 : old('Address2') }}"
                                placeholder="Faktiki yaşayış ünvanı"
                                type="text"
-{{--                               required--}}
+                               {{--  required--}}
+                               maxlength="3000"
                                data-msg-required='Faktiki yaşayış ünvanı sahəsini boş buraxmayın'
                                class="{{ ($errors->has('Address2')) ? 'form-control is-invalid' :'form-control' }}"
                         >
@@ -419,14 +427,17 @@
 
                     <div class="col-5">
                         <input id="homePhone" type="text"
-                               class="form-control{{ $errors->has('homePhone') ? ' is-invalid' : '' }}"
+                               class="form-control number {{ $errors->has('homePhone') ? ' is-invalid' : '' }}"
                                name="homePhone"
                                required
                                value="{{ ($user->exists && isset($user->phones->where('PhoneTypeId',1) -> first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('homePhone') }}"
                                maxlength="7"
+                               minlength="7"
                                data-msg-required='Şəhər telefon nömrəsi sahəsini boş buraxmayın'
-                               pattern="\d*"
-                               data-pattern-error="Yalnız rəqəm daxil edin">
+                               data-msg-number="Yalnız rəqəm daxil edin"
+                               data-msg-minlength='Şəhər telefon nömrəsi minimum 7 simvoldan ibarət olmalidir'
+
+                        >
 
                         @if ($errors->has('homePhone'))
                             <div class="invalid-feedback">
@@ -434,7 +445,7 @@
                             </div>
                         @endif
                         <div class="help-block with-errors"></div>
-                        <small id="addressHelpBlock" class="form-text text-muted">
+                        <small class="form-text text-muted">
                             olmadıqda, yaxın qohumun şəhər telefon nömrəsi
                         </small>
                     </div>
@@ -460,14 +471,14 @@
 
                                 <div class="col-4">
                                     <input id="phoneNumber" type="text"
-                                           class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
+                                           class="form-control number{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
                                            name='mobilePhone[{{ $loop->index }}][number]'
                                            value="{{ ($user->exists && isset($phone->PhoneNumber)) ? $phone->PhoneNumber : old('phoneNumber') }}"
-
                                            maxlength="7"
-                                           data-msg-required='Telefon nömrəsi sahəsini boş buraxmayın'
-                                           pattern="\d*"
-                                           data-pattern-error="Yalnız rəqəm daxil edin">
+                                           minlength="7"
+                                           data-msg-required=" telefon nömrəsi sahəsini boş buraxmayın"
+                                           data-msg-number="Yalnız rəqəm daxil edin"
+                                           data-msg-minlength="Mobil telefon minimum 7 simvoldan ibarət olmalıdır">
 
                                     @if ($errors->has('phoneNumber'))
                                         <div class="invalid-feedback">
@@ -499,13 +510,15 @@
 
                             <div class="col-5">
                                 <input id="phoneNumber" type="text"
-                                       class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
+                                       class="form-control number {{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"
                                        name="mobilePhone[0][number]"
                                        required
                                        value="{{ ($user->exists && isset($user->phones->first()->PhoneNumber)) ? $user->phones->first()->PhoneNumber : old('phoneNumber') }}"
                                        maxlength="7"
-                                       data-msg-required='Mobil telefon sahəsini boş buraxmayın' pattern="\d*"
-                                       data-pattern-error="Yalnız rəqəm daxil edin">
+                                       minlength="7"
+                                       data-msg-required='Mobil telefon nömrəsi sahəsini boş buraxmayın'
+                                       data-msg-number="Yalnız rəqəm daxil edin"
+                                       data-msg-minlength='Mobil telefon minimum 7 simvoldan ibarət olmalıdır'>
 
                                 @if ($errors->has('phoneNumber'))
                                     <div class="invalid-feedback">
@@ -527,13 +540,14 @@
 
 
                 <div class="form-group row required">
-                    <label for="email" class="col-md-4 col-form-label">İşçinin korparativ poçt ünvanı</label>
+                    <label for="email" class="col-md-4 col-form-label">İşçinin korparativ e-poçt ünvanı</label>
 
                     <div class="col-8">
                         <input id="email" type="email"
-                               class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
+                               class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
+                               name="email"
                                value="{{ ($user->exists) ? $user->email : old('email') }}"
-                               data-error='E-Mail ünvanı düzgün qeyd edin'
+                               maxlength="150"
                                data-msg-required='E-Mail Address sahəsini boş buraxmayın'
                                 {{ ($user->exists) ? 'disabled': '' }}
                         >
@@ -559,7 +573,6 @@
                                            class="form-control{{ $errors->has('email2') ? ' is-invalid' : '' }}"
                                            name='email2[{{ $loop->index }}]'
                                            value="{{ ($email->exists && isset($email->email)) ? $email->email : old('email2') }}"
-                                           data-error='E-Mail ünvanı düzgün qeyd edin'
                                            data-msg-required='Elektron poçt ünvanı(şəxsi) sahəsini boş buraxmayın'>
 
                                     @if ($errors->has('email2'))
@@ -681,6 +694,7 @@
 
             </div>
         </div>
+        
         {{ Form::close() }}
 
         <div id="special-div">
@@ -694,6 +708,7 @@
 
 @section('footerScripts')
     <script src="{{asset('js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('js/jquery.validate-additional-methods.js')}}"></script>
 
     <script>
         // Wait for the DOM to be ready
@@ -706,6 +721,8 @@
 
 
         });
+
+
 
     </script>
 
@@ -1097,7 +1114,7 @@
                 //Check maximum number of input fields
                 if (x < maxField) {
                     var fieldHtml = ('<div class="form-group row required" id="mobilePhones">' +
-                        '<label for="phone" class="col-md-4 col-form-label">Telefon</label>\n' +
+                        '<label for="phone" class="col-md-4 col-form-label">Mobil telefon</label>\n' +
                         '    <div class="col-3" id="">\n' +
                         '       <select name="mobilePhone[' + x + '][operatorCode]" id="mobilePhoneOperatorCode" class="form-control here"> ' +
                         '@foreach($mobilePhoneOperatorCodes as $mobilePhoneOperatorCode => $code)' +
@@ -1112,13 +1129,17 @@
                         '    </div>\n' +
                         '\n' +
                         '    <div class="col-4">\n' +
-                        '        <input id="phoneNumber" type="text"\n' +
-                        '               class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
-                        '               name="mobilePhone[' + x + '][number]"\n' +
-                        '               value=""\n' +
-                        '               maxlength="7"\n' +
-                        '               pattern="\\d*" data-pattern-error="Yalnız rəqəm daxil edin">\n' +
-                        '\n' +
+                        ' <input id="phoneNumber-'+x+' ' +
+                        'type="text"\n' +
+                        ' class="form-control number {{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
+                        'name="mobilePhone[' + x + '][number]"\n' +
+                        'required\n' +
+                        'maxlength="7"'+
+                        'minlength="7"' +
+                        'data-msg-required="Mobil telefon nömrəsi sahəsini boş buraxmayın"' +
+                        'data-msg-number="Yalnız rəqəm daxil edin"' +
+                        'data-msg-minlength="Mobil telefon minimum 7 simvoldan ibarət olmalıdır"' +
+                        '>\n' +
                         '        @if ($errors->has('phoneNumber'))\n' +
                         '            <div class="invalid-feedback">\n' +
                         '                <strong>{{ $errors->first('phoneNumber') }}</strong>\n' +
@@ -1141,11 +1162,13 @@
                     var fieldHtml = ('<div class="form-group row " id="emails">' +
                         '<label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>\n' +
                         '    <div class="col-7">\n' +
-                        '        <input id="email2-'+y+'" type="email"\n' +
-                        '               class=" email_2_val form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
-                        '               name="email2[' + y + ']"\n' +
-                        '               \n' +
-                        '              >\n' +
+                        '        <input id="email2-'+y+'" ' +
+                        'type="email"\n' +
+                        'class=" email_2_val form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
+                        'name="email2[' + y + ']"\n ' +
+                        'required\n' +
+                        'maxlength="150"\n' +
+                        'data-msg-required="Elektron poçt ünvanı(şəxsi) sahəsini boş buraxmayın" >' +
                         '\n' +
                         '        @if ($errors->has('email2'))\n' +
                         '            <div class="invalid-feedback">\n' +
@@ -1230,15 +1253,20 @@
                 }
             });
 
-            var ocNumber = -1;
-            $('body').on('change', '#previous_company_id', function () {
-                ocNumber++;
-                var changed = this,
-                    check = changed.value === "other";
+            $(document).on('change', '#previous_company_id', function () {
+                if (this.value == 'other') {
+                    $(this).after(' <input type="text" \n' +
+                        ' class="form-control otherCompany" \n' +
+                        ' name="otherCompany[]" \n' +
+                        ' required\n' +
+                        ' maxlength ="500"'+
+                        ' placeholder="Digər müəssisənin adını bura yazın"'+
+                        ' data-msg-required = "Digər müəssisənin adını yazın" />'
+                    );
+                } else {
+                    $(this).next('.otherCompany').remove();
+                }
 
-                $(changed).next().toggle(check).attr({
-                    id: 'otherCompany' + ocNumber
-                });
             });
 
             $(document).on('change', 'select[id="ex_previous_company_id"]', function () {
@@ -1254,38 +1282,64 @@
             $('body').on('change', '#BirthCityId', function () {
                 $('#otherCity').val('');
                 if (this.value == 'other') {
-                    $('#otherCity').show();
-                    $('#otherCity').prop('required', true);
+                    $(this).after('  <input ' +
+                        'type="text" ' +
+                        'class="form-control otherCity" \n' +
+                        'name="otherCity" \n' +
+                        'id="otherCity" '+
+                        'value="{{$user -> exists && $user -> BirthCity -> IsShow == 0 ? $user -> BirthCity -> Name :''  }}"\n' +
+                        'required\n' +
+                        'maxlength="50" '+
+                        'data-msg-required ="Digər rayonun adını yazın"\n' +
+                        'placeholder="Digər rayonun adını bura yazın"/>')
+
                 } else {
-                    $('#otherCity').hide();
-                    $('#otherCity').prop('required', false);
+                    $(this).next('.otherCity').remove();
                 }
             });
 
-            $('body').on('change', '#address_region', function () {
+            $(document).on('change', '#address_region', function () {
                 // $('#other_address_region').val('');
                 if (this.value == 'other') {
-                    $('#other_address_region').show();
-                    $('#other_address_region').prop('required', true);
+                    $(this).after('  <input type="text" ' +
+                        'class="form-control other_address_region" ' +
+                        'name="other_address_region"\n' +
+                        'id="other_address_region"\n' +
+                        'required\n' +
+                        'value="{{$user -> exists && $user -> region -> IsShow == 0 ? $user -> Region -> Name :''  }}"\n' +
+                        'maxlength="50"\n' +
+                        'data-msg-required ="Digər rayonun adını yazın"\n' +
+                        'placeholder="Digər rayonun adını bura yazın"/>');
                 } else {
-                    $('#other_address_region').hide();
-                    $('#other_address_region').prop('required', false);
+                    $(this).next('.other_address_region').remove();
+
                 }
             });
 
             $('#address_region').trigger('change');
 
 
-            $( ".university" ).change(function() {
-
+            $(document).on('change', '.university', function () {
                if ($(this).val() == 'other')
                {
-                   $(this).after(' <input type="text" name="otherUniversity" class="form-control otherUniversity"  required data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
+                   $(this).after(' <input type="text" name="otherUniversity" class="form-control otherUniversity"  required maxlength="500" data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
                }else{
                   $(this).next('.otherUniversity').remove();
                }
 
             });
+
+            $(document).on('change', '.previous_university', function () {
+
+                if ($(this).val() == 'other')
+                {
+                    $(this).after(' <input type="text" name="previous_otherUniversity[]" class="form-control previous_otherUniversity"  required maxlength="500" data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
+                }else{
+                    $(this).next('.previous_otherUniversity').remove();
+                }
+
+            });
+
 
             //remove fields group
             $("body").on("click", ".remove", function () {
@@ -1380,6 +1434,8 @@
                                     $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').append('<option value="' + key + '">' + value + '</option>');
 
                                 });
+                                $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').append('<option value="other">Digər</option>');
+
                             },
                             complete: function () {
                                 $('#loader').css("visibility", "hidden");
