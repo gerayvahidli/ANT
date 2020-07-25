@@ -120,23 +120,23 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function registration(User $user)
-    {
-        $countries = Country::all()->pluck('Name', 'id');
-        $cities = City::where('IsMain', true)->get()->pluck('Name', 'id');
-        $educationLevels = EducationLevel::all()->where('id', '<', 3)->pluck('Name', 'id');
-        $universities = University::orderBy('Name', 'desc')->get()->pluck('Name', 'id');
-        $educationForms = EducationForm::all()->pluck('Name', 'id');
-        $educationSections = EducationSection::where('IsMain', true)->get()->pluck('Name', 'id');
-        $educationPaymentForms = EducationPaymentForm::all()->pluck('Name', 'id');
-        $examLanguages = ExamLanguage::all()->pluck('Name', 'id');
-        $mobilePhoneOperatorCodes = MobileOperatorCode::all()->pluck('Code', 'id');
-        $programTypes = ProgramType::where('id', '<', 3)->get()->pluck('Name', 'id');
-
-        return view('frontend.profile.form',
-            compact('user', 'countries', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'examLanguages', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'programTypes')
-        );
-    }
+//    public function registration(User $user)
+//    {
+//        $countries = Country::all()->pluck('Name', 'id');
+//        $cities = City::where('IsMain', true)->get()->pluck('Name', 'id');
+//        $educationLevels = EducationLevel::all()->where('id', '<', 3)->pluck('Name', 'id');
+//        $universities = University::where('IsShow', 1)->orderBy('Name', 'desc')->get()->pluck('Name', 'id');
+//        $educationForms = EducationForm::all()->pluck('Name', 'id');
+//        $educationSections = EducationSection::where('IsMain', true)->get()->pluck('Name', 'id');
+//        $educationPaymentForms = EducationPaymentForm::all()->pluck('Name', 'id');
+//        $examLanguages = ExamLanguage::all()->pluck('Name', 'id');
+//        $mobilePhoneOperatorCodes = MobileOperatorCode::all()->pluck('Code', 'id');
+//        $programTypes = ProgramType::where('id', '<', 3)->get()->pluck('Name', 'id');
+//
+//        return view('frontend.profile.form',
+//            compact('user', 'countries', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'examLanguages', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'programTypes')
+//        );
+//    }
 
     /**
      * @param \App\User $user
@@ -155,7 +155,7 @@ class UserController extends Controller
         $cities = City::where('IsShow', 1)->get();
         $regions = Region::where('IsShow', 1)->get();
         $educationLevels = EducationLevel::all();
-        $universities = University::all();
+        $universities = University::where('IsShow', 1)->get();
         $educationForms = EducationForm::pluck('Name', 'id');
         $educationSections = EducationSection::all();
         $educationPaymentForms = EducationPaymentForm::pluck('Name', 'id');

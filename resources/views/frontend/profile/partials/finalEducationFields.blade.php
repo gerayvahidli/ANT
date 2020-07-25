@@ -38,18 +38,28 @@
         </div>
     </div>
 
-    <div class="form-group row required">
+    <div class="form-group row required universityDiv">
         <label for="university_id" class="col-4 col-form-label">Universitet</label>
         <div class="col-8">
 
 
             <select name="university_id" id="university_id" class="form-control university">
-                @if($user -> exists)
+                @if($user -> exists  && $user->finalEducation->first() -> university -> IsShow == 0)
+
+                    @foreach($universities as $university)
+                        <option value="{{$university -> Id}}">{{$university -> Name}}</option>
+                    @endforeach
+                    <option value="other" selected>Digər</option>
+
+                @else
+
                     @foreach(\App\Country::find($user->finalEducation->first() -> university -> country -> Id)-> universities  as $university)
                         <option {{$user -> exists && $user->finalEducation->first() -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
                     @endforeach
                     <option value="other">Digər</option>
+
                 @endif
+
             </select>
 
         </div>

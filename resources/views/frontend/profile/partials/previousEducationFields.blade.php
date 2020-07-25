@@ -28,14 +28,31 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="university_id" class="col-4 col-form-label">Universitet</label>
+            <div class="form-group row universityDiv">
+                <label for="university_id" class="col-4 col-form-label ">Universitet</label>
                 <div class="col-8">
-                    <select name="previous_education_university_id[]" id="ex_previous_education_university_id" class="form-control">
-                        @foreach(\App\Country::find($previousEducation -> university -> country -> Id)-> universities  as $university)
-                            <option {{$user -> exists && $previousEducation -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
-                        @endforeach
+                    <select name="previous_education_university_id[]" id="ex_previous_education_university_id" class="form-control ex_previous_university">
+                        @if($user -> exists  && $previousEducation -> university -> IsShow == 0)
+
+                            @foreach($universities as $university)
+                                <option value="{{$university -> Id}}">{{$university -> Name}}</option>
+                            @endforeach
+                            <option value="other" selected>Digər</option>
+
+                        @else
+
+                            @foreach(\App\Country::find($user->finalEducation->first() -> university -> country -> Id)-> universities  as $university)
+                                <option {{$user -> exists && $previousEducation  -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
+                            @endforeach
+                            <option value="other">Digər</option>
+
+                        @endif
                     </select>
+
+                    @if($user -> exists  && $previousEducation -> university -> IsShow == 0)
+                        <input type="text" class="form-control" value="{{$previousEducation -> university -> Name}}" style="display: none">
+                    @endif
+
                 </div>
             </div>
 

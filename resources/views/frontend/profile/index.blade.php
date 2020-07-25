@@ -24,19 +24,7 @@
                         {{--Profil - --}} {{ ($user->exists) ? $user->FirstName . ' ' . $user->LastName. ' ' . $user->FatherName : '' }}
                     </h3>
                 </div>
-                {{--                <hr>--}}
-                {{--                <div class="row">--}}
-                {{--                    <div class="col-6">--}}
-                {{--                        <a href="{{ url('profile/' . $user->id . '/edit') }}" class="btn btn-outline-primary btn-block"><i--}}
-                {{--                                    class="fa fa-edit"></i> Dəyiş</a>--}}
-                {{--                    </div>--}}
-                {{--                    <div class="col-6">--}}
-                {{--                        @if($user->exists)--}}
-                {{--                            <a href="{{ route('profile.feedback.show') }}" class="btn btn-outline-primary btn-block"><i--}}
-                {{--                                        class="fa fa-envelope-o"></i> Email göndər</a>--}}
-                {{--                        @endif--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+
 
                 <hr>
 

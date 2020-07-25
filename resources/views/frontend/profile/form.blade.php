@@ -27,6 +27,7 @@
         }
         form label.error, div.invalid-feedback {
             color: red !important;
+            font-size: 100% !important;
         }
     </style>
 
@@ -694,7 +695,7 @@
 
             </div>
         </div>
-        
+
         {{ Form::close() }}
 
         <div id="special-div">
@@ -1319,15 +1320,7 @@
             $('#address_region').trigger('change');
 
 
-            $(document).on('change', '.university', function () {
-               if ($(this).val() == 'other')
-               {
-                   $(this).after(' <input type="text" name="otherUniversity" class="form-control otherUniversity"  required maxlength="500" data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
-               }else{
-                  $(this).next('.otherUniversity').remove();
-               }
 
-            });
 
             $(document).on('change', '.previous_university', function () {
 
@@ -1339,6 +1332,8 @@
                 }
 
             });
+
+
 
 
             //remove fields group
@@ -1359,6 +1354,8 @@
             $('select[id="country_id"]').on('change', function () {
                 var countryId = $(this).val();
                 var token = $("input[name='_token']").val();
+               $(this).parents().next('.universityDiv').find('.otherUniversity').remove() ;
+
                 if (countryId) {
                     $.ajax({
                         url: '{{ url('/getUniversitiesByCountry') }}',
@@ -1372,7 +1369,6 @@
                             // $('#admission_score').attr('required', true);
                             $('#admission_score').attr("readonly", false);
                             if (countryId != 1) {
-                                console.log($('input[id="admission_score"]'));
                                 // $('#admission_score').removeProp('required');
                                 $('#admission_score').attr('required', false);
                                 $('#admission_score').attr("readonly", true);
@@ -1399,6 +1395,9 @@
 
             });//end select University by Country
 
+
+
+            $('select[id="country_id"]').trigger('change');
 
             function changeUniversity(count) {
                 // Select university by country  for Previous Education 1
@@ -1448,14 +1447,31 @@
                 });//end select University by Country for Previous Education 1
             }
 
-            // $(document).on('change', 'select#ex_previous_education_country_id', function(){
+            $(document).on('change', '.university', function () {
+                if ($(this).val() == 'other')
+                {
+                    $(this).after(' <input type="text" ' +
+                        'name="otherUniversity" ' +
+                        'class="form-control otherUniversity" ' +
+                        'id="otherUniversity" ' +
+                        'value="{{$user -> exists && $user->finalEducation->first() -> university -> IsShow == 0      ? $user->finalEducation->first() -> university -> Name  : ''}}" ' +
+                        'required maxlength="500" ' +
+                        'data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
+                }else{
+                    $(this).next('.otherUniversity').remove();
+                }
 
+            });
+
+            $('.university').trigger('change');
             // Select university by country  for Previous Education 1
             $('select#ex_previous_education_country_id').on('change', function () {
-                var budu = $(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
+                var universitySelect = $(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
                 var countryId = $(this).val();
                 var admissionScore = $(this).parents('.fieldGroup').find('#ex_previous_education_admission_score');
+                $(this).parents().next('.universityDiv').find('.ex_previous_otherUniversity').remove() ;
 
+                var forSelected =$(this).parents().next('.universityDiv').find('.ex_previous_otherUniversity').val() ;
                 // alert(countryId);
                 var token = $("input[name='_token']").val();
                 if (countryId) {
@@ -1476,10 +1492,12 @@
                             } else {
                                 admissionScore.attr("readonly", false);
                             }
-                            budu.empty();
+                            universitySelect.empty();
                             $.each(data, function (key, value) {
-                                budu.append('<option value="' + key + '">' + value + '</option>');
+                                universitySelect.append('<option value="' + key + '">' + value + '</option>');
                             });
+
+                            forSelected != '' ? universitySelect.append('<option selected  value="other">Digər</option>') : budu.append('<option value="other">Digər</option>');
                         },
                         complete: function () {
                             $('#loader').css("visibility", "hidden");
@@ -1491,6 +1509,29 @@
                 }
 
             });//end select University by Country for Previous Education 1
+
+
+            $('select[id="ex_previous_education_country_id"]').trigger('change');
+
+
+
+            $(document).on('change', '.ex_previous_university', function () {
+
+                if ($(this).val() == 'other')
+                {
+                    $(this).after(' <input type="text" name="ex_previous_otherUniversity[]" ' +
+                        'class="form-control ex_previous_otherUniversity"  ' +
+                        'required maxlength="500" ' +
+                        'value="'+$(this).next().val()+'"' +
+                        'data-msg-required ="Digər univeristetin adını boş buraxmayın" ' +
+                        'placeholder="Digər universitetin adını bura yazın">\n');
+                }else{
+                    $(this).next('.ex_previous_otherUniversity').remove();
+                }
+
+            });
+
+            $('.ex_previous_university').trigger('change');
 
             //change education section
             // run on change for the select box
