@@ -46,17 +46,18 @@
             <select name="university_id" id="university_id" class="form-control university">
                 @if($user -> exists  && $user->finalEducation->first() -> university -> IsShow == 0)
 
-                    @foreach($universities as $university)
+                    @foreach(Helper::getUniversitiesByCountry($user->finalEducation->first()  -> university -> country -> Id) as $university)
                         <option value="{{$university -> Id}}">{{$university -> Name}}</option>
                     @endforeach
                     <option value="other" selected>Digər</option>
 
-                @else
+                @elseif($user -> exists  && $user->finalEducation->first() -> university -> IsShow == 1)
 
-                    @foreach(\App\Country::find($user->finalEducation->first() -> university -> country -> Id)-> universities  as $university)
+                    @foreach(Helper::getUniversitiesByCountry($user->finalEducation->first()  -> university -> country -> Id)  as $university)
                         <option {{$user -> exists && $user->finalEducation->first() -> UniversityId == $university -> Id ? 'selected' : ''}} value="{{$university -> Id}}">{{$university -> Name}}</option>
                     @endforeach
                     <option value="other">Digər</option>
+
 
                 @endif
 

@@ -97,7 +97,7 @@ class RegisterController extends Controller
             'EndDate' => 'required|digits:4|integer|min:1900|max:2100',
             'faculty' => 'required|max:500',
             'speciality' => 'required|max:500',
-            'admission_score' => 'required|integer|max:700',
+            'admission_score' => 'integer|between:0,700|nullable',
             'GPA' => 'required|numeric|max:100',
             'otherUniversity' => 'required_if:university_id,other|max:500',
 
@@ -105,7 +105,7 @@ class RegisterController extends Controller
             'previous_education_BeginDate.*' => 'required|digits:4|integer|min:1900|max:2100',
             'previous_education_faculty.*' => 'required|max:500',
             'previous_education_speciality.*' => 'required|max:500',
-            'previous_education_admission_score.*' => 'required|integer|max:700',
+            'previous_education_admission_score.*' => 'integer|between:0,700|nullable',
             'previous_education_GPA.*' => 'required|numeric|max:100',
             'previous_otherUniversity.*' => 'required|max:500',
 

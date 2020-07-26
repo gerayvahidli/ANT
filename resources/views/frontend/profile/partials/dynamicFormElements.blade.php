@@ -5,9 +5,6 @@
         <label for="previous_education_level" class="col-4 col-form-label">Təhsil Pilləsi</label>
         <div class="col-8">
 
-{{--            {{ Form::select('previous_education_level[]', $educationLevels, null,--}}
-{{--               ['class' => 'form-control here', 'placeholder' => '---- Təhsil Pilləsini seç ----', 'required', "data-required-error"=>'Təhsil Pilləsi sahəsini boş buraxmayın']--}}
-{{--            ) }}--}}
             <select name="previous_education_level[]" id="previous_education_level" class="form-control">
                 @foreach($educationLevels as $educationLevel)
                     <option value="{{$educationLevel -> Id}}">{{$educationLevel -> Name}}</option>
@@ -20,9 +17,7 @@
     <div class="form-group row">
         <label for="country" class="col-4 col-form-label">Ölkə seç</label>
         <div class="col-8">
-{{--            {{ Form::select('previous_education_country_id[]', $countries, null,--}}
-{{--                ['class' => 'form-control here', 'placeholder'=>'---- Ölkə seç ----', 'id' => 'previous_education_country_id', "data-required-error"=>'Bu sahəni boş buraxmayın']--}}
-{{--            ) }}--}}
+
             <select name="previous_education_country_id[]" id="previous_education_country_id" class="form-control">
                 @foreach($countries as $country)
                     <option value="{{$country -> Id}}">{{$country -> Name}}</option>
@@ -34,9 +29,6 @@
     <div class="form-group row">
         <label for="university_id" class="col-4 col-form-label ">Universitet</label>
         <div class="col-8">
-{{--            {{ Form::select('previous_education_university_id[]', ['' => '---- Universitet seç ----'], null,--}}
-{{--                ['class' => 'form-control here', 'id' => 'previous_education_university_id', "data-required-error"=>'Bu sahəni boş buraxmayın'])--}}
-{{--            }}--}}
             <select name="previous_education_university_id[]" id="previous_education_university_id" class="form-control previous_university">
             </select>
         </div>
@@ -114,9 +106,7 @@
     <div class="form-group row">
         <label for="country" class="col-4 col-form-label">Bölmə</label>
         <div class="col-8">
-{{--            {{ Form::select('previous_education_section_id[]', $educationSections, null,--}}
-{{--                ['class' => 'form-control here', 'id' => 'previous_education_section_id', "data-required-error"=>'Bu sahəni boş buraxmayın']--}}
-{{--            ) }}--}}
+
             <select name="previous_education_section_id[]" id="previous_education_section_id" class="form-control">
                 @foreach($educationSections as $educationSection)
                     <option value="{{$educationSection -> Id}}">{{$educationSection -> Name}}</option>
@@ -146,6 +136,16 @@
         <label for="previous_education_GPA" class="col-4 col-form-label">Orta bal (GPA)</label>
         <div class="col-8">
             {{ Form::number('previous_education_GPA[]', null, ['class' => 'form-control here',
+         'id' => 'previous_education_GPA',
+         'required',
+         'step' => 'any',
+         'min' => '0',
+         'max' => '100',
+         'placeholder' => '0',
+         'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
+         "data-msg-required"=>'Orta bal sahəsini sahəsini boş buraxmayın',
+         "data-msg-max"=>'Orta bal (GPA) maksimum 100 ola bilər',
+         "data-msg-min"=>'Orta bal (GPA) minimum 0 ola bilər',
          'id' => 'previous_education_GPA',
          'required',
          'step' => 'any',

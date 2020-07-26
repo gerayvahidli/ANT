@@ -255,64 +255,56 @@ class UserController extends Controller
 
 
 //		return $request;
-//		$request->validate( [
-//			'image'                                => 'image|mimes:jpeg,bmp,png',
-//			'FirstName'                            => 'required|alpha|max:255',
-//			'LastName'                             => 'required|alpha|max:255',
-//			'FatherName'                           => 'required|alpha|max:255',
-//			'gender'                               => 'required',
-//			//            'mobilePhone.*.operatorCode'      => 'required|digits:7',
-//			'mobilePhone.*.number'                 => 'digits:7',
-//			//			'email'                                => 'required|string|email|max:255|unique:user',
-//			//			'password'                             => 'required|string|min:6|confirmed',
-//			'nationality'                          => 'required',
-//			'dateOfBirth'                          => 'required|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-//			'City_id'                              => 'required',
-//			'customCity'                           => 'required_if:City_id,52|string|nullable',
-//			'Address'                              => 'required|string',
-//			'idCardNumber'                         => 'required|string|min:6',
-//			'idCardPin'                            => 'nullable|string|size:7',
-//			'MaidenSurname'                        => 'required|string',
-//			//final education
-//			'education_level'                      => 'required',
-//			'country_id'                           => 'required|integer',
-//			'university_id'                        => 'required|integer',
-//			'BeginDate'                            => 'required|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-//			'EndDate'                              => 'required|date|after:BeginDate',
-//			'current_edu_year'                     => 'required|integer',
-//			'faculty'                              => 'required|string',
-//			'speciality'                           => 'required|string',
-//			'admission_score'                      => 'integer|between:0,700|nullable',
-//			'education_section_id'                 => 'sometimes|integer',
-//			'education_section'                    => 'required_if:education_section_id,4|string|nullable',
-//			'education_form_id'                    => 'required|integer',
-//			'education_payment_form_id'            => 'required|integer',
-//			//previous education
-//			'previous_education_level.*'           => 'sometimes|integer',
-//			'previous_education_country_id.*'      => 'sometimes|integer',
-//			'previous_education_university_id.*'   => 'sometimes|integer',
-//			'previous_education_BeginDate.*'       => 'nullable|sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-//			'previous_education_EndDate.*'         => 'nullable|sometimes|date|after:previous_education_BeginDate.*',
-//			'previous_education_speciality.*'      => 'sometimes|string',
-//			'previous_education_admission_score.*' => 'integer|between:0,700|nullable',
-//			// work
-//			'is_currently_working'                 => 'required|boolean',
-//			'is_currently_working_at_socar'        => 'sometimes|nullable',
-//			'personal_number'                      => 'sometimes|nullable|string',
-//			'work_company'                         => 'nullable|string',
-//			'work_experience'                      => 'nullable|integer',
-////			// scholarship
-////			'hasAppliedToScholarship'              => 'required|boolean',
-////			'haveBeenScholar'                      => 'sometimes|boolean|nullable',
-////			'previous_scholarship_type.*'          => 'sometimes|integer|nullable',
-////			'previous_scholarship_date.*'          => 'sometimes|date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-////			// internship
-////			'haveBeenIntern'                       => 'required|boolean',
-////			'internship_department.*'              => 'string|max:300',
-////			'internship_date.*'                    => 'date|before:' . now() . '|after:' . date( 'Y-m-d', strtotime( '-200 years' ) ),
-////			// exam language
-////			'exam_language_id'                     => 'required',
-//		] );
+		$request->validate( [
+            'image' => 'required|image|mimes:jpeg,bmp,png',
+            'FirstName' => 'required|max:255',
+            'LastName' => 'required|max:255',
+            'FatherName' => 'required|max:255',
+            'gender' => 'required',
+            'Dob' => 'required|date',
+            'Address' => 'required',
+            'otherCity' => 'required_if:BirthCityId,other',
+            'other_address_region' => 'required_if:address_region,other',
+            'homePhone' => 'required|digits:7',
+            'mobilePhone.*.number' => 'required|digits:7',
+//            'email' => 'required|string|email|max:255|unique:user',
+            'email2.*' => 'required|string|email|max:255',
+//            'password' => 'required|string|min:6|confirmed',
+//            'idCardPin' => 'required|max:7|unique:user,Fin',
+//            'idCardNumber' => 'required|max:8|unique:user,PassportNo',
+
+
+            'BeginDate' => 'required|digits:4|integer|min:1900|max:2100',
+            'EndDate' => 'required|digits:4|integer|min:1900|max:2100',
+            'faculty' => 'required|max:500',
+            'speciality' => 'required|max:500',
+            'admission_score' => 'integer|between:0,700|nullable',
+            'GPA' => 'required|numeric|max:100',
+            'otherUniversity' => 'required_if:university_id,other|max:500',
+
+            'previous_education_BeginDate.*' => 'required|digits:4|integer|min:1900|max:2100',
+            'previous_education_BeginDate.*' => 'required|digits:4|integer|min:1900|max:2100',
+            'previous_education_faculty.*' => 'required|max:500',
+            'previous_education_speciality.*' => 'required|max:500',
+            'previous_education_admission_score.*' => 'integer|between:0,700|nullable',
+            'previous_education_GPA.*' => 'required|numeric|max:100',
+            'previous_otherUniversity.*' => 'required|max:500',
+
+
+            'department' => 'required|max:500',
+            'position' => 'required|max:500',
+            'StartDate' => 'required',
+            'tabel_number' => 'required|numeric',
+
+
+            'previous_department.*' => 'required|max:500',
+            'previous_position.*' => 'required|max:500',
+            'previous_StartDate.*' => 'required',
+            'previous_tabel_number.*' => 'required|numeric',
+            'otherCompany.*' => 'required|max:500'
+
+
+        ] );
 
         $user->ImagePath = $this->createImage($request, $user->ImagePath) ;
 //		$user->email      = $request->email;

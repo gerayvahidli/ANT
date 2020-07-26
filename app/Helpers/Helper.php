@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Country;
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
@@ -60,6 +61,13 @@ class Helper
 
             }
         }
+
+    }
+
+
+    public static function getUniversitiesByCountry  ($countryId)
+    {
+       return Country::find($countryId)-> universities->where('IsShow',1) ;
 
     }
 

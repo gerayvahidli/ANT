@@ -1375,13 +1375,14 @@
                                 $('#admission_score').val(0);
                             }
                             // $('select[id="university_id"]').append('<option>---- Universitet seç ----</option>');
-
+                            $('select[id="university_id"]').empty();
                             $.each(data, function (key, value) {
 
                                 $('select[id="university_id"]').append('<option value="' + key + '">' + value + '</option>');
 
                             });
-                            $('select[id="university_id"]').append('<option {{$user -> exists && $user->finalEducation->first() -> university  -> IsShow == 0 ? "selected" : ""}} value="other">Digər</option>');
+                            $('select[id="university_id"]').append('<option value="other">Digər</option>');
+                            $('select[id="university_id"]').trigger('change');
 
                         },
                         complete: function () {
@@ -1395,8 +1396,10 @@
             });//end select University by Country
 
 
-
+            @if(!$user -> exists)
             $('select[id="country_id"]').trigger('change');
+            @endif
+
 
             function changeUniversity(count) {
                 // Select university by country  for Previous Education 1
@@ -1464,6 +1467,7 @@
 
             $('.university').trigger('change');
             // Select university by country  for Previous Education 1
+
             $('select#ex_previous_education_country_id').on('change', function () {
                 var universitySelect = $(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
                 var countryId = $(this).val();
@@ -1486,7 +1490,7 @@
 
                         success: function (data) {
                             if (countryId != 1) {
-                                admissionScore.attr("readonly", true);
+                                admissionScore.attr("disabled", true);
                                 admissionScore.val('');
                                 // $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#previous_education_admission_score').remove();
                             } else {
@@ -1497,7 +1501,7 @@
                                 universitySelect.append('<option value="' + key + '">' + value + '</option>');
                             });
 
-                            typeof  forSelected !== 'undefined' ?  universitySelect.append('<option selected value="other">Digər</option>'): universitySelect.append('<option  value="other">Digər</option>') ;
+                            universitySelect.append('<option value="other">Digər</option>') ;
                         },
                         complete: function () {
                             $('#loader').css("visibility", "hidden");
@@ -1511,7 +1515,6 @@
             });//end select University by Country for Previous Education 1
 
 
-            $('select[id="ex_previous_education_country_id"]').trigger('change');
 
 
 
@@ -1639,9 +1642,7 @@
 
             $('#companies').trigger("change");
             $('#BirthCityId').trigger("change");
-            @if(!$user -> exists)
-            $('#country_id').trigger("change");
-            @endif
+
 
             // $('select#ex_previous_education_country_id').trigger("change");
             $('#previous_company_id').trigger('change');
