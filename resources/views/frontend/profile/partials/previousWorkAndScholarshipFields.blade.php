@@ -7,10 +7,10 @@
             <div class="form-group row required">
                 <label for="previous_company_id" class="col-4 col-form-label">Müəssisə</label>
                 <div class="col-8">
-                        {{ Form::hidden('previous_job_id[]', $previousJob->Id) }}
-                        {{ Form::hidden('hidden_company_id[]', $previousJob->CompanyId) }}
+                        {{ Form::hidden('previous_job_id['.$loop->iteration.']', $previousJob->Id) }}
+                        {{ Form::hidden('hidden_company_id['.$loop->iteration.']', $previousJob->CompanyId,['class' => 'hidden_company_id']) }}
 
-                    <select class="form-control" id="ex_previous_company_id" name="previous_company_id[]">
+                    <select class="form-control ex_previous_company" id="ex_previous_company_id-{{ $loop->iteration }}" name="previous_company_id[{{ $loop->iteration }}]">
                         @if($user -> exists && $previousJob -> Company -> IsSocar== 0)
 
                             @foreach($companies as $company)
@@ -25,9 +25,10 @@
                             <option value="other">Digər</option>
                         @endif
                     </select>
-                    <input type="text" class="form-control" name="otherCompany[]" style="display: none"
-                           value="{{$user -> exists && $previousJob -> Company -> IsSocar == 0 ? $previousJob -> Company -> Name :''  }}"
-                           placeholder="Digər müəssisənin adını bura yazın"/>
+
+                    @if($user -> exists && $previousJob -> Company -> IsSocar== 0)
+                        <input type="hidden" value="{{$previousJob -> Company -> Name}}">
+                    @endif
 
                     <div class="help-block with-errors"></div>
                 </div>
@@ -36,7 +37,12 @@
                 <label for="previous_organization" class="col-4 col-form-label">Təşkilat</label>
                 <div class="col-8">
                     <input value="{{  $user -> exists && isset($previousJob -> Organization) ? $previousJob -> Organization : null }}"
-                           class="form-control" type="text" name="previous_organization[]" id="previous_organization">
+                           class="form-control"
+                           type="text"
+                           name="previous_organization[{{ $loop->iteration }}]"
+                           id="previous_organization-{{ $loop->iteration }}"
+                           maxlength="500"
+                    >
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -46,10 +52,11 @@
                     <input value="{{  $user -> exists  ? $previousJob -> Department : null }}"
                            class="form-control"
                            type="text"
-                           name="previous_department[]"
-                           id=""
+                           name="previous_department[{{ $loop->iteration }}]"
+                           id="previous_department-{{$loop->iteration }}"
                            required
-                           data-required-error="Struktur Bölmə sahəsi boş qala bilməz"
+                           maxlength="500"
+                           data-msg-required = "Struktur Bölmə sahəsini boş buraxmayın"
                     >
                     <div class="help-block with-errors"></div>
                 </div>
@@ -61,10 +68,11 @@
                     <input value="{{  $user -> exists  ? $previousJob -> Position : null }}"
                            class="form-control"
                            type="text"
-                           name="previous_position[]"
-                           id="previous_position"
+                           name="previous_position[{{$loop->iteration }}]"
+                           id="previous_position-{{$loop->iteration }}"
                            required
-                           data-required-error="Vəzifə sahəsi boş qala bilməz"
+                           maxlength="500"
+                           data-msg-required = "Vəzifə sahəsini boş buraxmayın"
                     >
                     <div class="help-block with-errors"></div>
                 </div>
@@ -74,7 +82,12 @@
                 <label for="previous_StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
                 <div class="col-8">
                     <input value="{{  $user -> exists  ? $previousJob -> StartDate : null }}" class="form-control"
-                           type="date" name="previous_StartDate[]" id="previous_StartDate">
+                           type="date"
+                           name="previous_StartDate[{{$loop->iteration }}]"
+                           id="previous_StartDate-{{$loop->iteration }}"
+                           required
+                           data-msg-required = "İşə qəbul tarixi sahəsini boş buraxmayın"
+                    >
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -82,8 +95,14 @@
             <div class="form-group row required">
                 <label for="previous_EndDate" class="col-4 col-form-label">İşdən ayrılma tarixi</label>
                 <div class="col-8">
-                    <input value="{{  $user -> exists  ? $previousJob -> EndDate : null }}" class="form-control"
-                           type="date" name="previous_EndDate[]" id="previous_EndDate">
+                    <input value="{{  $user -> exists  ? $previousJob -> EndDate : null }}"
+                           class="form-control"
+                           type="date"
+                           name="previous_EndDate[{{$loop->iteration }}]"
+                           id="previous_EndDate-{{$loop->iteration }}"
+                           required
+                           data-msg-required = "İşə qəbul tarixi sahəsini boş buraxmayın"
+                    >
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -96,52 +115,5 @@
         </div>
     @endforeach
 @else
-    {{--<div class="card card-body fieldGroupCopy" id="fieldGroupCopy" style="display: none">--}}
 
-    {{--<div class="form-group row">--}}
-    {{--<label for="country" class="col-4 col-form-label">Ölkə seç</label>--}}
-    {{--<div class="col-8">--}}
-    {{--{{ Form::select('previous_education_country_id[]', $countries, null,--}}
-    {{--['class' => 'form-control here', 'placeholder'=>'---- Ölkə seç ----', 'id' => 'previous_education_country_id']--}}
-    {{--) }}--}}
-    {{--</div>--}}
-    {{--</div>--}}
-
-    {{--<div class="form-group row">--}}
-    {{--<label for="university_id" class="col-4 col-form-label">Universitet</label>--}}
-    {{--<div class="col-8">--}}
-    {{--{{ Form::select('previous_education_university_id[]', ['' => '---- Universitet seç ----'], null,--}}
-    {{--['class' => 'form-control here', 'id' => 'previous_education_university_id'])--}}
-    {{--}}--}}
-    {{--</div>--}}
-    {{--</div>--}}
-
-    {{--<div class="form-group row">--}}
-    {{--<label for="edu_date" class="col-4 col-form-label">Təhsil müddəti</label>--}}
-    {{--<div class="col-4">--}}
-    {{--{{ Form::date('previous_education_BeginDate[]', date("Y-m-d", time() - 86400), ['class' => 'form-control here', 'id' => 'datePicker']) }}--}}
-    {{--</div>--}}
-    {{--<div class="col-4">--}}
-    {{--{{ Form::date('previous_education_EndDate[]', now(), ['class' => 'form-control here', 'id' => 'datePicker']) }}--}}
-    {{--</div>--}}
-    {{--</div>--}}
-
-    {{--<div class="form-group row">--}}
-    {{--<label for="speciality" class="col-4 col-form-label">İxtisas</label>--}}
-    {{--<div class="col-8">--}}
-    {{--{{ Form::text('previous_education_speciality[]', null, ['class' => 'form-control here']) }}--}}
-    {{--</div>--}}
-    {{--</div>--}}
-
-    {{--<div class="form-group row">--}}
-    {{--<label for="admission_score" class="col-4 col-form-label">Qəbul balı</label>--}}
-    {{--<div class="col-8">--}}
-    {{--{{ Form::text('previous_education_admission_score[]', null, ['class' => 'form-control here']) }}--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="input-group-addon">--}}
-    {{--<a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Ləğv et</a>--}}
-    {{--</div>--}}
-    {{--<hr>--}}
-    {{--</div> --}}{{--fieldGroup--}}
 @endif

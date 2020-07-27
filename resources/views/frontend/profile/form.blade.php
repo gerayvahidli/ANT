@@ -970,8 +970,8 @@
             //delete previous education
 
             $(document).on('click', '#delete-previous-education', function () {
-                var previous_education_id = $(this).closest('.fieldGroup').find('input[name="previous_education_id[]"]').val();
-                console.log(previous_education_id);
+                var previous_education_id = $(this).closest('.fieldGroup').find('.previous_education_id').val();
+                // console.log(previous_education_id);
                 axios.post('{{ route('deletePreviousEducation') }}', {
                     previous_education_id: previous_education_id,
                     _token: token
@@ -987,7 +987,7 @@
             });
 
             $(document).on('click', '#delete-previous-job', function () {
-                var previous_job_id = $(this).closest('.workFieldGroup').find('input[name="previous_job_id[]"]').val();
+                var previous_job_id = $(this).closest('.workFieldGroup').find('.hidden_company_id').val();
                 console.log(previous_job_id);
                 axios.post('{{ route('deletePreviousJob') }}', {
                     previous_job_id: previous_job_id,
@@ -1072,28 +1072,28 @@
         //     minViewMode: "years"
         // });
 
-        $('#previous_education_StartDate').datepicker({
-            format: "yyyy",
-            viewMode: "years",
-            minViewMode: "years"
-        });
-        $('#previous_education_EndDate').datepicker({
-            format: "yyyy",
-            viewMode: "years",
-            minViewMode: "years"
-        });
-
-
-        $('#previous_education_BeginDate').datepicker({
-            format: "yyyy",
-            viewMode: "years",
-            minViewMode: "years"
-        });
-        $('#previous_education_EndDate').datepicker({
-            format: "yyyy",
-            viewMode: "years",
-            minViewMode: "years"
-        });
+        // $('#previous_education_StartDate').datepicker({
+        //     format: "yyyy",
+        //     viewMode: "years",
+        //     minViewMode: "years"
+        // });
+        // $('#previous_education_EndDate').datepicker({
+        //     format: "yyyy",
+        //     viewMode: "years",
+        //     minViewMode: "years"
+        // });
+        //
+        //
+        // $('#previous_education_BeginDate').datepicker({
+        //     format: "yyyy",
+        //     viewMode: "years",
+        //     minViewMode: "years"
+        // });
+        // $('#previous_education_EndDate').datepicker({
+        //     format: "yyyy",
+        //     viewMode: "years",
+        //     minViewMode: "years"
+        // });
 
 
         $(document).ready(function () {
@@ -1209,7 +1209,7 @@
             var maxGroup = 100;
             var maxGroupWork = 100;
 
-            // previousEducationCount = 1;
+            previousEducationCount = 1;
             //add more fields group
             $("#addMore").click(function () {
 
@@ -1219,7 +1219,72 @@
                     // console.log(previousEducationCount);
                     var fieldHTML = '<div class="fieldGroup" id="fieldGroup' + previousEducationCount + '">' + $(".fieldGroupCopy").html() + '</div>';
                     $('body').find('.fieldGroup:last').after(fieldHTML);
-                    var countryId = $('select[id="previous_education_country_id"]');
+                    $('.fieldGroup:last .previous_education_level').attr({
+                        id:"previous_education_level-"+previousEducationCount,
+                        name:"previous_education_level["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_country').attr({
+                        id:"previous_education_country_id-"+previousEducationCount,
+                        name:"previous_education_country_id["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_university').attr({
+                        id:"previous_education_university_id-"+previousEducationCount,
+                        name:"previous_education_university_id["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_BeginDate').attr({
+                        id:"previous_education_BeginDate-"+previousEducationCount,
+                        name:"previous_education_BeginDate["+previousEducationCount+"]"
+                    });
+
+
+                    $('.fieldGroup:last .previous_education_EndDate').attr({
+                        id:"previous_education_EndDate-"+previousEducationCount,
+                        name:"previous_education_EndDate["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_faculty').attr({
+                        id:"previous_education_faculty-"+previousEducationCount,
+                        name:"previous_education_faculty["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_speciality').attr({
+                        id:"previous_education_speciality-"+previousEducationCount,
+                        name:"previous_education_speciality["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_admission_score').attr({
+                        id:"previous_education_admission_score-"+previousEducationCount,
+                        name:"previous_education_admission_score["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_section').attr({
+                        id:"previous_education_section_id-"+previousEducationCount,
+                        name:"previous_education_section_id["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_form').attr({
+                        id:"previous_education_form_id-"+previousEducationCount,
+                        name:"previous_education_form_id["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_payment_form').attr({
+                        id:"previous_education_payment_form_id-"+previousEducationCount,
+                        name:"previous_education_payment_form_id["+previousEducationCount+"]"
+                    });
+
+                    $('.fieldGroup:last .previous_education_GPA').attr({
+                        id:"previous_education_GPA-"+previousEducationCount,
+                        name:"previous_education_GPA["+previousEducationCount+"]"
+                    });
+
+
+
+
+
+                    var countryId = $('.previous_education_country');
                     // var universityId = $('select[id="previous_education_university_id"]');
                     countryId.change(changeUniversity(previousEducationCount));
                     countryId.trigger("change");
@@ -1242,11 +1307,38 @@
                     var fieldHTML = '<div class="workFieldGroup" id="workFieldGroup' + previousWorkCount + '">' + $(".previousWorkFieldGroupCopy").html() + '</div>';
                     console.log(fieldHTML);
                     $('body').find('.workFieldGroup:last').after(fieldHTML);
-                    // var countryId = $('select[id="previous_education_country_id"]');
-                    // var universityId = $('select[id="previous_education_university_id"]');
-                    // countryId.change(changeUniversity(previousEducationCount));
 
-                    localStorage.setItem('activeTab', fieldHTML);
+                    $('.workFieldGroup:last .previous_company').attr({
+                        id:"previous_company_id-"+previousWorkCount,
+                        name:"previous_company_id["+previousWorkCount+"]"
+                    });
+
+                    $('.workFieldGroup:last .previous_organization').attr({
+                        id:"previous_organization-"+previousWorkCount,
+                        name:"previous_organization["+previousWorkCount+"]"
+                    });
+
+                    $('.workFieldGroup:last .previous_department').attr({
+                        id:"previous_department-"+previousWorkCount,
+                        name:"previous_department["+previousWorkCount+"]"
+                    });
+
+                    $('.workFieldGroup:last .previous_position').attr({
+                        id:"previous_position-"+previousWorkCount,
+                        name:"previous_position["+previousWorkCount+"]"
+                    });
+
+                    $('.workFieldGroup:last .previous_StartDate').attr({
+                        id:"previous_StartDate-"+previousWorkCount,
+                        name:"previous_StartDate["+previousWorkCount+"]"
+                    });
+
+                    $('.workFieldGroup:last .previous_EndDate').attr({
+                        id:"previous_EndDate-"+previousWorkCount,
+                        name:"previous_EndDate["+previousWorkCount+"]"
+                    });
+
+
 
                 } else {
                     $('#addMoreWork').attr('disabled', true);
@@ -1254,11 +1346,12 @@
                 }
             });
 
-            $(document).on('change', '#previous_company_id', function () {
+            $(document).on('change', '.previous_company', function () {
                 if (this.value == 'other') {
+                    var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
                     $(this).after(' <input type="text" \n' +
                         ' class="form-control otherCompany" \n' +
-                        ' name="otherCompany[]" \n' +
+                        ' name="otherCompany['+number+']" \n' +
                         ' required\n' +
                         ' maxlength ="500"'+
                         ' placeholder="Digər müəssisənin adını bura yazın"'+
@@ -1270,12 +1363,6 @@
 
             });
 
-            $(document).on('change', 'select[id="ex_previous_company_id"]', function () {
-                var changed = this,
-                    check = changed.value === "other";
-
-                $(changed).next().toggle(check);
-            });
 
 
 
@@ -1322,11 +1409,11 @@
 
 
 
-            $(document).on('change', '.previous_university', function () {
+            $(document).on('change', '.previous_education_university', function () {
 
                 if ($(this).val() == 'other')
-                {
-                    $(this).after(' <input type="text" name="previous_otherUniversity[]" class="form-control previous_otherUniversity"  required maxlength="500" data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
+                {   var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
+                    $(this).after(' <input type="text" name="previous_otherUniversity['+number+']" class="form-control previous_otherUniversity"  required maxlength="500" data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
                 }else{
                     $(this).next('.previous_otherUniversity').remove();
                 }
@@ -1403,10 +1490,10 @@
 
             function changeUniversity(count) {
                 // Select university by country  for Previous Education 1
-                $('#fieldGroup' + count + ' select[id="previous_education_country_id"]').on('change', function () {
+                $('#fieldGroup' + count + ' .previous_education_country').on('change', function () {
                     // console.log( $( this ).val() );
                     var countryId = $(this).val();
-                    // alert(countryId);
+                    var universitySelect = $(this).parents('.fieldGroup').find('.previous_education_university')
                     var token = $("input[name='_token']").val();
                     if (countryId) {
                         $.ajax({
@@ -1419,23 +1506,23 @@
                             },
 
                             success: function (data) {
-                                $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr('required', true);
-                                $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr("disabled", false);
+                                $('#fieldGroup' + count + ' .previous_education_admission_score').attr('required', true);
+                                $('#fieldGroup' + count + ' .previous_education_admission_score').attr("disabled", false);
                                 if (countryId != 1) {
                                     // console.log('country id: ' + countryId);
-                                    $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr('required', false);
-                                    $('#fieldGroup' + count + ' input[id="previous_education_admission_score"]').attr("disabled", "disabled");
+                                    $('#fieldGroup' + count + ' .previous_education_admission_score').attr('required', false);
+                                    $('#fieldGroup' + count + ' .previous_education_admission_score').attr("disabled", "disabled");
                                 }
-                                $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').empty();
+                                $('#fieldGroup' + count + ' .previous_education_university').empty();
                                 // console.log('count:' + count);
-                                // $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').append('<option>---- Universitet seç ----</option>');
                                 $.each(data, function (key, value) {
                                     // console.log('count each : ' + count);
 
-                                    $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').append('<option value="' + key + '">' + value + '</option>');
+                                    $('#fieldGroup' + count + ' .previous_education_university').append('<option value="' + key + '">' + value + '</option>');
 
                                 });
-                                $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').append('<option value="other">Digər</option>');
+                                $('#fieldGroup' + count + ' .previous_education_university').append('<option value="other">Digər</option>');
+                                universitySelect.trigger('change');
 
                             },
                             complete: function () {
@@ -1443,7 +1530,7 @@
                             }
                         });
                     } else {
-                        $('#fieldGroup' + count + ' select[id="previous_education_university_id"]').empty();
+                        $('#fieldGroup' + count + ' .previous_education_university').empty();
                     }
 
                 });//end select University by Country for Previous Education 1
@@ -1468,10 +1555,10 @@
             $('.university').trigger('change');
             // Select university by country  for Previous Education 1
 
-            $('select#ex_previous_education_country_id').on('change', function () {
-                var universitySelect = $(this).parents('.fieldGroup').find('select#ex_previous_education_university_id')
+            $('.ex_previous_education_country').on('change', function () {
+                var universitySelect = $(this).parents('.fieldGroup').find('.ex_previous_education_university')
                 var countryId = $(this).val();
-                var admissionScore = $(this).parents('.fieldGroup').find('#ex_previous_education_admission_score');
+                var admissionScore = $(this).parents('.fieldGroup').find('.ex_previous_education_admission_score');
                 $(this).parents().next('.universityDiv').find('.ex_previous_otherUniversity').remove() ;
 
 
@@ -1492,9 +1579,8 @@
                             if (countryId != 1) {
                                 admissionScore.attr("disabled", true);
                                 admissionScore.val('');
-                                // $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#previous_education_admission_score').remove();
                             } else {
-                                admissionScore.attr("readonly", false);
+                                admissionScore.attr("disabled", false);
                             }
                             universitySelect.empty();
                             $.each(data, function (key, value) {
@@ -1502,14 +1588,15 @@
                             });
 
                             universitySelect.append('<option value="other">Digər</option>') ;
+                            universitySelect.trigger('change');
+
                         },
                         complete: function () {
                             $('#loader').css("visibility", "hidden");
                         }
                     });
                 } else {
-                    $('select#ex_previous_education_country_id').parents('.fieldGroup').find('#ex_previous_education_university_id').empty();
-                    // $('select[id="ex_previous_education_country_id"]').closest('select[id="ex_previous_education_university_id"]').empty();
+                    $('.ex_previous_education_country').parents('.fieldGroup').find('.ex_previous_education_university').empty();
                 }
 
             });//end select University by Country for Previous Education 1
@@ -1518,13 +1605,14 @@
 
 
 
-            $(document).on('change', '.ex_previous_university', function () {
+            $(document).on('change', '.ex_previous_education_university', function () {
 
 
                 if ($(this).val() == 'other')
                 {
+                    var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
 
-                    var element = ' <input type="text" name="previous_otherUniversity[]" ' +
+                    var element = ' <input type="text" name="previous_otherUniversity['+number+']" ' +
                         'class="form-control ex_previous_otherUniversity"  ' +
                         'required maxlength="500" ';
 
@@ -1542,7 +1630,31 @@
 
             });
 
-            $('.ex_previous_university').trigger('change');
+            $('.ex_previous_education_university').trigger('change');
+
+            $(document).on('change', '.ex_previous_company', function () {
+                if (this.value == 'other') {
+                    var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
+
+                    var element = ' <input type="text" name="otherCompany['+number+']" ' +
+                        'class="form-control otherCompany"  ' +
+                        'required maxlength="500" ';
+
+                    $(this).next().length ? element += 'value="'+ $(this).next().val()+'"' : '';
+
+                    element += 'data-msg-required ="Digər müəssisənin adını boş buraxmayın" ' +
+                        'placeholder="Digər müəssisənin adını bura yazın">\n'
+                    $(this).after(element);
+                } else {
+                    $(this).next('.otherCompany').remove();
+                }
+
+            });
+
+            $('.ex_previous_company').trigger("change");
+
+
+
 
             //change education section
             // run on change for the select box
@@ -1644,9 +1756,6 @@
             $('#BirthCityId').trigger("change");
 
 
-            // $('select#ex_previous_education_country_id').trigger("change");
-            $('#previous_company_id').trigger('change');
-            $('select[id="ex_previous_company_id"]').trigger("change");
 
 
         });

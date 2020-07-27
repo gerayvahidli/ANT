@@ -1,14 +1,14 @@
 @if($user->exists && count($user->previousEducations))
     <p class="lead"> ƏVVƏLKİ TƏHSİLLƏRİ</p>
     @foreach($user->previousEducations as $previousEducation)
-        <p class="lead"> Əvvəlki təhsil {{$loop -> iteration}}</p>
         <div class="fieldGroup" id="fieldGroup{{ $loop->iteration }}">
-            {{ Form::hidden('previous_education_id[]', $previousEducation->Id) }}
+            <p class="lead"> Əvvəlki təhsil {{$loop -> iteration}}</p>
+            {{ Form::hidden('previous_education_id['.$loop->iteration.']', $previousEducation->Id,['class' => 'previous_education_id' ]) }}
 
             <div class="form-group row">
                 <label for="previous_education_level" class="col-4 col-form-label">Təhsil Pilləsi</label>
                 <div class="col-8">
-                    <select name="previous_education_level[]" id="education_level" class="form-control">
+                    <select name="previous_education_level[{{ $loop->iteration }}]" id="education_level-{{ $loop->iteration }}" class="form-control">
                         @foreach($educationLevels as $educationLevel)
                             <option {{$user -> exists && $previousEducation -> EducationLevelId == $educationLevel -> Id ? 'selected' : ''}} value="{{$educationLevel -> Id}}">{{$educationLevel -> Name}}</option>
                         @endforeach
@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label for="country" class="col-4 col-form-label">Ölkə seç</label>
                 <div class="col-8">
-                    <select name="previous_education_country_id[]" id="ex_previous_education_country_id" class="form-control">
+                    <select name="previous_education_country_id[{{ $loop->iteration }}]" id="ex_previous_education_country_id-{{ $loop->iteration }}" class="form-control ex_previous_education_country">
                         @foreach($countries as $country)
                             <option {{$user -> exists && $previousEducation -> university -> country -> Id == $country -> Id ? 'selected' : ''}} value="{{$country -> Id}}">{{$country -> Name}}</option>
                         @endforeach
@@ -31,7 +31,7 @@
             <div class="form-group row universityDiv">
                 <label for="university_id" class="col-4 col-form-label ">Universitet</label>
                 <div class="col-8">
-                    <select name="previous_education_university_id[]" id="ex_previous_education_university_id" class="form-control ex_previous_university">
+                    <select name="previous_education_university_id[{{ $loop->iteration }}]" id="ex_previous_education_university_id-{{ $loop->iteration }}" class="form-control ex_previous_education_university ">
                         @if($user -> exists  && $previousEducation -> university -> IsShow == 0)
 
                             @foreach(Helper::getUniversitiesByCountry ($previousEducation -> university -> country -> Id) as $university)
@@ -59,9 +59,10 @@
             <div class="form-group row">
                 <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti(il)</label>
                 <div class="col-4 form-group">
-                    {{ Form::number('previous_education_BeginDate[]', $previousEducation->StartDate, ['class' => 'form-control here',
+                    {{ Form::number('previous_education_BeginDate['.$loop->iteration.']', $previousEducation->StartDate, [
+                    'class' => 'form-control here',
                     'required',
-                    'id' => 'ex_previous_education_BeginDate',
+                    'id' => 'ex_previous_education_BeginDate-'.$loop->iteration,
                     'autocomplete' => 'none',
                     'min'=>'1900',
                     'max'=>'2100',
@@ -72,9 +73,10 @@
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="col-4 form-group">
-                    {{ Form::number('previous_education_EndDate[]', $previousEducation->EndDate, ['class' => 'form-control here',
+                    {{ Form::number('previous_education_EndDate['.$loop->iteration.']', $previousEducation->EndDate, [
+                   'class' => 'form-control here',
                    'required',
-                   'id' => 'ex_previous_education_EndDate',
+                   'id' => 'ex_previous_education_EndDate-'.$loop->iteration,
                    'min'=>'1900',
                    'max'=>'2100',
                    'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
@@ -88,8 +90,9 @@
             <div class="form-group row">
                 <label for="speciality" class="col-4 col-form-label">Fakültə</label>
                 <div class="col-8">
-                    {{ Form::text('previous_education_faculty[]', $previousEducation->Faculty, ['class' => 'form-control here',
-                  'id'=> 'ex_previous_education_faculty',
+                    {{ Form::text('previous_education_faculty['.$loop->iteration.']', $previousEducation->Faculty, [
+                  'class' => 'form-control here',
+                  'id'=> 'ex_previous_education_faculty-'.$loop->iteration,
                   'required',
                   'maxlength' => '500',
                   "data-msg-required"=>'Fakultə sahəsini boş buraxmayın']) }}
@@ -100,8 +103,9 @@
             <div class="form-group row">
                 <label for="speciality" class="col-4 col-form-label">İxtisas</label>
                 <div class="col-8">
-                    {{ Form::text('previous_education_speciality[]', $previousEducation->Speciality, ['class' => 'form-control here',
-                  'id'=> 'ex_previous_education_speciality',
+                    {{ Form::text('previous_education_speciality['.$loop->iteration.']', $previousEducation->Speciality, [
+                  'class' => 'form-control here',
+                  'id'=> 'ex_previous_education_speciality-'.$loop->iteration,
                   'required',
                   'maxlength' => '500',
                   "data-msg-required"=>'İxtisas sahəsini boş buraxmayın'
@@ -113,9 +117,11 @@
             <div class="form-group row">
                 <label for="previous_education_admission_score" class="col-4 col-form-label">Qəbul balı</label>
                 <div class="col-8">
-                    {{ Form::number('previous_education_admission_score[]',($user -> exists && isset($previousEducation->AdmissionScore)) ? str_replace(' ', '', $previousEducation->AdmissionScore)  : NULL, ['class' => 'form-control here',
-                 'id' => 'ex_previous_education_admission_score',
+                    {{ Form::number('previous_education_admission_score['.$loop->iteration.']',($user -> exists && isset($previousEducation->AdmissionScore)) ? str_replace(' ', '', $previousEducation->AdmissionScore)  : NULL, [
+                 'class' => 'form-control here ex_previous_education_admission_score',
+                 'id' => 'ex_previous_education_admission_score-'.$loop->iteration,
                  'required',
+                 $user -> exists && $previousEducation -> university -> country -> Id != 1 ? 'disabled' :'',
                  'min' => '0',
                  'max' => '700',
                  'placeholder' => '0',
@@ -134,7 +140,7 @@
                     {{--            {{ Form::select('previous_education_section_id[]', $educationSections, null,--}}
                     {{--                ['class' => 'form-control here', 'id' => 'previous_education_section_id', "data-required-error"=>'Bu sahəni boş buraxmayın']--}}
                     {{--            ) }}--}}
-                    <select name="previous_education_section_id[]" id="ex_previous_education_section_id" class="form-control">
+                    <select name="previous_education_section_id[{{$loop -> iteration}}]" id="ex_previous_education_section_id-{{$loop -> iteration}}" class="form-control">
                         @foreach($educationSections as $educationSection)
                             <option {{$user -> exists && $previousEducation -> EducationSectionId  == $educationSection -> Id ? 'selected' : ''}} value="{{$educationSection -> Id}}">{{$educationSection -> Name}}</option>
                         @endforeach
@@ -145,16 +151,16 @@
             <div class="form-group row">
                 <label for="country" class="col-4 col-form-label">Təhsil forması</label>
                 <div class="col-8">
-                    {{ Form::select('previous_education_form_id[]', $educationForms, $previousEducation -> EducationFormId,
-                        ['class' => 'form-control here', 'id' => 'ex_previous_education_form_id', "data-required-error"=>'Bu sahəni boş buraxmayın']
+                    {{ Form::select('previous_education_form_id['.$loop -> iteration.']', $educationForms, $previousEducation -> EducationFormId,
+                        ['class' => 'form-control here', 'id' => 'ex_previous_education_form_id-'.$loop -> iteration, "data-required-error"=>'Bu sahəni boş buraxmayın']
                     ) }}
                 </div>
             </div>
             <div class="form-group row">
                 <label for="country" class="col-4 col-form-label">Təhsil qrupu</label>
                 <div class="col-8">
-                    {{ Form::select('previous_education_payment_form_id[]', $educationPaymentForms, $previousEducation -> EducationPaymentFormId,
-                        ['class' => 'form-control here', 'id' => 'ex_previous_education_payment_form_id', "data-required-error"=>'Bu sahəni boş buraxmayın']
+                    {{ Form::select('previous_education_payment_form_id['.$loop -> iteration.']]', $educationPaymentForms, $previousEducation -> EducationPaymentFormId,
+                        ['class' => 'form-control here', 'id' => 'ex_previous_education_payment_form_id-'.$loop -> iteration, "data-required-error"=>'Bu sahəni boş buraxmayın']
                     ) }}
                 </div>
             </div>
@@ -162,9 +168,9 @@
             <div class="form-group row">
                 <label for="previous_education_GPA" class="col-4 col-form-label">Orta bal (GPA)</label>
                 <div class="col-8">
-                    {{ Form::number('previous_education_GPA[]', $previousEducation -> GPA, [
+                    {{ Form::number('previous_education_GPA['.$loop -> iteration.']', $previousEducation -> GPA, [
                  'class' => 'form-control here',
-                 'id' => 'ex_previous_education_GPA',
+                 'id' => 'ex_previous_education_GPA-'.$loop -> iteration,
                  'required',
                  'step' => 'any',
                  'min' => '0',

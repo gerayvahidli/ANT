@@ -97,7 +97,7 @@ class RegisterController extends Controller
             'EndDate' => 'required|digits:4|integer|min:1900|max:2100',
             'faculty' => 'required|max:500',
             'speciality' => 'required|max:500',
-            'admission_score' => 'integer|between:0,700|nullable',
+            'admission_score' => 'sometimes|required|integer|between:0,700|',
             'GPA' => 'required|numeric|max:100',
             'otherUniversity' => 'required_if:university_id,other|max:500',
 
@@ -105,9 +105,9 @@ class RegisterController extends Controller
             'previous_education_BeginDate.*' => 'required|digits:4|integer|min:1900|max:2100',
             'previous_education_faculty.*' => 'required|max:500',
             'previous_education_speciality.*' => 'required|max:500',
-            'previous_education_admission_score.*' => 'integer|between:0,700|nullable',
+            'previous_education_admission_score.*' => 'sometimes|required|integer|between:0,700',
             'previous_education_GPA.*' => 'required|numeric|max:100',
-            'previous_otherUniversity.*' => 'required|max:500',
+            'previous_otherUniversity.*' => 'sometimes|required|max:500',
 
 
             'department' => 'required|max:500',
@@ -120,7 +120,7 @@ class RegisterController extends Controller
             'previous_position.*' => 'required|max:500',
             'previous_StartDate.*' => 'required',
             'previous_tabel_number.*' => 'required|numeric',
-            'otherCompany.*' => 'required|max:500'
+            'otherCompany.*' => 'sometimes|required|max:500'
 
 
 
