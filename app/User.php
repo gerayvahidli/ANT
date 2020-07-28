@@ -144,21 +144,6 @@ class User extends Authenticatable
     }
 
 
-//    /**
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function externalProgramApplications()
-//    {
-//        return $this->hasMany( ExternalProgramApplication::class );
-//    }
-//
-//    /**
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function internalProgramApplications()
-//    {
-//        return $this->hasMany( InternalProgramApplication::class );
-//    }
 
 
 

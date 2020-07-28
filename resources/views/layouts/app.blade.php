@@ -147,7 +147,7 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+<script src="{{asset('js/dcalendar.picker.js')}}"></script>
 @yield('bottom')
 <script src="{{ asset('js/app.js') }}"></script>
 @yield('footerScripts')
@@ -157,6 +157,19 @@
         show: false
     })
     $('#flash-overlay-modal').modal();
+
+    var dp = $('.dpic').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd.mm.yyyy',
+        updateViewDate: false,
+    });
+
+    dp.on('changeMonth', function (e) {
+        alert("salam");
+
+    });
+
 </script>
 </body>
 </html>

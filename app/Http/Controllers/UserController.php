@@ -101,7 +101,7 @@ class UserController extends Controller
         ]);
         $userData = [
             'full_name' => Auth::user()->LastName . ' ' . Auth::user()->FirstName . ' ' . Auth::user()->FatherName,
-            'id_pin' => Auth::user()->IdentityCardCode,
+            'id_pin' => Auth::user()->Fin,
             'email' => Auth::user()->email,
             'date' => date("Y-m-d H:i:s"),
             'message' => $request->message,

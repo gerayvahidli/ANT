@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Article extends Model
 {
+    use LogsActivity;
     protected $connection = 'sqlsrv2';
     protected $table      = 'articles';
     public    $timestamps = true;
@@ -15,6 +17,9 @@ class Article extends Model
         'updated_at',
         'published_at',
     ];
+
+    protected static  $logAttributes = ['title', 'slug', 'body','published_at','program_type_id'];
+
 
     public function programType()
     {

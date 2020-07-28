@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class TermType extends Model
 {
+    use LogsActivity;
     protected $connection = 'sqlsrv2';
     protected $table      = 'term_types';
     public    $timestamps = true;
@@ -14,6 +16,8 @@ class TermType extends Model
         'created_at',
         'updated_at',
     ];
+    protected static  $logAttributes = ['title', 'slug'];
+
 
     public function terms()
     {

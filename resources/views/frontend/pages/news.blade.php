@@ -59,8 +59,12 @@
             </div>
 
             <div class="col-md-4">
+                <div align="center"  class="dpic"></div>
+                <hr>
                 @include('frontend.components.rightMenu')
+
             </div>
+
         </div>
     </section>
 @endsection

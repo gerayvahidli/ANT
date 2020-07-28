@@ -69,10 +69,7 @@
 
             <div class="col-12 col-sm-7 container-fluid">
                 @if(isset($user->phones->first()->PhoneNumber))
-                    {{ Form::hidden('phone_number', $user->phones->first()->operatorCode->Code . $user->phones->first()->PhoneNumber) }}
-                    {{--{{ Form::hidden('full_name', Auth::user()->LastName . ' ' . Auth::user()->FirstName . ' ' . Auth::user()->FatherName) }}--}}
-                    {{--{{ Form::hidden('phone_number', $user->phones->first()->operatorCode->Code . $user->phones->first()->PhoneNumber) }}--}}
-                    {{--{{ Form::hidden('phone_number', $user->phones->first()->operatorCode->Code . $user->phones->first()->PhoneNumber) }}--}}
+                    {{ Form::hidden('phone_number', $user->phones->where('PhoneTypeId',2) ->first()->operatorCode->Name . $user->phones->first()->PhoneNumber) }}
                 @else
                     <div class="form-group row ">
                         <label for="phone_number" class="col-md-4 col-form-label">Telefon Nömrəsi</label>

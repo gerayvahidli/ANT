@@ -124,11 +124,11 @@
                                value="{{ ($user->exists) ? $user->PassportNo : old('idCardNumber') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin nömrəsi"
                                type="text"
-                               class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid number' :'form-control number' }}"
-                               maxlength="8"
+                               class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid ' :'form-control ' }}"
+                               maxlength="50"
                                minlength="6"
                                data-msg-required='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın'
-                               data-msg-number="Yalnız rəqəm daxil edin"
+{{--                               data-msg-number="Yalnız rəqəm daxil edin"--}}
                                data-msg-minlength ='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
                                 {{ ($user->exists) ? 'readonly' : '' }}
                         >
@@ -756,6 +756,7 @@
                         $('#FirstName').val(data.OutParams.FirstName);
                         $('#LastName').val(data.OutParams.SecondName);
                         $('#FatherName').val(data.OutParams.MiddleName);
+                        $('#idCardNumber').val(data.OutParams.Idnum);
                         if (data.OutParams.Gender != '') {
                             $('#gender').val(data.OutParams.Gender);
                         }
