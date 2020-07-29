@@ -76,6 +76,9 @@ Route::post('/rel_country', 'UserController@relCountry');//Ajax
 Route::post('/rel_university', 'UserController@relUniversity');//Ajax
 Route::post('/rel_specialization', 'UserController@relSpecialization');//Ajax
 
+Route::post('/get_news_by_month', 'PageController@getNewsByMonth');//Ajax
+Route::post('/get_news_by_day', 'PageController@getNewsByDay');//Ajax
+Route::post('/get_available_dates', 'PageController@getAvailableDates');//Ajax
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile', 'UserController@index')->name('profile.index');

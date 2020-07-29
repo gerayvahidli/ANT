@@ -158,17 +158,7 @@
     })
     $('#flash-overlay-modal').modal();
 
-    var dp = $('.dpic').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        format: 'dd.mm.yyyy',
-        updateViewDate: false,
-    });
 
-    dp.on('changeMonth', function (e) {
-        alert("salam");
-
-    });
 
 </script>
 </body>
