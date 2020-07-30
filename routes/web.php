@@ -78,7 +78,7 @@ Route::post('/rel_specialization', 'UserController@relSpecialization');//Ajax
 
 Route::post('/get_news_by_month', 'PageController@getNewsByMonth');//Ajax
 Route::post('/get_news_by_day', 'PageController@getNewsByDay');//Ajax
-Route::post('/get_available_dates', 'PageController@getAvailableDates');//Ajax
+Route::post('/get_current_month_news_and_available_dates', 'PageController@getCurrentMonthNewsAndAvailableDates');//Ajax
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile', 'UserController@index')->name('profile.index');

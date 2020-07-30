@@ -107,17 +107,29 @@ class PageController extends Controller
     }
 
 
-    public function getAvailableDates(Request $request)
+    public function getCurrentMonthNewsAndAvailableDates(Request $request)
     {
-        $dates = Article::all()->map(function ($model) {
+        $available_dates = Article::all()->map(function ($model) {
             return $model->published_at->format('Y-n-j');
         });
-        return $dates;
+
+
+        $current_month_news = Article::whereYear('published_at',date('Y')) -> whereMonth('published_at',date('m')) ->get();
+
+        return response(json_encode(
+            [
+                            'available_dates'  =>$available_dates,
+                            'current_month_news'  =>   $current_month_news 
+            ]
+
+
+        ));
     }
 
 
     public function getNewsByMonth(Request $request)
     {
+        
         $articles = Article::whereYear('published_at', $request->year)->whereMonth('published_at', sprintf("%02d", $request->month))->get();
         return response(json_encode($articles));
     }
