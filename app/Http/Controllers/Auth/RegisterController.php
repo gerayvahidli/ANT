@@ -421,6 +421,11 @@ class RegisterController extends Controller
             $res = $client->YfmScholarship(array(
                 'ImFincode' => $fin
             ));
+
+            //            $client->__setLocation('http://192.168.17.49:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
+
+
+
             return response(json_encode($res));
         } catch (SoapFault $exception) {
             echo "<pre>faultcode: '" . $exception->faultcode . "'</pre>";

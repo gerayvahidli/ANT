@@ -92,7 +92,6 @@
 
 
             dp.on('changeMonth', function (e) {
-                $('.news').empty();
                 var month = e.date.getMonth()+1 ;
                 var year = e.date.getFullYear();
 
