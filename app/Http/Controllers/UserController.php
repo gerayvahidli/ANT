@@ -115,28 +115,7 @@ class UserController extends Controller
     }
 
 
-    /**
-     * @param \App\User $user
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-//    public function registration(User $user)
-//    {
-//        $countries = Country::all()->pluck('Name', 'id');
-//        $cities = City::where('IsMain', true)->get()->pluck('Name', 'id');
-//        $educationLevels = EducationLevel::all()->where('id', '<', 3)->pluck('Name', 'id');
-//        $universities = University::where('IsShow', 1)->orderBy('Name', 'desc')->get()->pluck('Name', 'id');
-//        $educationForms = EducationForm::all()->pluck('Name', 'id');
-//        $educationSections = EducationSection::where('IsMain', true)->get()->pluck('Name', 'id');
-//        $educationPaymentForms = EducationPaymentForm::all()->pluck('Name', 'id');
-//        $examLanguages = ExamLanguage::all()->pluck('Name', 'id');
-//        $mobilePhoneOperatorCodes = MobileOperatorCode::all()->pluck('Code', 'id');
-//        $programTypes = ProgramType::where('id', '<', 3)->get()->pluck('Name', 'id');
-//
-//        return view('frontend.profile.form',
-//            compact('user', 'countries', 'educationLevels', 'universities', 'educationForms', 'educationSections', 'cities', 'examLanguages', 'educationPaymentForms', 'mobilePhoneOperatorCodes', 'programTypes')
-//        );
-//    }
+
 
     /**
      * @param \App\User $user
@@ -171,69 +150,6 @@ class UserController extends Controller
         );
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     */
-    public function store(Request $request)
-    {
-
-        $user = new User;
-        $user->Email = $request->email;
-        $user->FirstName = $request->FirstName;
-        $user->LastName = $request->LastName;
-        $user->FatherName = $request->FatherName;
-        $user->Email = $request->email;
-        $user->Password = $request->password;
-        $user->Dob = $request->dateOfBirth;
-        $user->city_id = 1;
-        $user->country_id = 1;
-        $user->Address = $request->Address;
-        $user->IdentityCardNumber = $request->idCardNumber;
-        $user->IdentityCardCode = $request->idCardPin;
-        $user->MaidenSurname = $request->MaidenSurname;
-        $user->IsCurrentlyWorking = $request->is_currently_working;
-        $user->IsCurrentlyWorkAtSocar = $request->is_currently_working_at_socar;
-        $user->PersonalNumber = $request->personal_number;
-        $user->WorkCompany = $request->work_company;
-        $user->WorkExperienceYears = $request->work_experience;
-        $user->exam_language_id = 1;
-        $user->save();
-        $finalEducation = $this->storeFinalEducation($request, $user);
-
-        return [
-            'user' => $user,
-            'finalEducation' => $finalEducation,
-        ];
-
-    }
-
-    public function storeFinalEducation(Request $request, $user)
-    {
-        $finalEducation = new FinalEducation;
-        $finalEducation->user_id = $user->id;
-        $finalEducation->education_level_id = $request->education_level;
-        $finalEducation->university_id = $request->university_id;
-        $finalEducation->BeginDate = $request->BeginDate;
-        $finalEducation->EndDate = $request->EndDate;
-        $finalEducation->CurrentEduYear = $request->current_edu_year;
-        $finalEducation->Faculty = $request->faculty;
-        $finalEducation->Speciality = $request->speciality;
-        $finalEducation->AdmissionScore = $request->admission_score;
-        if ($request->education_section_id == 4 && isset($request->education_section_id)) {
-            $educationSection = new EducationSection;
-            $educationSection->Name = $request->education_section_id;
-            $educationSection->IsMain = 0;
-            $educationSection->save();
-            $finalEducation->education_section_id = $educationSection->id;
-        } else {
-            $finalEducation->education_section_id = $request->education_section_id;
-        }
-        $finalEducation->education_form_id = $request->education_form_id;
-        $finalEducation->education_payment_form_id = $request->education_payement_form_id;
-        $finalEducation->save();
-
-        return $finalEducation;
-    }
 
 
     /**
@@ -998,76 +914,6 @@ class UserController extends Controller
 
 
 
-//	public function applyInternalScholarship ( $slug = 'internal', User $user )
-//	{
-//
-//
-//		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
-//
-//		$array = [];
-//		foreach ( $reasons as $key => $value ) {
-//
-//			$from_sql  = [ "{0}", "{n}+1" ];
-//			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
-//
-//			$text          = str_replace( $from_sql, $after_sql, $value );
-//			$array[ $key ] = $text;
-//		}
-//
-//		$data[ 'reasons_array' ] = $array;
-//
-//		//      Storage::download('file.jpg');
-//
-//		return view( 'frontend.profile.apply.internalScholarship', $data );
-//	}
-//
-//
-//	public function applyExternalScholarship ( $slug = 'external', User $user )
-//	{
-//
-//
-//		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
-//
-//		$array = [];
-//		foreach ( $reasons as $key => $value ) {
-//
-//			$from_sql  = [ "{0}", "{n}+1" ];
-//			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
-//
-//			$text          = str_replace( $from_sql, $after_sql, $value );
-//			$array[ $key ] = $text;
-//		}
-//
-//		$data[ 'reasons_array' ] = $array;
-//
-//		//      Storage::download('file.jpg');
-//
-//		return view( 'frontend.profile.apply.externalScholarship', $data );
-//	}
-//
-//
-//	public function applyPaidScholarship ( $slug = 'paid', User $user )
-//	{
-//
-//
-//		$reasons = \App\ArmyAvoidReason::pluck( 'Name', 'id' )->toArray();
-//
-//		$array = [];
-//		foreach ( $reasons as $key => $value ) {
-//
-//			$from_sql  = [ "{0}", "{n}+1" ];
-//			$after_sql = [ date( 'Y' ), date( 'Y' ) + 1 ];
-//
-//			$text          = str_replace( $from_sql, $after_sql, $value );
-//			$array[ $key ] = $text;
-//		}
-//
-//		$data[ 'reasons_array' ] = $array;
-//
-//		//      Storage::download('file.jpg');
-//
-//		return view( 'frontend.profile.apply.paidScholarship', $data );
-//	}
 
 
     public function relCountry(Request $req)
@@ -1141,51 +987,6 @@ class UserController extends Controller
         return $storageName;
     }
 
-    public function storeExternal(\App\Http\Requests\ExternalApplicationValidation $req)
-    {
-
-        $external_program_app = new \App\ExternalProgramApplication;
-        $external_program_app->specialty_id = $req->specialty_id;
-        $external_program_app->specialty_name = $req->specialty_name;
-        $external_program_app->program_id = $req->program_id;
-        $external_program_app->placement_status_id = 3;
-        $external_program_app->HasScholarshipFromOtherCompany = Auth::user()->hasAppliedToScholarship;
-        $external_program_app->user_id = Auth::user()->id;
-        $external_program_app->country_id = $req->country_id;
-        $external_program_app->city_name = $req->city_name;
-        $external_program_app->university_id = $req->university_id;
-        $external_program_app->main_modules = $req->main_modules;
-        $external_program_app->EducationBeginDate =
-            date('Y-m-d H:i:s', strtotime($req->EducationBeginDate));
-        $external_program_app->EducationEndDate =
-            date('Y-m-d H:i:s', strtotime($req->EducationEndDate));
-        $external_program_app->education_fee = $req->education_fee;
-        $external_program_app->education_language = $req->education_language;
-        $external_program_app->language_education_certificate_id = $req->language_education_certificate_id;
-        $external_program_app->language_education_certificate_score = $req->language_education_certificate_score;
-        $external_program_app->deposit_object_id = $req->deposit_object_id;
-        $external_program_app->located_city = $req->located_city;
-        $external_program_app->work_experience_details = $req->work_experience_details;
-        $external_program_app->achievements = $req->achievements;
-        $external_program_app->about_family = $req->about_family;
-        $external_program_app->filename = $req->filename;
-        $external_program_app->AuditInsertedUserId = 1;
-        $external_program_app->AuditInsertedDateTime = date('Y-m-d H:i:s');
-
-        $external_program_app->save();
-
-
-        $temp_folder = 'application/external/' . Auth::user()->id . '/temp';
-        $application_folder = 'application/external/' . Auth::user()->id . '/' . $external_program_app->id;
-
-
-        Storage::disk('public')->move($temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename);
-
-        Storage::disk('public')->deleteDirectory($temp_folder);
-
-        return view('frontend.profile.apply.result');
-    }
-
 
     public function removeFile(Request $req)
     {
@@ -1194,60 +995,7 @@ class UserController extends Controller
         return $req->name;
     }
 
-    public function storeInternal(\App\Http\Requests\InternalApplicationValidation $req, $program_id)
-    {
-        $internalProgram = new \App\InternalProgramApplication;
 
-        $internalProgram->HasScholarshipFromOtherCompany = $req->HasScholarshipFromOtherCompany;
-        $internalProgram->user_id = Auth::user()->id;
-        $internalProgram->program_id = $req->program_id;
-        $internalProgram->placement_status_id = null;
-        $internalProgram->HasBeenAtArmy = 0;
-        $internalProgram->filename = $req->filename;
-        $internalProgram->AuditInsertedUserId = 1;
-        $internalProgram->AuditInsertedDateTime = date('Y-m-d H:i:s');
-        //$internalProgram->RowVersion=timestamp();
-        $internalProgram->save();
-
-
-        $temp_folder = 'application/internal/' . Auth::user()->id . '/temp';
-        $application_folder = 'application/internal/' . Auth::user()->id . '/' . $internalProgram->id;
-
-
-        Storage::disk('public')->move($temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename);
-
-        Storage::disk('public')->deleteDirectory($temp_folder);
-
-
-        return view('frontend.profile.apply.result');
-
-    }
-
-    public function storePaid(\App\Http\Requests\SummerInternshipApplicationValidation $req)
-    {
-        $summerInternship = new \App\SummerInternshipApplication;
-        $summerInternship->user_id = Auth::user()->id;
-        $summerInternship->program_id = $req->program_id;
-        $summerInternship->HasScholarshipFromOtherCompany = 0;
-        $summerInternship->HasBeenAtArmy = $req->HasBeenAtArmy;
-        $summerInternship->ArmyAvoidReasonId = $req->army_avoid_reason_id;
-        $summerInternship->filename = $req->filename;
-        $summerInternship->AuditInsertedUserId = 1;
-        $summerInternship->AuditInsertedDateTime = date('Y-m-d H:i:s');
-        $summerInternship->save();
-
-
-        $temp_folder = 'application/paid/' . Auth::user()->id . '/temp';
-        $application_folder = 'application/paid/' . Auth::user()->id . '/' . $summerInternship->id;
-
-
-        Storage::disk('public')->move($temp_folder . '/' . $req->filename, $application_folder . '/' . $req->filename);
-
-        Storage::disk('public')->deleteDirectory($temp_folder);
-
-
-        return view('frontend.profile.apply.result');
-    }
 
 
     public function DownloadExtFile(Request $req)
@@ -1259,36 +1007,6 @@ class UserController extends Controller
 
     }
 
-    public function DownloadIntFile(Request $req)
-    {
-//		return new \App\Http\Resources\Internal( \App\InternalProgramApplication::where()->first() );
-        return new \App\Http\Resources\Internal(\App\InternalProgramApplication::find($req->app_id));
-        // return new \App\Http\Resources\FileDownload('internal',\App\InternalProgramApplication::find($req->app_id));
-        //     return Storage::disk('public')->path('app/file.txt');
 
-    }
-
-
-    public function DownloadPaidFile(Request $req)
-    {
-        return new \App\Http\Resources\Paid(\App\SummerInternshipApplication::find($req->app_id));
-        // return new \App\Http\Resources\FileDownload(\App\SummerInternshipApplication::find($req->app_id));
-        //     return Storage::disk('public')->path('app/file.txt');
-    }
-
-    public static function dot_color($string, $prog_type)
-    {
-        if (isset($prog_type->first()->$string->Name) && $prog_type->first()->$string->Name === "Seçildi") {
-            $dot_color = 'green-dot';
-        } elseif (isset($prog_type->first()->$string->Name) && $prog_type->first()->$string->Name === "Seçilmədi") {
-            $dot_color = 'red-dot';
-        } elseif (isset($prog_type->first()->$string->Name) && $prog_type->first()->$string->Name === "Baxılır") {
-            $dot_color = 'yellow-dot';
-        } else {
-            $dot_color = '';
-        }
-
-        return $dot_color;
-    }
 
 }
