@@ -72,4 +72,11 @@ class Helper
     }
 
 
+
+    public static function checkUserApplied ()
+    {
+        return \Auth::user() -> userPrograms -> last() -> UserProgramStatusId == 1 ;
+    }
+
+
 }

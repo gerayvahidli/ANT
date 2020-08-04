@@ -803,7 +803,12 @@ class UserController extends Controller
 
     public function applyScholarship(Request $request)
     {
-//        return $request -> file();
+
+
+        if (!Helper::checkUserApplied()) {
+            abort(403, 'Unauthorized action.');
+        }
+
 
 
         if (!Helper::checkCertificateScore($request)) {
