@@ -234,6 +234,7 @@ Route::get('/universitylist', function () {
 )->name('XTPunilist');
 
 
+$this->get('testsoap', 'SoapController@show');
 
 
 
