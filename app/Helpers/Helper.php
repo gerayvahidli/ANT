@@ -43,10 +43,12 @@ class Helper
                 $filesystem = new Filesystem(new ZipArchiveAdapter($file));
 
                 foreach ($filesystem->listContents() as $object) {
+                    if (!isset($object['extension'] ) || !in_array($object['extension'], ['pdf', 'jpg'])  ) {
 
-                    !(in_array($object['extension'], ['pdf', 'jpg'])) ? $count++ : '';
+                    $count++;
                     $name = $key;
 
+                    }
                 }
 
                 if ($count > 0) {

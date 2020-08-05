@@ -2,6 +2,7 @@
 
 namespace App;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 
 class EPApplication extends Model
@@ -71,6 +72,7 @@ class EPApplication extends Model
     {
         return $this -> hasMany(AppStageNote::class,'ApplicationId');
     }
+
 
 
 }

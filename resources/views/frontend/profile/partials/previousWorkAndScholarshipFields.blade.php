@@ -8,7 +8,7 @@
                 <label for="previous_company_id" class="col-4 col-form-label">Müəssisə</label>
                 <div class="col-8">
                         {{ Form::hidden('previous_job_id['.$loop->iteration.']', $previousJob->Id) }}
-                        {{ Form::hidden('hidden_company_id['.$loop->iteration.']', $previousJob->CompanyId,['class' => 'hidden_company_id']) }}
+                        {{ Form::hidden('hidden_company_id['.$loop->iteration.']', $previousJob->Id,['class' => 'hidden_company_id']) }}
 
                     <select class="form-control ex_previous_company" id="ex_previous_company_id-{{ $loop->iteration }}" name="previous_company_id[{{ $loop->iteration }}]">
                         @if($user -> exists && $previousJob -> Company -> IsSocar== 0)

@@ -153,12 +153,12 @@ class RegisterController extends Controller
         $companies = Company::where('IsSocar', 1)->get();
         $cities = City::where('IsShow', 1)->orderBy('Name')->get();
         $regions = Region::where('IsShow', 1)->orderBy('Name')->get();
-        $educationLevels = EducationLevel::all();
+        $educationLevels = EducationLevel::where('IsShow',1)->get();
         $universities = University::where('IsShow', 1)->orderBy('Name', 'desc')->get()->pluck('Name', 'id');
         $educationForms = EducationForm::pluck('Name', 'id');
         $educationSections = EducationSection::all();
         $educationPaymentForms = EducationPaymentForm::pluck('Name', 'id');
-        $mobilePhoneOperatorCodes = MobileOperatorCode::where('Name','!=','012') ->pluck('Name', 'id');
+        $mobilePhoneOperatorCodes = MobileOperatorCode::where([['Name','!=','012'],['IsShow','=',1]]) ->pluck('Name', 'id');
         $genders = Gender::all();
 
 

@@ -133,13 +133,13 @@ class UserController extends Controller
         $countries = Country::all();
         $cities = City::where('IsShow', 1)->get();
         $regions = Region::where('IsShow', 1)->get();
-        $educationLevels = EducationLevel::all();
+        $educationLevels = EducationLevel::where('IsShow',1)->get();
         $universities = University::where('IsShow', 1)->get();
         $educationForms = EducationForm::pluck('Name', 'id');
         $educationSections = EducationSection::all();
         $educationPaymentForms = EducationPaymentForm::pluck('Name', 'id');
 //		$examLanguages            = ExamLanguage::all()->pluck( 'Name', 'id' );
-        $mobilePhoneOperatorCodes = MobileOperatorCode::pluck('Name', 'id');
+        $mobilePhoneOperatorCodes = MobileOperatorCode::where([['Name','!=','012'],['IsShow','=',1]])->pluck('Name', 'id');
 //		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
         $genders = Gender::all();
         $companies = Company::where('IsSocar', 1)->get();
@@ -712,8 +712,9 @@ class UserController extends Controller
         $certificates = Certificate::where('IsShow', 1)->get();
         $deposites = Deposit::all();
         $banks = Bank::where('IsActive',1) -> get();
+        $speciality_groups = SpecialityGroup::where('Active',1) -> get();
 
-        return view('frontend.profile.apply.externalScholarship', compact('currencies', 'certificates', 'deposites','banks'));
+        return view('frontend.profile.apply.externalScholarship', compact('currencies', 'certificates', 'deposites','banks','speciality_groups'));
     }
 
 
@@ -751,7 +752,7 @@ class UserController extends Controller
             'EducationEndDate' => 'required|numeric|digits:4',
             'bank_guarantee' => 'required_without:realEstate',
             'realEstate' => 'required_without:bank_guarantee',
-            'realEstate_located_city' => 'required_if:realEstate,on|max:20',
+            'realEstate_located_city' => 'required_if:realEstate,on|max:3000',
             'realEstate_owner' => 'required_if:realEstate,on|max:100',
             'realEstate_owner_contact' => 'required_if:realEstate,on|max:50',
             'realEstate_owner_email' => 'max:100|email|nullable',
@@ -765,16 +766,16 @@ class UserController extends Controller
             'achievements' => 'required',
             'about_family' => 'required',
 
-            'passport_copy' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'certificate_document' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'university_document' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'biography' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'medical_certificate' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'psychological_dispensary' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'academic_transcript' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'realEstate_document' => 'required|mimes:jpeg,jpg,zip,pdf',
-            'owner_passport' => 'nullable|mimes:jpeg,jpg,zip,pdf',
-            'testimonial' => 'required|mimes:jpeg,jpg,zip,pdf',
+            'passport_copy' => 'required|mimes:jpeg,jpg,zip,pdf|max:1024',
+            'certificate_document' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'university_document' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'biography' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'medical_certificate' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'psychological_dispensary' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'academic_transcript' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'realEstate_document' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'owner_passport' => 'nullable|mimes:jpeg,jpg,zip,pdf|max:10240',
+            'testimonial' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
 
 
         ]);

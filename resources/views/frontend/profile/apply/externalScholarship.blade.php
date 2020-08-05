@@ -17,16 +17,26 @@
     <link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
     <link rel="stylesheet" href="https://dbushell.com/Pikaday/css/pikaday.css">
     <style type="text/css">
-        .error {
-            font-weight: bold;
-            font-size: 11px;
-        }
+        /*.error {*/
+        /*    font-weight: bold;*/
+        /*    font-size: 11px;*/
+        /*}*/
 
         .errorInput {
             background-color: #ffffcc;
             border-color: transparent;
             border: 1px solid #dc3545;
         }
+
+        form input.error,textarea.error, input.is-invalid {
+            border: 1px solid red !important;
+        }
+        form label.error, div.invalid-feedback {
+            color: red !important;
+            font-size: 100% !important;
+        }
+
+
     </style>
 
     <style type="text/css">
@@ -69,10 +79,13 @@
 
 
                         <label for="speciality_id" class="col-form-label">İxtisas qrupu</label><br>
-                        {{ Form::select('speciality_id', \App\SpecialityGroup::pluck('Name','Id')->toArray() ,null,['class'=>($errors->has('speciality_id'))?'errorInput form-control':'form-control','id' => 'speciality_id']) }}
-                        <span class="error text-danger"> {{$errors->first('speciality_id')}}</span>
 
-
+                        <select name="speciality_id" id="speciality_id" class="form-control {{$errors->has('speciality_id') ? 'errorInput': ''}} ">
+                            @foreach($speciality_groups as $speciality_group )
+                                <option value="{{$speciality_group -> Id}}">{{$speciality_group -> Name}}</option>
+                            @endforeach
+                        </select>
+{{--                        <span class="error text-danger"> {{$errors->first('speciality_id')}}</span>--}}
                     </div>
 
                     <div class="form-group required specialization_div">
@@ -81,15 +94,14 @@
                         <input id="specialization_name"
                                {{--                               style="display: none"--}}
                                required
-                               data-required-error='İxtisaslaşma sahəsini boş burxamayın'
+                               data-msg-required='İxtisaslaşma sahəsini boş burxamayın'
                                maxlength="500"
-                               data-error='İxtisaslaşma maksimum 500 simvoldan ibarət olmalidir'
                                type="text"
                                class="form-control  {{$errors->has('specialization_name')?'errorInput':''}}"
                                name="specialization_name"
-                               value="{{old('specialization_name')}}">
+{{--                               value="{{old('specialization_name')}}"--}}
+                        >
                         <span class="error text-danger"> {{$errors->first('specialization_name')}}</span>
-                        <div class="help-block with-errors"></div>
 
                     </div>
 
@@ -104,12 +116,12 @@
                         <label for="city_name" class="col-form-label">Şəhər</label>
                         <input type="text" class="form-control {{$errors->has('city_name')?'errorInput':''}}"
                                required
-                               data-required-error='Şəhər sahəsini boş burxamayın'
+                               data-msg-required='Şəhər sahəsini boş burxamayın'
                                maxlength="100"
-                               data-error='Şəhər maksimum 100 simvoldan ibarət olmalidir'
-                               value="{{old('city_name')}}" name="city_name" id="city_name">
+{{--                               value="{{old('city_name')}}" --}}
+                               name="city_name"
+                               id="city_name">
                         <span class="error text-danger"> {{$errors->first('city_name')}}</span>
-                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group required">
 
@@ -135,8 +147,10 @@
 
                     <div class="form-group ">
                         <label for="main_modules" class="col-form-label">Əsas modullar</label>
-                        <textarea class="form-control {{$errors->has('main_modules')?'errorInput':''}}"
-                                  name="main_modules">{{old('main_modules')}}</textarea>
+                        <textarea
+                                class="form-control {{$errors->has('main_modules')?'errorInput':''}}"
+                                name="main_modules">{{old('main_modules')}}
+                        </textarea>
                         <span class="error text-danger"> {{$errors->first('main_modules')}}</span>
                     </div>
 
@@ -144,57 +158,60 @@
                         <label for="additional_modules" class="col-form-label">Əlavə (seçmə) modullar</label>
                         <textarea class="form-control {{$errors->has('additional_modules')?'errorInput':''}}"
                                   name="additional_modules">{{old('additional_modules')}}</textarea>
-                        <span class="error text-danger"> {{$errors->first('additional_modules')}}</span>
+{{--                        <span class="error text-danger"> {{$errors->first('additional_modules')}}</span>--}}
                     </div>
 
 
                     <div class="form-group required">
-                        <label for="exampleInputEmail1" class="col-form-label">Təhsil müddəti</label>
+                        <label for="" class="col-form-label">Təhsil müddəti</label>
                         <div class="form-row align-items-center">
 
                             <div class="col-sm-6 my-1">
+                                <small>Başlama ili</small>
                                 <input type="text"
-                                       value="{{old('EducationBeginDate')}}"
+{{--                                       value="{{old('EducationBeginDate')}}"--}}
                                        autocomplete="off"
                                        name="EducationBeginDate"
                                        maxlength="4"
                                        class="form-control  {{$errors->has('EducationBeginDate')?'errorInput':''}}"
                                        required
-                                       data-required-error='Təhsil müddəti sahəsini boş burxamayın'
-                                       max="{{date("Y")}}"
-                                       data-error='Təhsilin başlama ili cari ildən böyük ola bilməz'
-                                       onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                       data-msg-required='Başlama ili sahəsini boş burxamayın'
+                                       min="1900",
+                                       max="2100",
+                                       onkeydown ="return event.keyCode !== 69 && event.keyCode !== 189",
+                                       data-msg-max="Başlama ili maksimum 2100 ola bilər",
+                                       data-msg-min="Başlama ili minimum 1900 ola bilər"
                                 >
-                                <small>Başlama ili</small>
-                                <span class="error text-danger"> {{$errors->first('EducationBeginDate')}}</span>
+{{--                                <span class="error text-danger"> {{$errors->first('EducationBeginDate')}}</span>--}}
                             </div>
                             <div class="col-sm-6 my-1">
-                                <label class="sr-only" for="EducationEndDate">Bitmə tarixi</label>
+                                <small>Bitmə ili</small>
                                 <input type="text"
-                                       value="{{old('EducationEndDate')}}"
+{{--                                       value="{{old('EducationEndDate')}}"--}}
                                        autocomplete="off"
                                        maxlength="4"
                                        name="EducationEndDate"
                                        class="form-control {{$errors->has('EducationEndDate')?'errorInput':''}}"
                                        required
-                                       data-required-error='Təhsil müddəti sahəsini boş burxamayın'
-                                       max="{{date("Y")}}"
-                                       data-error='Təhsilin bitmə ili cari ildən böyük ola bilməz'
-                                       onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
-                                <small>Bitmə ili</small>
-                                <span class="error text-danger"> {{$errors->first('EducationEndDate')}}</span>
+                                       data-msg-required='Təhsil müddəti sahəsini boş burxamayın'
+                                       min="1900",
+                                       max="2100",
+                                       onkeydown ="return event.keyCode !== 69 && event.keyCode !== 189",
+                                       data-msg-max="Başlama ili maksimum 2100 ola bilər",
+                                       data-msg-min="Başlama ili minimum 1900 ola bilər"
+                                       >
+{{--                                <span class="error text-danger"> {{$errors->first('EducationEndDate')}}</span>--}}
                             </div>
                         </div>
-                        <div class="help-block with-errors"></div>
                     </div>
 
                     <div class="form-group ">
                         <label for="education_start_date" class="col-form-label">Təhsilin başlama tarixi</label>
-                        <input type="date" value="{{old('education_start_date')}}"
+                        <input type="date"
+{{--                               value="{{old('education_start_date')}}"--}}
                                name="education_start_date"
                                class="form-control  {{$errors->has('education_start_date')?'errorInput':''}}">
-                        <div class="help-block with-errors"></div>
-                        <span class="error text-danger"> {{$errors->first('education_start_date')}}</span>
+{{--                        <span class="error text-danger"> {{$errors->first('education_start_date')}}</span>--}}
                     </div>
 
                     <div class="form-row ">
@@ -202,14 +219,14 @@
                             <label for="education_fee[amount]" class="col-form-label">Təhsil haqqı</label>
                             <input type="number"
                                    required
-                                   data-required-error='Təhsil haqqı sahəsini boş burxamayın'
+                                   data-msg-required='Təhsil haqqı sahəsini boş burxamayın'
                                    class="form-control col-4 {{$errors->has('education_fee[amount]')?'errorInput':''}}"
-                                   value="{{old('education_fee[amount]')}}" name="education_fee[amount]"
+{{--                                   value="{{old('education_fee[amount]')}}" --}}
+                                   name="education_fee[amount]"
                                    id="education_fee"
                                    min="0"
                                    onkeydown="return event.keyCode !== 69 && event.keyCode !== 189"
                             >
-                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group col-4">
                             <label for="education_fee[currency]" class="col-form-label">Məzənnə</label>
@@ -219,8 +236,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="help-block with-errors"></div>
-                        <span class="error text-danger"> {{$errors->first('education_fee')}}</span>
+{{--                        <span class="error text-danger"> {{$errors->first('education_fee')}}</span>--}}
                     </div>
 
                     <div class="certificates" id="certificates">
@@ -228,7 +244,7 @@
                             <div class="form-group col-12 ">
                                 <label for="inputCity" class="col-form-label">Dil sertifikatı</label>
                                 <div class="d-flex">
-                                    <select name="language_education_certificate_id[0][certificate]" id=""
+                                    <select name="language_education_certificate_id[0][certificate]"
                                             class="form-control language_education_certificate_id {{($errors->has('language_education_certificate_id'))? 'errorInput' : ''}} "
                                             id="language_education_certificate_id">
                                         @foreach($certificates as $certificate)
@@ -236,8 +252,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="help-block with-errors"></div>
-                                <span class="error text-danger"> {{$errors->first('language_education_certificate_id')}}</span>
+{{--                                <span class="error text-danger"> {{$errors->first('language_education_certificate_id')}}</span>--}}
                             </div>
 
                         </div>
@@ -321,12 +336,11 @@
                             <div class="col-sm-6 form-group">
                                 <input id="otherCertificate_name"
                                        class="form-control input-group-lg reg_name"
-                                       data-required-error = "Serifikatın adı sahəsini boş buraxmayın"
+                                       data-msg-required = "Serifikatın adı sahəsini boş buraxmayın"
                                        maxlength="50"
                                        type="text"
                                        name="language_education_certificate_id[0][otherCertificate_name]">
                                 <small>Serifikatın adı</small>
-                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="col-sm-6 form-group">
                                 <input id="otherCertificate_point"
@@ -349,28 +363,25 @@
                     <div class="form-group ">
                         <label for="education_language" class="col-form-label">Təhsil dili</label>
                         <input type="text" class="form-control {{$errors->has('education_language')?'errorInput':''}}"
-                               value="{{old('education_language')}}"
+{{--                               value="{{old('education_language')}}"--}}
                                name="education_language"
                                id="education_language"
                                {{--                               required--}}
-                               data-required-error='Təhsil dili sahəsini boş burxamayın'
+                               data-msg-required='Təhsil dili sahəsini boş burxamayın'
                                maxlength="20"
-                               data-error='İxtisaslaşma maksimum 20 simvoldan ibarət olmalidir'
                         >
-                        <div class="help-block with-errors"></div>
-                        <span class="error text-danger"> {{$errors->first('education_language')}}</span>
+{{--                        <span class="error text-danger"> {{$errors->first('education_language')}}</span>--}}
                     </div>
                     <div class="form-group required">
+                        <label for="realEstate">Daşınmaz əmlak</label>
                         <input name="realEstate"
                                type="checkbox"
                                class="realEstate"
                                data-target="realEstateDiv"
                                required
-                               data-required-error="Davam etmək üçün  daşınmaz əmlak və ya bank zəmanəti (və ya hər ikisi) seçin"
-                        />Daşınmaz
-                        əmlak
-                        <div class="help-block with-errors"></div>
-                        <span class="error text-danger"> {{$errors->first('education_language')}}</span>
+                               data-msg-required="Davam etmək üçün  daşınmaz əmlak və ya bank zəmanəti (və ya hər ikisi) seçin"
+                        />
+{{--                        <span class="error text-danger"> {{$errors->first('education_language')}}</span>--}}
                     </div>
 
 
@@ -379,13 +390,13 @@
                         <div class="form-group required">
                             <label for="deposit_object_id" class="col-form-label">Girov predmeti
                             </label>
-                            <select name="realEstate_deposit_object_id" id="realEstate_deposit_object_id"
+                            <select name="realEstate_deposit_object_id"
+                                    id="realEstate_deposit_object_id"
                                     class="form-control {{($errors->has('realEstate_deposit_object_id'))?'errorInput' : ''}} ">
                                 @foreach($deposites as $deposite)
                                     <option value="{{$deposite -> Id}}">{{$deposite -> Name}}</option>
                                 @endforeach
                             </select>
-                            {{--                            {{ Form::select('realEstate_deposit_object_id',\App\Deposit::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('realEstate_deposit_object_id'))?'errorInput form-control':'form-control','id'=>'realEstate_deposit_object_id']) }}--}}
 
                         </div>
 
@@ -395,15 +406,14 @@
                             </label>
                             <input type="text"
                                    class="form-control {{$errors->has('realEstate_located_city')?'errorInput':''}}"
-                                   name="realEstate_located_city" value="{{old('realEstate_located_city')}}"
+                                   name="realEstate_located_city"
+{{--                                   value="{{old('realEstate_located_city')}}"--}}
                                    id="realEstate_located_city"
                                    required
-                                   data-required-error='Ünvan sahəsini boş burxamayın'
-                                   maxlength="20"
-                                   data-error='Ünvan maksimum 20 simvoldan ibarət olmalidir'
+                                   data-msg-required='Ünvan sahəsini boş burxamayın'
+                                   maxlength="3000"
                             >
-                            <div class="help-block with-errors"></div>
-                            <span class="error text-danger"> {{$errors->first('realEstate_located_city')}}</span>
+{{--                            <span class="error text-danger"> {{$errors->first('realEstate_located_city')}}</span>--}}
                         </div>
 
                         <div class="form-group required">
@@ -411,35 +421,28 @@
                             </label>
                             <input type="text" class="form-control "
                                    name="realEstate_owner"
-                                   value=""
                                    id="realEstate_owner"
                                    required
-                                   data-required-error='Mülkiyyətçi sahəsini boş burxamayın'
+                                   data-msg-required='Mülkiyyətçi sahəsini boş burxamayın'
                                    maxlength="100"
-                                   data-error='Mülkiyyətçi maksimum 100 simvoldan ibarət olmalidir'
                             >
-                            <div class="help-block with-errors"></div>
-                            <span class="error text-danger"> </span>
+{{--                            <span class="error text-danger"> </span>--}}
                         </div>
 
                         <div class="form-group required">
                             <label for="realEstate_owner_contact" class="col-form-label required">Mülkiyyətçinin əlaqə
                                 nömrəsi
                             </label>
-                            <input type="text" class="form-control "
+                            <input type="text"
+                                   class="form-control number "
                                    name="realEstate_owner_contact"
-                                   value=""
                                    id="realEstate_owner_contact"
                                    required
-                                   data-required-error='Mülkiyyətçinin əlaqə
+                                   data-msg-required='Mülkiyyətçinin əlaqə
                                    nömrəsi sahəsini boş burxamayın'
                                    maxlength="50"
-                                   data-error='Mülkiyyətçinin əlaqə
-                                   nömrəsi maksimum 50 simvoldan ibarət olmalidir'
-                                   pattern="\d*"
-                                   data-pattern-error="Yalnız rəqəm daxil edin"
+                                   data-msg-number="Yalnız rəqəm daxil edin"
                             >
-                            <div class="help-block with-errors"></div>
                             <span class="error text-danger"> </span>
                         </div>
 
@@ -447,17 +450,15 @@
                             <label for="realEstate_owner_email" class="col-form-label required">Mülkiyyətçinin poçt
                                 ünvanı
                             </label>
-                            <input type="email" class="form-control "
+                            <input type="email"
+                                   class="form-control "
                                    name="realEstate_owner_email"
-                                   value=""
                                    id="realEstate_owner_email"
                                    {{--                                   required--}}
-                                   data-required-error='Mülkiyyətçinin poçt
+                                   data-msg-required='Mülkiyyətçinin poçt
                                    ünvanı  sahəsini boş burxamayın'
                                    maxlength="100"
-                                   data-error='Email formatını düzgün daxil edin'
                             >
-                            <div class="help-block with-errors"></div>
                             <span class="error text-danger"> </span>
                         </div>
 
@@ -465,91 +466,81 @@
 
                         <div class="form-group required">
                             <label for="realEstate" class="col-form-label">Seriya nömrəsi</label>
-                            <div class="form-row align-items-center">
-
-                                <div class="col-sm-3 my-1">
-                                    <label class="sr-only col-form-label" for="realEstateSNO[serial]">Seriya</label>
-                                    <input type="text" value=""
+                            <div class="row">
+                                <div class="col-sm-3 ">
+                                    <small>Seria</small>
+                                    <input type="text"
                                            name="realEstateSNO[serial]"
                                            class="form-control  {{$errors->has('realEstateSNO[serial]')?'errorInput':''}}"
                                            id="realEstate_owner_email"
                                            required
-                                           data-required-error='Seria sahəsini boş burxamayın'
+                                           data-msg-required='Seria sahəsini boş burxamayın'
                                            maxlength="50"
-
                                     >
-                                    <small>Seria</small>
-                                    <div class="help-block with-errors"></div>
-                                    <span class="error text-danger"> {{$errors->first('realEstateSNO[serial]')}}</span>
+{{--                                    <span class="error text-danger"> {{$errors->first('realEstateSNO[serial]')}}</span>--}}
                                 </div>
-                                <div class="col-sm-9     my-1">
-                                    <input type="text" value="{{old('realEstateSNO[number]')}}"
-                                           name="realEstateSNO[number]"
-                                           class="form-control {{$errors->has('realEstateSNO[number]')?'errorInput':''}}"
-                                           required
-                                           data-required-error='Nömrə sahəsini boş burxamayın'
-                                           maxlength="50"
-                                    >
+                                <div class="col-sm-9  ">
                                     <small>Nömrə</small>
-                                    <div class="help-block with-errors"></div>
-                                    <span class="error text-danger"> {{$errors->first('EducationEndDate')}}</span>
+                                    <input type="text"
+{{--                                           value="{{old('realEstateSNO[number]')}}"--}}
+                                           name="realEstateSNO[number]"
+                                           class="form-control number {{$errors->has('realEstateSNO[number]')?'errorInput':''}}"
+                                           required
+                                           data-msg-required='Nömrə sahəsini boş burxamayın'
+                                           maxlength="50"
+                                           data-msg-number="Yanlız rəqəm daxil edin"
+                                    >
+{{--                                    <span class="error text-danger"> {{$errors->first('EducationEndDate')}}</span>--}}
                                 </div>
-
                             </div>
                             <div class="form-group ">
                                 <label for="realEstate_reyester" class="col-form-label required">Reyester nömrəsi
                                 </label>
                                 <input type="text" class="form-control "
-                                       name="realEstate_reyester" value=""
+                                       name="realEstate_reyester"
                                        id="realEstate_reyester"
                                        required
-                                       data-required-error='Reyester nömrəsi sahəsini boş burxamayın'
+                                       data-msg-required='Reyester nömrəsi sahəsini boş burxamayın'
                                        maxlength="100"
-                                       data-error='Reyester nömrəsi maksimum 100 simvoldan ibarət olmalidir'
                                 >
-                                <div class="help-block with-errors"></div>
-                                <span class="error text-danger"> </span>
+{{--                                <span class="error text-danger"> </span>--}}
                             </div>
                             <div class="form-group ">
                                 <label for="realEstate_registry" class="col-form-label required">Qeydiyyat nömrəsi
                                 </label>
                                 <input type="text" class="form-control "
                                        name="realEstate_registry"
-                                       value=""
                                        id="realEstate_registry"
                                        required
-                                       data-required-error='Qeydiyyat nömrəsi sahəsini boş burxamayın'
+                                       data-msg-required='Qeydiyyat nömrəsi sahəsini boş burxamayın'
                                        maxlength="100"
-                                       data-error='Qeydiyyat nömrəsi maksimum 100 simvoldan ibarət olmalidir'
                                 >
-                                <div class="help-block with-errors"></div>
-                                <span class="error text-danger"> </span>
+{{--                                <span class="error text-danger"> </span>--}}
                             </div>
                             <div class="form-group ">
                                 <label for="realEstate_registry_date" class="col-form-label required">Qeydiyyat tarixi
                                 </label>
                                 <input type="date" class="form-control "
                                        name="realEstate_registry_date"
-                                       value=""
                                        id="realEstate_registry_date"
                                        required
-                                       data-required-error='Qeydiyyat tarixi sahəsini boş burxamayın'
+                                       data-msg-required='Qeydiyyat tarixi sahəsini boş burxamayın'
                                 >
-                                <div class="help-block with-errors"></div>
-                                <span class="error text-danger"> </span>
+{{--                                <span class="error text-danger"> </span>--}}
                             </div>
                         </div>
                     </div>
 
 
                     <div class="form-group required">
+                        <label for="bank_guarantee">Bank zəmanəti</label>
                         <input type="checkbox"
                                class="bankGuarantee"
                                name="bank_guarantee"
                                data-target="bankGuaranteeDiv"
                                id="bank_guarantee"
-                        />Bank zəmanəti
-                        <span class="error text-danger"> {{$errors->first('education_language')}}</span>
+                        />
+{{--                        <span class="error text-danger"> {{$errors->first('education_language')}}</span>--}}
                     </div>
 
 
@@ -571,14 +562,13 @@
                                 <label for="bank_fee[amount]" class="col-form-label">Məbləğ</label>
                                 <input type="number"
                                        class="form-control col-4 {{$errors->has('bank_fee[amount]')?'errorInput':''}}"
-                                       value="{{old('bank_fee[amount]')}}"
+{{--                                       value="{{old('bank_fee[amount]')}}"--}}
                                        name="bank_fee[amount]"
                                        id="bank_fee"
                                        required
-                                       data-required-error='Məbləğ sahəsini boş burxamayın'
-                                       onkeydown="return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                                       data-msg-required='Məbləğ sahəsini boş burxamayın'
+                                       onkeydown ="return event.keyCode !== 69 && event.keyCode !== 189"
                                 >
-                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group col-4">
                                 <label for="bank_fee[currency]" class="col-form-label">Məzənnə</label>
@@ -598,9 +588,10 @@
                         <textarea class="form-control {{$errors->has('achievements')?'errorInput':''}}"
                                   name="achievements"
                                   required
-                                  data-required-error='Nəaliyyətləri sahəsini boş burxamayın'
-                        >{{old('achievements')}}</textarea>
-                        <div class="help-block with-errors"></div>
+                                  data-msg-required='Nəaliyyətləri sahəsini boş burxamayın'
+                        >
+{{--                            {{old('achievements')}}--}}
+                        </textarea>
                         <small>Bu məlumat CV-nizə əlavə ediləcəkdir və komissiya iclasında baxılması üçündür</small>
                         <span class="error text-danger"> {{$errors->first('achievements')}}</span>
                     </div>
@@ -609,9 +600,8 @@
                         <textarea class="form-control {{$errors->has('about_family')?'errorInput':''}}"
                                   name="about_family"
                                   required
-                                  data-required-error='Ailəsi haqqında sahəsini boş burxamayın'
+                                  data-msg-required='Ailəsi haqqında sahəsini boş burxamayın'
                         >{{old('about_family')}}</textarea>
-                        <div class="help-block with-errors"></div>
                         <small>Ailə üzvü, ad, soyad, təvəllüd, doğum yeri, iş yeri, vəzifəsi (Bu məlumat CV-nizə əlavə
                             ediləcəkdir və komissiya iclasında baxılması üçündür)</small>
                         <span class="error text-danger"> {{$errors->first('about_family')}}</span>
@@ -619,11 +609,7 @@
 
                     </div>
 
-                    <input type="hidden" id="filename" value="{{old('filename')}}" name="filename">
 
-
-                    {{--                    <input type="hidden" id="dropzone_filezone" value="{{old('dropzone_filezone')}}"--}}
-                    {{--                           name="dropzone_filezone">--}}
 
                     <p for="exampleInputEmail1" class="lead">Sənədlərinizi əlavə edin
                         <a class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"
@@ -636,39 +622,36 @@
                         <label for="passport_copy" class="col-form-label required">Şəxsiyyət vəsiqəsinin surəti</label>
                         <input type="file" class="form-control "
                                name="passport_copy"
-                               value=""
                                id="passport_copy"
                                required
-                               data-required-error='Şəxsiyyət vəsiqəsinin surəti sahəsini boş burxamayın' ,
+                               filesize="10"
+                               data-msg-required='Şəxsiyyət vəsiqəsinin surəti sahəsini boş burxamayın' ,
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
                         <label for="certificate_document" class="col-form-label required">Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı)</label>
                         <input type="file" class="form-control "
                                name="certificate_document"
-                               value=""
                                id="certificate_document"
                                required
-                               data-required-error='Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı) sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı) sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
                         <label for="university_document" class="col-form-label required">Xarici universitetə qəbulu təsdiq edən rəsmi sənəd</label>
                         <input type="file" class="form-control "
                                name="university_document"
-                               value=""
                                id="university_document"
                                required
-                               data-required-error='Xarici universitetə qəbulu təsdiq edən rəsmi sənəd sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Xarici universitetə qəbulu təsdiq edən rəsmi sənəd sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
@@ -676,13 +659,12 @@
                         <input type="file"
                                class="form-control "
                                name="biography"
-                               value=""
                                id="biography"
                                required
-                               data-required-error='Tərcümeyi-hal sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Tərcümeyi-hal sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
@@ -690,13 +672,12 @@
                         <input type="file"
                                class="form-control "
                                name="medical_certificate"
-                               value=""
                                id="medical_certificate"
                                required
-                               data-required-error='Poliklinikadan 086 No-li tibbi arayış sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Poliklinikadan 086 No-li tibbi arayış sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
@@ -704,13 +685,12 @@
                         <input type="file"
                                class="form-control "
                                name="psychological_dispensary"
-                               value=""
                                id="psychological_dispensary"
                                required
-                               data-required-error='Psixoloji dispanserdən arayış sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Psixoloji dispanserdən arayış sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
@@ -718,13 +698,12 @@
                         <input type="file"
                                class="form-control "
                                name="academic_transcript"
-                               value=""
                                id="academic_transcript"
                                required
-                               data-required-error='Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript) sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript) sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
@@ -732,14 +711,13 @@
                         <input type="file"
                                class="form-control "
                                name="realEstate_document"
-                               value=""
                                id="realEstate_document"
                                required
-                               data-required-error='Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən
+                               filesize="10"
+                               data-msg-required='Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən
                             çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group ">
@@ -747,13 +725,12 @@
                         <input type="file"
                                class="form-control myfile"
                                name="owner_passport"
-                               value=""
                                id="owner_passport"
                                {{--                               required--}}
-                               data-required-error='Girov sahibinin şəxsiyyət vəsiqəsi  sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Girov sahibinin şəxsiyyət vəsiqəsi  sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
 
@@ -762,13 +739,12 @@
                         <input type="file"
                                class="form-control "
                                name="testimonial"
-                               value=""
                                id="testimonial"
                                required
-                               data-required-error='Birbaşa rəhbərindən müsbət xasiyyətnamə sahəsini boş burxamayın'
+                               filesize="10"
+                               data-msg-required='Birbaşa rəhbərindən müsbət xasiyyətnamə sahəsini boş burxamayın'
                                accept=".jpg,.pdf,.zip"
                         >
-                        <div class="help-block with-errors"></div>
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
@@ -778,14 +754,6 @@
                         </span>
                     </div>
 
-
-                    {{--                <div class="dropzone {{$errors->has('filename')?'errorInput':''}}" id="myDropzone">--}}
-                    {{--                    <div class="dz-message" data-dz-message><span style="font-weight: bold"><i><u>.zip</u></i> və ya <i><u>.rar</u> </i>formatında olan sənədinizi dartıb bura atın və ya klik edib həmin sənədi seçin</span>--}}
-                    {{--                    </div>--}}
-                    {{--                </div>--}}
-                    {{--                <small id="emailHelp" class="form-text text-muted"><i><b>Yalnız .rar və ya .zip formatında fayllar qəbul--}}
-                    {{--                            olunur.</b></i></small>--}}
-                    {{--                <span class="error text-danger"> {{$errors->first('filename')}}</span>--}}
                     <br><br>
                     <button onclick="window.history.back();" type="button" class="btn btn-danger" data-dismiss="modal">
                         Geri
@@ -825,7 +793,12 @@
 
     <script src="{{asset('js/moment.min.js')}}"></script>
     <script src="{{asset('js/pikaday.js')}}"></script>
-    <script src="{{asset('js/validator.js')}}"></script>
+{{--    <script src="{{asset('js/validator.js')}}"></script>--}}
+
+<script src="{{asset('js/jquery.validate.min.js')}}"></script>
+<script src="{{asset('js/jquery.validate-additional-methods.js')}}"></script>
+
+
 
 
 
@@ -834,6 +807,12 @@
 
     <script>
 
+        var validator = $("form[id='applyForm']").validate();
+
+
+        $.validator.addMethod('filesize', function (value, element, param) {
+            return this.optional(element) || (element.files[0].size <= param * 1000000)
+        }, 'Faylın ölçüsü {0} MB-dan kiçik olmalıdır');
 
         $(document).ready(function () {
 
@@ -873,20 +852,27 @@
 
 
             $(".realEstate").change(function () {
+                $("#realEstateDiv label.error").remove();
                 if (this.checked) {
                     $('#realEstateDiv *').prop('disabled', false);
+
                 } else {
                     $('#realEstateDiv *').prop('disabled', true);
+                    $("#realEstateDiv *").removeClass("error");
+
                 }
             });
 
             $(".bankGuarantee").change(function () {
+                $("#bankGuaranteeDiv label.error").remove();
                 if (this.checked) {
                     $(".realEstate").attr('required', false)
                     $('#bankGuaranteeDiv *').prop('disabled', false);
                 } else {
                     $(".realEstate").attr('required', true)
                     $('#bankGuaranteeDiv *').prop('disabled', true);
+                    $("#bankGuaranteeDiv *").removeClass("error");
+
                 }
             });
 
@@ -1230,13 +1216,13 @@
                         }, 2000);
                     }
 
-                    var label = $("label[for='"+data.name+"']");
+                    var label = $("label[for='"+data.name+"']").first();
 
 
                     (data.status == 'error' && data.code == "400") ?
                         alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”") :
                         (data.status == 'error' && data.code == "403") ?
-                            alert(label.text() +" xanasında yüklədiyiniz zip-in içində pdf və jpg tipindən başqa tipdə fayl olmadığından əmin olun") : '';
+                            alert(label.text() +" xanasında yüklədiyiniz zip-in boş olmadığından və ya içində pdf və jpg tipindən başqa tipdə fayl olmadığından əmin olun") : '';
 
                 },
                 error: function (data) {
