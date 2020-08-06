@@ -34,7 +34,7 @@
                             {{ $faq->title }}
                         </a>
                         </div>
-                    
+
                         <div class="collapse" id="faq{{ $faq->id }}">
                             <div class="card card-body">
                                 {!! $faq->answer  !!}

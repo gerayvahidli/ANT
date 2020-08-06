@@ -721,7 +721,8 @@ class UserController extends Controller
     public function applyScholarship(Request $request)
     {
 
-//        dd(isset(Helper::checkFileTypeInZip($request -> file())[0]));
+
+
 
         if (!Helper::checkUserApplied()) {
             abort(403, 'Unauthorized action.');
@@ -737,7 +738,7 @@ class UserController extends Controller
         }
 
 
-        if (!empty($request -> file()) && (Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0 || Helper::checkFileTypeInZip($request -> file())[0]['fileEmpty'] == true))
+        if (isset(Helper::checkFileTypeInZip($request -> file())[0]) && (Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0 || Helper::checkFileTypeInZip($request -> file())[0]['fileEmpty'] == true))
         {
             return response()->json(Helper::checkFileTypeInZip($request -> file())[0]);
         }
