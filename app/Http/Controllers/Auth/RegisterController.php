@@ -409,14 +409,15 @@ class RegisterController extends Controller
 
         $fin = $data['fin'];
 
-        define('API_WSDL', 'http://192.168.17.47:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/430/yws_scholarship/yws_scholarship?sap-client=430');
+        define('API_WSDL', 'http://192.168.17.49:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
         ini_set("soap.wsdl_cache_enabled", "0");
 
         try {
             $client = new \SoapClient(API_WSDL, array(
                 'trace' => true,
-                'login' => 'hrregister',
+                'login' => 'HRREGISTER',
                 'password' => 'HR@reg20',
+                'location' => 'http://192.168.17.49:8000/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship'
             ));
             $res = $client->YfmScholarship(array(
                 'ImFincode' => $fin
