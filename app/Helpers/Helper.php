@@ -36,28 +36,27 @@ class Helper
     {
         $count = 0;
 
-
         foreach ($files as $key => $file) {
             if ($file->getClientOriginalExtension() == "zip") {
 
                 $filesystem = new Filesystem(new ZipArchiveAdapter($file));
 
+                $fileEmpty =  empty($filesystem->listContents());
+
                 foreach ($filesystem->listContents() as $object) {
-                    if (!isset($object['extension'] ) || !in_array($object['extension'], ['pdf', 'jpg'])  ) {
 
-                    $count++;
-                    $name = $key;
+                    !isset($object['extension'] ) || !in_array($object['extension'], ['pdf', 'jpg']) ? $count++ : '';
 
-                    }
                 }
 
-                if ($count > 0) {
+                if ($count > 0 || $fileEmpty ) {
 
                     return array([
-                        'name' => $name,
+                        'name' => $key,
                         'count' => $count,
                         'status' => 'error',
-                        'code' => '403'
+                        'code' => '403',
+                        'fileEmpty' => $fileEmpty
                     ]);
                 }
 
