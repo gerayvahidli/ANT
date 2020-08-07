@@ -614,7 +614,7 @@
                     <p for="exampleInputEmail1" class="lead">Sənədlərinizi əlavə edin
                         <a class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"
                            data-toggle="tooltip" rel="tooltip" data-placement="top"
-                           title="Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg formatından fərqli ola bilməz! ">Qeyd</a>
+                           title="Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg(jpeg) formatından fərqli ola bilməz! ">Qeyd</a>
                     </p>
 
 
@@ -626,7 +626,7 @@
                                required
                                filesize="10"
                                data-msg-required='Şəxsiyyət vəsiqəsinin surəti sahəsini boş burxamayın' ,
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -1222,7 +1222,7 @@
                     (data.status == 'error' && data.code == "400") ?
                         alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”") :
                         (data.status == 'error' && data.code == "403") ?
-                            alert(label.text() +" xanasında yüklədiyiniz zip-in boş olmadığından və ya içində pdf və jpg tipindən başqa tipdə fayl olmadığından əmin olun") : '';
+                            alert(label.text() +" xanasında yüklədiyiniz zip-in boş olmadığından və ya içində pdf və jpg(jpeg) tipindən başqa tipdə fayl olmadığından əmin olun") : '';
 
                 },
                 error: function (data) {

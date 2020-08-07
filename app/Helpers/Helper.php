@@ -45,7 +45,7 @@ class Helper
 
                 foreach ($filesystem->listContents() as $object) {
 
-                    (!isset($object['extension'] ) || !in_array($object['extension'], ['pdf', 'jpg']) ) ?  $count++ : '';
+                    (!isset($object['extension'] ) || !in_array($object['extension'], ['pdf', 'jpg','jpeg']) ) ?  $count++ : '';
 
                 }
 
