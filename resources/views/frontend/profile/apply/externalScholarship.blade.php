@@ -638,7 +638,7 @@
                                required
                                filesize="10"
                                data-msg-required='Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı) sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -650,7 +650,7 @@
                                required
                                filesize="10"
                                data-msg-required='Xarici universitetə qəbulu təsdiq edən rəsmi sənəd sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -663,7 +663,7 @@
                                required
                                filesize="10"
                                data-msg-required='Tərcümeyi-hal sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -676,7 +676,7 @@
                                required
                                filesize="10"
                                data-msg-required='Poliklinikadan 086 No-li tibbi arayış sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -689,7 +689,7 @@
                                required
                                filesize="10"
                                data-msg-required='Psixoloji dispanserdən arayış sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -702,7 +702,7 @@
                                required
                                filesize="10"
                                data-msg-required='Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript) sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -716,7 +716,7 @@
                                filesize="10"
                                data-msg-required='Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən
                             çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -729,7 +729,7 @@
                                {{--                               required--}}
                                filesize="10"
                                data-msg-required='Girov sahibinin şəxsiyyət vəsiqəsi  sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
@@ -743,7 +743,7 @@
                                required
                                filesize="10"
                                data-msg-required='Birbaşa rəhbərindən müsbət xasiyyətnamə sahəsini boş burxamayın'
-                               accept=".jpg,.pdf,.zip"
+                               accept=".jpg,.jpeg,.pdf,.zip"
                         >
                         <span class="error text-danger"> </span>
                     </div>
