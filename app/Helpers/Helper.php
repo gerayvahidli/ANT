@@ -21,7 +21,7 @@ class Helper
                 case 1:
                     ($certificate['writing'] >= 6.5 && $certificate['speaking'] >= 6.5 && $certificate['general'] >= 6) ? $count++ : '';
                 case 2:
-                    ($certificate['writing'] >= 23 || $certificate['speaking'] >= 23 || $certificate['general'] >= 80) ? $count++ : '';
+                    ($certificate['writing'] >= 23 && $certificate['speaking'] >= 23 && $certificate['general'] >= 80) ? $count++ : '';
             }
 
         }
