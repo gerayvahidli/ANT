@@ -71,10 +71,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.', 'mi
     Route::resource('/specialities', 'SpecialityController');
 });
 
-Route::post('/rel_city', 'UserController@relCity');//Ajax
-Route::post('/rel_country', 'UserController@relCountry');//Ajax
-Route::post('/rel_university', 'UserController@relUniversity');//Ajax
-Route::post('/rel_specialization', 'UserController@relSpecialization');//Ajax
+
 
 Route::post('/get_news_by_month', 'PageController@getNewsByMonth');//Ajax
 Route::post('/get_news_by_day', 'PageController@getNewsByDay');//Ajax
@@ -90,24 +87,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile/feedback', 'UserController@showFeedbackForm')->name('profile.feedback.show');
     Route::post('/profile/feedback', 'UserController@sendFeedbackMailToTis')->name('profile.feedback.send');
 
-    //user program apply
-    //Route::get('/apply/{slug}/scholarship', 'UserController@applyScholarship');
-//    Route::get('/apply/internal/scholarship/{program_id}', 'UserController@applyInternalScholarship')->middleware(\App\Http\Middleware\CheckInternalProgramApplicant::class);
-////
-////    Route::get('/apply/external/scholarship/{program_id}', 'UserController@program_type')->middleware(\App\Http\Middleware\CheckExternalProgramApplicant::class);
-////    Route::get('/apply/paid/scholarship/{program_id}', 'UserController@applyPaidScholarship')->middleware(\App\Http\Middleware\CheckInternshipProgramApplicant::class);
-////
-////
-////    Route::post('/apply/external/scholarship/{program_id}', 'UserController@storeExternal');
-////    Route::post('/apply/internal/scholarship/{program_id}', 'UserController@storeInternal');
-////    Route::post('/apply/paid/scholarship/{program_id}', 'UserController@storePaid');
-////
-////
-////    Route::post('/upload/{slug}/uploadArchiveFile', 'UserController@uploadArchiveFile');//Dropzone issue
-////    Route::post('/remove/{slug}/file', 'UserController@removeFile');
     Route::get('/apply', 'UserController@showApplyScholarshipForm')->name('showApplyScholarshipForm');
     Route::post('apply', 'UserController@applyScholarship')->name('applyScholarship');
 
+    Route::post('/rel_city', 'UserController@relCity');//Ajax
+    Route::post('/rel_country', 'UserController@relCountry');//Ajax
+    Route::post('/rel_university', 'UserController@relUniversity');//Ajax
+    Route::post('/rel_specialization', 'UserController@relSpecialization');//Ajax
 
 });
 
