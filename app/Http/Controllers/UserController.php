@@ -749,6 +749,8 @@ class UserController extends Controller
         $request->validate([
             'specialization_name' => 'required|max:500',
             'city_name' => 'required|max:100',
+            'country_id' => 'required',
+            'university_id' => 'required',
             'language_education_certificate_id.0.otherCertificate_name' => 'required_if:language_education_certificate_id.0.certificate,4|max:50',
             'EducationBeginDate' => 'required|numeric|digits:4',
             'EducationEndDate' => 'required|numeric|digits:4',
@@ -846,7 +848,7 @@ class UserController extends Controller
         $filename = Auth::user()->id . "_" . $prefix . "_" . str_random('5') . '.' . $file_extension;
 
 
-        Storage::put('ApplicationDocuments/' . $filename, (string)file_get_contents($file), 'public');
+        Storage::put('public/ApplicationDocuments/' . $filename, (string)file_get_contents($file), 'public');
 //       return $file_path = Storage::url('ApplicationDocuments/' . $filename);
 
         return $filename;

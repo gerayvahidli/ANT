@@ -108,8 +108,7 @@
 
                     <div class="form-group required">
                         <label for="country_id" class="col-form-label">Ölkə</label>
-                        <select class="form-control" name="country_id" id="country_id"></select>
-                        {{--                    {{ Form::select('country_id', [''=>'---------']+\App\Country::pluck('Name','id')->toArray() ,null,['class'=>($errors->has('country_id'))?'errorInput form-control':'form-control','id'=>'category_id','onchange'=>'related_city()']) }}--}}
+                        <select required class="form-control" name="country_id" id="country_id"></select>
                         <span class="error text-danger"> {{$errors->first('country_id')}}</span>
                     </div>
                     <div class="form-group required">
@@ -127,20 +126,7 @@
 
                         <label for="university_id" class="col-form-label">Təhsil müəssisəsi</label>
                         <div id="related_city">
-                            <select class="form-control" name="university_id" id="university_id"></select>
-
-
-                            {{--                        @if(old('university_id')!=null)--}}
-                            {{--                            {{ Form::select('university_id', \App\University::where('country_id',old('country_id'))->pluck('Name','id')->toArray() ,null,['class'=>'form-control','id'=>'university_id']) }}--}}
-
-                            {{--                        @else--}}
-
-                            {{--                            {{ Form::select('university_id', [''=>'---------'],null,['class'=>($errors->has('university_id'))?'errorInput form-control':'form-control','id'=>'category_id']) }}--}}
-                            {{--                            <span class="error text-danger"> {{$errors->first('university_id')}}</span>--}}
-                            {{--                            <small id="emailHelp" class="form-text text-muted"><i><b>İlk öncə ölkə seçilməlidir.</b></i></small>--}}
-                            {{--                        @endif--}}
-
-
+                            <select required class="form-control" name="university_id" id="university_id"></select>
                         </div>
                     </div>
 
@@ -1103,6 +1089,7 @@
 
                             } else {
 
+                                $('#specialization_id').remove();
                                 $('#specialization_name').before(data.specializations_select)
 
                                 $('#specialization_id').trigger('change');
