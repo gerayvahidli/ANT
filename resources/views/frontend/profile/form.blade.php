@@ -22,9 +22,11 @@
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 
         }
+
         form input.error, input.is-invalid {
             border: 1px solid red !important;
         }
+
         form label.error, div.invalid-feedback {
             color: red !important;
             font-size: 100% !important;
@@ -128,8 +130,8 @@
                                maxlength="50"
                                minlength="6"
                                data-msg-required='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın'
-{{--                               data-msg-number="Yalnız rəqəm daxil edin"--}}
-                               data-msg-minlength ='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
+                               {{--                               data-msg-number="Yalnız rəqəm daxil edin"--}}
+                               data-msg-minlength='Şəxsiyyət vəsiqəsinin nömrəsi sahəsi minimum 6 simvoldan ibarət olmalidir'
                                 {{ ($user->exists) ? 'readonly' : '' }}
                         >
 
@@ -488,10 +490,12 @@
                                     @endif
                                     <div class="help-block with-errors"></div>
                                 </div>
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" class="remove_button btn btn-danger btn-sm"><span
-                                                class="fa fa-times"></span></a>
-                                </div>
+                                @if($loop -> iteration != 1)
+                                    <div class="col-1">
+                                        <a href="javascript:void(0);" class="remove_button btn btn-danger btn-sm"><span
+                                                    class="fa fa-times"></span></a>
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                     @else
@@ -583,10 +587,12 @@
                                     @endif
                                     <div class="help-block with-errors"></div>
                                 </div>
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" class="remove_button btn btn-danger btn-sm"><span
-                                                class="fa fa-times"></span></a>
-                                </div>
+                                @if($loop -> iteration != 1)
+                                    <div class="col-1">
+                                        <a href="javascript:void(0);" class="remove_button btn btn-danger btn-sm"><span
+                                                    class="fa fa-times"></span></a>
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                     @else
@@ -704,7 +710,7 @@
     </section>
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
-{{--    <script src="{{asset('js/validator.js')}}"></script>--}}
+    {{--    <script src="{{asset('js/validator.js')}}"></script>--}}
 @endsection
 
 @section('footerScripts')
@@ -713,7 +719,7 @@
 
     <script>
         // Wait for the DOM to be ready
-        $(function() {
+        $(function () {
             // Initialize form validation on the registration form.
             // It has the name attribute "registration"
             var validator = $("form[id='profile-form']").validate();
@@ -722,7 +728,6 @@
 
 
         });
-
 
 
     </script>
@@ -747,10 +752,9 @@
                     dataType: "json",
                     success: function (data) {
                         console.log(data);
-                        if (data.OutParams.Status === 0  ) {
+                        if (data.OutParams.Status === 0) {
                             alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ")
-                        }
-                        else if (data.OutParams.Status === '') {
+                        } else if (data.OutParams.Status === '') {
                             alert(data.ErrMsg.ErrorMessage)
                         }
                         $('#FirstName').val(data.OutParams.FirstName);
@@ -779,9 +783,7 @@
             // profile submit - axios
 
 
-
             $('#profile-form').submit(function (stay) {
-
 
 
                         @if(!$user -> exists)
@@ -798,15 +800,13 @@
                         type: "post",
                         dataType: "json",
                         success: function (data) {
-                            if (data.OutParams.Status === 0 ) {
+                            if (data.OutParams.Status === 0) {
                                 alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
                                 error = 1;
-                            } else if(data.OutParams.Status == '')
-                            {
+                            } else if (data.OutParams.Status == '') {
                                 alert(data.ErrMsg.ErrorMessage)
                                 error = 1;
-                            }
-                            else {
+                            } else {
                                 error = 2
                             }
 
@@ -1131,12 +1131,12 @@
                         '    </div>\n' +
                         '\n' +
                         '    <div class="col-4">\n' +
-                        ' <input id="phoneNumber-'+x+' ' +
+                        ' <input id="phoneNumber-' + x + ' ' +
                         'type="text"\n' +
                         ' class="form-control number {{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
                         'name="mobilePhone[' + x + '][number]"\n' +
                         'required\n' +
-                        'maxlength="7"'+
+                        'maxlength="7"' +
                         'minlength="7"' +
                         'data-msg-required="Mobil telefon nömrəsi sahəsini boş buraxmayın"' +
                         'data-msg-number="Yalnız rəqəm daxil edin"' +
@@ -1164,7 +1164,7 @@
                     var fieldHtml = ('<div class="form-group row " id="emails">' +
                         '<label for="email" class="col-md-4 col-form-label">Elektron poçt ünvanı(şəxsi)</label>\n' +
                         '    <div class="col-7">\n' +
-                        '        <input id="email2-'+y+'" ' +
+                        '        <input id="email2-' + y + '" ' +
                         'type="email"\n' +
                         'class=" email_2_val form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}"\n' +
                         'name="email2[' + y + ']"\n ' +
@@ -1185,7 +1185,6 @@
                         '</div>');
                     y++; //Increment field counter
                     $(wrapperEmail).append(fieldHtml); //Add field html
-
 
 
                 }
@@ -1221,68 +1220,65 @@
                     var fieldHTML = '<div class="fieldGroup" id="fieldGroup' + previousEducationCount + '">' + $(".fieldGroupCopy").html() + '</div>';
                     $('body').find('.fieldGroup:last').after(fieldHTML);
                     $('.fieldGroup:last .previous_education_level').attr({
-                        id:"previous_education_level-"+previousEducationCount,
-                        name:"previous_education_level["+previousEducationCount+"]"
+                        id: "previous_education_level-" + previousEducationCount,
+                        name: "previous_education_level[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_country').attr({
-                        id:"previous_education_country_id-"+previousEducationCount,
-                        name:"previous_education_country_id["+previousEducationCount+"]"
+                        id: "previous_education_country_id-" + previousEducationCount,
+                        name: "previous_education_country_id[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_university').attr({
-                        id:"previous_education_university_id-"+previousEducationCount,
-                        name:"previous_education_university_id["+previousEducationCount+"]"
+                        id: "previous_education_university_id-" + previousEducationCount,
+                        name: "previous_education_university_id[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_BeginDate').attr({
-                        id:"previous_education_BeginDate-"+previousEducationCount,
-                        name:"previous_education_BeginDate["+previousEducationCount+"]"
+                        id: "previous_education_BeginDate-" + previousEducationCount,
+                        name: "previous_education_BeginDate[" + previousEducationCount + "]"
                     });
 
 
                     $('.fieldGroup:last .previous_education_EndDate').attr({
-                        id:"previous_education_EndDate-"+previousEducationCount,
-                        name:"previous_education_EndDate["+previousEducationCount+"]"
+                        id: "previous_education_EndDate-" + previousEducationCount,
+                        name: "previous_education_EndDate[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_faculty').attr({
-                        id:"previous_education_faculty-"+previousEducationCount,
-                        name:"previous_education_faculty["+previousEducationCount+"]"
+                        id: "previous_education_faculty-" + previousEducationCount,
+                        name: "previous_education_faculty[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_speciality').attr({
-                        id:"previous_education_speciality-"+previousEducationCount,
-                        name:"previous_education_speciality["+previousEducationCount+"]"
+                        id: "previous_education_speciality-" + previousEducationCount,
+                        name: "previous_education_speciality[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_admission_score').attr({
-                        id:"previous_education_admission_score-"+previousEducationCount,
-                        name:"previous_education_admission_score["+previousEducationCount+"]"
+                        id: "previous_education_admission_score-" + previousEducationCount,
+                        name: "previous_education_admission_score[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_section').attr({
-                        id:"previous_education_section_id-"+previousEducationCount,
-                        name:"previous_education_section_id["+previousEducationCount+"]"
+                        id: "previous_education_section_id-" + previousEducationCount,
+                        name: "previous_education_section_id[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_form').attr({
-                        id:"previous_education_form_id-"+previousEducationCount,
-                        name:"previous_education_form_id["+previousEducationCount+"]"
+                        id: "previous_education_form_id-" + previousEducationCount,
+                        name: "previous_education_form_id[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_payment_form').attr({
-                        id:"previous_education_payment_form_id-"+previousEducationCount,
-                        name:"previous_education_payment_form_id["+previousEducationCount+"]"
+                        id: "previous_education_payment_form_id-" + previousEducationCount,
+                        name: "previous_education_payment_form_id[" + previousEducationCount + "]"
                     });
 
                     $('.fieldGroup:last .previous_education_GPA').attr({
-                        id:"previous_education_GPA-"+previousEducationCount,
-                        name:"previous_education_GPA["+previousEducationCount+"]"
+                        id: "previous_education_GPA-" + previousEducationCount,
+                        name: "previous_education_GPA[" + previousEducationCount + "]"
                     });
-
-
-
 
 
                     var countryId = $('.previous_education_country');
@@ -1310,35 +1306,34 @@
                     $('body').find('.workFieldGroup:last').after(fieldHTML);
 
                     $('.workFieldGroup:last .previous_company').attr({
-                        id:"previous_company_id-"+previousWorkCount,
-                        name:"previous_company_id["+previousWorkCount+"]"
+                        id: "previous_company_id-" + previousWorkCount,
+                        name: "previous_company_id[" + previousWorkCount + "]"
                     });
 
                     $('.workFieldGroup:last .previous_organization').attr({
-                        id:"previous_organization-"+previousWorkCount,
-                        name:"previous_organization["+previousWorkCount+"]"
+                        id: "previous_organization-" + previousWorkCount,
+                        name: "previous_organization[" + previousWorkCount + "]"
                     });
 
                     $('.workFieldGroup:last .previous_department').attr({
-                        id:"previous_department-"+previousWorkCount,
-                        name:"previous_department["+previousWorkCount+"]"
+                        id: "previous_department-" + previousWorkCount,
+                        name: "previous_department[" + previousWorkCount + "]"
                     });
 
                     $('.workFieldGroup:last .previous_position').attr({
-                        id:"previous_position-"+previousWorkCount,
-                        name:"previous_position["+previousWorkCount+"]"
+                        id: "previous_position-" + previousWorkCount,
+                        name: "previous_position[" + previousWorkCount + "]"
                     });
 
                     $('.workFieldGroup:last .previous_StartDate').attr({
-                        id:"previous_StartDate-"+previousWorkCount,
-                        name:"previous_StartDate["+previousWorkCount+"]"
+                        id: "previous_StartDate-" + previousWorkCount,
+                        name: "previous_StartDate[" + previousWorkCount + "]"
                     });
 
                     $('.workFieldGroup:last .previous_EndDate').attr({
-                        id:"previous_EndDate-"+previousWorkCount,
-                        name:"previous_EndDate["+previousWorkCount+"]"
+                        id: "previous_EndDate-" + previousWorkCount,
+                        name: "previous_EndDate[" + previousWorkCount + "]"
                     });
-
 
 
                 } else {
@@ -1352,10 +1347,10 @@
                     var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
                     $(this).after(' <input type="text" \n' +
                         ' class="form-control otherCompany" \n' +
-                        ' name="otherCompany['+number+']" \n' +
+                        ' name="otherCompany[' + number + ']" \n' +
                         ' required\n' +
-                        ' maxlength ="500"'+
-                        ' placeholder="Digər müəssisənin adını bura yazın"'+
+                        ' maxlength ="500"' +
+                        ' placeholder="Digər müəssisənin adını bura yazın"' +
                         ' data-msg-required = "Digər müəssisənin adını yazın" />'
                     );
                 } else {
@@ -1365,9 +1360,6 @@
             });
 
 
-
-
-
             $('body').on('change', '#BirthCityId', function () {
                 $('#otherCity').val('');
                 if (this.value == 'other') {
@@ -1375,10 +1367,10 @@
                         'type="text" ' +
                         'class="form-control otherCity" \n' +
                         'name="otherCity" \n' +
-                        'id="otherCity" '+
+                        'id="otherCity" ' +
                         'value="{{$user -> exists && $user -> BirthCity -> IsShow == 0 ? $user -> BirthCity -> Name :''  }}"\n' +
                         'required\n' +
-                        'maxlength="50" '+
+                        'maxlength="50" ' +
                         'data-msg-required ="Digər rayonun adını yazın"\n' +
                         'placeholder="Digər rayonun adını bura yazın"/>')
 
@@ -1408,20 +1400,16 @@
             $('#address_region').trigger('change');
 
 
-
-
             $(document).on('change', '.previous_education_university', function () {
 
-                if ($(this).val() == 'other')
-                {   var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
-                    $(this).after(' <input type="text" name="previous_otherUniversity['+number+']" class="form-control previous_otherUniversity"  required maxlength="500" data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
-                }else{
+                if ($(this).val() == 'other') {
+                    var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
+                    $(this).after(' <input type="text" name="previous_otherUniversity[' + number + ']" class="form-control previous_otherUniversity"  required maxlength="500" data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
+                } else {
                     $(this).next('.previous_otherUniversity').remove();
                 }
 
             });
-
-
 
 
             //remove fields group
@@ -1442,7 +1430,7 @@
             $('select[id="country_id"]').on('change', function () {
                 var countryId = $(this).val();
                 var token = $("input[name='_token']").val();
-               $(this).parents().next('.universityDiv').find('.otherUniversity').remove() ;
+                $(this).parents().next('.universityDiv').find('.otherUniversity').remove();
 
                 if (countryId) {
                     $.ajax({
@@ -1486,6 +1474,7 @@
 
             @if(!$user -> exists)
             $('select[id="country_id"]').trigger('change');
+
             @endif
 
 
@@ -1538,8 +1527,7 @@
             }
 
             $(document).on('change', '.university', function () {
-                if ($(this).val() == 'other')
-                {
+                if ($(this).val() == 'other') {
                     $(this).after(' <input type="text" ' +
                         'name="otherUniversity" ' +
                         'class="form-control otherUniversity" ' +
@@ -1547,7 +1535,7 @@
                         'value="{{$user -> exists && $user->finalEducation->first() -> university -> IsShow == 0      ? $user->finalEducation->first() -> university -> Name  : ''}}" ' +
                         'required maxlength="500" ' +
                         'data-msg-required ="Digər univeristetin adını boş buraxmayın" placeholder="Digər universitetin adını bura yazın">\n');
-                }else{
+                } else {
                     $(this).next('.otherUniversity').remove();
                 }
 
@@ -1560,10 +1548,10 @@
                 var universitySelect = $(this).parents('.fieldGroup').find('.ex_previous_education_university')
                 var countryId = $(this).val();
                 var admissionScore = $(this).parents('.fieldGroup').find('.ex_previous_education_admission_score');
-                $(this).parents().next('.universityDiv').find('.ex_previous_otherUniversity').remove() ;
+                $(this).parents().next('.universityDiv').find('.ex_previous_otherUniversity').remove();
 
 
-                var forSelected =$(this).parents().next('.universityDiv').find('.checkOtherUniversity').val() ;
+                var forSelected = $(this).parents().next('.universityDiv').find('.checkOtherUniversity').val();
 
                 var token = $("input[name='_token']").val();
                 if (countryId) {
@@ -1588,7 +1576,7 @@
                                 universitySelect.append('<option value="' + key + '">' + value + '</option>');
                             });
 
-                            universitySelect.append('<option value="other">Digər</option>') ;
+                            universitySelect.append('<option value="other">Digər</option>');
                             universitySelect.trigger('change');
 
                         },
@@ -1603,28 +1591,24 @@
             });//end select University by Country for Previous Education 1
 
 
-
-
-
             $(document).on('change', '.ex_previous_education_university', function () {
 
 
-                if ($(this).val() == 'other')
-                {
+                if ($(this).val() == 'other') {
                     var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
 
-                    var element = ' <input type="text" name="previous_otherUniversity['+number+']" ' +
+                    var element = ' <input type="text" name="previous_otherUniversity[' + number + ']" ' +
                         'class="form-control ex_previous_otherUniversity"  ' +
                         'required maxlength="500" ';
 
-                    $(this).next().length ? element += 'value="'+ $(this).next().val()+'"' : '';
+                    $(this).next().length ? element += 'value="' + $(this).next().val() + '"' : '';
 
                     element += 'data-msg-required ="Digər univeristetin adını boş buraxmayın" ' +
                         'placeholder="Digər universitetin adını bura yazın">\n'
 
                     $(this).after(element);
 
-                }else{
+                } else {
                     $(this).next('.ex_previous_otherUniversity').remove();
                 }
 
@@ -1637,11 +1621,11 @@
                 if (this.value == 'other') {
                     var number = $(this).attr('name').match(/\d+/); //getting company select name number for use other company
 
-                    var element = ' <input type="text" name="otherCompany['+number+']" ' +
+                    var element = ' <input type="text" name="otherCompany[' + number + ']" ' +
                         'class="form-control otherCompany"  ' +
                         'required maxlength="500" ';
 
-                    $(this).next().length ? element += 'value="'+ $(this).next().val()+'"' : '';
+                    $(this).next().length ? element += 'value="' + $(this).next().val() + '"' : '';
 
                     element += 'data-msg-required ="Digər müəssisənin adını boş buraxmayın" ' +
                         'placeholder="Digər müəssisənin adını bura yazın">\n'
@@ -1653,8 +1637,6 @@
             });
 
             $('.ex_previous_company').trigger("change");
-
-
 
 
             //change education section
@@ -1755,8 +1737,6 @@
 
             $('#companies').trigger("change");
             $('#BirthCityId').trigger("change");
-
-
 
 
         });
