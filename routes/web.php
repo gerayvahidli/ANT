@@ -21,7 +21,7 @@ Route::group([], function () {
     Route::post('/backend/login', 'Auth\AdminAuthController@login')->name('admin.login.post');
     Route::get('/backend/logout', 'Auth\AdminAuthController@logout')->name('admin.login.logout');
     Route::get('set-admin-pass', function () {
-        $admin = \App\Admin::where('email', 'ilkin.fleydanli@socar.az')->first();
+        $admin = \App\Admin::where('email', 'garay.vahidli@socar.az')->first();
         $admin->update([
 
         ]);
@@ -31,33 +31,15 @@ Route::group([], function () {
 
     Route::get('create-admin', function () {
         $admin = \App\Admin::create([
-            'full_name' => 'Ilkin Fleydanli',
-            'user_name' => 'ilkin.fleydanli',
-            'email' => 'ilkin.fleydanli@socar.az',
+            'full_name' => 'Garay Vahidli',
+            'user_name' => 'garay.vahidli',
+            'email' => 'garay.vahidli@socar.az',
 
         ]);
 
         return $admin;
     });
 
-//    Route::get('testservice', function () {
-//
-//
-//    });
-
-// Password reset link request routes...
-    /*Route::get('password/email', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.email');
-    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-
-    // Password reset routes...
-    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.request');
-    Route::post('password/reset', function())->name('password.reset')*/;
-
-    // Registration Routes...
-    /*Route::get('admin/register', 'Auth\AdminAuthController@showRegistrationForm');
-    Route::post('admin/register', 'Auth\AdminAuthController@register');*/
-
-//    Route::get( '/admin', 'Admin\DashboardController@index' )->name('admin.dashboard');
 
 });
 
@@ -88,7 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/profile/feedback', 'UserController@sendFeedbackMailToTis')->name('profile.feedback.send');
 
     Route::get('/apply', 'UserController@showApplyScholarshipForm')->name('showApplyScholarshipForm');
-    Route::post('apply', 'UserController@applyScholarship')->name('applyScholarship');
+    Route::post('apply', 'UserController@applyScholarship')->name('applyScholarship');//Ajax
 
     Route::post('/rel_city', 'UserController@relCity');//Ajax
     Route::post('/rel_country', 'UserController@relCountry');//Ajax
@@ -99,66 +81,11 @@ Route::group(['middleware' => 'auth'], function () {
 
 // ajax query routes
 Route::post('getUniversitiesByCountry', 'UserController@getUniversitiesByCountry')->name('getUniversityByCountry');
-Route::post('checkUniqueEmail', 'UserController@checkUniqueEmail')->name('checkUniqueEmail');
-Route::post('checkUniquePinCode', 'UserController@checkUniquePinCode')->name('checkUniquePinCode');
 Route::post('deletePreviousEducation', 'UserController@deletePreviousEducation')->name('deletePreviousEducation');
 Route::post('deletePreviousJob', 'UserController@deletePreviousJob')->name('deletePreviousJob');
-Route::post('deleteInternship', 'UserController@deleteInternship')->name('deleteInternship');
-Route::post('deleteScholarship', 'UserController@deleteScholarship')->name('deleteScholarship');
 Route::post('getPrametersByFin', 'Auth\RegisterController@getPrametersByFin')->name('getPrametersByFin');
 
-//Route::get('/profile', function () {
-//    return view('frontend.profile.index');
-//});
 
-/*Route::get('/password/reset', function () {
-   return view('auth.passwords.reset');
-});
-*/
-
-//Route::get( 'change-pass', function () {
-//	$user           = \App\User::where( 'email', 'ilkin.fleydanli@socar.az' )->first();
-//	$user->password = Hash::make( 'i12345' );
-//	$user->save();
-//	$user1           = \App\User::where( 'email', 'i.fleydanli@hotmail.com' )->first();
-//	$user1->password = Hash::make( 'i12345' );
-//	$user1->save();
-//	$user2           = \App\User::where( 'email', 'i.fleydanli@gmail.com' )->first();
-//	$user2->password = Hash::make( 'i12345' );
-//	$user2->save();
-//	return [ $user ];
-//} );
-
-//Route::get( 'delete-ilkin', function () {
-//	try {
-//		$user = \App\User::with( 'finalEducation', 'phones', 'previousEducations', 'previousInternships', 'previousScholarships', 'externalProgramApplications', 'internalProgramApplications' )->where( 'email', 'ilkin.fleydanli@socar.az' )->first();
-//		$user->finalEducation()->delete();
-//		foreach ( $user->phones as $phone ) {
-//			$phone->delete();
-//		}
-//		foreach ( $user->previousEducations as $previous_education ) {
-//			$previous_education->delete();
-//		}
-//		foreach ( $user->previousInternships as $previous_internship ) {
-//			$previous_internship->delete();
-//		}
-//		foreach ( $user->previousScholarships as $previous_scholarship ) {
-//			$previous_scholarship->delete();
-//		}
-//		foreach ( $user->externalProgramApplications as $external_program_application ) {
-//			$external_program_application->delete();
-//		}
-//		foreach ( $user->internalProgramApplications as $internal_program_application ) {
-//			$internal_program_application->delete();
-//		}
-//		$user->delete();
-//	} catch ( Exception $e ) {
-//		return $e;
-//	}
-//
-//} );
-
-//Auth::routes();
 
 
 // Authentication Routes...
@@ -177,19 +104,6 @@ $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');;
 
 
-//Route::get( 'register', 'UserController@registration' )->name( 'register' );
-//Route::post( 'registernew', 'UserController@create' )->name( 'register' );
-
-
-//Route::get( '/', function () {
-//	return redirect( url( '/DTP' ) );
-//} )->name('DTP');
-
-
-/*Route::get('/password/reset', function () {
-   return view('auth.passwords.reset');
-});*/
-//Route::get('/test', 'UserController@test');
 
 /* Api resources start*/
 Route::get('/download/external/file/{app_id}', 'UserController@DownloadExtFile');
@@ -220,7 +134,7 @@ Route::get('/universitylist', function () {
 )->name('XTPunilist');
 
 
-$this->get('testsoap', 'SoapController@show');
+
 
 
 

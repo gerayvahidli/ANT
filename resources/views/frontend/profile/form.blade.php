@@ -37,7 +37,8 @@
     <section class="profile">
         <div class="row">
             <h3 class="mx-auto">
-                {{ ($user->exists) ? 'Profil dəyiş' : 'Qeydiyyat'}}
+                {{ ($user->exists) ? 'XARİCİ TƏQAÜD PROQRAMI - PROFİLİ DƏYİŞ' : 'XARİCİ TƏQAÜD PROQRAMI - QEYDİYYAT'}}
+
             </h3>
         </div>
         {{ Form::open([
@@ -716,27 +717,11 @@
 @section('footerScripts')
     <script src="{{asset('js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('js/jquery.validate-additional-methods.js')}}"></script>
-
-    <script>
-        // Wait for the DOM to be ready
-        $(function () {
-            // Initialize form validation on the registration form.
-            // It has the name attribute "registration"
-            var validator = $("form[id='profile-form']").validate();
-
-            validator.element(".email_2_val");
-
-
-        });
-
-
-    </script>
-
-
-
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script>
         $(document).ready(function () {
+            var validator = $("form[id='profile-form']").validate();
 
             $('#getPrametersByFin').click(function () {
 
@@ -951,17 +936,14 @@
                         });
                         // scroll to error list
 
-                        $([document.documentElement, document.body]).animate({
-                            scrollTop: $('.alert-danger').offset().top
-                        }, 2000);
                     } else if (error.request) {
                         // The request was made but no response was received
                         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                         // http.ClientRequest in node.js
-                        console.log(error.request);
+                        // console.log(error.request);
                     } else {
                         // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
+                        // console.log('Error', error.message);
                     }
                 });
                 stay.preventDefault();
@@ -978,124 +960,37 @@
                     _token: token
                 })
                     .then(function (response) {
-                        console.log(response);
+                        // console.log(response);
 
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        // console.log(error);
                     });
 
             });
 
             $(document).on('click', '#delete-previous-job', function () {
                 var previous_job_id = $(this).closest('.workFieldGroup').find('.hidden_company_id').val();
-                console.log(previous_job_id);
+                // console.log(previous_job_id);
                 axios.post('{{ route('deletePreviousJob') }}', {
                     previous_job_id: previous_job_id,
                     _token: token
                 })
                     .then(function (response) {
-                        console.log(response);
+                        // console.log(response);
 
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        // console.log(error);
                     });
 
             });
 
             // end of delete previous education
 
-            //delete Internship
-            $('.delete-internship').click(function (e) {
-                e.preventDefault();
-                var parentField = $(this).closest('.previousInternshipFieldGroup');
-                // console.log(parentField);
-                var internship_id = $(this).closest('.previousInternshipFieldGroup').find('input[name="internship_id[]"]').val();
-                // console.log(internship_id);
-                axios.post('{{ route('deleteInternship') }}', {
-                    internship_id: internship_id,
-                    _token: token
-                })
-                    .then(function (response) {
-                        parentField.remove();
-                        // console.log(response);
-                    })
-                    .catch(function (error) {
-                        // console.log(error);
-                    });
-            });
-            // end of delete Internship
-
-            //delete Scholarship
-            $('.delete-scholarship').click(function (e) {
-                e.preventDefault();
-                var parentField = $(this).closest('.previousScholarshipFieldGroup');
-                var scholarship_id = $(this).closest('.previousScholarshipFieldGroup').find('input[name="previous_scholarship_id[]"]').val();
-                // console.log(scholarship_id);
-                axios.post('{{ route('deleteScholarship') }}', {
-                    scholarship_id: scholarship_id,
-                    _token: token
-                })
-                    .then(function (response) {
-                        parentField.remove();
-                        // console.log(response);
-
-                    })
-                    .catch(function (error) {
-                        // console.log(error);
-                    });
-            });
-            // end of delete Scholarship
-
-
         });
     </script>
     <script>
-        $.fn.datepicker.noConflict;
-        $('#datePicker*').datepicker({
-            format: "yyyy-mm-dd",
-            maxViewMode: 2,
-            todayBtn: "linked",
-            language: "az",
-            autoclose: true,
-            todayHighlight: true
-        });
-
-        // $('#BeginDate').datepicker({
-        //     format: "yyyy",
-        //     viewMode: "years",
-        //     minViewMode: "years"
-        // });
-        // $('#EndDate').datepicker({
-        //     format: "yyyy",
-        //     viewMode: "years",
-        //     minViewMode: "years"
-        // });
-
-        // $('#previous_education_StartDate').datepicker({
-        //     format: "yyyy",
-        //     viewMode: "years",
-        //     minViewMode: "years"
-        // });
-        // $('#previous_education_EndDate').datepicker({
-        //     format: "yyyy",
-        //     viewMode: "years",
-        //     minViewMode: "years"
-        // });
-        //
-        //
-        // $('#previous_education_BeginDate').datepicker({
-        //     format: "yyyy",
-        //     viewMode: "years",
-        //     minViewMode: "years"
-        // });
-        // $('#previous_education_EndDate').datepicker({
-        //     format: "yyyy",
-        //     viewMode: "years",
-        //     minViewMode: "years"
-        // });
-
 
         $(document).ready(function () {
 
@@ -1302,7 +1197,7 @@
 
                     // console.log(previousEducationCount);
                     var fieldHTML = '<div class="workFieldGroup" id="workFieldGroup' + previousWorkCount + '">' + $(".previousWorkFieldGroupCopy").html() + '</div>';
-                    console.log(fieldHTML);
+                    // console.log(fieldHTML);
                     $('body').find('.workFieldGroup:last').after(fieldHTML);
 
                     $('.workFieldGroup:last .previous_company').attr({
@@ -1739,45 +1634,22 @@
             $('#BirthCityId').trigger("change");
 
 
+
+            var $addMore = $("#addMore").hide(),
+                $cbs = $('#checkEducation').click(function () {
+                    $addMore.toggle($cbs.is(":checked"));
+                });
+
+            var $addMoreWork = $("#addMoreWork").hide(),
+                $cbs2 = $('#checkWork').click(function () {
+                    $addMoreWork.toggle($cbs2.is(":checked"));
+                });
+
+
         });
 
 
     </script>
 
-    <script>
-        $(document).ready(function () {
-            var val = $(".education_level").val();
-            if (val == "2") {
-                $(".bac option[value='3']").remove();
-                $(".bac option[value='4']").remove();
-            }
 
-            $(".education_level").change(function () {
-                var val = $(this).val();
-                if (val == "2") {
-                    $(".bac option[value='3']").remove();
-                    $(".bac option[value='4']").remove();
-                } else if (val == "1") {
-                    if ($(".bac option[value='3']").length === 0 || $(".bac option[value='4']").length === 0) {
-                        // code to run if it isn't there
-                        $(".bac").append(new Option("3", "3"));
-                        $(".bac").append(new Option("4", "4"));
-                    }
-                }
-
-            });
-        });
-
-        var $addMore = $("#addMore").hide(),
-            $cbs = $('#checkEducation').click(function () {
-                $addMore.toggle($cbs.is(":checked"));
-            });
-
-        var $addMoreWork = $("#addMoreWork").hide(),
-            $cbs2 = $('#checkWork').click(function () {
-                $addMoreWork.toggle($cbs2.is(":checked"));
-            });
-
-
-    </script>
 @endsection
