@@ -17,8 +17,11 @@ Route::get('/abc', function () {
 
 Route::group([], function () {
     //Login Routes...
-    Route::get('/backend/login', 'Auth\AdminAuthController@showLoginForm')->name('admin.login.index');
-    Route::post('/backend/login', 'Auth\AdminAuthController@login')->name('admin.login.post');
+    Route::get('/backend/login', function () {
+        return redirect(Config::get('app.url').'/DTP/backend/login');
+    });
+//    Route::get('/backend/login', 'Auth\AdminAuthController@showLoginForm')->name('admin.login.index');
+//    Route::post('/backend/login', 'Auth\AdminAuthController@login')->name('admin.login.post');
     Route::get('/backend/logout', 'Auth\AdminAuthController@logout')->name('admin.login.logout');
     Route::get('set-admin-pass', function () {
         $admin = \App\Admin::where('email', 'garay.vahidli@socar.az')->first();

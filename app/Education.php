@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Education extends Model
 {
+    use LogsActivity;
+
     protected $table = 'Educations';
     protected $primaryKey = "Id";
 
@@ -32,6 +35,24 @@ class Education extends Model
         'EducationPaymentFormId',
         'GPA',
     ];
+
+    protected static  $logAttributes = [
+        'userId',
+        'EducationLevelId',
+        'UniversityId',
+        'UniversityId',
+        'StartDate',
+        'EndDate',
+        'IsCurrent',
+        'Faculty',
+        'Speciality',
+        'AdmissionScore',
+        'EducationSectionId',
+        'EducationFormId',
+        'EducationPaymentFormId',
+        'GPA'
+    ];
+
 
     public function user()
     {

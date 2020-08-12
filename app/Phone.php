@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Phone extends Model
 {
+    use LogsActivity;
+
     protected $table = 'Phones';
     public    $timestamps = false;
     protected $primaryKey = 'Id';
@@ -16,6 +19,7 @@ class Phone extends Model
         'PhoneTypeId'
     ];
 
+    protected static  $logAttributes = ['title', 'OperatorCodeId', 'PhoneNumber', 'PhoneTypeId'];
 
     public function user()
     {

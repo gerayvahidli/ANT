@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobInfo extends Model
 {
+    use LogsActivity;
+
     protected $table = 'JobInfoes';
 
     protected $primaryKey = 'Id';
@@ -30,14 +33,28 @@ class JobInfo extends Model
         'IsCurrent',
     ];
 
+
+    protected static $logAttributes = [
+        'UserId',
+        'CompanyId',
+        'Department',
+        'Position',
+        'Organization',
+        'StartDate',
+        'EndDate',
+        'TabelNo',
+        'IsCurrent',
+    ];
+
+
     public function user()
     {
-        return $this -> belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function company()
     {
-        return $this -> belongsTo(Company::class,'CompanyId');
+        return $this->belongsTo(Company::class, 'CompanyId');
     }
 
 }
