@@ -103,7 +103,7 @@
                                 {{ ($user->exists) ? 'disabled' : '' }}
                         >
                         <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">FİN kod nədir?
-                            <div><img src="{{ asset('img/finkod.png') }}"/></div>
+                            <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
                         </a>
                         @if ($errors->has('idCardPin'))
                             <div class="invalid-feedback">
@@ -137,7 +137,7 @@
                         >
 
                         <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">Nümunə
-                            <div><img src="{{ asset('img/nomresi.png') }}"/></div>
+                            <div><img width="200" src="{{ asset('img/nomresi.png') }}"/></div>
                         </a>
                         @if ($errors->has('idCardNumber'))
                             <div class="invalid-feedback">

@@ -153,12 +153,12 @@ class RegisterController extends Controller
         $companies = Company::where('IsSocar', 1)->get();
         $cities = City::where('IsShow', 1)->orderBy('Name')->get();
         $regions = Region::where('IsShow', 1)->orderBy('Name')->get();
-        $educationLevels = EducationLevel::where('IsShow',1)->get();
+        $educationLevels = EducationLevel::where('IsShow', 1)->get();
         $universities = University::where('IsShow', 1)->orderBy('Name', 'desc')->get()->pluck('Name', 'id');
         $educationForms = EducationForm::pluck('Name', 'id');
         $educationSections = EducationSection::all();
         $educationPaymentForms = EducationPaymentForm::pluck('Name', 'id');
-        $mobilePhoneOperatorCodes = MobileOperatorCode::where([['Name','!=','012'],['IsShow','=',1]]) ->pluck('Name', 'id');
+        $mobilePhoneOperatorCodes = MobileOperatorCode::where([['Name', '!=', '012'], ['IsShow', '=', 1]])->pluck('Name', 'id');
         $genders = Gender::all();
 
 
@@ -269,22 +269,21 @@ class RegisterController extends Controller
         }
 
 
-
-        if ($data['university_id'] == 'other'){
+        if ($data['university_id'] == 'other') {
 
             $university = new University;
-            $university -> Name = $data['otherUniversity'];
-            $university -> IsAvailable = 0;
-            $university -> CountryId = $data['country_id'];
-            $university -> IsShow = 0;
-            $university -> save();
+            $university->Name = $data['otherUniversity'];
+            $university->IsAvailable = 0;
+            $university->CountryId = $data['country_id'];
+            $university->IsShow = 0;
+            $university->save();
 
         }
 
         $finalEducation = new Education;
         $finalEducation->UserId = $user->id;
         $finalEducation->EducationLevelId = $data['education_level'];
-        $finalEducation->UniversityId = $data['university_id'] == 'other'? $university -> Id  : $data['university_id'];
+        $finalEducation->UniversityId = $data['university_id'] == 'other' ? $university->Id : $data['university_id'];
         $finalEducation->StartDate = $data['BeginDate'];
         $finalEducation->EndDate = $data['EndDate'];
         $finalEducation->Faculty = $data['faculty'];
@@ -307,13 +306,13 @@ class RegisterController extends Controller
                     if ($data['previous_education_university_id'][$i] == 'other') {
                         $university = new University;
                         $university->Name = $data['previous_otherUniversity'][$i];
-                        $university -> CountryId = $data['previous_education_country_id'][$i];
+                        $university->CountryId = $data['previous_education_country_id'][$i];
                         $university->IsAvailable = 0;
                         $university->IsShow = 0;
                         $university->save();
-                        $previousEducation -> UniversityId = $university -> Id;
+                        $previousEducation->UniversityId = $university->Id;
                     } else {
-                        $previousEducation -> UniversityId = $data['previous_education_university_id'][$i];
+                        $previousEducation->UniversityId = $data['previous_education_university_id'][$i];
                     }
                     $previousEducation->EducationLevelId = $data['previous_education_level'][$i];
                     $previousEducation->StartDate = ($data['previous_education_BeginDate'][$i]) ? $data['previous_education_BeginDate'][$i] : $date;
@@ -424,7 +423,6 @@ class RegisterController extends Controller
             ));
 
             //            $client->__setLocation('http://192.168.17.49:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
-
 
 
             return response(json_encode($res));
