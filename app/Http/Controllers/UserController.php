@@ -186,7 +186,7 @@ class UserController extends Controller
             'email2.*' => 'required|string|email|max:255',
 //            'password' => 'required|string|min:6|confirmed',
 //            'idCardPin' => 'required|max:7|unique:user,Fin',
-//            'idCardNumber' => 'required|max:8|unique:user,PassportNo',
+//            'passport_no' => 'required|max:8|unique:user,PassportNo',
 
 
             'BeginDate' => 'required|digits:4|integer|min:1900|max:2100',
@@ -255,11 +255,17 @@ class UserController extends Controller
         $user->CitizenCountryId = $request->nationality;
         $user->AddressMain = $request->Address;
         $user->Address2 = $request->Address2;
-//        $user->PassportNo =  $request -> idCardNumber;
+//        $user->PassportNo =  $request -> passport_no;
 //        $user->Fin = $request -> idCardPin;
 
+        $user -> AuditLastModifiedUserId = 1;
+        $user -> AuditLastModifiedDateTime = date("Y-m-d h:i:s");
 
         $user->save();
+
+        Helper::userLog($user,'update');
+
+
         $mobilePhone = $this->saveMobilePhone($request, $user);
         $emails = $this->saveEmails($request, $user);
         $finalEducation = $this->updateFinalEducation($request, $user);
@@ -664,25 +670,6 @@ class UserController extends Controller
         return ['status' => 'error', 'message' => 'Xəta baş verdi'];
     }
 
-//	public function deleteInternship ( Request $request )
-//	{
-//		$internship = PreviousInternship::find( $request->internship_id );
-//		$result     = $internship->delete();
-//		if ( $result ) {
-//			return [ 'status' => 'ok', 'message' => 'Əvvəlki təcrübə silindi' ];
-//		}
-//		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
-//	}
-//
-//	public function deleteScholarship ( Request $request )
-//	{
-//		$scholarship = PreviousScholarship::find( $request->scholarship_id );
-//		$result      = $scholarship->delete();
-//		if ( $result ) {
-//			return [ 'status' => 'ok', 'message' => 'Əvvəlki təqaüd silindi' ];
-//		}
-//		return [ 'status' => 'error', 'message' => 'Xəta baş verdi' ];
-//	}
 
     public function loginLdap()
     {

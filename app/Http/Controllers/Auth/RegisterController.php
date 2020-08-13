@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Request;
 use GuzzleHttp;
-
+use App\Helpers\Helper;
 class RegisterController extends Controller
 {
     /*
@@ -90,7 +90,7 @@ class RegisterController extends Controller
             'email2.*' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
             'idCardPin' => 'required|max:7|unique:user,Fin',
-            'idCardNumber' => 'required|max:50|unique:user,PassportNo',
+            'passport_no' => 'required|max:50|unique:user,PassportNo',
 
 
             'BeginDate' => 'required|digits:4|integer|min:1900|max:2100',
@@ -185,7 +185,7 @@ class RegisterController extends Controller
 //        $data['BirthCityId'] = 1;
 //        $data[ 'gender' ] = 1;
 //        $data[ 'Address' ] = 'Baki';
-//        $data[ 'idCardNumber' ] =  rand(5, 1500);
+//        $data[ 'passport_no' ] =  rand(5, 1500);
 //        $data[ 'idCardPin' ] =  rand(5, 1500);
 //        $data['mobilePhone'] = array([
 //            'number'=>  '5555555',
@@ -208,7 +208,7 @@ class RegisterController extends Controller
         $user->password = \Hash::make($data['password']);
         $user->AddressMain = $data['Address'];
         $user->Address2 = $data['Address2'];
-        $user->PassportNo = $data['idCardNumber'];
+        $user->PassportNo = $data['passport_no'];
         $user->Fin = $data['idCardPin'];
 
         if ($data['BirthCityId'] == 'other') {
@@ -233,8 +233,16 @@ class RegisterController extends Controller
             $user->RegionId = $data['address_region'];
         }
 
+        $user -> AuditInsertedUserId = 1;
+        $user -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
 
         $user->save();
+
+
+
+        Helper::userLog($user,"create");
+
+
 
         $homePhone = new Phone;
         $homePhone->PhoneNumber = $data['homePhone'];

@@ -2,7 +2,11 @@
 
 namespace App\Helpers;
 
+use App\City;
 use App\Country;
+use App\Region;
+use App\User;
+use App\UserLog;
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
@@ -78,6 +82,38 @@ class Helper
     {
         return \Auth::user() -> userPrograms -> last() -> UserProgramStatusId == 1 ;
     }
+
+
+    public static function userLog($user,$operation)
+    {
+        $userLog = new UserLog;
+
+        $userLog -> ImagePath        = $user -> ImagePath;
+        $userLog -> email            = $user -> email;
+        $userLog -> FirstName        = $user -> FirstName;
+        $userLog -> LastName         = $user -> LastName;
+        $userLog -> FatherName       = $user -> FatherName;
+        $userLog -> GenderId         = $user -> GenderId;
+        $userLog -> CitizenCountryId = $user -> CitizenCountryId;
+        $userLog -> Dob              = $user -> Dob;
+        $userLog -> BirthCityId      = $user -> BirthCityId;
+        $userLog -> RegionId         = $user -> RegionId;
+        $userLog -> Password         = $user -> password;
+        $userLog -> AddressMain      = $user -> AddressMain;
+        $userLog -> Address2         = $user -> Address2;
+        $userLog -> PassportNo       = $user -> PassportNo;
+        $userLog -> Fin              = $user -> Fin;
+
+        $userLog -> remember_token   = "sadsdadasdasda";
+        $userLog -> Id               = $user -> id;
+        $userLog -> LogUserId        = 1;
+        $userLog -> LogDateTime      = date("Y-m-d h:i:s");
+        $operation == "create" ? $userLog -> LogOperationId = 1 : $userLog -> LogOperationId = 2    ;
+
+        $user -> logs() -> save($userLog);
+
+    }
+
 
 
 }

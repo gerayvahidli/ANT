@@ -6,17 +6,19 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Queue\Jobs\Job;
 
-class User extends Authenticatable
+class UserLog extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'user';
+    protected $table = 'UserLogs';
     //protected $dateFormat = 'Y-m-d H:i:s+';
     public $timestamps = false;
 
     protected $dates = [
         'Dob',
     ];
+
+    protected $primaryKey = 'LogId';
 
     /**
      * The attributes that are mass assignable.
@@ -39,21 +41,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-//    protected $casts = [
-//        'IsCurrentlyWorking'      => 'boolean',
-//        'IsCurrentlyWorkAtSocar'  => 'boolean',
-//        'hasAppliedToScholarship' => 'boolean',
-//    ];
-
-//    public function getAuthIdentifier()
-//    {
-//        return $this->email;
-//    }
-//
-//    public function getAuthPassword()
-//    {
-//        return $this->password;
-//    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -90,20 +77,7 @@ class User extends Authenticatable
     }
 
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
 
-
-    public function previousInternships()
-    {
-        return $this->hasMany( PreviousInternship::class );
-    }
-
-    public function previousScholarships()
-    {
-        return $this->hasMany( PreviousScholarship::class );
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -141,11 +115,6 @@ class User extends Authenticatable
     public function applications()
     {
         return $this -> hasMany(EPApplication::class,'UserId','id')->with('applicationStageNotes','applicationStage');
-    }
-
-    public function logs()
-    {
-        return $this->hasMany( UserLog::class,'Id' );
     }
 
 

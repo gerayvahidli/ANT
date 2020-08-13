@@ -121,13 +121,13 @@
 
                 </div>
                 <div class="form-group row required">
-                    <label for="idCardNumber" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin nömrəsi</label>
+                    <label for="passport_no" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin nömrəsi</label>
                     <div class="col-8">
-                        <input id="idCardNumber" name="idCardNumber"
-                               value="{{ ($user->exists) ? $user->PassportNo : old('idCardNumber') }}"
+                        <input id="passport_no" name="passport_no"
+                               value="{{ ($user->exists) ? $user->PassportNo : old('passport_no') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin nömrəsi"
                                type="text"
-                               class="{{ ($errors->has('idCardNumber')) ? 'form-control is-invalid ' :'form-control ' }}"
+                               class="{{ ($errors->has('passport_no')) ? 'form-control is-invalid ' :'form-control ' }}"
                                maxlength="50"
                                minlength="6"
                                data-msg-required='Şəxsiyyət vəsiqəsinin nömrəsi sahəsini boş buraxmayın'
@@ -139,9 +139,9 @@
                         <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">Nümunə
                             <div><img width="200" src="{{ asset('img/nomresi.png') }}"/></div>
                         </a>
-                        @if ($errors->has('idCardNumber'))
+                        @if ($errors->has('passport_no'))
                             <div class="invalid-feedback">
-                                <strong>{{ $errors->first('idCardNumber') }}</strong>
+                                <strong>{{ $errors->first('passport_no') }}</strong>
                             </div>
                         @endif
                         <div class="help-block with-errors"></div>
@@ -745,7 +745,7 @@
                         $('#FirstName').val(data.OutParams.FirstName);
                         $('#LastName').val(data.OutParams.SecondName);
                         $('#FatherName').val(data.OutParams.MiddleName);
-                        $('#idCardNumber').val(data.OutParams.Idnum);
+                        $('#passport_no').val(data.OutParams.Idnum);
                         if (data.OutParams.Gender != '') {
                             $('#gender').val(data.OutParams.Gender);
                         }
@@ -899,13 +899,13 @@
 
                         }
 
-                        if (error.response.data.errors.idCardNumber) {
+                        if (error.response.data.errors.passport_no) {
 
-                            current_input = $("input[name='idCardNumber']");
+                            current_input = $("input[name='passport_no']");
                             current_input.addClass('is-invalid');
                             current_input.closest('.form-group ').find('.invalid-feedback').remove();
                             current_input.after('<div class="invalid-feedback">\n' +
-                                '<strong>' + error.response.data.errors.idCardNumber + '</strong>\n' +
+                                '<strong>' + error.response.data.errors.passport_no + '</strong>\n' +
                                 '</div>');
 
                         }
