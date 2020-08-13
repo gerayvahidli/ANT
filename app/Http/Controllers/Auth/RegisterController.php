@@ -416,7 +416,7 @@ class RegisterController extends Controller
 
         $fin = $data['fin'];
 
-        define('API_WSDL', 'http://192.168.17.51:8000/sap/bc/srt/wsdl/flv_10002A111AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
+        define('API_WSDL', 'http://192.168.17.51:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
         ini_set("soap.wsdl_cache_enabled", "0");
 
         try {
