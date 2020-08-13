@@ -103,6 +103,7 @@ class Helper
         $userLog -> Address2         = $user -> Address2;
         $userLog -> PassportNo       = $user -> PassportNo;
         $userLog -> Fin              = $user -> Fin;
+        $userLog -> UserStatusId     = $user -> UserStatusId;
 
         $userLog -> remember_token   = "sadsdadasdasda";
         $userLog -> Id               = $user -> id;

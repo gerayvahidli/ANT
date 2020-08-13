@@ -709,8 +709,6 @@ class UserController extends Controller
     {
 
 
-
-
         if (!Helper::checkUserApplied()) {
             abort(403, 'Unauthorized action.');
         }
@@ -809,6 +807,10 @@ class UserController extends Controller
         $request->hasFile('academic_transcript') ? $application->AcademicTranscriptPath = $this->uploadDocuments($request->file('academic_transcript'), 'at') : '';
 
 
+        $application -> AuditInsertedUserId = 1;
+        $application -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
+
+
         $application->save();
 
         $this->storeLanguageCertificate($application, $request);
@@ -857,6 +859,9 @@ class UserController extends Controller
         $realEstate->RegistrNo = $request->realEstate_registry;
         $realEstate->RegistrDate = $request->realEstate_registry_date;
 
+        $realEstate -> AuditInsertedUserId = 1;
+        $realEstate -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
+
         $realEstate->save();
 
     }
@@ -869,6 +874,9 @@ class UserController extends Controller
         $bankGuarantee->BankId = $request->bank_id;
         $bankGuarantee->Amount = $request->bank_fee['amount'];
         $bankGuarantee->CurrencyId = $request->bank_fee['currency'];
+
+        $bankGuarantee -> AuditInsertedUserId = 1;
+        $bankGuarantee -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
 
         $bankGuarantee->save();
 
