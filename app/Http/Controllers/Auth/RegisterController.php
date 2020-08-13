@@ -424,7 +424,7 @@ class RegisterController extends Controller
                 'trace' => true,
                 'login' => 'HRREGISTER',
                 'password' => 'HR@reg20',
-//                'location' => 'http://192.168.17.49:8000/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship'
+                'location' => 'http://192.168.17.51:8000/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship'
             ));
             $res = $client->YfmScholarship(array(
                 'ImFincode' => $fin
