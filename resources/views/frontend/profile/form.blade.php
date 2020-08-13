@@ -737,8 +737,9 @@
                     dataType: "json",
                     success: function (data) {
                         console.log(data);
-                        if (data.OutParams.Status === 0) {
+                        if (data.OutParams.Status === "0") {
                             alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ")
+                            return;
                         } else if (data.OutParams.Status === '') {
                             alert(data.ErrMsg.ErrorMessage)
                         }
@@ -785,7 +786,7 @@
                         type: "post",
                         dataType: "json",
                         success: function (data) {
-                            if (data.OutParams.Status === 0) {
+                            if (data.OutParams.Status === "0") {
                                 alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
                                 error = 1;
                             } else if (data.OutParams.Status == '') {
