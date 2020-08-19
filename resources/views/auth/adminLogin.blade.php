@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="гыукcard">
                     <div class="card-header">{{ __('Daxil ol') }}</div>
 
                     <div class="card-body">

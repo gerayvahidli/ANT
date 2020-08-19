@@ -549,7 +549,6 @@ class UserController extends Controller
                 $Phone = new Email();
                 $Phone->UserId = $user->id;
                 $Phone->email = $email;
-                $Phone->IsMain = 0;
 
                 $Phone->save();
             }
@@ -709,12 +708,13 @@ class UserController extends Controller
     {
 
 
+        //check user applied current active program
         if (!Helper::checkUserApplied()) {
             abort(403, 'Unauthorized action.');
         }
 
 
-
+        //check user ielts or toefl requirements
         if (!Helper::checkCertificateScore($request)) {
             return response()->json([
                 'status' => 'error',
@@ -723,6 +723,7 @@ class UserController extends Controller
         }
 
 
+        //check file types in zip
         if (isset(Helper::checkFileTypeInZip($request -> file())[0]) && (Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0 || Helper::checkFileTypeInZip($request -> file())[0]['fileEmpty'] == true))
         {
             return response()->json(Helper::checkFileTypeInZip($request -> file())[0]);
@@ -848,17 +849,18 @@ class UserController extends Controller
     {
         $realEstate = new RealEstate;
 
-        $realEstate->ApplicationId = $application->Id;
-        $realEstate->DepositId = $request->realEstate_deposit_object_id;
-        $realEstate->Address = $request->realEstate_located_city;
-        $realEstate->Owner = $request->realEstate_owner;
-        $realEstate->Phone = $request->realEstate_owner_contact;
-        $realEstate->Email = $request->realEstate_owner_email;
-        $realEstate->SerialNo = $request->realEstateSNO['serial'] . $request->realEstateSNO['number'];
-        $realEstate->ReyestrNo = $request->realEstate_reyester;
-        $realEstate->RegistrNo = $request->realEstate_registry;
-        $realEstate->RegistrDate = $request->realEstate_registry_date;
+        $realEstate -> ApplicationId = $application -> Id;
+        $realEstate -> DepositId = $request -> realEstate_deposit_object_id;
+        $realEstate -> Address = $request -> realEstate_located_city;
+        $realEstate -> Owner = $request -> realEstate_owner;
+        $realEstate -> Phone = $request -> realEstate_owner_contact;
+        $realEstate -> Email = $request -> realEstate_owner_email;
+        $realEstate -> SerialNo = $request -> realEstateSNO['serial'] . $request->realEstateSNO['number'];
+        $realEstate -> ReyestrNo = $request -> realEstate_reyester;
+        $realEstate -> RegistrNo = $request -> realEstate_registry;
+        $realEstate -> RegistrDate = $request -> realEstate_registry_date;
 
+        $realEstate -> Acceptable = 1;
         $realEstate -> AuditInsertedUserId = 1;
         $realEstate -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
 
@@ -875,6 +877,7 @@ class UserController extends Controller
         $bankGuarantee->Amount = $request->bank_fee['amount'];
         $bankGuarantee->CurrencyId = $request->bank_fee['currency'];
 
+        $bankGuarantee -> Acceptable = 1;
         $bankGuarantee -> AuditInsertedUserId = 1;
         $bankGuarantee -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
 

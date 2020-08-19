@@ -270,7 +270,6 @@ class RegisterController extends Controller
                 $Email = new Email;
                 $Email->email = $email2;
                 $Email->UserId = $user->id;
-                $Email->IsMain = 0;
 
                 $Email->save();
             }
