@@ -75,7 +75,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'image' => 'required|image|mimes:jpeg,bmp,png',
+            'image' => 'image|mimes:jpeg,bmp,png',
             'FirstName' => 'required|max:255',
             'LastName' => 'required|max:255',
             'FatherName' => 'required|max:255',

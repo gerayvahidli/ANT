@@ -82,7 +82,7 @@
                     <label for="image" class="col-4 col-form-label">Şəkil</label>
                     <div class="col-8">
 
-                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control', ($user->exists) ? '' : 'required','data-msg-required'=>'Şəkil sahəsini boş buraxmayın']) }}
+                        {{ Form::file('image', ['class' => ($errors->has('image')) ? 'form-control is-invalid' :'form-control']) }}
                         @if ($errors->has('image'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('image') }}</strong>
