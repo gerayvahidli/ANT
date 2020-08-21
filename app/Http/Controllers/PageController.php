@@ -114,6 +114,7 @@ class PageController extends Controller
         });
 
 
+
         $current_month_news = Article::whereYear('published_at',date('Y')) -> whereMonth('published_at',date('m')) ->get();
 
         return response(json_encode(

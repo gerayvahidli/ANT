@@ -68,7 +68,7 @@
     <div class="container">
         <hr>
 
-        <h3 style="text-align: center;">XARİCİ TƏQAÜD PROQRAMI - MÜRACİƏT ET</h3>
+        <h3 style="text-align: center;">XARİCİ TƏQAÜD PROQRAMI - MÜRACİƏT</h3>
         <hr>
         <form name="applyForm" id="applyForm" action="" method="post" enctype="multipart/form-data"
               data-toggle="validator" role="form">

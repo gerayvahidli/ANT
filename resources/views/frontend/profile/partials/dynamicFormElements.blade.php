@@ -241,6 +241,7 @@
                    id="previous_StartDate"
                    required
                    data-msg-required = "İşə qəbul tarixi sahəsini boş buraxmayın"
+                   max = "2999-12-31"
             >
             <div class="help-block with-errors"></div>
         </div>
@@ -255,6 +256,7 @@
                    id="previous_EndDate"
                    required
                    data-msg-required = "İşdən ayrılma tarixi sahəsini boş buraxmayın"
+                   max = "2999-12-31"
             >
             <div class="help-block with-errors"></div>
         </div>

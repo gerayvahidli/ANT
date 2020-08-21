@@ -86,7 +86,7 @@
     <div class="form-group row required">
         <label for="StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            {{ Form::date('StartDate', ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> StartDate : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate']) }}
+            {{ Form::date('StartDate', ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> StartDate : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate','max' => '2999-12-31']) }}
             @if ($errors->has('StartDate'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('StartDate') }}</strong>

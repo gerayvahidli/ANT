@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Daxil etdiyiniz məlumata uyğun istifadəçi tapılmadı.',
+    'failed' => 'Daxil etdiyiniz istifadəçi adı və ya şifrə səhvdir.',
     'throttle' => 'Həddən artıq daxil olmağa cəhd. Zəhmət olmasa :seconds saniyədən sonra bir daha daxil olmağa cəhd edin.',
 
 ];

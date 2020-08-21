@@ -9,6 +9,7 @@ use App\User;
 use App\UserLog;
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
+use Carbon\Carbon;
 
 class Helper
 {
@@ -113,6 +114,15 @@ class Helper
 
         $user -> logs() -> save($userLog);
 
+    }
+
+
+    public static function checkUserAge($dob)
+    {
+        $current_year = date('Y-m-d');
+        $user_year = date('Y-m-d', strtotime($dob));
+
+        return $difference = Carbon::parse($user_year)->diffInYears(Carbon::parse($current_year)) <= 40;
     }
 
 

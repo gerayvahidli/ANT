@@ -90,7 +90,7 @@ class RegisterController extends Controller
             'email2.*' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
             'idCardPin' => 'required|max:7|unique:user,Fin',
-            'passport_no' => 'required|max:50|unique:user,PassportNo',
+            'passport_no' => 'required|max:50',
 
 
             'BeginDate' => 'required|digits:4|integer|min:1900|max:2100',

@@ -9,6 +9,8 @@
 
         .hint:hover > div {
             display: block;
+            margin-top: 39px;
+            margin-left: -225px;
         }
 
         .has-error .checkbox, .has-error .checkbox-inline, .has-error .control-label, .has-error .help-block, .has-error .radio, .has-error .radio-inline, .has-error.checkbox label, .has-error.checkbox-inline label, .has-error.radio label, .has-error.radio-inline label {
@@ -33,6 +35,7 @@
         }
     </style>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <section class="profile">
         <div class="row">
@@ -91,7 +94,8 @@
 
                 <div class="form-group row required">
                     <label for="idCardPin" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin FİN kodu</label>
-                    <div class="col-8">
+
+                    <div class="col-7 ">
                         <input id="idCardPin" name="idCardPin"
                                value="{{ ($user->exists) ? $user->Fin : old('idCardPin') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin FİN kodu" type="text"
@@ -100,11 +104,10 @@
                                maxlength="7"
                                minlength="7"
                                data-msg-minlength='Şəxsiyyət vəsiqəsinin FİN kodu minimum 7 simvoldan ibarət olmalidir'
+                               oninput="this.value = this.value.toUpperCase()"
                                 {{ ($user->exists) ? 'disabled' : '' }}
                         >
-                        <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">FİN kod nədir?
-                            <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
-                        </a>
+
                         @if ($errors->has('idCardPin'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('idCardPin') }}</strong>
@@ -118,11 +121,16 @@
                         @endif
 
                     </div>
-
+                    <div class="">
+                    <a class="hint  " style="cursor: pointer;color:blue; font-size:11px;">  <i class="material-icons">info</i>
+                        <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
+                    </a>
                 </div>
+                </div>
+
                 <div class="form-group row required">
                     <label for="passport_no" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin nömrəsi</label>
-                    <div class="col-8">
+                    <div class="col-7">
                         <input id="passport_no" name="passport_no"
                                value="{{ ($user->exists) ? $user->PassportNo : old('passport_no') }}"
                                placeholder="Şəxsiyyət vəsiqəsinin nömrəsi"
@@ -136,15 +144,17 @@
                                 {{ ($user->exists) ? 'readonly' : '' }}
                         >
 
-                        <a class="hint" style="cursor: pointer;color:blue; font-size:11px;">Nümunə
-                            <div><img width="200" src="{{ asset('img/nomresi.png') }}"/></div>
-                        </a>
                         @if ($errors->has('passport_no'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('passport_no') }}</strong>
                             </div>
                         @endif
                         <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="">
+                        <a class="hint  " style="cursor: pointer;color:blue; font-size:11px;">  <i class="material-icons">info</i>
+                            <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
+                        </a>
                     </div>
                 </div>
 
@@ -248,7 +258,7 @@
                 <div class="form-group row required">
                     <label for="Dob" class="col-4 col-form-label">Təvəllüd</label>
                     <div class="col-8">
-                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'Təvvəllüd sahəsini boş buraxmayın','id' => 'Dob']) }}
+                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'Təvvəllüd sahəsini boş buraxmayın','id' => 'Dob','max' => '2999-12-31']) }}
                         @if ($errors->has('Dob'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('Dob') }}</strong>
@@ -754,7 +764,7 @@
                         $('#Dob').val(data.OutParams.BirthDate);
                         $('#StartDate').val(data.OutParams.Begda);
                         $('#position').val(data.OutParams.Post);
-                        $('#tabel_number').val(data.OutParams.Pernr);
+                        data.OutParams.Pernr != "00000000" ? $('#tabel_number').val(data.OutParams.Pernr) : $('#tabel_number').val('');
 
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -866,10 +876,17 @@
                     })
                     .then((response) => {
                         // console.log('correct');
-                        console.log(response);
-                        window.location.href = '{{ route('profile.index') }}';
+                        if(response.data.problem == "age")
+                        {
+                            alert("40 yaşdan yuxarı namizədlər proqrama müraciət edə bilməz");
+
+                        }else{
+                            window.location.href = '{{ route('profile.index') }}';
+                        }
                     }).catch((error) => {
                     if (error.response) {
+                        $('#loaderModal').modal('hide');
+
                         // The request was made and the server responded with a status code
                         // that falls out of the range of 2xx
                         console.log(error.response.data);

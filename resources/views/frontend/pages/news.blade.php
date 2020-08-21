@@ -141,18 +141,17 @@
                 $.each(data, function (key, article) {
                     var body = article.body;
                     var short_body = body.slice(0, 250) + '...'
-                    var date = new Date(article.published_at),
-                        yr = date.getFullYear(),
-                        month = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
-                        day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-                        publish_date = day + '-' + month + '-' + yr;
 
+                    var date = article.published_at;
+                    var dateSplit = date.split(" ");
+                    var dateSplit2 = dateSplit[0].split("-");
+                    var formattedDate = dateSplit2.reverse().join('-');
 
                     $('.news').append(' ' +
                         '<article class="card">\n' +
                         ' <div class="card-body">\n' +
                         '  <h5 class="card-title"><a href="{{url('news')}}' + '/' + article.id + '">' + article.title + '</a> </h5>\n' +
-                        '  <h5><small>' + publish_date + '</small></h5>\n' +
+                        '  <h5><small>' + formattedDate + '</small></h5>\n' +
                         '  <p class="card-text">' + short_body + '</p><a href="{{url('news')}}' + '/' + article.id + '">Ardını oxu</a>' +
                         '  </div>\n' +
                         '   </article> ' +
