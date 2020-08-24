@@ -11,6 +11,7 @@ use App\UserLog;
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use Carbon\Carbon;
+use Auth;
 
 class Helper
 {
@@ -82,13 +83,17 @@ class Helper
 
     public static function checkUserApplied ()
     {
-        $active_program = ExternalProgram::where([
+         $active_program = ExternalProgram::where([
             ['BeginDate', '<', date('Y-m-d')],
             ['EndDate', '>', date('Y-m-d')],
             ['IsActive', '=', 1],
         ])->first();
 
-        return \Auth::user() -> userPrograms -> where('ProgramId',$active_program -> Id) -> first() -> UserProgramStatusId == 1;
+         if(count (Auth::user() -> applications ) > 1){
+          return Auth::user() -> userPrograms -> where('ProgramId',$active_program -> Id);
+         } else{
+             return Auth::user() -> userPrograms -> first();
+         }
     }
 
 

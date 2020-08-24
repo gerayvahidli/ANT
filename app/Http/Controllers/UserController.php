@@ -715,6 +715,7 @@ class UserController extends Controller
 
     public function showApplyScholarshipForm(User $user)
     {
+        
         if(!Helper::checkUserApplied()){
             return redirect(route('profile.index'));
         }
