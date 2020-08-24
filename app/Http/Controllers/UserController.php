@@ -98,7 +98,7 @@ class UserController extends Controller
         //    return new FromUserToTis($request);
         $request->validate([
             'message' => 'required|string|min:3',
-            'file' => 'nullable|mimes:jpeg,bmp,png,pdf,doc,docx,xls,xlsx,rar,zip',
+            'file' => 'nullable|mimes:jpeg,bmp,png,pdf,doc,docx,xls,xlsx,zip|max:5120',
         ]);
 
         // file adding

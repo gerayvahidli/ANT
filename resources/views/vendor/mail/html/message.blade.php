@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            &copy; {{ date('Y') }} {{ config('app.name') }}. Bütün hüquqlar qorunur.
+            &copy; {{ date('Y') }} SOCAR. Bütün hüquqlar qorunur.
         @endcomponent
     @endslot
 @endcomponent
