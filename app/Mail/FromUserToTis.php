@@ -40,7 +40,7 @@ class FromUserToTis extends Mailable
 		return $this->from( 'noreply@socar.az' )
 			->replyTo($this->data[ 'email' ], $this->data[ 'full_name' ])
 			->subject( 'Müraciət' )
-            ->cc('elshan.sharifov@socar.az')
+            ->cc(['elshan.sharifov@socar.az','garay.vahidli@socar.az'])
             ->markdown( 'emails.user.toTis' )
 			->with( [ 'data' => $this->data ] );
 	}
