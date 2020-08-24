@@ -23,7 +23,7 @@
     {{--| Col 3 is      | Right-Aligned | $20      |--}}
 {{--@endcomponent--}}
 
-Hörmətlə,<br>
-{{ config('app.name') }}
+{{--Hörmətlə,<br>--}}
+{{--{{ config('app.name') }}--}}
 @endcomponent
  
