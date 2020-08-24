@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Socar &middot; Xarici Təqaüd Proqramı</title>
+    <title>SOCAR - Xarici Təqaüd Proqramı</title>
 	<link rel="icon" href="http://socar.az/socar/assets/img/logo/ms-icon-144x144.png">
 
     <!-- Fonts -->

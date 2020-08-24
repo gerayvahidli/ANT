@@ -155,8 +155,8 @@
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="">
-                        <a class="hint  " style="cursor: pointer;color:#636b6f; font-size:11px;">  <i class="material-icons">help</i>
-                            <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
+                        <a class="hint" style="cursor: pointer;color:#636b6f; font-size:11px;">  <i class="material-icons">help</i>
+                            <div><img width="200" src="{{ asset('img/nomresi.png') }}"/></div>
                         </a>
                     </div>
                 </div>
