@@ -29,7 +29,7 @@ class FromUserToTis extends Mailable
 	 */
 	public function build ()
 	{
-		if (isset($this->data[ 'file' ])) {
+		if (!is_null($this->data[ 'file' ])) {
 			return $this->from( 'noreply@socar.az' )
 				->replyTo($this->data[ 'email' ], $this->data[ 'full_name' ])
 				->subject( 'XTP Müraciət' )
@@ -37,13 +37,13 @@ class FromUserToTis extends Mailable
                 ->markdown( 'emails.user.toTis' )
 				->attach( asset($this-> data['file'] ) )
 				->with( [ 'data' => $this->data ] );
-		}else{
+		}
 		return $this->from( 'noreply@socar.az' )
 			->replyTo($this->data[ 'email' ], $this->data[ 'full_name' ])
 			->subject( 'XTP Müraciət' )
             ->cc('elshan.sharifov@socar.az')
             ->markdown( 'emails.user.toTis' )
 			->with( [ 'data' => $this->data ] );
-		}
+
 	}
 }

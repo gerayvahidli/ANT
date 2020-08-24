@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\City;
 use App\Country;
+use App\ExternalProgram;
 use App\Region;
 use App\User;
 use App\UserLog;
@@ -81,7 +82,13 @@ class Helper
 
     public static function checkUserApplied ()
     {
-        return \Auth::user() -> userPrograms -> last() -> UserProgramStatusId == 1 ;
+        $active_program = ExternalProgram::where([
+            ['BeginDate', '<', date('Y-m-d')],
+            ['EndDate', '>', date('Y-m-d')],
+            ['IsActive', '=', 1],
+        ])->first();
+
+        return \Auth::user() -> userPrograms -> where('ProgramId',$active_program -> Id) -> first() -> UserProgramStatusId == 1;
     }
 
 
@@ -124,6 +131,8 @@ class Helper
 
         return $difference = Carbon::parse($user_year)->diffInYears(Carbon::parse($current_year)) <= 40;
     }
+
+
 
 
 

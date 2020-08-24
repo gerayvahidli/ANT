@@ -5,12 +5,15 @@
     <style type="text/css">
         .hint > div {
             display: none;
+            position: absolute;
+            z-index:999;
         }
 
         .hint:hover > div {
             display: block;
-            margin-top: 39px;
+            margin-top: 30px;
             margin-left: -225px;
+
         }
 
         .has-error .checkbox, .has-error .checkbox-inline, .has-error .control-label, .has-error .help-block, .has-error .radio, .has-error .radio-inline, .has-error.checkbox label, .has-error.checkbox-inline label, .has-error.radio label, .has-error.radio-inline label {
@@ -122,7 +125,7 @@
 
                     </div>
                     <div class="">
-                    <a class="hint  " style="cursor: pointer;color:blue; font-size:11px;">  <i class="material-icons">info</i>
+                    <a class="hint  " style="cursor: pointer;color:#636b6f; font-size:11px;">  <i class="material-icons">help</i>
                         <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
                     </a>
                 </div>
@@ -152,7 +155,7 @@
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="">
-                        <a class="hint  " style="cursor: pointer;color:blue; font-size:11px;">  <i class="material-icons">info</i>
+                        <a class="hint  " style="cursor: pointer;color:#636b6f; font-size:11px;">  <i class="material-icons">help</i>
                             <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
                         </a>
                     </div>

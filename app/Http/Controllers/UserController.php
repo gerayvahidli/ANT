@@ -67,8 +67,12 @@ class UserController extends Controller
                 , 'currentJob', 'previousJobs')
                 ->find(\Auth::user()->id);
         $homePhone = $user->phones->where('PhoneTypeId', 1)->first();
-        $active_program_id = ExternalProgram::where('IsActive', 1)->first()->Id;
-        $user_active_program = $user->userPrograms->where('ProgramId', $active_program_id)->first();
+        $active_program = ExternalProgram::where([
+            ['BeginDate', '<', date('Y-m-d')],
+            ['EndDate', '>', date('Y-m-d')],
+            ['IsActive', '=', 1],
+        ])->first();
+        !empty($active_program) ? $user_active_program = $user->userPrograms->where('ProgramId', $active_program -> Id)->first() : $active_program = null;
         $last_application = $user -> applications -> last()   ;
 
 //        return $last_application ;
@@ -77,7 +81,9 @@ class UserController extends Controller
         !empty($user_active_program) ? $user_active_program_status = $user_active_program->UserProgramStatusId : $user_active_program_status = [];
 
 
-        return view('frontend.profile.index', compact('user', 'homePhone', 'user_active_program_status','last_application'));
+
+
+        return view('frontend.profile.index', compact('user', 'homePhone','active_program', 'user_active_program_status','last_application'));
     }
 
     /**
@@ -709,6 +715,10 @@ class UserController extends Controller
 
     public function showApplyScholarshipForm(User $user)
     {
+        if(!Helper::checkUserApplied()){
+            return redirect(route('profile.index'));
+        }
+
         $currencies = Currency::orderBy('name')->get();
         $certificates = Certificate::where('IsShow', 1)->get();
         $deposites = Deposit::all();
@@ -722,8 +732,7 @@ class UserController extends Controller
     public function applyScholarship(Request $request)
     {
 
-
-        //check user applied current active program
+       // check user applied current active program
         if (!Helper::checkUserApplied()) {
             abort(403, 'Unauthorized action.');
         }
@@ -760,7 +769,7 @@ class UserController extends Controller
             'realEstate_located_city' => 'required_if:realEstate,on|max:3000',
             'realEstate_owner' => 'required_if:realEstate,on|max:100',
             'realEstate_owner_contact' => 'required_if:realEstate,on|max:50',
-            'realEstate_owner_email' => 'required|max:100|email|nullable',
+            'realEstate_owner_email' => 'required_if:realEstate,on|max:100|email|nullable',
             'realEstateSNO.serial' => 'required_if:realEstate,on|max:50',
             'realEstateSNO.number' => 'required_if:realEstate,on|max:50',
             'realEstate_registry' => 'required_if:realEstate,on|max:100',
@@ -835,8 +844,12 @@ class UserController extends Controller
             isset($request->bank_guarantee) ? $this->storeBankGuarantee($application, $request) : '';
 
 
-            $userProgram = UserProgram::where('UserId', Auth::user()->id)->first();
 
+
+
+
+            count (Auth::user() -> applications ) > 1 ? $userProgram = new UserProgram() : $userProgram = UserProgram::where('UserId', Auth::user()->id)->first();
+            $userProgram->UserId = Auth::user() -> id;
             $userProgram->ProgramId = $application->ProgramId;
             $userProgram->UserProgramStatusId = 2;
             $userProgram->save();

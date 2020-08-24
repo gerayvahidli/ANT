@@ -128,7 +128,7 @@
                     </div>
 
 
-                    @if(empty($user_active_program_status) || $user_active_program_status == 1)
+                    @if((empty($user_active_program_status) || $user_active_program_status == 1) && !empty($active_program) )
                         <div class="col-4">
                             <a class="btn btn-outline-primary btn-block" href="{{ route('showApplyScholarshipForm') }}">Müraciət
                                 et</a>

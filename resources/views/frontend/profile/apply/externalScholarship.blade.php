@@ -597,7 +597,7 @@
                     <p for="exampleInputEmail1" class="lead">Sənədlərinizi əlavə edin
                         <a class="btn btn-primary btn-xs" style="padding:0.05em 0.32rem;" href="#"
                            data-toggle="tooltip" rel="tooltip" data-placement="top"
-                           title="Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg(jpeg) formatından fərqli ola bilməz! ">Qeyd</a>
+                           title="Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg(jpeg) formatından fərqli ola bilməz! Ümumi həcm 10MB-dan çox olmamalıdır. ">Qeyd</a>
                     </p>
 
 
