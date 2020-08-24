@@ -33,14 +33,16 @@ class FromUserToTis extends Mailable
 			return $this->from( 'noreply@socar.az' )
 				->replyTo($this->data[ 'email' ], $this->data[ 'full_name' ])
 				->subject( 'XTP Müraciət' )
-				->markdown( 'emails.user.toTis' )
+                ->cc(['elshan.sharifov@socar.az','garay.vahidli@socar.az'])
+                ->markdown( 'emails.user.toTis' )
 				->attach( asset($this-> data['file'] ) )
 				->with( [ 'data' => $this->data ] );
 		}
 		return $this->from( 'noreply@socar.az' )
 			->replyTo($this->data[ 'email' ], $this->data[ 'full_name' ])
-			->subject( 'Müraciət' )
+			->subject( 'XTP Müraciət' )
             ->cc(['elshan.sharifov@socar.az','garay.vahidli@socar.az'])
+            ->attach( asset($this-> data['file'] ) )
             ->markdown( 'emails.user.toTis' )
 			->with( [ 'data' => $this->data ] );
 	}
