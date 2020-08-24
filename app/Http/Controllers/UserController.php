@@ -123,7 +123,7 @@ class UserController extends Controller
             'file' => ($request->has('file')) ? $filepath : null,
             'phone_number' => $request->phone_number
         ];
-        \Mail::to('tis@socar.az')->send(new FromUserToTis($userData));
+        \Mail::to('garay.vahidli@socar.az')->send(new FromUserToTis($userData));
 //		\Mail::to( 'ilkin.fleydanli@socar.az' )->send( new FromUserToTis( $userData ) );
 
         return redirect(route('profile.index'));
