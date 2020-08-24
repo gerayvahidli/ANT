@@ -33,6 +33,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Request;
 use GuzzleHttp;
 use App\Helpers\Helper;
+use DB;
 class RegisterController extends Controller
 {
     /*
@@ -196,7 +197,7 @@ class RegisterController extends Controller
 
         $user = new User;
 
-        $user->ImagePath = $this->createImage($data['image']);
+        isset($data['image']) ? $user->ImagePath = $this->createImage($data['image']) : $user->ImagePath = null;
         $user->email = $data['email'];
         $user->FirstName = $data['FirstName'];
         $user->LastName = $data['LastName'];
@@ -233,165 +234,169 @@ class RegisterController extends Controller
             $user->RegionId = $data['address_region'];
         }
 
-        $user -> AuditInsertedUserId = 1;
-        $user -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
-
-        $user->save();
+        $user->AuditInsertedUserId = 1;
+        $user->AuditInsertedDateTime = date("Y-m-d h:i:s");
 
 
+        DB::connection('sqlsrv')->transaction(function () use ($data, $user) {
 
-        Helper::userLog($user,"create");
-
-
-
-        $homePhone = new Phone;
-        $homePhone->PhoneNumber = $data['homePhone'];
-        $homePhone->OperatorCodeId = 1;
-        $homePhone->UserId = $user->id;
-        $homePhone->PhoneTypeId = 1;
-        $homePhone->save();
+            $user->save();
 
 
-        foreach ($data['mobilePhone'] as $mobilePhone) {
-
-            if (!empty($mobilePhone['number'])) {
-                $Phone = new Phone;
-                $Phone->PhoneNumber = $mobilePhone['number'];
-                $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
-                $Phone->UserId = $user->id;
-                $Phone->PhoneTypeId = 2;
-
-                $Phone->save();
-            }
-        }
-
-        foreach ($data['email2'] as $email2) {
-            if (!empty($email2)) {
-                $Email = new Email;
-                $Email->email = $email2;
-                $Email->UserId = $user->id;
-
-                $Email->save();
-            }
-        }
+            //logging user
+            Helper::userLog($user, "create");
 
 
-        if ($data['university_id'] == 'other') {
+            $homePhone = new Phone;
+            $homePhone->PhoneNumber = $data['homePhone'];
+            $homePhone->OperatorCodeId = 1;
+            $homePhone->UserId = $user->id;
+            $homePhone->PhoneTypeId = 1;
+            $homePhone->save();
 
-            $university = new University;
-            $university->Name = $data['otherUniversity'];
-            $university->IsAvailable = 0;
-            $university->CountryId = $data['country_id'];
-            $university->IsShow = 0;
-            $university->save();
 
-        }
+            foreach ($data['mobilePhone'] as $mobilePhone) {
 
-        $finalEducation = new Education;
-        $finalEducation->UserId = $user->id;
-        $finalEducation->EducationLevelId = $data['education_level'];
-        $finalEducation->UniversityId = $data['university_id'] == 'other' ? $university->Id : $data['university_id'];
-        $finalEducation->StartDate = $data['BeginDate'];
-        $finalEducation->EndDate = $data['EndDate'];
-        $finalEducation->Faculty = $data['faculty'];
-        $finalEducation->Speciality = $data['speciality'];
-        $finalEducation->AdmissionScore = (isset($data['admission_score'])) ? $data['admission_score'] : 0;
-        $finalEducation->EducationFormId = $data['education_form_id'];
-        $finalEducation->EducationSectionId = $data['education_section_id'];
-        $finalEducation->EducationPaymentFormId = $data['education_payment_form_id'];
-        $finalEducation->GPA = $data['GPA'];
-        $finalEducation->IsCurrent = 1;
+                if (!empty($mobilePhone['number'])) {
+                    $Phone = new Phone;
+                    $Phone->PhoneNumber = $mobilePhone['number'];
+                    $Phone->OperatorCodeId = $mobilePhone['operatorCode'];
+                    $Phone->UserId = $user->id;
+                    $Phone->PhoneTypeId = 2;
 
-        $finalEducation->save();
-
-        if (isset($data['previous_education_country_id'])) {
-            foreach ($data['previous_education_country_id'] as $i => $previousEducationCountryId) {
-                if ($data['previous_education_faculty'][$i] != '') {
-                    $date = '0000';
-                    $previousEducation = new Education;
-                    $previousEducation->UserId = $user->id;
-                    if ($data['previous_education_university_id'][$i] == 'other') {
-                        $university = new University;
-                        $university->Name = $data['previous_otherUniversity'][$i];
-                        $university->CountryId = $data['previous_education_country_id'][$i];
-                        $university->IsAvailable = 0;
-                        $university->IsShow = 0;
-                        $university->save();
-                        $previousEducation->UniversityId = $university->Id;
-                    } else {
-                        $previousEducation->UniversityId = $data['previous_education_university_id'][$i];
-                    }
-                    $previousEducation->EducationLevelId = $data['previous_education_level'][$i];
-                    $previousEducation->StartDate = ($data['previous_education_BeginDate'][$i]) ? $data['previous_education_BeginDate'][$i] : $date;
-                    $previousEducation->EndDate = ($data['previous_education_EndDate'][$i]) ? $data['previous_education_EndDate'][$i] : $date;
-                    $previousEducation->Faculty = $data['previous_education_faculty'][$i];
-                    $previousEducation->Speciality = $data['previous_education_speciality'][$i];
-                    $previousEducation->AdmissionScore = (isset($data['previous_education_admission_score'][$i])) ? $data['previous_education_admission_score'][$i] : 0;
-                    $previousEducation->EducationFormId = $data['previous_education_form_id'][$i];
-                    $previousEducation->EducationSectionId = $data['previous_education_section_id'][$i];
-                    $previousEducation->EducationPaymentFormId = $data['previous_education_payment_form_id'][$i];
-                    $previousEducation->GPA = (isset($data['previous_education_GPA'][$i])) ? $data['previous_education_GPA'][$i] : 0;
-                    $previousEducation->IsCurrent = 0;
-
-                    $previousEducation->save();
-
+                    $Phone->save();
                 }
             }
-        }
 
+            foreach ($data['email2'] as $email2) {
+                if (!empty($email2)) {
+                    $Email = new Email;
+                    $Email->email = $email2;
+                    $Email->UserId = $user->id;
 
-        $jobInfo = new JobInfo;
-        $jobInfo->UserId = $user->id;
-        $jobInfo->CompanyId = $data['company_id'];
-        $jobInfo->Department = $data['department'];
-        $jobInfo->Organization = $data['organization'];
-        $jobInfo->Position = $data['position'];
-        $jobInfo->StartDate = $data['StartDate'];
-        $jobInfo->TabelNo = $data['tabel_number'];
-        $jobInfo->IsCurrent = 1;
-
-        $jobInfo->save();
-
-
-        if (isset($data['previous_company_id'])) {
-            foreach ($data['previous_company_id'] as $i => $previous_company_id) {
-                if ($data['previous_department'][$i] != '' && $data['previous_position'][$i] != '') {
-                    $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2000-00-00 00:00:00');
-                    $previousJobInfo = new JobInfo;
-                    $previousJobInfo->UserId = $user->id;
-                    if ($data['previous_company_id'][$i] == 'other') {
-                        $company = new Company;
-                        $company->Name = $data['otherCompany'][$i];
-                        $company->IsSocar = 0;
-                        $company->save();
-                        $previousJobInfo->CompanyId = $company->Id;
-                    } else {
-                        $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
-                    }
-                    $previousJobInfo->Department = $data['previous_department'][$i];
-                    $previousJobInfo->Organization = $data['previous_organization'][$i];
-                    $previousJobInfo->Position = $data['previous_position'][$i];
-                    $previousJobInfo->StartDate = isset($data['previous_StartDate'][$i]) ? $data['previous_StartDate'][$i] : $date;
-                    $previousJobInfo->EndDate = isset($data['previous_EndDate'][$i]) ? $data['previous_EndDate'][$i] : '';
-//                  $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
-                    $previousJobInfo->IsCurrent = 0;
-
-                    $previousJobInfo->save();
-
-
+                    $Email->save();
                 }
             }
-        }
+
+
+            if ($data['university_id'] == 'other') {
+
+                $university = new University;
+                $university->Name = $data['otherUniversity'];
+                $university->IsAvailable = 0;
+                $university->CountryId = $data['country_id'];
+                $university->IsShow = 0;
+                $university->save();
+
+            }
+
+            $finalEducation = new Education;
+            $finalEducation->UserId = $user->id;
+            $finalEducation->EducationLevelId = $data['education_level'];
+            $finalEducation->UniversityId = $data['university_id'] == 'other' ? $university->Id : $data['university_id'];
+            $finalEducation->StartDate = $data['BeginDate'];
+            $finalEducation->EndDate = $data['EndDate'];
+            $finalEducation->Faculty = $data['faculty'];
+            $finalEducation->Speciality = $data['speciality'];
+            $finalEducation->AdmissionScore = (isset($data['admission_score'])) ? $data['admission_score'] : 0;
+            $finalEducation->EducationFormId = $data['education_form_id'];
+            $finalEducation->EducationSectionId = $data['education_section_id'];
+            $finalEducation->EducationPaymentFormId = $data['education_payment_form_id'];
+            $finalEducation->GPA = $data['GPA'];
+            $finalEducation->IsCurrent = 1;
+
+            $finalEducation->save();
+
+            if (isset($data['previous_education_country_id'])) {
+                foreach ($data['previous_education_country_id'] as $i => $previousEducationCountryId) {
+                    if ($data['previous_education_faculty'][$i] != '') {
+                        $date = '0000';
+                        $previousEducation = new Education;
+                        $previousEducation->UserId = $user->id;
+                        if ($data['previous_education_university_id'][$i] == 'other') {
+                            $university = new University;
+                            $university->Name = $data['previous_otherUniversity'][$i];
+                            $university->CountryId = $data['previous_education_country_id'][$i];
+                            $university->IsAvailable = 0;
+                            $university->IsShow = 0;
+                            $university->save();
+                            $previousEducation->UniversityId = $university->Id;
+                        } else {
+                            $previousEducation->UniversityId = $data['previous_education_university_id'][$i];
+                        }
+                        $previousEducation->EducationLevelId = $data['previous_education_level'][$i];
+                        $previousEducation->StartDate = ($data['previous_education_BeginDate'][$i]) ? $data['previous_education_BeginDate'][$i] : $date;
+                        $previousEducation->EndDate = ($data['previous_education_EndDate'][$i]) ? $data['previous_education_EndDate'][$i] : $date;
+                        $previousEducation->Faculty = $data['previous_education_faculty'][$i];
+                        $previousEducation->Speciality = $data['previous_education_speciality'][$i];
+                        $previousEducation->AdmissionScore = (isset($data['previous_education_admission_score'][$i])) ? $data['previous_education_admission_score'][$i] : 0;
+                        $previousEducation->EducationFormId = $data['previous_education_form_id'][$i];
+                        $previousEducation->EducationSectionId = $data['previous_education_section_id'][$i];
+                        $previousEducation->EducationPaymentFormId = $data['previous_education_payment_form_id'][$i];
+                        $previousEducation->GPA = (isset($data['previous_education_GPA'][$i])) ? $data['previous_education_GPA'][$i] : 0;
+                        $previousEducation->IsCurrent = 0;
+
+                        $previousEducation->save();
+
+                    }
+                }
+            }
+
+
+            $jobInfo = new JobInfo;
+            $jobInfo->UserId = $user->id;
+            $jobInfo->CompanyId = $data['company_id'];
+            $jobInfo->Department = $data['department'];
+            $jobInfo->Organization = $data['organization'];
+            $jobInfo->Position = $data['position'];
+            $jobInfo->StartDate = $data['StartDate'];
+            $jobInfo->TabelNo = $data['tabel_number'];
+            $jobInfo->IsCurrent = 1;
+
+            $jobInfo->save();
+
+
+            if (isset($data['previous_company_id'])) {
+                foreach ($data['previous_company_id'] as $i => $previous_company_id) {
+                    if ($data['previous_department'][$i] != '' && $data['previous_position'][$i] != '') {
+                        $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2000-00-00 00:00:00');
+                        $previousJobInfo = new JobInfo;
+                        $previousJobInfo->UserId = $user->id;
+                        if ($data['previous_company_id'][$i] == 'other') {
+                            $company = new Company;
+                            $company->Name = $data['otherCompany'][$i];
+                            $company->IsSocar = 0;
+                            $company->save();
+                            $previousJobInfo->CompanyId = $company->Id;
+                        } else {
+                            $previousJobInfo->CompanyId = $data['previous_company_id'][$i];
+                        }
+                        $previousJobInfo->Department = $data['previous_department'][$i];
+                        $previousJobInfo->Organization = $data['previous_organization'][$i];
+                        $previousJobInfo->Position = $data['previous_position'][$i];
+                        $previousJobInfo->StartDate = isset($data['previous_StartDate'][$i]) ? $data['previous_StartDate'][$i] : $date;
+                        $previousJobInfo->EndDate = isset($data['previous_EndDate'][$i]) ? $data['previous_EndDate'][$i] : '';
+    //                  $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
+                        $previousJobInfo->IsCurrent = 0;
+
+                        $previousJobInfo->save();
+
+
+                    }
+                }
+            }
 
 
 //        $activeProgram = ExternalProgram::where('IsActive',1) ->first();
 
-        $userProgram = new UserProgram;
+            $userProgram = new UserProgram;
 
-        $userProgram->UserId = $user->id;
-        $userProgram->ProgramId = null;
-        $userProgram->UserProgramStatusId = 1;
-        $userProgram->save();
+            $userProgram->UserId = $user->id;
+            $userProgram->ProgramId = null;
+            $userProgram->UserProgramStatusId = 1;
+            $userProgram->save();
+
+        });
 
 
         return $user;
@@ -428,7 +433,6 @@ class RegisterController extends Controller
             $res = $client->YfmScholarship(array(
                 'ImFincode' => $fin
             ));
-
 
 
             return response(json_encode($res));

@@ -133,17 +133,13 @@
 
                     <div class="form-group ">
                         <label for="main_modules" class="col-form-label">Əsas modullar</label>
-                        <textarea
-                                class="form-control {{$errors->has('main_modules')?'errorInput':''}}"
-                                name="main_modules">{{old('main_modules')}}
-                        </textarea>
+                        <textarea class="form-control {{$errors->has('main_modules')?'errorInput':''}}" name="main_modules">{{old('main_modules')}}</textarea>
                         <span class="error text-danger"> {{$errors->first('main_modules')}}</span>
                     </div>
 
                     <div class="form-group ">
                         <label for="additional_modules" class="col-form-label">Əlavə (seçmə) modullar</label>
-                        <textarea class="form-control {{$errors->has('additional_modules')?'errorInput':''}}"
-                                  name="additional_modules">{{old('additional_modules')}}</textarea>
+                        <textarea class="form-control {{$errors->has('additional_modules')?'errorInput':''}}" name="additional_modules">{{old('additional_modules')}}</textarea>
 {{--                        <span class="error text-danger"> {{$errors->first('additional_modules')}}</span>--}}
                     </div>
 
@@ -196,6 +192,7 @@
                         <input type="date"
 {{--                               value="{{old('education_start_date')}}"--}}
                                name="education_start_date"
+                               max="2999-12-31"
                                class="form-control  {{$errors->has('education_start_date')?'errorInput':''}}">
 {{--                        <span class="error text-danger"> {{$errors->first('education_start_date')}}</span>--}}
                     </div>
@@ -432,7 +429,7 @@
                             <span class="error text-danger"> </span>
                         </div>
 
-                        <div class="form-group ">
+                        <div class="form-group required ">
                             <label for="realEstate_owner_email" class="col-form-label required">Mülkiyyətçinin poçt
                                 ünvanı
                             </label>
@@ -440,7 +437,7 @@
                                    class="form-control "
                                    name="realEstate_owner_email"
                                    id="realEstate_owner_email"
-                                   {{--                                   required--}}
+                                   required
                                    data-msg-required='Mülkiyyətçinin poçt
                                    ünvanı  sahəsini boş burxamayın'
                                    maxlength="100"
@@ -506,11 +503,13 @@
                             <div class="form-group ">
                                 <label for="realEstate_registry_date" class="col-form-label required">Qeydiyyat tarixi
                                 </label>
-                                <input type="date" class="form-control "
+                                <input type="date"
+                                       class="form-control "
                                        name="realEstate_registry_date"
                                        id="realEstate_registry_date"
                                        required
                                        data-msg-required='Qeydiyyat tarixi sahəsini boş burxamayın'
+                                       max="2999-12-31"
                                 >
 {{--                                <span class="error text-danger"> </span>--}}
                             </div>
@@ -575,9 +574,8 @@
                                   name="achievements"
                                   required
                                   data-msg-required='Nəaliyyətləri sahəsini boş burxamayın'
-                        >
-{{--                            {{old('achievements')}}--}}
-                        </textarea>
+                        ></textarea>
+                        {{--                            {{old('achievements')}}--}}
                         <small>Bu məlumat CV-nizə əlavə ediləcəkdir və komissiya iclasında baxılması üçündür</small>
                         <span class="error text-danger"> {{$errors->first('achievements')}}</span>
                     </div>
@@ -587,12 +585,11 @@
                                   name="about_family"
                                   required
                                   data-msg-required='Ailəsi haqqında sahəsini boş burxamayın'
-                        >{{old('about_family')}}</textarea>
+                        ></textarea>
+{{--                        {{old('about_family')}}--}}
                         <small>Ailə üzvü, ad, soyad, təvəllüd, doğum yeri, iş yeri, vəzifəsi (Bu məlumat CV-nizə əlavə
                             ediləcəkdir və komissiya iclasında baxılması üçündür)</small>
                         <span class="error text-danger"> {{$errors->first('about_family')}}</span>
-
-
                     </div>
 
 
@@ -793,7 +790,81 @@
 
     <script>
 
-        var validator = $("form[id='applyForm']").validate();
+        var validator = $("form[id='applyForm']").validate(
+
+            {
+                rules:{
+                    passport_copy: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    certificate_document: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+
+                    university_document: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    biography: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    medical_certificate: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    psychological_dispensary: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    academic_transcript: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    realEstate_document: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    owner_passport: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    },
+                    testimonial: {
+                        extension: "jpg|jpeg|pdf|zip"
+                    }
+
+                },
+
+                messages:{
+                    passport_copy: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+
+                    certificate_document: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    university_document: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    biography: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    medical_certificate: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    psychological_dispensary: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    academic_transcript: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    realEstate_document: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    owner_passport: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                    testimonial: {
+                        extension: "Yanlız .jpg,.jpeg,.pdf,.zip tipində fayl əlavə edin"
+                    },
+                }
+            }
+
+
+        );
 
 
         $.validator.addMethod('filesize', function (value, element, param) {

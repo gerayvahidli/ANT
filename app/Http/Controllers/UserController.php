@@ -48,6 +48,7 @@ use Illuminate\Queue\Jobs\Job;
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use App\Helpers\Helper;
+use DB;
 
 class UserController extends Controller
 {
@@ -723,11 +724,11 @@ class UserController extends Controller
         }
 
 
-        //check file types in zip
-        if (isset(Helper::checkFileTypeInZip($request -> file())[0]) && (Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0 || Helper::checkFileTypeInZip($request -> file())[0]['fileEmpty'] == true))
-        {
-            return response()->json(Helper::checkFileTypeInZip($request -> file())[0]);
-        }
+//        //check file types in zip
+//        if (isset(Helper::checkFileTypeInZip($request -> file())[0]) && (Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0 || Helper::checkFileTypeInZip($request -> file())[0]['fileEmpty'] == true))
+//        {
+//            return response()->json(Helper::checkFileTypeInZip($request -> file())[0]);
+//        }
 
 
 
@@ -745,7 +746,7 @@ class UserController extends Controller
             'realEstate_located_city' => 'required_if:realEstate,on|max:3000',
             'realEstate_owner' => 'required_if:realEstate,on|max:100',
             'realEstate_owner_contact' => 'required_if:realEstate,on|max:50',
-            'realEstate_owner_email' => 'max:100|email|nullable',
+            'realEstate_owner_email' => 'required|max:100|email|nullable',
             'realEstateSNO.serial' => 'required_if:realEstate,on|max:50',
             'realEstateSNO.number' => 'required_if:realEstate,on|max:50',
             'realEstate_registry' => 'required_if:realEstate,on|max:100',
@@ -812,21 +813,22 @@ class UserController extends Controller
         $application -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
 
 
-        $application->save();
+        DB::connection('sqlsrv') ->  transaction(function() use ($request,$application) {
+            $application->save();
 
-        $this->storeLanguageCertificate($application, $request);
-        isset($request->realEstate) ? $this->storeRealEstate($application, $request) : '';
-        isset($request->bank_guarantee) ? $this->storeBankGuarantee($application, $request) : '';
+            $this->storeLanguageCertificate($application, $request);
+            isset($request->realEstate) ? $this->storeRealEstate($application, $request) : '';
+            isset($request->bank_guarantee) ? $this->storeBankGuarantee($application, $request) : '';
 
 
-        $userProgram = UserProgram::where('UserId', Auth::user()->id)->first();
+            $userProgram = UserProgram::where('UserId', Auth::user()->id)->first();
 
-        $userProgram->ProgramId = $application->ProgramId;
-        $userProgram->UserProgramStatusId = 2;
-        $userProgram->save();
+            $userProgram->ProgramId = $application->ProgramId;
+            $userProgram->UserProgramStatusId = 2;
+            $userProgram->save();
+        });
 
         return response()->json(['status' => 'success']);
-
 
     }
 

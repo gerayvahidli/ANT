@@ -78,7 +78,7 @@
                     <hr>
                 @endif
 
-                <div class="form-group row required">
+                <div class="form-group row ">
                     <label for="image" class="col-4 col-form-label">Şəkil</label>
                     <div class="col-8">
 
