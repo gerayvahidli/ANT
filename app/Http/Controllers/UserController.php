@@ -100,13 +100,27 @@ class UserController extends Controller
             'message' => 'required|string|min:3',
             'file' => 'nullable|mimes:jpeg,bmp,png,pdf,doc,docx,xls,xlsx,rar,zip',
         ]);
+
+        // file adding
+        if ($request->has('file') ) {
+            $file = $request -> file('file');
+
+            $file_extension = $file->getClientOriginalExtension();
+            $filename = Auth::user()->id . "_file_". str_random('5') . '.' . $file_extension;
+
+
+            Storage::put('public/feedbackDocuments/' . $filename, (string)file_get_contents($file), 'public');
+
+            $filepath = '/storage/feedbackDocuments/'.$filename;
+        }
+
         $userData = [
             'full_name' => Auth::user()->LastName . ' ' . Auth::user()->FirstName . ' ' . Auth::user()->FatherName,
             'id_pin' => Auth::user()->Fin,
             'email' => Auth::user()->email,
             'date' => date("Y-m-d H:i:s"),
             'message' => $request->message,
-            'file' => ($request->has('file')) ? $request->file : null,
+            'file' => ($request->has('file')) ? $filepath : null,
             'phone_number' => $request->phone_number
         ];
         \Mail::to('tis@socar.az')->send(new FromUserToTis($userData));
