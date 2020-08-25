@@ -748,11 +748,11 @@ class UserController extends Controller
         }
 
 
-//        //check file types in zip
-//        if (isset(Helper::checkFileTypeInZip($request -> file())[0]) && (Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0 || Helper::checkFileTypeInZip($request -> file())[0]['fileEmpty'] == true))
-//        {
-//            return response()->json(Helper::checkFileTypeInZip($request -> file())[0]);
-//        }
+        //check file types in zip
+        if (isset(Helper::checkFileTypeInZip($request -> file())[0]) && (Helper::checkFileTypeInZip($request -> file())[0]['count'] > 0 || Helper::checkFileTypeInZip($request -> file())[0]['fileEmpty'] == true))
+        {
+            return response()->json(Helper::checkFileTypeInZip($request -> file())[0]);
+        }
 
 
 
