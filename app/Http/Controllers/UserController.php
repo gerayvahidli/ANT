@@ -130,8 +130,8 @@ class UserController extends Controller
             'phone_number' => $request->phone_number
         ];
         \Mail::to('garay.vahidli@socar.az')->send(new FromUserToTis($userData));
-//		\Mail::to( 'ilkin.fleydanli@socar.az' )->send( new FromUserToTis( $userData ) );
 
+        $request->session()->flash('success', 'Məktubunuz müvəffəqiyyətlə göndərildi.');
         return redirect(route('profile.index'));
     }
 
