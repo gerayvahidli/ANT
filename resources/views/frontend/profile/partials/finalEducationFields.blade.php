@@ -67,7 +67,7 @@
     </div>
 
     <div class="form-group row required">
-        <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti(il)</label>
+        <label for="edu_date" class="col-4 col-form-label">Təhsil müddəti (il)</label>
         <div class="col-4 form-group">
             {{ Form::number('BeginDate', ($user->exists && isset($user->finalEducation)) ? $user->finalEducation->first()->StartDate : old('BeginDate'), ['class' => ($errors->has('BeginDate')) ? 'form-control is-invalid' :'form-control',
              'required',
@@ -78,7 +78,8 @@
              'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
              "data-msg-required"=>'Başlanğıc tarixi sahəsini boş buraxmayın',
              "data-msg-max"=>'Başlanğıc tarixi maksimum 2100 ola bilər',
-             "data-msg-min"=>'Başlanğıc tarixi minimum 1900 ola bilər'
+             "data-msg-min"=>'Başlanğıc tarixi minimum 1900 ola bilər',
+             "placeholder" => 'Yanlız il daxil edin'
 
              ]) }}
             @if ($errors->has('BeginDate'))
@@ -86,7 +87,6 @@
                     <strong>{{ $errors->first('BeginDate') }}</strong>
                 </div>
             @endif
-
             <div class="help-block with-errors"></div>
 
         </div>
@@ -100,7 +100,8 @@
             'onkeydown' =>'return event.keyCode !== 69 && event.keyCode !== 189',
              "data-msg-required"=>'Bitmə tarixi sahəsini boş buraxmayın',
              "data-msg-max"=>'Bitmə tarixi maksimum 2100 ola bilər',
-             "data-msg-min"=>'Bitmə tarixi minimum 1900 ola bilər'
+             "data-msg-min"=>'Bitmə tarixi minimum 1900 ola bilər',
+             "placeholder" => 'Yanlız il daxil edin'
 
             ]) }}
             @if ($errors->has('EndDate'))
