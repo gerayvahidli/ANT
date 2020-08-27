@@ -145,6 +145,17 @@
 </div>
 {{--end of modal--}}
 
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Bütün hüquqlar qorunur <span style="font-weight: bold;">&copy; <a href="https://caspianic.com/"> Caspian Innovation Center LLC</a></span> {{ now()->year }}</span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="{{asset('js/dcalendar.picker.js')}}"></script>
