@@ -468,7 +468,7 @@
                         <p class="lead required">Daşınmaz əmlakın dövlət reyestrindən çıxarışının</p>
 
                         <div class="form-group required">
-                            <label for="realEstate" class="col-form-label">Seriya nömrəsi</label>
+                            <label for="realEstate" class="col-form-label">Seriya və nömrəsi</label>
                             <div class="row">
                                 <div class="col-sm-3 ">
                                     <small>Seria</small>

@@ -785,39 +785,39 @@
             $('#profile-form').submit(function (stay) {
 
 
-                        @if(!$user -> exists)
-                var fin = $('#idCardPin').val();
-                var tabel_number = $('#tabel_number').val();
-                var error = 1;
+                {{--        @if(!$user -> exists)--}}
+                {{--var fin = $('#idCardPin').val();--}}
+                {{--var tabel_number = $('#tabel_number').val();--}}
+                {{--var error = 1;--}}
 
-                if (tabel_number != '99999999' && fin != '') {
+                {{--if (tabel_number != '99999999' && fin != '') {--}}
 
-                    $.ajax({
-                        async: false,
-                        url: '{{ url('/getPrametersByFin') }}',
-                        data: {'fin': fin, '_token': token},
-                        type: "post",
-                        dataType: "json",
-                        success: function (data) {
-                            if (data.OutParams.Status === "0") {
-                                alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");
-                                error = 1;
-                            } else if (data.OutParams.Status == '') {
-                                alert(data.ErrMsg.ErrorMessage)
-                                error = 1;
-                            } else {
-                                error = 2
-                            }
+                {{--    $.ajax({--}}
+                {{--        async: false,--}}
+                {{--        url: '{{ url('/getPrametersByFin') }}',--}}
+                {{--        data: {'fin': fin, '_token': token},--}}
+                {{--        type: "post",--}}
+                {{--        dataType: "json",--}}
+                {{--        success: function (data) {--}}
+                {{--            if (data.OutParams.Status === "0") {--}}
+                {{--                alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ");--}}
+                {{--                error = 1;--}}
+                {{--            } else if (data.OutParams.Status == '') {--}}
+                {{--                alert(data.ErrMsg.ErrorMessage)--}}
+                {{--                error = 1;--}}
+                {{--            } else {--}}
+                {{--                error = 2--}}
+                {{--            }--}}
 
-                        }
+                {{--        }--}}
 
-                    });
+                {{--    });--}}
 
-                    if (error == 1) {
-                        return false;
-                    }
-                }
-                @endif
+                {{--    if (error == 1) {--}}
+                {{--        return false;--}}
+                {{--    }--}}
+                {{--}--}}
+                {{--@endif--}}
 
 
 
@@ -882,21 +882,55 @@
                         if(response.data.problem == "age")
                         {
                             alert("40 yaşdan yuxarı namizədlər proqrama müraciət edə bilməz");
+                            return;
 
-                        }else{
-                            window.location.href = '{{ route('profile.index') }}';
                         }
+                        else if(response.data.problem == "employee")
+                        {
+                            alert(response.data.content);
+                            return;
+                        }
+                            window.location.href = '{{ route('profile.index') }}';
                     }).catch((error) => {
                     if (error.response) {
                         $('#loaderModal').modal('hide');
 
                         // The request was made and the server responded with a status code
                         // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
+                        // console.log(error.response.data);
+                        // console.log(error.response.status);
+                        // console.log(error.response.headers);
 
                         //special errors
+
+
+                        if (error.response.data.errors.idCardPin) {
+
+                            current_input = $("input[name='idCardPin']");
+                            current_input.addClass('is-invalid');
+                            current_input.closest('.form-group ').find('.invalid-feedback').remove();
+                            current_input.after('<div class="invalid-feedback">\n' +
+                                '<strong>' + error.response.data.errors.idCardPin + '</strong>\n' +
+                            '</div>');
+                            $(window).scrollTop(200);
+                            $('#loaderModal').modal('hide');
+
+
+                        }
+
+                        if (error.response.data.errors.passport_no) {
+
+                            current_input = $("input[name='passport_no']");
+                            current_input.addClass('is-invalid');
+                            current_input.closest('.form-group ').find('.invalid-feedback').remove();
+                            current_input.after('<div class="invalid-feedback">\n' +
+                                '<strong>' + error.response.data.errors.passport_no + '</strong>\n' +
+                                '</div>');
+                            $(window).scrollTop(200);
+                            $('#loaderModal').modal('hide');
+
+
+                        }
 
                         if (error.response.data.errors.email) {
 
@@ -909,27 +943,8 @@
 
                         }
 
-                        if (error.response.data.errors.idCardPin) {
 
-                            current_input = $("input[name='idCardPin']");
-                            current_input.addClass('is-invalid');
-                            current_input.closest('.form-group ').find('.invalid-feedback').remove();
-                            current_input.after('<div class="invalid-feedback">\n' +
-                                '<strong>' + error.response.data.errors.idCardPin + '</strong>\n' +
-                                '</div>');
 
-                        }
-
-                        if (error.response.data.errors.passport_no) {
-
-                            current_input = $("input[name='passport_no']");
-                            current_input.addClass('is-invalid');
-                            current_input.closest('.form-group ').find('.invalid-feedback').remove();
-                            current_input.after('<div class="invalid-feedback">\n' +
-                                '<strong>' + error.response.data.errors.passport_no + '</strong>\n' +
-                                '</div>');
-
-                        }
 
 
                         $('#loaderModal').modal('hide');
