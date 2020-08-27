@@ -9,7 +9,7 @@ __MACOSX/
 
 ### Laravel ###
 /vendor/
-!/vendor/laravel/framework/src/Illuminate/Foundation/Auth/RegistersUsers.php
+!vendor/laravel/framework/src/Illuminate/Foundation/Auth/RegistersUsers.php
 node_modules/
 npm-debug.log
 yarn-error.log
