@@ -144,7 +144,7 @@
     </div>
 </div>
 {{--end of modal--}}
-
+<hr>
 
 <!-- Footer -->
 <footer class="sticky-footer bg-white">
@@ -154,6 +154,7 @@
         </div>
     </div>
 </footer>
+<hr>
 <!-- End of Footer -->
 
 <!-- Latest compiled and minified JavaScript -->
