@@ -13,7 +13,9 @@ class Email extends Model
     public    $timestamps = false;
     protected $fillable   = [
         'userId',
-        'email'
+        'email',
+        'AuditInsertedUserId',
+        'AuditInsertedDateTime'
     ];
 
     protected static  $logAttributes = ['userId', 'email'];

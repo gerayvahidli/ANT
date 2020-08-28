@@ -252,6 +252,10 @@ class RegisterController extends Controller
             $homePhone->OperatorCodeId = 1;
             $homePhone->UserId = $user->id;
             $homePhone->PhoneTypeId = 1;
+
+            $homePhone -> AuditInsertedUserId = 1;
+            $homePhone -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
+
             $homePhone->save();
 
 

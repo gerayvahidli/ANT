@@ -16,7 +16,9 @@ class Phone extends Model
         'userId',
         'OperatorCodeId',
         'PhoneNumber',
-        'PhoneTypeId'
+        'PhoneTypeId',
+        'AuditInsertedUserId',
+        'AuditInsertedDateTime'
     ];
 
     protected static  $logAttributes = ['title', 'OperatorCodeId', 'PhoneNumber', 'PhoneTypeId'];

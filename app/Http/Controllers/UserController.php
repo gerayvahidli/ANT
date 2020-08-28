@@ -558,7 +558,7 @@ class UserController extends Controller
 
                 $Phone -> AuditInsertedUserId = 1;
                 $Phone -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
-                
+
                 $Phone->save();
             }
         }
