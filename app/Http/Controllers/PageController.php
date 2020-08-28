@@ -115,7 +115,7 @@ class PageController extends Controller
 
 
 
-        $current_month_news = Article::whereYear('published_at',date('Y')) -> whereMonth('published_at',date('m')) ->get();
+        $current_month_news = Article::whereYear('published_at',date('Y')) -> whereMonth('published_at',date('m')) -> orderBy('id', 'created_at') -> get();
 
         return response(json_encode(
             [
@@ -131,14 +131,14 @@ class PageController extends Controller
     public function getNewsByMonth(Request $request)
     {
         
-        $articles = Article::whereYear('published_at', $request->year)->whereMonth('published_at', sprintf("%02d", $request->month))->get();
+        $articles = Article::whereYear('published_at', $request->year)->whereMonth('published_at', sprintf("%02d", $request->month)) -> orderBy('created_at', 'desc') -> get();
         return response(json_encode($articles));
     }
 
     public function getNewsByDay(Request $request)
     {
         $date = $request->year."-".sprintf("%02d", $request->month)."-".sprintf("%02d", $request->day);
-        $articles = Article::whereDate('published_at', $date) -> get();
+        $articles = Article::whereDate('published_at', $date) -> orderBy('id', 'created_at') -> get();
         return response(json_encode($articles));
     }
 

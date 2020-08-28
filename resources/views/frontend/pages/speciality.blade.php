@@ -14,19 +14,7 @@
                 <section>
 
                     <ol class="breadcrumb">
-                        @if(Request::segment(1)=="DTP")
-                            @php
-                                $home=route('DTP');
-                            $name='Daxili təqaüd proqramı';
-                            @endphp
-                        @else
-                            @php
-                                $home= url('XTP') ;
-                                $name='Xarici təqaüd proqramı';
-                            @endphp
-
-                        @endif
-                        <a href="{{$home}}">{{$name}}</a>
+                        <a href="{{url('/')}}">Xarici təqaüd proqramı</a>
                         <li>
                             >><a href="javascript:void(0)" style="color: #6f42c1">İxtisaslar</a>
                         </li>

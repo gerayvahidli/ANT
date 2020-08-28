@@ -15,21 +15,10 @@
                 <section>
 
                     <ol class="breadcrumb">
-                        @if(Request::segment(1)=="DTP")
-                            @php
-                                $home='DTP';
-                            $name='Daxili təqaüd proqramı';
-                            @endphp
-                        @else
-                            @php
-                                $home= 'XTP' ;
-                                $name='Xarici təqaüd proqramı';
-                            @endphp
 
-                        @endif
-                        <a href="{{$home}}">{{$name}}</a>
+                        <a href="{{url('/')}}">Xarici təqaüd proqramı</a>
                         <li>
-                            >><a href="{{route('page.news.archive',['slug' => $home])}}">Xəbər arxivi</a>>><a
+                            >><a href="{{route('page.news.archive')}}">Xəbər arxivi</a>>><a
                                     href="javascript:void(0)" style="color: #6f42c1">Xəbər</a>
                         </li>
                         <li>
