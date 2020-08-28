@@ -15,36 +15,9 @@ Route::get('/abc', function () {
 
 
 
-Route::group([], function () {
-    //Login Routes...
-    Route::get('/backend/login', function () {
+Route::get('/backend/login', function () {
         return redirect(Config::get('app.url').'/DTP/backend/login');
     });
-//    Route::get('/backend/login', 'Auth\AdminAuthController@showLoginForm')->name('admin.login.index');
-//    Route::post('/backend/login', 'Auth\AdminAuthController@login')->name('admin.login.post');
-    Route::get('/backend/logout', 'Auth\AdminAuthController@logout')->name('admin.login.logout');
-    Route::get('set-admin-pass', function () {
-        $admin = \App\Admin::where('email', 'garay.vahidli@socar.az')->first();
-        $admin->update([
-
-        ]);
-
-        return $admin;
-    });
-
-    Route::get('create-admin', function () {
-        $admin = \App\Admin::create([
-            'full_name' => 'Garay Vahidli',
-            'user_name' => 'garay.vahidli',
-            'email' => 'garay.vahidli@socar.az',
-
-        ]);
-
-        return $admin;
-    });
-
-
-});
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');

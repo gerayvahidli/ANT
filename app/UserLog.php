@@ -6,7 +6,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Queue\Jobs\Job;
 
-class UserLog extends Authenticatable
+class
+UserLog extends Authenticatable
 {
     use Notifiable;
 

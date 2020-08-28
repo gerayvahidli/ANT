@@ -12,20 +12,8 @@
         <div class="row">
             <div class="col-12 col-md-8">
                 <section>
-                    @if(Request::segment(1)=="DTP")
-                        @php
-                            $home=route('DTP');
-                            $name='Daxili təqaüd proqramı';
-                        @endphp
-                    @else
-                        @php
-                            $home= url('XTP') ;
-                            $name='Xarici təqaüd proqramı';
-                        @endphp
-
-                    @endif
                 <ol class="breadcrumb">
-                    <a href="{{$home}}">{{$name}}</a>
+                    <a href="{{url('/')}}">Xarici təqaüd proqramı</a>
                     <li>
                         >><a href="javascript:void(0)"  >Şərtlər</a>>><a href="javascript:void(0)"  style="color: #6f42c1">Şərt</a>
                     </li>
