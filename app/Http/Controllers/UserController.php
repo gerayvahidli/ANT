@@ -556,6 +556,9 @@ class UserController extends Controller
                 $Phone->UserId = $user->id;
                 $Phone->PhoneTypeId = 2;
 
+                $Phone -> AuditInsertedUserId = 1;
+                $Phone -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
+                
                 $Phone->save();
             }
         }
@@ -567,11 +570,14 @@ class UserController extends Controller
 
         foreach ($request->email2 as $email) {
             if (!empty($email)) {
-                $Phone = new Email();
-                $Phone->UserId = $user->id;
-                $Phone->email = $email;
+                $Email = new Email();
+                $Email->UserId = $user->id;
+                $Email->email = $email;
 
-                $Phone->save();
+                $Email -> AuditInsertedUserId = 1;
+                $Email -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
+
+                $Email->save();
             }
         }
     }
