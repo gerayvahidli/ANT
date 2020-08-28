@@ -264,6 +264,9 @@ class RegisterController extends Controller
                     $Phone->UserId = $user->id;
                     $Phone->PhoneTypeId = 2;
 
+                    $Phone -> AuditInsertedUserId = 1;
+                    $Phone -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
+
                     $Phone->save();
                 }
             }
@@ -273,6 +276,9 @@ class RegisterController extends Controller
                     $Email = new Email;
                     $Email->email = $email2;
                     $Email->UserId = $user->id;
+
+                    $Email -> AuditInsertedUserId = 1;
+                    $Email -> AuditInsertedDateTime  = date("Y-m-d h:i:s");
 
                     $Email->save();
                 }

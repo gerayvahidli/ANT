@@ -765,6 +765,7 @@ class UserController extends Controller
             'language_education_certificate_id.0.otherCertificate_name' => 'required_if:language_education_certificate_id.0.certificate,4|max:50',
             'EducationBeginDate' => 'required|numeric|digits:4',
             'EducationEndDate' => 'required|numeric|digits:4',
+            'education_fee.amount' => 'required',
             'bank_guarantee' => 'required_without:realEstate',
             'realEstate' => 'required_without:bank_guarantee',
             'realEstate_located_city' => 'required_if:realEstate,on|max:3000',
