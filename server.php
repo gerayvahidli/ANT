@@ -7,7 +7,7 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
-$allowed_host = array('tehsil.socar.az', '192.168.6.211','localhost');
+$allowed_host = array('tehsil.socar.az', '192.168.6.211:8012','localhost');
 
 if (!isset($_SERVER['HTTP_HOST']) || !in_array($_SERVER['HTTP_HOST'], $allowed_host)) 
 {
