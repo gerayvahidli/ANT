@@ -13,7 +13,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        'Symfony\Component\HttpKernel\Exception\HttpException'
     ];
 
     /**
@@ -32,10 +32,13 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return void
      */
-    public function report(Exception $exception)
+    public function report(Exception $e)
     {
-//        dd($exception);
-        parent::report($exception);
+        if (!config('app.debug')) {
+            Log::error('['.$e->getCode().'] "'.$e->getMessage().'" on line '.$e->getTrace()[0]['line'].' of file '.$e->getTrace()[0]['file']);
+        } else {
+            parent::report($e);
+        }
     }
 
     /**
@@ -45,9 +48,12 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
     {
-
-        return parent::render($request, $exception);
+        if ($this->isHttpException($e)) {
+            return $this->renderHttpException($e);
+        } else {
+            return parent::render($request, $e);
+        }
     }
 }

@@ -6,7 +6,7 @@
         .hint > div {
             display: none;
             position: absolute;
-            z-index:999;
+            z-index: 999;
         }
 
         .hint:hover > div {
@@ -110,13 +110,14 @@
                                oninput="this.value = this.value.toUpperCase()"
                                 {{ ($user->exists) ? 'disabled' : '' }}
                         >
- 
+
                     </div>
                     <div class="">
-                    <a class="hint  " style="cursor: pointer;color:#636b6f; font-size:11px;">  <i class="material-icons">help</i>
-                        <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
-                    </a>
-                </div>
+                        <a class="hint  " style="cursor: pointer;color:#636b6f; font-size:11px;"> <i
+                                    class="material-icons">help</i>
+                            <div><img width="200" src="{{ asset('img/finkod.png') }}"/></div>
+                        </a>
+                    </div>
                 </div>
 
 
@@ -124,27 +125,26 @@
 
 
                 <div class="form-group row required">
-                    <label for="tableNum" class="col-4 col-form-label">Tabel nömrəniz</label>
+                    <label for="tabel_number" class="col-4 col-form-label">Tabel nömrəniz</label>
 
                     <div class="col-7 ">
-                        <input id="tableNum" name="tableNum"
-                               value="{{ ($user->exists) ? $user->Fin : old('tableNum') }}"
-                               placeholder="Tabel nömrəniz" type="text"
-                               class="{{ ($errors->has('tableNum')) ? 'form-control is-invalid' :'form-control' }}"
-                               data-msg-required='Tabel nömrəniz sahəsini boş buraxmayın'
-                               maxlength="7"
-                               minlength="7"
-                               data-msg-minlength='Tabel nömrəniz minimum N simvoldan ibarət olmalidir'
-                               oninput="this.value = this.value.toUpperCase()"
-                                {{ ($user->exists) ? 'disabled' : '' }}
-                        >
+                        {{ Form::text('tabel_number',
+                            ( $user->exists && isset($user -> currentJob) ) ? $user -> currentJob -> first() -> TabelNo : ( old('tabel_number')  ? old('tabel_number') : null ),
+                             ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid number' :'form-control number',
+                             'id' =>'tabel_number',
+                             'required',
+                             "data-msg-required"=>'Tabel nömrəniz sahəsini boş buraxmayın',
+                             'data-msg-number'=>'Yalnız rəqəm daxil edin',
+                             'maxlength' => '8'
 
-                        @if ($errors->has('tableNum'))
+                             ]
+                        ) }}
+                        @if ($errors->has('tabel_number'))
                             <div class="invalid-feedback">
-                                <strong>{{ $errors->first('tableNum') }}</strong>
+                                <strong>{{ $errors->first('tabel_number') }}</strong>
                             </div>
                         @endif
-                        <div class="help-block with-errors invalid-feedback" id="tableNumErrorText"></div>
+                        <div class="help-block with-errors invalid-feedback" id="tabel_numberErrorText"></div>
                         @if(!($user->exists))
                             <button type="button" class="btn btn-primary btn-sm btn-block " id="getPrametersByFin">
                                 Məlumatları yüklə
@@ -180,7 +180,8 @@
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="">
-                        <a class="hint" style="cursor: pointer;color:#636b6f; font-size:11px;">  <i class="material-icons">help</i>
+                        <a class="hint" style="cursor: pointer;color:#636b6f; font-size:11px;"> <i
+                                    class="material-icons">help</i>
                             <div><img width="200" src="{{ asset('img/nomresi.png') }}"/></div>
                         </a>
                     </div>
@@ -764,37 +765,39 @@
             $('#getPrametersByFin').click(function () {
 
 
+                clearInputs();
                 var fin = $('#idCardPin').val();
-                var tableNum = $('#tableNum').val();
+                var tabel_number = $('#tabel_number').val();
                 var token = $("input[name='_token']").val();
 
 
                 $.ajax({
                     url: '{{ url('/getPrametersByFin') }}',
-                    data: {'fin': fin, 'tableNum': tableNum, '_token': token},
+                    data: {'fin': fin, 'tabel_number': tabel_number, '_token': token},
                     type: "post",
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
-                        if (data.OutParams.Status === "0") {
+                        // console.log(data.ErrMsg.ErrorCode);
+                        if (data.ErrMsg.ErrorCode === "403") {
+                            alert(data.ErrMsg.ErrorMessage);
+                        } else if (data.OutParams.Status === "0") {
                             alert("Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz! ")
                             return;
                         } else if (data.OutParams.Status === '') {
                             alert(data.ErrMsg.ErrorMessage)
                         }
-                        $('#FirstName').val(data.OutParams.FirstName);
-                        $('#LastName').val(data.OutParams.SecondName);
-                        $('#FatherName').val(data.OutParams.MiddleName);
-                        $('#passport_no').val(data.OutParams.Idnum);
-                        if (data.OutParams.Gender != '') {
-                            $('#gender').val(data.OutParams.Gender);
-                        }
-                        $('#email').val(data.OutParams.Email.toLowerCase());
-                        $('#Dob').val(data.OutParams.BirthDate);
-                        $('#StartDate').val(data.OutParams.Begda);
-                        $('#position').val(data.OutParams.Post);
-                        data.OutParams.Pernr != "00000000" ? $('#tabel_number').val(data.OutParams.Pernr) : $('#tabel_number').val('');
-
+                           else{$('#FirstName').val(data.OutParams.FirstName);
+                            $('#LastName').val(data.OutParams.SecondName);
+                            $('#FatherName').val(data.OutParams.MiddleName);
+                            $('#passport_no').val(data.OutParams.Idnum);
+                            if (data.OutParams.Gender != '') {
+                                $('#gender').val(data.OutParams.Gender);
+                            }
+                            $('#email').val(data.OutParams.Email.toLowerCase());
+                            $('#Dob').val(data.OutParams.BirthDate);
+                            $('#StartDate').val(data.OutParams.Begda);
+                            $('#position').val(data.OutParams.Post);
+                    }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         $('#lblCommentsNotification').text("Error encountered while saving the comments.");
@@ -802,6 +805,17 @@
                 });
             });
 
+            function clearInputs() {
+                $('#FirstName').val('');
+                $('#LastName').val('');
+                $('#FatherName').val('');
+                $('#passport_no').val('');
+                $('#gender').val('1');
+                $('#email').val('');
+                $('#Dob').val('');
+                $('#StartDate').val('');
+                $('#position').val('');
+            }
 
             var token = $("input[name='_token']").val();
             // console.log(token);
@@ -813,7 +827,7 @@
 
                 {{--        @if(!$user -> exists)--}}
                 {{--var fin = $('#idCardPin').val();--}}
-                {{--var tableNum = $('#tableNum').val();--}}
+                {{--var tabel_number = $('#tabel_number').val();--}}
                 {{--var tabel_number = $('#tabel_number').val();--}}
                 {{--var error = 1;--}}
 
@@ -822,7 +836,7 @@
                 {{--    $.ajax({--}}
                 {{--        async: false,--}}
                 {{--        url: '{{ url('/getPrametersByFin') }}',--}}
-                {{--        data: {'fin': fin, 'tableNum': tableNum, '_token': token},--}}
+                {{--        data: {'fin': fin, 'tabel_number': tabel_number, '_token': token},--}}
                 {{--        type: "post",--}}
                 {{--        dataType: "json",--}}
                 {{--        success: function (data) {--}}
@@ -906,18 +920,19 @@
                     })
                     .then((response) => {
                         // console.log('correct');
-                        if(response.data.problem == "age")
-                        {
+                        if (response.data.problem == "age") {
                             alert("40 yaşdan yuxarı namizədlər proqrama müraciət edə bilməz");
                             return;
 
-                        }
-                        else if(response.data.problem == "employee")
-                        {
+                        } else if (response.data.problem == "employee") {
                             alert(response.data.content);
                             return;
                         }
-                            window.location.href = '{{ route('profile.index') }}';
+                        else if (response.data.problem == "403") {
+                            alert(response.data.content);
+                            return;
+                        }
+                        window.location.href = '{{ route('profile.index') }}';
                     }).catch((error) => {
                     if (error.response) {
                         $('#loaderModal').modal('hide');
@@ -938,7 +953,7 @@
                             current_input.closest('.form-group ').find('.invalid-feedback').remove();
                             current_input.after('<div class="invalid-feedback">\n' +
                                 '<strong>' + error.response.data.errors.idCardPin + '</strong>\n' +
-                            '</div>');
+                                '</div>');
                             $(window).scrollTop(200);
                             $('#loaderModal').modal('hide');
 
@@ -969,9 +984,6 @@
                                 '</div>');
 
                         }
-
-
-
 
 
                         $('#loaderModal').modal('hide');
@@ -1695,7 +1707,6 @@
 
             $('#companies').trigger("change");
             $('#BirthCityId').trigger("change");
-
 
 
             var $addMore = $("#addMore").hide(),

@@ -445,14 +445,51 @@ class RegisterController extends Controller
                 'ImFincode' => $fin
             ));
 
-            var_dump(response(json_encode($res)));
+            return $this -> checkPinAndTabelNumber($res,$data);
 
-            return response(json_encode($res));
+
+
         } catch (SoapFault $exception) {
             echo "<pre>faultcode: '" . $exception->faultcode . "'</pre>";
             echo "<pre>faultstring: '" . $exception->getMessage() . "'</pre>";
             $err = 1;
         }
+
+    }
+
+    public function checkPinAndTabelNumber($res,$data) {
+
+        if ($res -> ErrMsg -> ErrorCode == 1 || $res -> ErrMsg -> ErrorCode == 2 )
+        {
+            return response(json_encode($res));
+
+        }
+
+
+
+        if (strlen($data['tabel_number'])<1)
+        {
+            return response(json_encode([
+                'ErrMsg' => [
+                    'ErrorCode' =>'403',
+                    'ErrorMessage' =>'Zəhmət olmasa tabel nömrənizi daxil edin',
+                ]
+            ]));
+        }
+
+
+        if ( $res -> OutParams -> Pernr != $data['tabel_number'])
+        {
+            return response(json_encode([
+                'ErrMsg' => [
+                    'ErrorCode' =>'403',
+                    'ErrorMessage' =>'Təqdim etdiyiniz tabel nömrəsi tapılmadı. Məlumatların dəqiqləşdirilməsi üçün müəssiənizin (təşkilatınızın) İnsan Resursları/Kadrlar şöbəsinə yaxınlaşa bilərsiniz..',
+                ]
+            ]));
+        }
+
+        return response(json_encode($res));
+
 
     }
 }

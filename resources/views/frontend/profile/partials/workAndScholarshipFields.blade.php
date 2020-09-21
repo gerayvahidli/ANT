@@ -96,28 +96,6 @@
         </div>
     </div>
 
-    <div id="socarWorkField" style="{{ $user->exists && $user->IsCurrentlyWorkAtSocar == 1 ? '' : '' }}" >
-        <div class="form-group row required">
-            <label for="tabel_number" class="col-4 col-form-label">Tabel nömrəniz</label>
-            <div class="col-8">
-                {{ Form::text('tabel_number',
-                    ( $user->exists && isset($user -> currentJob) ) ? $user -> currentJob -> first() -> TabelNo : ( old('tabel_number')  ? old('tabel_number') : null ),
-                     ['class' => ($errors->has('tabel_number')) ? 'form-control is-invalid number' :'form-control number',
-                     'id' =>'tabel_number',
-                     'required',
-                     "data-msg-required"=>'Tabel nömrəniz sahəsini boş buraxmayın',
-                     'data-msg-number'=>'Yalnız rəqəm daxil edin']
-                ) }}
-                @if ($errors->has('tabel_number'))
-                    <div class="invalid-feedback">
-                        <strong>{{ $errors->first('tabel_number') }}</strong>
-                    </div>
-                @endif
-
-                <div class="help-block with-errors"></div>
-            </div>
-        </div>
-    </div>
 
 
 </div>

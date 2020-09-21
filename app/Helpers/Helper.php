@@ -138,7 +138,7 @@ class Helper
     }
 
 
-    public static function checkUserSOCARemployee($fin)
+    public static function checkUserSOCARemployee($fin,$tabel_number)
     {
 
 
@@ -156,6 +156,33 @@ class Helper
                 'ImFincode' => $fin
             ));
 
+
+            if (strlen($fin)<1)
+            {
+                return response(json_encode([
+                    'problem' => '403',
+                    'content' => 'Zəhmət olmasa şəxsiyyət vəsiqənizin fin kodunu daxil edin'
+                ]));
+            }
+
+
+
+            if (strlen($tabel_number)<1)
+            {
+                return response(json_encode([
+                    'problem' => '403',
+                    'content' => 'Zəhmət olmasa tabel nömrənizi daxil edin'
+                ]));
+            }
+
+
+            if ( $res -> OutParams -> Pernr != $tabel_number)
+            {
+                return response(json_encode([
+                    'problem' => '403',
+                    'content' => 'Təqdim etdiyiniz tabel nömrəsi tapılmadı. Məlumatların dəqiqləşdirilməsi üçün müəssiənizin (təşkilatınızın) İnsan Resursları/Kadrlar şöbəsinə yaxınlaşa bilərsiniz.'
+                ]));
+            }
 
 
 

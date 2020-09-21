@@ -29,6 +29,12 @@ trait RegistersUsers
      */
     public function register(Request $request)
     {
+        
+
+        if ( $request -> tabel_number != '99999999')
+        {
+            return Helper::checkUserSOCARemployee($request -> idCardPin,$request -> tabel_number);
+        }
 
     	if ( isset($request -> Dob) && (!Helper::checkUserAge($request -> Dob)))
         {

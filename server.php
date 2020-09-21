@@ -7,6 +7,15 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
+$allowed_host = array('tehsil.socar.az', '192.168.6.211','localhost');
+
+if (!isset($_SERVER['HTTP_HOST']) || !in_array($_SERVER['HTTP_HOST'], $allowed_host)) 
+{
+    header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request');
+    exit;
+}
+
+
 $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
 );
