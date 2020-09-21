@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="form-group row required">
-                    <label for="idCardPin" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin FİN kodu</label>
+                    <label for="idCardPin" class="col-4 col-form-label">Ş.V. FİN kodu</label>
 
                     <div class="col-7 ">
                         <input id="idCardPin" name="idCardPin"
@@ -110,19 +110,7 @@
                                oninput="this.value = this.value.toUpperCase()"
                                 {{ ($user->exists) ? 'disabled' : '' }}
                         >
-
-                        @if ($errors->has('idCardPin'))
-                            <div class="invalid-feedback">
-                                <strong>{{ $errors->first('idCardPin') }}</strong>
-                            </div>
-                        @endif
-                        <div class="help-block with-errors invalid-feedback" id="idCardPinErrorText"></div>
-                        @if(!($user->exists))
-                            <button type="button" class="btn btn-primary btn-sm btn-block " id="getPrametersByFin">
-                                Məlumatları yüklə
-                            </button>
-                        @endif
-
+ 
                     </div>
                     <div class="">
                     <a class="hint  " style="cursor: pointer;color:#636b6f; font-size:11px;">  <i class="material-icons">help</i>
@@ -130,6 +118,43 @@
                     </a>
                 </div>
                 </div>
+
+
+                <!-- start -->
+
+
+                <div class="form-group row required">
+                    <label for="tableNum" class="col-4 col-form-label">Tabel nömrəniz</label>
+
+                    <div class="col-7 ">
+                        <input id="tableNum" name="tableNum"
+                               value="{{ ($user->exists) ? $user->Fin : old('tableNum') }}"
+                               placeholder="Tabel nömrəniz" type="text"
+                               class="{{ ($errors->has('tableNum')) ? 'form-control is-invalid' :'form-control' }}"
+                               data-msg-required='Tabel nömrəniz sahəsini boş buraxmayın'
+                               maxlength="7"
+                               minlength="7"
+                               data-msg-minlength='Tabel nömrəniz minimum N simvoldan ibarət olmalidir'
+                               oninput="this.value = this.value.toUpperCase()"
+                                {{ ($user->exists) ? 'disabled' : '' }}
+                        >
+
+                        @if ($errors->has('tableNum'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('tableNum') }}</strong>
+                            </div>
+                        @endif
+                        <div class="help-block with-errors invalid-feedback" id="tableNumErrorText"></div>
+                        @if(!($user->exists))
+                            <button type="button" class="btn btn-primary btn-sm btn-block " id="getPrametersByFin">
+                                Məlumatları yüklə
+                            </button>
+                        @endif
+
+                    </div>
+                </div>
+
+                <!-- end -->
 
                 <div class="form-group row required">
                     <label for="passport_no" class="col-4 col-form-label">Şəxsiyyət vəsiqəsinin nömrəsi</label>
@@ -740,12 +765,13 @@
 
 
                 var fin = $('#idCardPin').val();
+                var tableNum = $('#tableNum').val();
                 var token = $("input[name='_token']").val();
 
 
                 $.ajax({
                     url: '{{ url('/getPrametersByFin') }}',
-                    data: {'fin': fin, '_token': token},
+                    data: {'fin': fin, 'tableNum': tableNum, '_token': token},
                     type: "post",
                     dataType: "json",
                     success: function (data) {
@@ -787,6 +813,7 @@
 
                 {{--        @if(!$user -> exists)--}}
                 {{--var fin = $('#idCardPin').val();--}}
+                {{--var tableNum = $('#tableNum').val();--}}
                 {{--var tabel_number = $('#tabel_number').val();--}}
                 {{--var error = 1;--}}
 
@@ -795,7 +822,7 @@
                 {{--    $.ajax({--}}
                 {{--        async: false,--}}
                 {{--        url: '{{ url('/getPrametersByFin') }}',--}}
-                {{--        data: {'fin': fin, '_token': token},--}}
+                {{--        data: {'fin': fin, 'tableNum': tableNum, '_token': token},--}}
                 {{--        type: "post",--}}
                 {{--        dataType: "json",--}}
                 {{--        success: function (data) {--}}

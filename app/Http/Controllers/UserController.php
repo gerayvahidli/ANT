@@ -163,7 +163,7 @@ class UserController extends Controller
         $mobilePhoneOperatorCodes = MobileOperatorCode::where([['Name','!=','012'],['IsShow','=',1]])->pluck('Name', 'id');
 //		$programTypes             = ProgramType::where( 'id', '<', 3 )->get()->pluck( 'Name', 'id' );
         $genders = Gender::all();
-        $companies = Company::where('IsSocar', 1)->get();
+        $companies = Company::where([['IsSocar', '=', 1], ['IsShow', '=', 1]])->get();
 
 
         return view('frontend.profile.form',

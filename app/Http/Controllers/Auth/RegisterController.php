@@ -151,7 +151,7 @@ class RegisterController extends Controller
     public function showRegistrationForm(User $user)
     {
         $countries = Country::all();
-        $companies = Company::where('IsSocar', 1)->get();
+        $companies = Company::where([['IsSocar', '=', 1], ['IsShow', '=', 1]])->get();
         $cities = City::where('IsShow', 1)->orderBy('Name')->get();
         $regions = Region::where('IsShow', 1)->orderBy('Name')->get();
         $educationLevels = EducationLevel::where('IsShow', 1)->get();
@@ -236,7 +236,7 @@ class RegisterController extends Controller
 
         $user->AuditInsertedUserId = 1;
         $user->AuditInsertedDateTime = date("Y-m-d h:i:s");
-
+        
 
         DB::connection('sqlsrv')->transaction(function () use ($data, $user) {
 
@@ -429,6 +429,7 @@ class RegisterController extends Controller
         $data = $request::all();
 
         $fin = $data['fin'];
+        // $tableNum = $data['tableNum'];
 
         define('API_WSDL', 'http://192.168.17.51:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
         ini_set("soap.wsdl_cache_enabled", "0");
@@ -444,6 +445,7 @@ class RegisterController extends Controller
                 'ImFincode' => $fin
             ));
 
+            var_dump(response(json_encode($res)));
 
             return response(json_encode($res));
         } catch (SoapFault $exception) {

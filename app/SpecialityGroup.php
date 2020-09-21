@@ -14,7 +14,8 @@ class SpecialityGroup extends Model
 
     public function specializations()
     {
-        return $this->hasMany(Specialization::class,'SpecialityGroupId','Id');
+    	// added a filter to return only active ones
+        return $this->hasMany(Specialization::class,'SpecialityGroupId','Id')->where('active', true);
 
     }
 

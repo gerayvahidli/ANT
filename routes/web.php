@@ -62,6 +62,8 @@ Route::post('deletePreviousJob', 'UserController@deletePreviousJob')->name('dele
 Route::post('getPrametersByFin', 'Auth\RegisterController@getPrametersByFin')->name('getPrametersByFin');
 
 
+//salam
+
 
 
 // Authentication Routes...

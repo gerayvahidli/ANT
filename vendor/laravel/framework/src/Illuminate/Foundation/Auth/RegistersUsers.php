@@ -2,10 +2,10 @@
 
 namespace Illuminate\Foundation\Auth;
 
-use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
+use App\Helpers\Helper;
 
 trait RegistersUsers
 {
@@ -30,15 +30,7 @@ trait RegistersUsers
     public function register(Request $request)
     {
 
-        $this->validator($request->all())->validate();
-
-
-        if ( $request -> tabel_number != '99999999')
-        {
-            return Helper::checkUserSOCARemployee($request -> idCardPin);
-        }
-
-        if ( isset($request -> Dob) && !Helper::checkUserAge($request -> Dob))
+    	if ( isset($request -> Dob) && (!Helper::checkUserAge($request -> Dob)))
         {
 
             return json_encode([
@@ -48,6 +40,7 @@ trait RegistersUsers
 
         }
 
+        $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
 

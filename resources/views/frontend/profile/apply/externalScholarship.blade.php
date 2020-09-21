@@ -6,7 +6,7 @@
 
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
 
     <script>
         $(document).ready(function () {
@@ -15,7 +15,7 @@
     </script>
     <script src="{{asset('js/dropzone.js')}}"></script>
     <link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
-    <link rel="stylesheet" href="https://dbushell.com/Pikaday/css/pikaday.css">
+    <link rel="stylesheet" href="{{asset('css/pikaday.css')}}">
     <style type="text/css">
         /*.error {*/
         /*    font-weight: bold;*/
