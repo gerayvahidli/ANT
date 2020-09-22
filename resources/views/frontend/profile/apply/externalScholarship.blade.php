@@ -15,7 +15,7 @@
     </script>
     <script src="{{asset('js/dropzone.js')}}"></script>
     <link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
-    <link rel="stylesheet" href="{{asset('css/pikaday.css')}}">
+{{--    <link rel="stylesheet" href="{{asset('css/pikaday.css')}}">--}}
     <style type="text/css">
         /*.error {*/
         /*    font-weight: bold;*/

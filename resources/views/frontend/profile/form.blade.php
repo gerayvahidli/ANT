@@ -38,7 +38,7 @@
         }
     </style>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{asset('css/icon.css')}}" rel="stylesheet">
 
     <section class="profile">
         <div class="row">
