@@ -29,24 +29,21 @@ trait RegistersUsers
      */
     public function register(Request $request)
     {
-        
+        $this->validator($request->all())->validate();
 
-        if ( $request -> tabel_number != '99999999')
+        if ( $request -> tabel_number != '99999999' && Helper::checkUserSOCARemployee($request -> idCardPin,$request -> tabel_number)['problem'] != 'no')
         {
-            return Helper::checkUserSOCARemployee($request -> idCardPin,$request -> tabel_number);
+            return response(json_encode( Helper::checkUserSOCARemployee($request -> idCardPin,$request -> tabel_number)));
         }
 
     	if ( isset($request -> Dob) && (!Helper::checkUserAge($request -> Dob)))
         {
-
             return json_encode([
                 'status' => 403,
                 'problem' => 'age'
             ]) ;
-
         }
 
-        $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
 

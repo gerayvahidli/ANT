@@ -141,8 +141,9 @@ class Helper
     public static function checkUserSOCARemployee($fin,$tabel_number)
     {
 
+        if (!defined('API_WSDL')) define('API_WSDL', 'http://192.168.17.51:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
 
-        define('API_WSDL', 'http://192.168.17.51:8000/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/yws_scholarship/600/yws_scholarship/yws_scholarship?sap-client=600');
+
         ini_set("soap.wsdl_cache_enabled", "0");
 
         try {
@@ -157,55 +158,40 @@ class Helper
             ));
 
 
-            if (strlen($fin)<1)
-            {
-                return response(json_encode([
-                    'problem' => '403',
-                    'content' => 'Zəhmət olmasa şəxsiyyət vəsiqənizin fin kodunu daxil edin'
-                ]));
-            }
-
-
-
-            if (strlen($tabel_number)<1)
-            {
-                return response(json_encode([
-                    'problem' => '403',
-                    'content' => 'Zəhmət olmasa tabel nömrənizi daxil edin'
-                ]));
-            }
-
-
-            if ( $res -> OutParams -> Pernr != $tabel_number)
-            {
-                return response(json_encode([
-                    'problem' => '403',
-                    'content' => 'Təqdim etdiyiniz tabel nömrəsi tapılmadı. Məlumatların dəqiqləşdirilməsi üçün müəssiənizin (təşkilatınızın) İnsan Resursları/Kadrlar şöbəsinə yaxınlaşa bilərsiniz.'
-                ]));
-            }
 
 
 
             if ($res -> OutParams -> Status === "0" )
             {
-                return response(json_encode([
+                return [
                     'problem' => 'employee',
                     'content' => 'Siz hal hazırda SOCAR işçisi olmadığınız üçün proqrama müraciət edə bilməzsiniz!'
-                    ]));
+                    ];
             }
            elseif ($res -> OutParams -> Status == "" )
             {
-                return response(json_encode([
+                return [
                     'problem' => 'employee',
                     'content' => $res -> ErrMsg -> ErrorMessage
-                ]));
+                ];
             }
 
+
+
+            else if ( $res -> OutParams -> Pernr != $tabel_number)
+            {
+                return [
+                    'problem' => '403',
+                    'content' => 'Təqdim etdiyiniz tabel nömrəsi tapılmadı. Məlumatların dəqiqləşdirilməsi üçün müəssiənizin (təşkilatınızın) İnsan Resursları/Kadrlar şöbəsinə yaxınlaşa bilərsiniz.'
+                ];
+            }
+
+
             else{
-                return response(json_encode([
+                return [
                     'problem' => 'no',
                     'content' => 'success'
-                ]));
+                ];
             }
 
         } catch (SoapFault $exception) {
