@@ -29,7 +29,7 @@
     <div class="form-group row">
         <label for="university_id" class="col-4 col-form-label ">Universitet</label>
         <div class="col-8">
-            <select name="previous_education_university_id[]" id="previous_education_university_id" class="form-control previous_education_university">
+            <select name="previous_education_university_id[]" id="previous_education_university_id" class="form-control previous_education_university" required data-msg-required="Universitet sahəsini boş buraxmayın">
             </select>
         </div>
     </div>

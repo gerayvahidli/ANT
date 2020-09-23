@@ -29,12 +29,8 @@
     <!-- Styles -->
     <style>
         html, body {
-            background-color: #fff;
             color: #636b6f;
             font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            height: 100vh;
-            margin: 0;
         }
 
         .full-height {
@@ -148,7 +144,7 @@
 <hr>
 
 <!-- Footer -->
-<footer class="sticky-footer bg-white">
+<footer class="sticky-footer">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span>Bütün hüquqlar qorunur <span style="font-weight: bold;">&copy; <a href="https://caspianic.com/"> Caspian Innovation Center LLC</a></span> {{ now()->year }}</span>

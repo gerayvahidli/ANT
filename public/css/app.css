@@ -11093,7 +11093,9 @@ a.text-dark:focus {
 }
 
 body {
-  background: url("../img/backgrounds/cc_crrs_bg.jpg") no-repeat center 50px !important;
+
+  background: url("../img/backgrounds/cc_crrs_bg.jpg") !important;
+  background-repeat: repeat-y;
 }
 
 .left-sidebar {

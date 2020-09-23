@@ -43,7 +43,8 @@
         <div class="col-8">
 
 
-            <select name="university_id" id="university_id" class="form-control university">
+            <select name="university_id" id="university_id" class="form-control university" required data-msg-required="Universitet sahəsini boş buraxmayın">
+
                 @if($user -> exists  && $user->finalEducation->first() -> university -> IsShow == 0)
 
                     @foreach(Helper::getUniversitiesByCountry($user->finalEducation->first()  -> university -> country -> Id) as $university)

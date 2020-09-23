@@ -91,7 +91,7 @@
                 @elseif(($last_application -> applicationStage -> stage  -> Id == 1 && $last_application -> applicationStage -> stageResult  -> Id == 2) )
                     <span style="font-weight: bold">Cari status:</span> İlkin seçim mərhələsindədir
                 @elseif(($last_application -> applicationStage -> stage  -> Id == 1 && $last_application -> applicationStage -> stageResult  -> Id == 1) || ($last_application -> applicationStage -> stage  -> Id == 2 && $last_application -> applicationStage -> stageResult  -> Id == 2))
-                    <span style="font-weight: bold">Cari status:</span> Müsahibə mərhələsindədir <br><span style="font-weight: bold">Müsahibə vaxtı:</span> {{ date('d-m-Y H:i', strtotime($last_application -> InterviewDate))}}
+                    <span style="font-weight: bold">Cari status:</span> Müsahibə mərhələsindədir <br><span style="font-weight: bold">Müsahibə vaxtı:</span> {{ !empty($last_application -> InterviewDate) ? date('d-m-Y H:i', strtotime($last_application -> InterviewDate)) : ''}}
                 @elseif(($last_application -> applicationStage -> stage  -> Id == 2 && $last_application -> applicationStage -> stageResult  -> Id == 1) || ($last_application -> applicationStage -> stage  -> Id == 3 && $last_application -> applicationStage -> stageResult  -> Id == 2))
                     <span style="font-weight: bold">Cari status:</span> Komissiya mərhələsindədir
                 @elseif(($last_application -> applicationStage -> stage  -> Id == 3 && $last_application -> applicationStage -> stageResult  -> Id == 1) || ($last_application -> applicationStage -> stage  -> Id == 4 && $last_application -> applicationStage -> stageResult  -> Id == 2))

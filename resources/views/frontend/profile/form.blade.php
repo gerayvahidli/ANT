@@ -28,7 +28,7 @@
 
         }
 
-        form input.error, input.is-invalid {
+        form input.error, form select.error, input.is-invalid {
             border: 1px solid red !important;
         }
 
@@ -1422,6 +1422,8 @@
                             }
                             // $('select[id="university_id"]').append('<option>---- Universitet seç ----</option>');
                             $('select[id="university_id"]').empty();
+                            $('select[id="university_id"]').append('<option value="">--Universiteti Seçin--</option>');
+
                             $.each(data, function (key, value) {
 
                                 $('select[id="university_id"]').append('<option value="' + key + '">' + value + '</option>');
@@ -1474,6 +1476,8 @@
                                     $('#fieldGroup' + count + ' .previous_education_admission_score').attr("disabled", "disabled");
                                 }
                                 $('#fieldGroup' + count + ' .previous_education_university').empty();
+                                $('#fieldGroup' + count + ' .previous_education_university').append('<option value="">--Universiteti seçin--</option>');
+
                                 // console.log('count:' + count);
                                 $.each(data, function (key, value) {
                                     // console.log('count each : ' + count);
