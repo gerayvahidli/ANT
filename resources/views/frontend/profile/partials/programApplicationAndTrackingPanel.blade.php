@@ -102,7 +102,7 @@
             </div>
         @endif
 
-        @if(!$last_application -> applicationStageNotes -> isEmpty() || $last_application -> applicationStageNotes -> last() ->sending ==1)
+        @if(!$last_application -> applicationStageNotes -> isEmpty() && $last_application -> applicationStageNotes -> last() ->sending ==1)
             <div class="alert alert-warning" role="alert">
                 <span style="font-weight: bold">Qeyd:</span> {{ $last_application -> applicationStageNotes -> last() -> Note }}
             </div>
