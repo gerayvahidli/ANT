@@ -107,9 +107,7 @@
                 <span style="font-weight: bold">Qeyd:</span> {{ $last_application -> applicationStageNotes -> last() -> Note }}
             </div>
         @endif
-
-        {{$last_application -> applicationStageNotes -> last()}}
-
+        
     </div>
 
 </div>
