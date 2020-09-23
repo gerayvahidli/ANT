@@ -72,6 +72,8 @@ class UserController extends Controller
             ['EndDate', '>', date('Y-m-d')],
             ['IsActive', '=', 1],
         ])->first();
+
+//        return $active_program;
         !empty($active_program) ? $user_active_program = $user->userPrograms->where('ProgramId', $active_program -> Id)->first() : $active_program = null;
         $last_application = $user -> applications -> last()   ;
 
@@ -788,7 +790,7 @@ class UserController extends Controller
             'achievements' => 'required',
             'about_family' => 'required',
 
-            'passport_copy' => 'required|mimes:jpeg,jpg,zip,pdf|max:1024',
+            'passport_copy' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
             'certificate_document' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
             'university_document' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
             'biography' => 'required|mimes:jpeg,jpg,zip,pdf|max:10240',
