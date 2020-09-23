@@ -104,7 +104,7 @@
 
         @if(!$last_application -> applicationStageNotes -> isEmpty())
             <div class="alert alert-warning" role="alert">
-                <span style="font-weight: bold">Qeyd:</span> {{$last_application -> applicationStageNotes -> last() -> Note}}
+                <span style="font-weight: bold">Qeyd:</span> {{$last_application -> applicationStageNotes -> last() ->sending ==1 ? $last_application -> applicationStageNotes -> last() -> Note : ''}}
             </div>
         @endif
 
