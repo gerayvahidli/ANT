@@ -108,6 +108,7 @@
             </div>
         @endif
 
+        {{$last_application -> applicationStageNotes -> last()}}
 
     </div>
 
