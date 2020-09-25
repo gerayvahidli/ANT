@@ -15,7 +15,8 @@
     <div class="form-group row required ">
         <label for="company_id" class="col-4 col-form-label">Müəssisə</label>
         <div class="col-8">
-            <select name="company_id" id="company_id" class="form-control">
+            <select name="company_id" id="company_id" class="form-control" required data-msg-required="Müəssisə sahəsini boş buraxmayın">
+                <option value="">--Müəssisə seçin--</option>
                 @foreach($companies as $company)
                     <option {{ $user->exists && $user -> currentJob ->first() -> CompanyId == $company -> Id ? 'selected' :''   }} value="{{$company -> Id}}">{{$company -> Name}}</option>
                 @endforeach

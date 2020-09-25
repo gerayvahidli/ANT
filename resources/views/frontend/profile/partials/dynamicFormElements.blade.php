@@ -18,8 +18,9 @@
         <label for="country" class="col-4 col-form-label">Ölkə seç</label>
         <div class="col-8">
 
-            <select name="previous_education_country_id[]" id="previous_education_country_id" class="form-control previous_education_country ">
-                @foreach($countries as $country)
+            <select name="previous_education_country_id[]" id="previous_education_country_id" class="form-control previous_education_country " required data-msg-required="Ölkə sahəsini boş buraxmayın">
+                <option value="">--Seçin--</option>
+            @foreach($countries as $country)
                     <option value="{{$country -> Id}}">{{$country -> Name}}</option>
                 @endforeach
             </select>
@@ -29,7 +30,7 @@
     <div class="form-group row">
         <label for="university_id" class="col-4 col-form-label ">Universitet</label>
         <div class="col-8">
-            <select name="previous_education_university_id[]" id="previous_education_university_id" class="form-control previous_education_university" required data-msg-required="Universitet sahəsini boş buraxmayın">
+            <select name="previous_education_university_id[]" id="previous_education_university_id" class="form-control previous_education_university">
             </select>
         </div>
     </div>
@@ -187,7 +188,10 @@
                     id="previous_company_id"
                     name="previous_company_id[]"
                     maxlength = '500'
+                    required
+                    data-msg-required="Müəssisə sahəsini boş buraxmayın"
             >
+                <option value="">--Müəssisə seçin--</option>
                 @foreach($companies as $company)
                     <option value="{{$company -> Id}}">{{$company -> Name}}</option>
                 @endforeach
