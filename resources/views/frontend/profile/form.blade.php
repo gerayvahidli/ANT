@@ -112,6 +112,7 @@
                         >
 
                     </div>
+
                     <div class="">
                         <a class="hint  " style="cursor: pointer;color:#636b6f; font-size:11px;"> <i
                                     class="material-icons">help</i>
@@ -174,7 +175,7 @@
 
                         @if ($errors->has('passport_no'))
                             <div class="invalid-feedback">
-                                <strong>{{ $errors->first('passport_no') }}</strong>
+                                {{ $errors->first('passport_no') }}
                             </div>
                         @endif
                         <div class="help-block with-errors"></div>
@@ -599,7 +600,7 @@
 
                         @if ($errors->has('email'))
                             <div class="invalid-feedback">
-                                <strong>{{ $errors->first('email') }}</strong>
+                                {{ $errors->first('email') }}
                             </div>
                         @endif
                         <div class="help-block with-errors" id="emailErrorText"></div>
@@ -777,6 +778,8 @@
                     type: "post",
                     dataType: "json",
                     success: function (data) {
+
+
                         // console.log(data.ErrMsg.ErrorCode);
                         if (data.ErrMsg.ErrorCode === "403") {
                             alert(data.ErrMsg.ErrorMessage);
@@ -795,9 +798,18 @@
                             }
                             $('#email').val(data.OutParams.Email.toLowerCase());
                             $('#Dob').val(data.OutParams.BirthDate);
-                            $('#StartDate').val(data.OutParams.Begda);
+                            $("#company_id option").each(function(index, element)
+                            {
+                                if(element.innerHTML == data.OutParams.Company )
+                                {
+                                    $('#company_id').val(element.attributes.value.value)
+                                }
+                            });
+                            $('#department').val(data.OutParams.Branch);
                             $('#position').val(data.OutParams.Post);
-                    }
+                            $('#StartDate').val(data.OutParams.Begda);
+
+                        }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         $('#lblCommentsNotification').text("Error encountered while saving the comments.");
@@ -952,7 +964,7 @@
                             current_input.addClass('is-invalid');
                             current_input.closest('.form-group ').find('.invalid-feedback').remove();
                             current_input.after('<div class="invalid-feedback">\n' +
-                                '<strong>' + error.response.data.errors.idCardPin + '</strong>\n' +
+                                error.response.data.errors.idCardPin +
                                 '</div>');
                             $(window).scrollTop(200);
                             $('#loaderModal').modal('hide');
@@ -966,7 +978,7 @@
                             current_input.addClass('is-invalid');
                             current_input.closest('.form-group ').find('.invalid-feedback').remove();
                             current_input.after('<div class="invalid-feedback">\n' +
-                                '<strong>' + error.response.data.errors.passport_no + '</strong>\n' +
+                                error.response.data.errors.passport_no +
                                 '</div>');
                             $(window).scrollTop(200);
                             $('#loaderModal').modal('hide');
@@ -980,7 +992,7 @@
                             current_input.addClass('is-invalid');
                             current_input.closest('.form-group ').find('.invalid-feedback').remove();
                             current_input.after('<div class="invalid-feedback">\n' +
-                                '<strong>' + error.response.data.errors.email + '</strong>\n' +
+                                 error.response.data.errors.email  +
                                 '</div>');
 
                         }
@@ -1725,6 +1737,8 @@
 
 
         });
+
+
 
 
     </script>

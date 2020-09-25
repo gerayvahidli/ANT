@@ -50,6 +50,7 @@
             {{ Form::text('department',
             ($user->exists && isset($user->currentJob)) ? $user -> currentJob -> first() -> Department : null,
              ['class' => ($errors->has('department')) ? 'form-control is-invalid' :'form-control',
+             'id' => 'department',
              'required',
              'maxlength' => '500',
              "data-msg-required"=>'Struktur Bölmə sahəsini boş buraxmayın'  ]) }}

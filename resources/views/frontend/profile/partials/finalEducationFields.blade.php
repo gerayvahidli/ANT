@@ -23,13 +23,12 @@
 
 <div class="fieldGroup" id="fieldGroup">
     <div class="form-group row required">
-        <label for="country" class="col-4 col-form-label">Ölkə seç</label>
+        <label for="country" class="col-4 col-form-label">Ölkə</label>
         <div class="col-8">
-            {{--            {{ Form::select('country_id', $countries, ($user->exists && isset($user->finalEducation->education_level_id)) ? $user->finalEducation->university->country_id : old('country_id'),--}}
-            {{--                ['class' => 'form-control here', 'id' => 'country_id', 'placeholder' => '---- Ölkə seç ----', '',"data-required-error"=>'Ölkə sahəsini boş buraxmayın'])--}}
-            {{--            }}--}}
-            <select name="country_id" id="country_id" class="form-control">
-                @foreach($countries as $country)
+
+            <select name="country_id" id="country_id" class="form-control" required data-msg-required="Ölkə sahəsini boş buraxmayın">
+                <option value="">--Ölkə seçin--</option>
+            @foreach($countries as $country)
                     <option {{$user -> exists && $user -> finalEducation -> first() -> university -> country -> Id == $country -> Id ? 'selected' : ''}} value="{{$country -> Id}}">{{$country -> Name}}</option>
                 @endforeach
             </select>

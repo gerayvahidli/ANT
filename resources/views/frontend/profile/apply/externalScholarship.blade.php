@@ -595,13 +595,13 @@
                                   data-msg-required='Ailəsi haqqında sahəsini boş burxamayın'
                         ></textarea>
                         {{--                        {{old('about_family')}}--}}
-                        <small>Ailə üzvü, ad, soyad, təvəllüd, doğum yeri, iş yeri, vəzifəsi (Bu məlumat CV-nizə əlavə
-                            ediləcəkdir və komissiya iclasında baxılması üçündür)</small>
+                        <small>Ailə üzvlərinin ardıcıllıqla adı, soyadı, ata adı, təvəllüdü, doğum yeri, iş yeri, hazırki vəzifəsi əlavə edilməlidir (Bu məlumatlar CV-nizə əlavə ediləcəkdir və komissiya iclasında baxılması üçündür).Ailə üzvlərinin ardıcıllıqla adı, soyadı, ata adı, təvəllüdü, doğum yeri, iş yeri, hazırki vəzifəsi əlavə edilməlidir
+                            (Bu məlumatlar CV-nizə əlavə ediləcəkdir və komissiya iclasında baxılması üçündür).</small>
                         <span class="error text-danger"> {{$errors->first('about_family')}}</span>
                     </div>
 
                     <p for="exampleInputEmail1" class="lead">Sənədlərinizi əlavə edin</p>
-                    <small>Birdən çox sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki əlavə ediləcək fayl həm ayrı ayrılıqda həm də zip-in içində pdf və jpg(jpeg) formatından fərqli ola bilməz.Hər bir faylın həcmi 10MB-dan çox olmamalıdır.</small>
+                    <small>2 və daha artıq sayda sənəd daxil etmək üçün lazımi sənədləri zip-ə əlavə edib daxil edin. Nəzərə alın ki, əlavə ediləcək fayllar pdf və jpeg (jpg) formatında olmalıdır (zip-in içində də həmçinin).Hər bir faylın həcmi 10MB-dan çox olmamalıdır.</small>
                     <hr>
 
 
@@ -625,8 +625,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="certificate_document" class="col-form-label required">Müvafiq xarici dili bilmə
-                            səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı)</label>
+                        <label for="certificate_document" class="col-form-label required">Müvafiq xarici dili bilmə səviyyəsini təsdiq edən sənəd (TOEFL və ya IELTS sertifikatı)</label>
                         <input type="file" class="form-control "
                                name="certificate_document"
                                id="certificate_document"
@@ -638,8 +637,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="university_document" class="col-form-label required">Xarici universitetə qəbulu
-                            təsdiq edən rəsmi sənəd</label>
+                        <label for="university_document" class="col-form-label required">Xarici universitetə qəbulu təsdiq edən rəsmi sənəd</label>
                         <input type="file" class="form-control "
                                name="university_document"
                                id="university_document"
@@ -664,8 +662,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="medical_certificate" class="col-form-label required">Poliklinikadan 086 No-li tibbi
-                            arayış</label>
+                        <label for="medical_certificate" class="col-form-label required">Poliklinikadan 086 No-li tibbi arayış</label>
                         <input type="file"
                                class="form-control "
                                name="medical_certificate"
@@ -678,8 +675,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="psychological_dispensary" class="col-form-label required">Psixoloji dispanserdən
-                            arayış</label>
+                        <label for="psychological_dispensary" class="col-form-label required">Psixoloji dispanserdən arayış</label>
                         <input type="file"
                                class="form-control "
                                name="psychological_dispensary"
@@ -692,8 +688,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="academic_transcript" class="col-form-label required">Ali təhsil dövründə qiymətləri
-                            barədə rəsmi sənəd (transkript)</label>
+                        <label for="academic_transcript" class="col-form-label required">Ali təhsil dövründə qiymətləri barədə rəsmi sənəd (transkript)</label>
                         <input type="file"
                                class="form-control "
                                name="academic_transcript"
@@ -706,9 +701,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group required">
-                        <label for="realEstate_document" class="col-form-label required">Girov qoyulacaq daşınmaz əmlak
-                            üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən çıxarışın və həmin əmlakın
-                            texniki pasportunun surəti vəya Qarantiya</label>
+                        <label for="realEstate_document" class="col-form-label required">Girov qoyulacaq daşınmaz əmlak üzərində mülkiyyət hüququnu təsdiq edən dövlət reyestrindən çıxarışın və həmin əmlakın texniki pasportunun surəti vəya Qarantiya</label>
                         <input type="file"
                                class="form-control "
                                name="realEstate_document"
@@ -722,8 +715,7 @@
                         <span class="error text-danger"> </span>
                     </div>
                     <div class="form-group ">
-                        <label for="owner_passport" class="col-form-label required">Girov sahibinin şəxsiyyət
-                            vəsiqəsi</label>
+                        <label for="owner_passport" class="col-form-label required">Girov sahibinin şəxsiyyət vəsiqəsi</label>
                         <input type="file"
                                class="form-control myfile"
                                name="owner_passport"
@@ -737,8 +729,7 @@
                     </div>
 
                     <div class="form-group required">
-                        <label for="testimonial" class="col-form-label required">Birbaşa rəhbərindən müsbət
-                            xasiyyətnamə</label>
+                        <label for="testimonial" class="col-form-label required">Birbaşa rəhbərindən müsbət xasiyyətnamə</label>
                         <input type="file"
                                class="form-control "
                                name="testimonial"
@@ -752,9 +743,9 @@
                     </div>
                     <div class="form-group required">
                         <input type="checkbox" name="i_accept" id="i_accept"/>
-                        <span style="font-weight:bold;">
+                        <label for="i_accept" style="font-weight:bold;">
                         Daxil etdiyim məlumatların doğruluğuna zəmanət verirəm
-                        </span>
+                        </label>
                     </div>
 
 
@@ -1310,7 +1301,7 @@
                     (data.status == 'error' && data.code == "400") ?
                         alert("“SOCAR-ın Xarici Təqaüd Proqramı haqqında Əsasnamə”nin 2.2 yarımbəndinə əsasən Xarici dili bilmə səviyyəsi İELTS sertifikatı üzrə 6.0 (yazma və danışıq üzrə 6.5), TOEFL İBT sertifikatı üzrə 80 baldan az olmamalıdır (yazma və danışıq üzrə 23)”") :
                         (data.status == 'error' && data.code == "403") ?
-                            alert(label.text() + " xanasında yüklədiyiniz zip-in boş olmadığından və ya içində pdf və jpg(jpeg) tipindən başqa tipdə fayl olmadığından əmin olun") : '';
+                            alert(label.text() + " xanasına yüklədiyiniz zip-in boş olmadığından və ya içində pdf və jpg(jpeg) tipindən başqa tipdə fayl olmadığından əmin olun") : '';
 
                 },
                 error: function (data) {
