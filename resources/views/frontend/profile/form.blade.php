@@ -36,6 +36,9 @@
             color: red !important;
             font-size: 100% !important;
         }
+
+
+
     </style>
 
     <link href="{{asset('css/icon.css')}}" rel="stylesheet">

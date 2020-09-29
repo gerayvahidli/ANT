@@ -471,13 +471,13 @@
                             <label for="realEstate" class="col-form-label">Seriya və nömrəsi</label>
                             <div class="row">
                                 <div class="col-sm-3 ">
-                                    <small>Seria</small>
+                                    <small>Seriya</small>
                                     <input type="text"
                                            name="realEstateSNO[serial]"
                                            class="form-control  {{$errors->has('realEstateSNO[serial]')?'errorInput':''}}"
                                            id="realEstate_owner_email"
                                            required
-                                           data-msg-required='Seria sahəsini boş burxamayın'
+                                           data-msg-required='Seriya sahəsini boş burxamayın'
                                            maxlength="50"
                                     >
                                     {{--                                    <span class="error text-danger"> {{$errors->first('realEstateSNO[serial]')}}</span>--}}
@@ -497,13 +497,13 @@
                                 </div>
                             </div>
                             <div class="form-group ">
-                                <label for="realEstate_reyester" class="col-form-label required">Reyester nömrəsi
+                                <label for="realEstate_reyester" class="col-form-label required">Reyestr nömrəsi
                                 </label>
                                 <input type="text" class="form-control "
                                        name="realEstate_reyester"
                                        id="realEstate_reyester"
                                        required
-                                       data-msg-required='Reyester nömrəsi sahəsini boş burxamayın'
+                                       data-msg-required='Reyestr nömrəsi sahəsini boş burxamayın'
                                        maxlength="100"
                                 >
                                 {{--                                <span class="error text-danger"> </span>--}}
@@ -577,11 +577,11 @@
                     </div>
 
                     <div class="form-group required">
-                        <label for="achievements" class="col-form-label">Nəaliyyətləri</label>
+                        <label for="achievements" class="col-form-label">Nailiyyətləri</label>
                         <textarea class="form-control {{$errors->has('achievements')?'errorInput':''}}"
                                   name="achievements"
                                   required
-                                  data-msg-required='Nəaliyyətləri sahəsini boş burxamayın'
+                                  data-msg-required='Nailiyyətləri sahəsini boş burxamayın'
                         ></textarea>
                         {{--                            {{old('achievements')}}--}}
                         <small>Bu məlumat CV-nizə əlavə ediləcəkdir və komissiya iclasında baxılması üçündür</small>
