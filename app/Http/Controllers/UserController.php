@@ -809,7 +809,7 @@ class UserController extends Controller
         $application->ProgramId = ExternalProgram::where('IsActive', 1)->first()->Id;
         $application->UserId = Auth::user()->id;
         $application->Speciality = $request->specialization_name;
-        $application->SpecializationId = isset($request->specialization_id) ? $request->specialization_id : null;
+        $application->SpecializationId = !empty($request->specialization_id) ? $request->specialization_id : SpecialityGroup::find($request->speciality_id) -> specializations -> first() -> Id;
         $application->SpecialityGroupId = $request->speciality_id;
         $application->CountryId = $request->country_id;
         $application->UniversityId = $request->university_id;
