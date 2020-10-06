@@ -16,7 +16,8 @@
 {{--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">--}}
     <link rel="stylesheet"  href="{{asset('font-awesome/css/font-awesome.min.css')}}">
 	<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-157723500-1"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157723500-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -105,6 +106,9 @@
             left: 4px;
 
         }
+        #special-div
+        { display: none !important; }
+
 
     </style>
 
@@ -186,6 +190,8 @@
 <!-- Latest compiled and minified JavaScript -->
 @yield('bottom')
 <script src="{{ asset('js/app.js') }}"></script>
+{{--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--}}
+
 @yield('footerScripts')
 <script>
     $('#loaderModal').modal({
@@ -194,8 +200,14 @@
     })
     $('#flash-overlay-modal').modal();
 
+    $('.datepicker').datepicker(
+        { format: 'dd.mm.yyyy' }
+    );
 
 
 </script>
+
+
+
 </body>
 </html>

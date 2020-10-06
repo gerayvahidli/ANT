@@ -85,19 +85,19 @@
         </div>
     </div>
 
-    <div class="form-group row required">
-        <label for="StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
-        <div class="col-8">
-            {{ Form::date('StartDate', ($user->exists && isset($user -> currentJob)) ? $user -> currentJob -> first() -> StartDate : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'İşə qəbul tarixi sahəsini boş buraxmayın','id' => 'StartDate','max' => '2999-12-31']) }}
-            @if ($errors->has('StartDate'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('StartDate') }}</strong>
+        <div class="form-group row required">
+            <label for="StartDate" class="col-4 col-form-label ">İşə qəbul tarixi</label>
+            <div class="col-8">
+                {{ Form::text('StartDate', ($user->exists && isset($user -> currentJob)) ? date('d.m.Y', strtotime($user -> currentJob -> first() -> StartDate)) : old('StartDate'), ['class' => ($errors->has('StartDate')) ? 'form-control is-invalid datepicker' :'form-control datepicker', 'required','data-msg-required'=>'İşə qəbul tarixi sahəsini boş buraxmayın',
+                'id' => 'StartDate','max' => '2999-12-31','autocomplete' => 'none']) }}
+                @if ($errors->has('StartDate'))
+                    <div class="invalid-feedback">
+                        <strong>{{ $errors->first('StartDate') }}</strong>
                 </div>
             @endif
-            <div class="help-block with-errors"></div>
+                <div class="help-block with-errors"></div>
         </div>
     </div>
-
 
 
 </div>

@@ -239,8 +239,9 @@
     <div class="form-group row required">
         <label for="previous_StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
         <div class="col-8">
-            <input class="form-control previous_StartDate"
-                   type="date"
+            <input class="form-control previous_StartDate "
+                   type="text"
+                   autocomplete="none"
                    name="previous_StartDate[]"
                    id="previous_StartDate"
                    required
@@ -255,7 +256,8 @@
         <label for="previous_EndDate" class="col-4 col-form-label">İşdən ayrılma tarixi</label>
         <div class="col-8">
             <input class="form-control previous_EndDate"
-                   type="date"
+                   type="text"
+                   autocomplete="none"
                    name="previous_EndDate[]"
                    id="previous_EndDate"
                    required

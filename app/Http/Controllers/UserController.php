@@ -251,7 +251,7 @@ class UserController extends Controller
         $user->LastName = $request->LastName;
         $user->FatherName = $request->FatherName;
         $user->GenderId = $request->gender;
-        $user->Dob = $request->Dob;
+        $user->Dob =  date('Y-m-d', strtotime($request->Dob)) ;
         if ($request->BirthCityId == 'other') {
             $city = new City;
             $city->Name = $request->otherCity;
@@ -339,7 +339,7 @@ class UserController extends Controller
         $finalEducation->EducationLevelId = $request->education_level;
         $finalEducation->UniversityId = $university_id;
         $finalEducation->StartDate = $request->BeginDate;
-        $finalEducation->EndDate = $request->EndDate;
+        $finalEducation->EndDate =  $request->EndDate;
         $finalEducation->Faculty = $request->faculty;
         $finalEducation->Speciality = $request->speciality;
         $finalEducation->AdmissionScore = ($request->country_id == 1) ? $request->admission_score : 0;
@@ -391,7 +391,7 @@ class UserController extends Controller
                         'id' => (isset($request->previous_education_id[$i])) ? $request->previous_education_id[$i] : null,
                         'education_level_id' => $request->previous_education_level[$i],
                         'university_id' => $university_id,
-                        'BeginDate' => ($request->previous_education_BeginDate[$i]) ? $request->previous_education_BeginDate[$i] : $date,
+                        'BeginDate' => ( $request->previous_education_BeginDate[$i]) ? $request->previous_education_BeginDate[$i] : $date,
                         'EndDate' => ($request->previous_education_EndDate[$i]) ? $request->previous_education_EndDate[$i] : $date,
                         'Faculty' => $request->previous_education_faculty[$i],
                         'Speciality' => $request->previous_education_speciality[$i],
@@ -415,7 +415,7 @@ class UserController extends Controller
                     $previousEducation->update([
                         'UniversityId' => $previousEdu['university_id'],
                         'EducationLevelId' => $previousEdu['education_level_id'],
-                        'StartDate' => $previousEdu['BeginDate'],
+                        'StartDate' =>  $previousEdu['BeginDate'],
                         'EndDate' => $previousEdu['EndDate'],
                         'Faculty' => $previousEdu['Faculty'],
                         'Speciality' => $previousEdu['Speciality'],
@@ -464,7 +464,7 @@ class UserController extends Controller
         $jobInfo->Department = $request->department;
         $jobInfo->Organization = $request->organization;
         $jobInfo->Position = $request->position;
-        $jobInfo->StartDate = $request->StartDate;
+        $jobInfo->StartDate = date('Y-m-d', strtotime($request->StartDate));
         $jobInfo->TabelNo = $request->tabel_number;
         $jobInfo->IsCurrent = 1;
 
@@ -507,8 +507,8 @@ class UserController extends Controller
                         'organization' => $request->previous_organization[$i] != '' ? $request->previous_organization[$i] : null,
                         'department' => $request->previous_department[$i],
                         'position' => $request->previous_position[$i],
-                        'start_date' => isset( $request->previous_StartDate[$i]) ?  $request->previous_StartDate[$i] : $date ,
-                        'end_date' => $request->previous_EndDate[$i],
+                        'start_date' => isset( $request->previous_StartDate[$i]) ?  date('Y-m-d', strtotime($request->previous_StartDate[$i])) : $date ,
+                        'end_date' => date('Y-m-d', strtotime($request->previous_EndDate[$i])),
                     ];
                 }
             }
@@ -524,8 +524,8 @@ class UserController extends Controller
                         'CompanyId' => $previousJob['company_id'],
                         'Organization' => $previousJob['organization'],
                         'Position' => $previousJob['position'],
-                        'StartDate' => $previousJob['start_date'],
-                        'EndDate' => $previousJob['end_date'],
+                        'StartDate' => date('Y-m-d', strtotime($previousJob['start_date'])),
+                        'EndDate' => date('Y-m-d', strtotime($previousJob['end_date'])),
                     ]);
                 } else {
                     $previousJobInfo = JobInfo::create(
@@ -535,8 +535,8 @@ class UserController extends Controller
                             'CompanyId' => $previousJob['company_id'],
                             'Organization' => $previousJob['organization'],
                             'Position' => $previousJob['position'],
-                            'StartDate' => $previousJob['start_date'],
-                            'EndDate' => $previousJob['end_date'],
+                            'StartDate' => date('Y-m-d', strtotime($previousJob['start_date'])),
+                            'EndDate' => date('Y-m-d', strtotime($previousJob['end_date'])),
                             'IsCurrent' => 0
                         ]
                     );
@@ -897,7 +897,7 @@ class UserController extends Controller
         $realEstate -> SerialNo = $request -> realEstateSNO['serial'] . $request->realEstateSNO['number'];
         $realEstate -> ReyestrNo = $request -> realEstate_reyester;
         $realEstate -> RegistrNo = $request -> realEstate_registry;
-        $realEstate -> RegistrDate = $request -> realEstate_registry_date;
+        $realEstate -> RegistrDate = date('Y-m-d', strtotime($request -> realEstate_registry_date)) ;
 
         $realEstate -> Acceptable = 1;
         $realEstate -> AuditInsertedUserId = 1;

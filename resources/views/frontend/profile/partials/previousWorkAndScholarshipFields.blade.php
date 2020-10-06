@@ -81,8 +81,8 @@
             <div class="form-group row required">
                 <label for="previous_StartDate" class="col-4 col-form-label">İşə qəbul tarixi</label>
                 <div class="col-8">
-                    <input value="{{  $user -> exists  ? $previousJob -> StartDate : null }}" class="form-control"
-                           type="date"
+                    <input value="{{  $user -> exists  ? date('d.m.Y', strtotime($previousJob -> StartDate )) : null }}" class="form-control datepicker"
+                           type="text"
                            name="previous_StartDate[{{$loop->iteration }}]"
                            id="previous_StartDate-{{$loop->iteration }}"
                            required
@@ -92,12 +92,12 @@
                 </div>
             </div>
 
-            <div class="form-group row required">
+            <div class="form-groue row required">
                 <label for="previous_EndDate" class="col-4 col-form-label">İşdən ayrılma tarixi</label>
                 <div class="col-8">
-                    <input value="{{  $user -> exists  ? $previousJob -> EndDate : null }}"
-                           class="form-control"
-                           type="date"
+                    <input value="{{  $user -> exists  ? date('d.m.Y', strtotime($previousJob -> EndDate )) : null }}"
+                           class="form-control datepicker"
+                           type="text"
                            name="previous_EndDate[{{$loop->iteration }}]"
                            id="previous_EndDate-{{$loop->iteration }}"
                            required

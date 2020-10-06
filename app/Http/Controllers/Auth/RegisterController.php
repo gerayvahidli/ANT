@@ -204,7 +204,7 @@ class RegisterController extends Controller
         $user->FatherName = $data['FatherName'];
         $user->GenderId = $data['gender'];
         $user->CitizenCountryId = $data['nationality'];
-        $user->Dob = $data['Dob'];
+        $user->Dob = date('Y-m-d', strtotime($data['Dob']));
 //        $user->BirthCityId = $data['BirthCityId'];
         $user->password = \Hash::make($data['password']);
         $user->AddressMain = $data['Address'];
@@ -359,7 +359,7 @@ class RegisterController extends Controller
             $jobInfo->Department = $data['department'];
             $jobInfo->Organization = $data['organization'];
             $jobInfo->Position = $data['position'];
-            $jobInfo->StartDate = $data['StartDate'];
+            $jobInfo->StartDate = date('Y-m-d', strtotime( $data['StartDate']));
             $jobInfo->TabelNo = $data['tabel_number'];
             $jobInfo->IsCurrent = 1;
 
@@ -384,8 +384,8 @@ class RegisterController extends Controller
                         $previousJobInfo->Department = $data['previous_department'][$i];
                         $previousJobInfo->Organization = $data['previous_organization'][$i];
                         $previousJobInfo->Position = $data['previous_position'][$i];
-                        $previousJobInfo->StartDate = isset($data['previous_StartDate'][$i]) ? $data['previous_StartDate'][$i] : $date;
-                        $previousJobInfo->EndDate = isset($data['previous_EndDate'][$i]) ? $data['previous_EndDate'][$i] : '';
+                        $previousJobInfo->StartDate = isset($data['previous_StartDate'][$i]) ? date('Y-m-d', strtotime($data['previous_StartDate'][$i]))  : $date;
+                        $previousJobInfo->EndDate = isset($data['previous_EndDate'][$i]) ? date('Y-m-d', strtotime($data['previous_EndDate'][$i])) : '';
     //                  $previousJobInfo->TabelNo = $data['previous_tabel_number'][$i];
                         $previousJobInfo->IsCurrent = 0;
 

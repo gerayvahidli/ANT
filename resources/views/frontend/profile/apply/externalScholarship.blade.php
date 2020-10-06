@@ -193,11 +193,12 @@
 
                     <div class="form-group ">
                         <label for="education_start_date" class="col-form-label">Təhsilin başlama tarixi</label>
-                        <input type="date"
+                        <input type="text"
+                               autocomplete="none"
                                {{--                               value="{{old('education_start_date')}}"--}}
                                name="education_start_date"
                                max="2999-12-31"
-                               class="form-control  {{$errors->has('education_start_date')?'errorInput':''}}">
+                               class="form-control datepicker  {{$errors->has('education_start_date')?'errorInput':''}}">
                         {{--                        <span class="error text-danger"> {{$errors->first('education_start_date')}}</span>--}}
                     </div>
 

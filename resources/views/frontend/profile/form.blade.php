@@ -291,7 +291,7 @@
                 <div class="form-group row required">
                     <label for="Dob" class="col-4 col-form-label">Təvəllüd</label>
                     <div class="col-8">
-                        {{ Form::date('Dob', ($user->exists) ? $user->Dob->format('Y-m-d') : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid' :'form-control', 'required','data-msg-required'=>'Təvvəllüd sahəsini boş buraxmayın','id' => 'Dob','max' => '2999-12-31']) }}
+                        {{ Form::text('Dob', ($user->exists) ? date('d.m.Y', strtotime($user->Dob)) : old('Dob'), ['class' => ($errors->has('Dob')) ? 'form-control is-invalid datepicker' :'form-control datepicker', 'required','data-msg-required'=>'Təvvəllüd sahəsini boş buraxmayın','id' => 'Dob','max' => '2999-12-31','autocomplete' => 'none']) }}
                         @if ($errors->has('Dob'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('Dob') }}</strong>
@@ -764,6 +764,8 @@
 
     <script>
         $(document).ready(function () {
+
+
             var validator = $("form[id='profile-form']").validate();
 
             $('#getPrametersByFin').click(function () {
@@ -1310,6 +1312,7 @@
                         name: "previous_position[" + previousWorkCount + "]"
                     });
 
+
                     $('.workFieldGroup:last .previous_StartDate').attr({
                         id: "previous_StartDate-" + previousWorkCount,
                         name: "previous_StartDate[" + previousWorkCount + "]"
@@ -1325,6 +1328,10 @@
                     $('#addMoreWork').attr('disabled', true);
                     alert('Maximum ' + maxGroupWork + ' education field group are allowed.');
                 }
+
+                $("#previous_StartDate-"+previousWorkCount).datepicker( { format: 'dd.mm.yyyy' });
+                $("#previous_EndDate-"+previousWorkCount).datepicker( { format: 'dd.mm.yyyy' });
+
             });
 
             $(document).on('change', '.previous_company', function () {
@@ -1722,7 +1729,7 @@
             });
 
 
-            $('#special-div').hide();
+            // $('#special-div').hide();
 
             $('#companies').trigger("change");
             $('#BirthCityId').trigger("change");
